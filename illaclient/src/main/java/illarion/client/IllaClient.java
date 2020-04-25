@@ -290,7 +290,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
      * Prepare the configuration system and the decryption system.
      */
     private void prepareConfig() {
-        cfg = new ConfigSystem(getFile("Illarion.xcfgz"));
+        cfg = new ConfigSystem(getFile("Illarion.cfg"));
         cfg.setDefault("debugLevel", 1);
         cfg.setDefault("showIDs", false);
         cfg.setDefault(Player.CFG_SOUND_ON, true);
@@ -311,11 +311,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
 
         Locale locale = Locale.getDefault(Category.DISPLAY);
         // If the system locale is german, set to german. Otherwise, default to English
-        if ("de".equals(locale.getLanguage())) {
-            cfg.setDefault(Lang.LOCALE_CFG, Lang.LOCALE_CFG_GERMAN);
-        } else {
-            cfg.setDefault(Lang.LOCALE_CFG, Lang.LOCALE_CFG_ENGLISH);
-        }
+        cfg.setDefault(Lang.LOCALE_CFG, "de".equals(locale.getLanguage())? Lang.LOCALE_CFG_GERMAN : Lang.LOCALE_CFG_ENGLISH);
 
         cfg.setDefault("inventoryPosX", "100px");
         cfg.setDefault("inventoryPosY", "10px");
@@ -339,11 +335,6 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
         cfg.setDefault("disableChatAfterSending", true);
         cfg.setDefault("showQuestsOnGameMap", true);
         cfg.setDefault("showQuestsOnMiniMap", true);
-        /* Showing the avatar tag on a permanent base.
-         * 0 -> none are shown
-         * 1 -> other players only
-         * 2 -> other players and monsters
-         */
         cfg.setDefault("showAvatarTagPermanently", 0);
         cfg.set("limitPathFindingToMouseDirection", true);
         cfg.set("followMousePathFinding", true);

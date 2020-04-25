@@ -104,11 +104,6 @@ public class ConfigSystem implements Config {
      *
      * @param source The configuration file that is supposed to be load
      */
-    @Deprecated
-    public ConfigSystem(@Nonnull File source) {
-        this(source.toPath());
-    }
-
     public ConfigSystem(@Nonnull Path source) {
         configFile = source;
 
@@ -366,8 +361,8 @@ public class ConfigSystem implements Config {
         }
 
         lock.writeLock().lock();
-        try (OutputStream out = new GZIPOutputStream(
-                Files.newOutputStream(configFile, CREATE, TRUNCATE_EXISTING, WRITE))) {
+        try (OutputStream out =
+                Files.newOutputStream(configFile, CREATE, TRUNCATE_EXISTING, WRITE)) {
             XmlSerializer serializer = XmlPullParserFactory.newInstance().newSerializer();
             serializer.setOutput(out, ENCODING);
 
@@ -376,10 +371,9 @@ public class ConfigSystem implements Config {
 
             for (Entry<String, Object> entry : configEntries.entrySet()) {
                 String key = entry.getKey();
-                @SuppressWarnings("ConstantConditions") Class<?> valueClass = entry.getValue().getClass();
+                Class<?> valueClass = entry.getValue().getClass();
                 String value = null;
                 String type = null;
-                //noinspection ConstantConditions
                 for (ConfigTypes configType : ConfigTypes.values()) {
                     if (configType.getTypeClass().equals(valueClass)) {
                         type = configType.getTypeName();
@@ -573,7 +567,7 @@ public class ConfigSystem implements Config {
         }
 
         lock.writeLock().lock();
-        try (InputStream in = new GZIPInputStream(Files.newInputStream(configFile, READ))) {
+        try (InputStream in = Files.newInputStream(configFile, READ)) {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(in, ENCODING);
 
@@ -603,7 +597,6 @@ public class ConfigSystem implements Config {
                     }
                     if ((key != null) && (type != null) && (value != null)) {
                         Object realValue = null;
-                        //noinspection ConstantConditions
                         for (ConfigTypes configType : ConfigTypes.values()) {
                             if (type.equals(configType.getTypeName())) {
                                 realValue = configType.getConverter().getObject(value);
