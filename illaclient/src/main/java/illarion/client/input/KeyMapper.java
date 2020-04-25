@@ -117,6 +117,7 @@ public final class KeyMapper {
         }
     }
 
+
     public void handleKeyReleasedInput(@Nonnull Key key) {
         keyPressed.remove(key);
         KeyboardMovementHandler handler = World.getPlayer().getMovementHandler().getKeyboardHandler();
@@ -220,7 +221,7 @@ public final class KeyMapper {
                 break;
             case F1:
                 if (firstPressed) {
-                    World.getGameGui().getDocumentationGui().toggleDocumentation();
+                    // Documentation GUI
                 }
                 break;
             case P:
