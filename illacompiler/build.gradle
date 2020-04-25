@@ -23,30 +23,31 @@ archivesBaseName = 'illarion_compiler'
 mainClassName = 'illarion.compile.Compiler'
 
 dependencies {
-    compile project(':common')
-    compile project(':easynpc')
-    compile project(':easyquest')
-    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
-    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: project.ext.slf4jVersion
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logbackVersion
+    implementation project(':common')
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: project.ext.slf4jVersion
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
+    implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: project.ext.slf4jVersion
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logbackVersion
+    implementation group: 'com.mxgraph', name: 'jgraphx', version: '3.7.4'
 }
 
 jar {
     dependsOn { gitVersion }
     manifest {
-        attributes       \
-               'Main-Class': 'illarion.compile.Compiler',       \
-              'Permissions': 'all-permissions',      \
-              'Codebase': 'illarion.org',      \
-              'Application-Name': 'Illarion Compiler',      \
-              'Application-Library-Allowable-Codebase': 'illarion.org',      \
-              'Built-Date': new Date().format('yyyy-MM-dd HH:mm:ssZ'),      \
-              'Built-By': System.getProperty('user.name'),       \
-              'Built-JDK': System.getProperty('java.version'),       \
-              'Implementation-Title': 'Illarion Compiler',       \
-              'Implementation-Vendor': 'Illarion e.V.',      \
+        attributes(
+               'Main-Class': 'illarion.compile.Compiler',
+              'Permissions': 'all-permissions',
+              'Codebase': 'illarion.org',
+              'Application-Name': 'Illarion Compiler',
+              'Application-Library-Allowable-Codebase': 'illarion.org',
+              'Built-Date': new Date().format('yyyy-MM-dd HH:mm:ssZ'),
+              'Built-By': System.getProperty('user.name'),
+              'Built-JDK': System.getProperty('java.version'),
+              'Implementation-Title': 'Illarion Compiler',
+              'Implementation-Vendor': 'Illarion e.V.',
               'Implementation-Version': project.ext.fullVersion
+        )
     }
 }
 
@@ -55,10 +56,10 @@ task proguard(type: ProGuardTask, dependsOn: 'jar') {
 
     injars(mainFile)
 
-    configurations.runtime.each { File file ->
+    configurations.runtimeClasspath.each { File file ->
         if (file.absolutePath.startsWith(System.getProperty('java.home'))) {
             libraryjars file.absolutePath
-        } else if (!file.equals(mainFile)) {
+        } else if (file != mainFile) {
             def filter = "!META-INF/*,!META-INF/plexus/*,!META-INF/sisu/*,!META-INF/maven/**,!about.html,!LICENSE," +
                     "!OSGI-OPT/**,!**/packageinfo,!**.java,!xmlns/**"
             if (file.absolutePath.contains("xpp3") || file.absolutePath.contains("axis-jaxrpc")) {

@@ -16,6 +16,7 @@
 package org.illarion.nifty.controls.dialog.message.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
+import de.lessvoid.nifty.builder.ElementBuilder;
 
 import javax.annotation.Nonnull;
 
@@ -45,10 +46,12 @@ public class DialogMessageBuilder extends ControlBuilder {
      * Set the text that is displayed in this dialog.
      *
      * @param text the text displayed in this dialog
+     * @return
      */
     @Override
-    public void text(@Nonnull String text) {
+    public ElementBuilder text(@Nonnull String text) {
         set("text", text);
+        return this;
     }
 
     /**

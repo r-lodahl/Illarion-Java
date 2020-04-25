@@ -44,7 +44,7 @@ class ConvertPlugin implements Plugin<Project> {
     private final Instantiator instantiator
 
     @Inject
-    public ConvertPlugin(Instantiator instantiator) {
+    ConvertPlugin(Instantiator instantiator) {
         this.instantiator = instantiator
     }
 
