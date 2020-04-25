@@ -81,7 +81,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
      * The identification of this application.
      */
     @Nonnull
-    public static final AppIdent APPLICATION = new AppIdent("Illarion Client"); //$NON-NLS-1$
+    public static final AppIdent APPLICATION = new AppIdent("Illarion"); //$NON-NLS-1$
     @Nonnull
     public static final String CFG_FULLSCREEN = "fullscreen";
     @Nonnull
