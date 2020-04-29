@@ -1,7 +1,7 @@
 /*
  * This file is part of the Illarion project.
  *
- * Copyright © 2015 - Illarion e.V.
+ * Copyright © 2016 - Illarion e.V.
  *
  * Illarion is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -35,17 +35,26 @@ import java.util.Map;
 public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implements ResourceFactory<T> {
     @Nonnull
     private static final Logger log = LoggerFactory.getLogger(AbstractTemplateFactory.class);
-
+    /**
+     * The ID used in case the requested object does not exist.
+     */
+    private final int defaultId;
+    /**
+     * This is the builder that is used to create the resource storage. This variable is only used during the
+     * initialization phase of this factory. Once loading is done it is not required anymore.
+     */
+    @Nullable
+    private ImmutableMap.Builder<Integer, T> storageBuilder;
+    /**
+     * This variable is used during populating the resources to ensure that all keys are unique.
+     */
+    @Nullable
+    private Set<Integer> storageBuilderKeys;
     /**
      * The map that is used to store the resources.
      */
     @Nonnull
     private final Map<Integer, T> storage;
-
-    /**
-     * The ID used in case the requested object does not exist.
-     */
-    private final int defaultId;
 
     /**
      * The default constructor.
@@ -63,11 +72,9 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
     }
 
     @Override
-    public void storeResource(@Nonnull T resource) {
-        if (storage.containsKey(resource.getTemplateId())) {
-            log.warn("Located duplicated resource template: {}", resource);
-        }
-        storage.put(resource.getTemplateId(), resource);
+    public void init() {
+        storageBuilder = new ImmutableMap.Builder<>();
+        storageBuilderKeys = new HashSet<>();
     }
 
     @Override
@@ -75,7 +82,16 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
     }
 
     @Override
-    public void init() {
+    public void storeResource(@Nonnull T resource) {
+        if ((storageBuilder == null) || (storageBuilderKeys == null)) {
+            throw new IllegalStateException("Factory was not initialized yet.");
+        }
+
+        if (!storageBuilderKeys.add(resource.getTemplateId())) {
+            log.warn("Located duplicated resource template: {}", resource);
+        }
+
+        storageBuilder.put(resource.getTemplateId(), resource);
     }
 
     @Contract(pure = true)
