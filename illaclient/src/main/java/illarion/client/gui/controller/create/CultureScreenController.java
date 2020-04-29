@@ -25,6 +25,9 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.effects.EffectEventId;
 import de.lessvoid.nifty.effects.impl.Hint;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.ImageRenderer;
+import de.lessvoid.nifty.render.NiftyImage;
+import de.lessvoid.nifty.render.batch.spi.BatchRenderBackend.Image;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import illarion.client.util.account.AccountSystem;
@@ -328,7 +331,7 @@ public final class CultureScreenController implements ScreenController {
                    .map(RaceResponse::getTypes)
                    .flatMap(Collection::stream)
                    .filter(t -> t.getId() == raceTypeId)
-                   .findAny().get();
+                   .findAny().orElseThrow(IllegalStateException::new);
     }
 
     private static final class CultureOption {
@@ -359,6 +362,10 @@ public final class CultureScreenController implements ScreenController {
             if (!container.isVisible()) {
                 container.show();
             }
+
+            ImageRenderer renderer = image.getRenderer(ImageRenderer.class);
+            assert renderer != null;
+            renderer.setImage(niftyImage);
         }
     }
 }
