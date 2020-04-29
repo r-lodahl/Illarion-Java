@@ -15,17 +15,21 @@
  */
 package illarion.client.graphics;
 
+import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.elements.events.NiftyMouseMovedEvent;
 import illarion.client.IllaClient;
 import illarion.client.graphics.AvatarClothManager.AvatarClothGroup;
 import illarion.client.input.AbstractMouseLocationEvent;
 import illarion.client.input.ClickOnMapEvent;
 import illarion.client.input.CurrentMouseLocationEvent;
 import illarion.client.input.DoubleClickOnMapEvent;
+import illarion.client.net.client.LookAtCharCmd;
 import illarion.client.resources.CharacterFactory;
 import illarion.client.resources.MiscImageFactory;
 import illarion.client.resources.Resource;
 import illarion.client.resources.data.AvatarTemplate;
 import illarion.client.util.Lang;
+import illarion.client.util.LookAtTracker;
 import illarion.client.world.Char;
 import illarion.client.world.MapTile;
 import illarion.client.world.World;
@@ -126,6 +130,8 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     @Nonnull
     private Color targetLight;
     private int showHighlight;
+
+    private Input input;
 
     private Avatar(@Nonnull AvatarTemplate template, @Nonnull Char parentChar) {
         super(template);
@@ -436,14 +442,31 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         attackAvailableMark.setScreenPos(coordinate);
     }
 
-    /**
-     * Change the color of one paper dolling object.
-     *
-     * @param group the group of the object that shall get a different color
-     * @param color the new color that shall be used to color the graphic itself
-     */
-    public void changeClothColor(@Nonnull AvatarClothGroup group, Color color) {
-        clothRender.changeBaseColor(group, color);
+        input = container.getEngine().getInput();
+
+        if (World.getPlayer().getCombatHandler().isAttacking(parentChar)) {
+            setAttackMarkerState(AvatarAttackMarkerState.Attacking);
+        } else if (World.getPlayer().getCombatHandler().isGoingToAttack(parentChar)) {
+            setAttackMarkerState(AvatarAttackMarkerState.AttackStarting);
+        } else if (isMouseInInteractionRect(input) && World.getPlayer().getCombatHandler().canBeAttacked(parentChar)) {
+            setAttackMarkerState(AvatarAttackMarkerState.AttackPossible);
+        } else {
+            setAttackMarkerState(AvatarAttackMarkerState.Hidden);
+        }
+
+        super.update(container, delta);
+
+        if (World.getPlayer().isPlayer(parentChar.getCharId())) {
+            renderName = false;
+        } else if (getAlpha() > HIDE_NAME_ALPHA) {
+            renderName = World.getPeople().isAvatarTagShown(parentChar.getCharId()) || input.isKeyDown(Key.RightAlt) ||
+                         isMouseInInteractionRect(input);
+        }
+
+        if (renderName) {
+            avatarTextTag.setDisplayLocation(getDisplayCoordinate());
+            avatarTextTag.update(container, delta);
+        }
     }
 
     /**
@@ -520,9 +543,8 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         }
 
         if (parentChar.isHuman()) {
-            Char charToName = parentChar;
-            World.getUpdateTaskManager().addTaskForLater(
-                    (container1, delta1) -> World.getGameGui().getDialogInputGui().showNamingDialog(charToName));
+            //Sending a LookAtCharCmd will open the character window on server response.
+            World.getNet().sendCommand(new LookAtCharCmd(parentChar.getCharId(), LookAtCharCmd.LOOKAT_STARE));
         } else {
             InteractiveChar interactiveChar = parentChar.getInteractive();
 
