@@ -51,6 +51,8 @@ import java.util.*;
  */
 public final class CultureScreenController implements ScreenController {
     @Nonnull
+    public static final String NEXT_SCREEN_ID = "characterCreateJob";
+    @Nonnull
     private static final Logger log = LoggerFactory.getLogger(CultureScreenController.class);
     @Nonnull
     private final AccountSystem accountSystem;
@@ -66,9 +68,7 @@ public final class CultureScreenController implements ScreenController {
     @Nullable
     private Nifty nifty;
     @Nonnull
-    private final Properties cultureConfig;
-    @Nonnull
-    private final Random random;
+    private final Pattern colorRangePattern;
 
     public CultureScreenController(@Nonnull GameContainer container, @Nonnull AccountSystem accountSystem) {
         this.accountSystem = accountSystem;
@@ -102,6 +102,27 @@ public final class CultureScreenController implements ScreenController {
         nifty.gotoScreen("charSelect");
     }
 
+    @NiftyEventSubscriber(pattern = "culture[0-9]#button")
+    public void onCultureButtonClicked(@Nonnull String topic, @Nonnull ButtonClickedEvent event) {
+        assert nifty != null;
+
+        int cultureId = Integer.parseInt(Character.toString(topic.charAt(8)));
+        if (cultureId >= 0 && cultureId < 6) {
+            getNextScreenController().setCultureId(cultureId);
+            nifty.gotoScreen(NEXT_SCREEN_ID);
+        }
+    }
+
+    @Nonnull
+    private JobsScreenController getNextScreenController() {
+        assert nifty != null;
+
+        Screen jobScreen = nifty.getScreen(NEXT_SCREEN_ID);
+        assert jobScreen != null;
+
+        return (JobsScreenController) jobScreen.getScreenController();
+    }
+
     @Nullable
     public String getServerId() {
         return serverId;
@@ -109,6 +130,7 @@ public final class CultureScreenController implements ScreenController {
 
     public void setServerId(@Nullable String serverId) {
         this.serverId = serverId;
+        getNextScreenController().setServerId(serverId);
     }
 
     public int getRaceId() {
@@ -117,6 +139,7 @@ public final class CultureScreenController implements ScreenController {
 
     public void setRaceId(int raceId) {
         this.raceId = raceId;
+        getNextScreenController().setRaceId(raceId);
     }
 
     public int getRaceTypeId() {
@@ -125,6 +148,7 @@ public final class CultureScreenController implements ScreenController {
 
     public void setRaceTypeId(int raceTypeId) {
         this.raceTypeId = raceTypeId;
+        getNextScreenController().setRaceTypeId(raceTypeId);
     }
 
     @Nonnull
@@ -191,23 +215,55 @@ public final class CultureScreenController implements ScreenController {
     }
 
     private ColourResponse selectColour(@Nonnull List<ColourResponse> options, int option, @Nonnull String valueKey, @Nonnull String deltaKey) {
-        if (options.isEmpty()) return null;
-        if (options.size() == 1) return options.get(0);
+        if (options.isEmpty()) {
+            return null;
+        }
+        if (options.size() == 1) {
+            return options.get(0);
+        }
 
-        int[] normalValue = getConfigEntryIntArray(option, valueKey);
-        double[] deltaValues = getConfigEntryDoubleArray(option, deltaKey);
-        float[] normalHsb = java.awt.Color.RGBtoHSB(normalValue[0], normalValue[1], normalValue[2], null);
+        int[] validIndexValues = getConfigEntryIntArray(option, idKey);
+        if ((validIndexValues != null) && (validIndexValues.length != 0)) {
+            int[] possibilities = IntStream.concat(options.stream().mapToInt(IdNameResponse::getId), IntStream.of(0)).sorted().toArray();
+            validIndexValues = IntStream.of(validIndexValues).filter(v -> Arrays.binarySearch(possibilities, v) >= 0).toArray();
+        }
+
+        if ((validIndexValues == null) || (validIndexValues.length == 0)) {
+            validIndexValues = IntStream.concat(options.stream().mapToInt(IdNameResponse::getId), IntStream.of(0)).toArray();
+        }
+
+        int selectedValue = random.nextInt(validIndexValues.length);
+        int selectedIndex = validIndexValues[selectedValue];
+
+        if (selectedIndex == 0) {
+            return null;
+        }
+
+        return options.stream().filter(o -> o.getId() == selectedIndex).findFirst().orElseGet(() -> options.get(0));
+    }
+
+    @Nullable
+    private ColourResponse selectColour(@Nonnull List<ColourResponse> options, int option, @Nonnull String valueKey) {
+        if (options.isEmpty()) {
+            return null;
+        }
+        if (options.size() == 1) {
+            return options.get(0);
+        }
 
         List<ColourResponse> possibleColours = new ArrayList<>();
-        float[] testColour = new float[3];
-        for (@Nonnull ColourResponse colourOption : options) {
-            java.awt.Color.RGBtoHSB(colourOption.getRed(), colourOption.getGreen(), colourOption.getBlue(), testColour);
-            //double delta = getColourDiff(normalValue, testColour);
 
-            double hueDelta = Math.abs(Math.atan2(Math.sin(testColour[0] - normalHsb[0]), Math.cos(testColour[0] - normalHsb[0])));
+        StringBuilder keyBuilder = new StringBuilder(valueKey);
+        int rangeIndex = -1;
 
-            float saturationDelta = Math.abs(normalHsb[1] - testColour[1]);
-            float brightnessDelta = Math.abs(normalHsb[2] - testColour[2]);
+        int firstColor[] = new int[3];
+        int secondColor[] = new int[3];
+        float firstHsbColor[] = null;
+        float secondHsbColor[] = null;
+        while (true) {
+            rangeIndex++;
+            keyBuilder.setLength(valueKey.length());
+            keyBuilder.append('.').append(rangeIndex);
 
             String colorRangeDef = getConfigEntry(option, keyBuilder);
             if (colorRangeDef == null) {
@@ -342,7 +398,7 @@ public final class CultureScreenController implements ScreenController {
         @Nonnull
         private final Element image;
 
-        public CultureOption(@Nonnull Screen screen, @Nonnull String containerKey) {
+        CultureOption(@Nonnull Screen screen, @Nonnull String containerKey) {
             container = Objects.requireNonNull(screen.findElementById(containerKey));
             button = Objects.requireNonNull(container.findNiftyControl("#button", Button.class));
             image = Objects.requireNonNull(container.findElementById("#image"));
