@@ -81,6 +81,8 @@ public final class CultureScreenController implements ScreenController {
         }
 
         random = new Random();
+
+        colorRangePattern = Pattern.compile("\\[#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})\\s*,\\s*#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})\\]", Pattern.CASE_INSENSITIVE);
     }
 
     @NiftyEventSubscriber(pattern = "backToRaceBtn")
@@ -204,8 +206,57 @@ public final class CultureScreenController implements ScreenController {
             float saturationDelta = Math.abs(normalHsb[1] - testColour[1]);
             float brightnessDelta = Math.abs(normalHsb[2] - testColour[2]);
 
-            if (hueDelta < deltaValues[0] && saturationDelta < deltaValues[1] && brightnessDelta < deltaValues[2]) {
-                possibleColours.add(colourOption);
+            String colorRangeDef = getConfigEntry(option, keyBuilder);
+            if (colorRangeDef == null) {
+                break;
+            }
+
+            Matcher matcher = colorRangePattern.matcher(colorRangeDef);
+            if (!matcher.matches()) {
+                continue;
+            }
+            if (matcher.groupCount() != 6) {
+                continue;
+            }
+
+            for (int i = 0; i < 3; i++) {
+                firstColor[i] = Integer.parseInt(matcher.group(i + 1), 16);
+                secondColor[i] = Integer.parseInt(matcher.group(i + 4), 16);
+            }
+
+            firstHsbColor = java.awt.Color.RGBtoHSB(firstColor[0], firstColor[1], firstColor[2], firstHsbColor);
+            secondHsbColor = java.awt.Color.RGBtoHSB(secondColor[0], secondColor[1], secondColor[2], secondHsbColor);
+
+            boolean hueOuterRange = false;
+            float hueRange[] = new float[] {Math.min(firstHsbColor[0], secondHsbColor[0]), Math.max(firstHsbColor[0], secondHsbColor[0])};
+            if (hueRange[1] - hueRange[0] > 0.5f) {
+                hueOuterRange = true;
+            }
+            float saturationRange[] = new float[] {Math.min(firstHsbColor[1], secondHsbColor[1]), Math.max(firstHsbColor[1], secondHsbColor[1])};
+            float brightnessRange[] = new float[] {Math.min(firstHsbColor[2], secondHsbColor[2]), Math.max(firstHsbColor[2], secondHsbColor[2])};
+
+            for (@Nonnull ColourResponse c : options) {
+                firstHsbColor = java.awt.Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), firstHsbColor);
+
+                if (hueOuterRange) {
+                    if (firstHsbColor[0] < hueRange[1] && firstHsbColor[0] > hueRange[0]) {
+                        continue;
+                    }
+                } else {
+                    if (firstHsbColor[0] < hueRange[0] || firstHsbColor[0] > hueRange[1]) {
+                        continue;
+                    }
+                }
+
+                if (firstHsbColor[1] < saturationRange[0] || firstHsbColor[1] > saturationRange[1]) {
+                    continue;
+                }
+
+                if (firstHsbColor[2] < brightnessRange[0] || firstHsbColor[2] > brightnessRange[1]) {
+                    continue;
+                }
+
+                possibleColours.add(c);
             }
         }
 
@@ -254,8 +305,8 @@ public final class CultureScreenController implements ScreenController {
     }
 
     @Nullable
-    private String getConfigEntry(int option, @Nonnull String key) {
-        String raceTypeKey = "race." + raceId + ".type." + raceTypeId + ".option." + option + "." + key;
+    private String getConfigEntry(int option, @Nonnull CharSequence key) {
+        String raceTypeKey = "race." + raceId + ".type." + raceTypeId + ".option." + option + '.' + key;
         String raceTypeResult = cultureConfig.getProperty(raceTypeKey, null);
         if (raceTypeResult != null) return raceTypeResult;
 
