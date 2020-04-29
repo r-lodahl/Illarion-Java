@@ -1,7 +1,7 @@
 /*
  * This file is part of the Illarion project.
  *
- * Copyright © 2015 - Illarion e.V.
+ * Copyright © 2016 - Illarion e.V.
  *
  * Illarion is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,6 +17,7 @@ package illarion.client.world;
 
 import org.jetbrains.annotations.Contract;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
@@ -159,6 +160,19 @@ public final class Clock {
     @Contract(pure = true)
     public int getSecond() {
         return (int) (getIllaSecondPass() % 60);
+    }
+
+    @Contract(pure = true)
+    public double getTotalDay() {
+        return getDay() + (getTotalHour() / 24.0);
+    }
+
+    @Nonnull
+    @Override
+    @Contract(pure = true)
+    public String toString() {
+        return "Date: " + getDay() + ". " + getMonth() + ' ' + getYear() + " Time: " + getHour() + ':' + getMinute()
+                + ':' + getSecond();
     }
 
     /**

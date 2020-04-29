@@ -146,11 +146,13 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     /**
      * The element that displays the image that is dragged around.
      */
+    @Nullable
     private Element draggedImage;
 
     /**
      * This operation is executed once a dragging operation is done.
      */
+    @Nullable
     private Runnable endOfDragOp;
 
     /**
