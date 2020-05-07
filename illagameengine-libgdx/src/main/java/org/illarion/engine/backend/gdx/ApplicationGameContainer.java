@@ -16,17 +16,17 @@
 package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Graphics.DisplayMode;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.illarion.engine.DesktopGameContainer;
 import org.illarion.engine.GameListener;
 import org.illarion.engine.MouseCursor;
 import org.illarion.engine.graphic.GraphicResolution;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * The game container that is using the libGDX backend to handle the game.
@@ -38,7 +38,7 @@ public class ApplicationGameContainer implements DesktopGameContainer {
      * The configuration used to create the application.
      */
     @Nonnull
-    private final LwjglApplicationConfiguration config;
+    private final Lwjgl3ApplicationConfiguration config;
     /**
      * The game listener that receives the updates regarding the game.
      */
@@ -76,10 +76,12 @@ public class ApplicationGameContainer implements DesktopGameContainer {
      */
     private int windowHeight;
 
+    private boolean isFullscreen;
+
     /**
      * The graphic resolution that applied in full screen mode.
      */
-    @Nullable
+    @Nonnull
     private GraphicResolution fullScreenResolution;
 
     /**
@@ -89,66 +91,41 @@ public class ApplicationGameContainer implements DesktopGameContainer {
      * @param width the width of the game container
      * @param height the height of the game container
      * @param fullScreen the full screen flag of the container
-     * @throws GdxEngineException in case the initialization goes wrong
      */
-    public ApplicationGameContainer(
-            @Nonnull GameListener gameListener, int width, int height, boolean fullScreen) throws GdxEngineException {
+    public ApplicationGameContainer(@Nonnull GameListener gameListener, int width, int height, boolean fullScreen) {
         this.gameListener = gameListener;
-        config = new LwjglApplicationConfiguration();
-        config.forceExit = false;
-        config.vSyncEnabled = true;
-        config.backgroundFPS = 10;
-        config.foregroundFPS = 60;
-        config.useGL30 = false;
-        config.depth = 0;
+        config = new Lwjgl3ApplicationConfiguration();
+
+        config.useVsync(true);
+        config.setIdleFPS(10);
 
         windowHeight = height;
         windowWidth = width;
-        fullScreenResolution = getFittingFullScreenResolution(width, height);
-        if (fullScreen) {
-            config.height = fullScreenResolution.getHeight();
-            config.width = fullScreenResolution.getWidth();
+
+        isFullscreen = fullScreen;
+        config.setResizable(!isFullscreen);
+
+        Graphics.Monitor monitor = Lwjgl3ApplicationConfiguration.getPrimaryMonitor();
+        DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes(monitor);
+
+        DisplayMode mode = Arrays.stream(displayModes)
+                .filter(x -> x.width == width && x.height == height)
+                .max(Comparator.comparingInt(x -> x.bitsPerPixel))
+                .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode(monitor));
+
+        fullScreenResolution = new GraphicResolution(mode.width, mode.height, mode.bitsPerPixel, mode.refreshRate);
+
+        if (isFullscreen) {
+            config.setFullscreenMode(mode);
         } else {
-            config.height = height;
-            config.width = width;
+            config.setWindowedMode(windowWidth, windowHeight);
         }
-        config.fullscreen = fullScreen;
-    }
-
-    @Nonnull
-    private GraphicResolution getFittingFullScreenResolution(int width, int height) {
-        GraphicResolution[] resolutions = getFullScreenResolutions();
-        int freq = 0;
-
-        @Nullable GraphicResolution targetDisplayMode = null;
-        for (@Nonnull GraphicResolution current : resolutions) {
-            if ((current.getWidth() == width) && (current.getHeight() == height)) {
-                if ((targetDisplayMode == null) ||
-                        ((current.getRefreshRate() >= freq) && (current.getBPP() > targetDisplayMode.getBPP()))) {
-                    targetDisplayMode = current;
-                    freq = targetDisplayMode.getRefreshRate();
-                }
-
-                if ((current.getBPP() == LwjglApplicationConfiguration.getDesktopDisplayMode().bitsPerPixel) &&
-                        (current.getRefreshRate() ==
-                                LwjglApplicationConfiguration.getDesktopDisplayMode().refreshRate)) {
-                    targetDisplayMode = current;
-                    break;
-                }
-            }
-        }
-
-        if (targetDisplayMode == null) {
-            DisplayMode mode = LwjglApplicationConfiguration.getDesktopDisplayMode();
-            return new GraphicResolution(mode.width, mode.height, mode.bitsPerPixel, mode.refreshRate);
-        }
-        return targetDisplayMode;
     }
 
     @Override
     public int getHeight() {
         if (gdxApplication == null) {
-            return config.height;
+            return isFullScreen() ? fullScreenResolution.getHeight() : windowHeight;
         }
         return gdxApplication.getGraphics().getHeight();
     }
@@ -156,7 +133,7 @@ public class ApplicationGameContainer implements DesktopGameContainer {
     @Override
     public int getWidth() {
         if (gdxApplication == null) {
-            return config.width;
+            return isFullScreen() ? fullScreenResolution.getWidth() : windowWidth;
         }
         return gdxApplication.getGraphics().getWidth();
     }
@@ -183,8 +160,13 @@ public class ApplicationGameContainer implements DesktopGameContainer {
     }
 
     @Override
-    public void startGame() throws GdxEngineException {
-        gdxApplication = new GdxLwjglApplication(new ListenerApplication(gameListener, this), config);
+    public void startGame() {
+        // This will not return until the main game loops stops
+        new GdxLwjglApplication(new ListenerApplication(gameListener, this), config);
+    }
+
+    public void setGdxApplication(@Nonnull GdxLwjglApplication application) {
+        gdxApplication = application;
     }
 
     @Override
@@ -192,12 +174,6 @@ public class ApplicationGameContainer implements DesktopGameContainer {
         if (gdxApplication != null) {
             gdxApplication.shutdownGame();
         }
-    }
-
-    @Nonnull
-    @Override
-    public String getTitle() {
-        return config.title;
     }
 
     @Override
@@ -216,14 +192,14 @@ public class ApplicationGameContainer implements DesktopGameContainer {
 
     @Override
     public void setTitle(@Nonnull String title) {
-        config.title = title;
+        config.setTitle(title);
         if (gdxApplication != null) {
             gdxApplication.getGraphics().setTitle(title);
         }
     }
 
     @Override
-    public void setWindowSize(int width, int height) throws GdxEngineException {
+    public void setWindowSize(int width, int height) {
         windowWidth = width;
         windowHeight = height;
         if (!isFullScreen() && (gdxApplication != null)) {
@@ -232,17 +208,18 @@ public class ApplicationGameContainer implements DesktopGameContainer {
     }
 
     @Override
-    public void setFullScreenResolution(@Nonnull GraphicResolution resolution) throws GdxEngineException {
+    public void setFullScreenResolution(@Nonnull GraphicResolution resolution) {
         fullScreenResolution = resolution;
+
         if (isFullScreen() && (gdxApplication != null)) {
             DisplayMode[] modes = gdxApplication.getGraphics().getDisplayModes();
             for (@Nullable DisplayMode mode : modes) {
                 if (mode == null) {
                     continue;
                 }
-                if ((mode.width != fullScreenResolution.getWidth()) ||
-                        (mode.height != fullScreenResolution.getHeight()) ||
-                        (mode.bitsPerPixel != fullScreenResolution.getBPP())) {
+                if ((mode.width != resolution.getWidth()) ||
+                        (mode.height != resolution.getHeight()) ||
+                        (mode.bitsPerPixel != resolution.getBPP())) {
                     continue;
                 }
 
@@ -257,58 +234,55 @@ public class ApplicationGameContainer implements DesktopGameContainer {
     @Nonnull
     @Override
     public GraphicResolution[] getFullScreenResolutions() {
-        if (graphicResolutions == null) {
-            List<GraphicResolution> resultResolutions = new ArrayList<>();
-            DisplayMode[] displayModes;
-            boolean ignoreRefreshRate;
-            if (gdxApplication == null) {
-                displayModes = LwjglApplicationConfiguration.getDisplayModes();
-                ignoreRefreshRate = true;
-            } else {
-                displayModes = gdxApplication.getGraphics().getDisplayModes();
-                ignoreRefreshRate = false;
-            }
-            for (@Nullable DisplayMode mode : displayModes) {
-                if (mode == null) {
-                    continue;
-                }
-                if ((mode.width < 800) || (mode.height < 600) || (mode.bitsPerPixel < 24)) {
-                    continue;
-                }
-                if (ignoreRefreshRate) {
-                    resultResolutions.add(new GraphicResolution(mode.width, mode.height, mode.bitsPerPixel, -1));
-                } else {
-                    if (mode.refreshRate >= 50) {
-                        resultResolutions.add(new GraphicResolution(mode.width, mode.height, mode.bitsPerPixel,
-                                mode.refreshRate));
-                    }
-                }
-            }
-            graphicResolutions = resultResolutions.toArray(new GraphicResolution[resultResolutions.size()]);
+        if (graphicResolutions != null) return graphicResolutions;
+
+        DisplayMode[] displayModes;
+        boolean ignoreRefreshRate;
+
+        if (gdxApplication == null) {
+            displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes();
+            ignoreRefreshRate = true;
+        } else {
+            displayModes = gdxApplication.getGraphics().getDisplayModes();
+            ignoreRefreshRate = false;
         }
+
+        graphicResolutions = Arrays.stream(displayModes)
+                    .filter(x ->
+                        x != null &&
+                        x.width >= 800 &&
+                        x.height >= 600 &&
+                        x.bitsPerPixel >= 24 &&
+                        (ignoreRefreshRate || x.refreshRate >= 50))
+                    .map(x -> new GraphicResolution(x.width, x.height, x.bitsPerPixel, x.refreshRate))
+                    .toArray(GraphicResolution[]::new);
+
         return graphicResolutions;
     }
 
     @Override
     public boolean isResizeable() {
-        return config.resizable;
+        return !isFullScreen();
     }
 
     @Override
-    public void setResizeable(boolean resizeable) throws GdxEngineException {
+    public void setResizeable(boolean resizeable) {
         if (gdxApplication == null) {
-            config.resizable = resizeable;
+            config.setResizable(resizeable);
         }
     }
 
     @Override
     public boolean isFullScreen() {
-        return config.fullscreen;
+        return isFullscreen;
     }
 
     @Override
-    public void setFullScreen(boolean fullScreen) throws GdxEngineException {
-        config.fullscreen = fullScreen;
+    public void setFullScreen(boolean fullScreen) {
+        isFullscreen = fullScreen;
+
+        config.setResizable(!fullScreen);
+
         if (gdxApplication != null) {
             if (fullScreen) {
                 setFullScreenResolution(fullScreenResolution);
@@ -329,8 +303,6 @@ public class ApplicationGameContainer implements DesktopGameContainer {
 
     @Override
     public void setIcons(@Nonnull String... icons) {
-        for (@Nullable String icon : icons) {
-            config.addIcon(icon, FileType.Internal);
-        }
+        config.setWindowIcon(FileType.Internal, icons);
     }
 }

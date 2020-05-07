@@ -16,8 +16,8 @@
 package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.Audio;
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALAudio;
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALAudio;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.slf4j.Logger;

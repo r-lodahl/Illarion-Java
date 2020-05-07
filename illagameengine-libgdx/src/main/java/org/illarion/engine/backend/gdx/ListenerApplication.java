@@ -54,6 +54,7 @@ class ListenerApplication extends ApplicationAdapter {
 
     @Override
     public void create() {
+        container.setGdxApplication((GdxLwjglApplication)Gdx.app);
         container.createEngine();
         listener.create(container);
     }

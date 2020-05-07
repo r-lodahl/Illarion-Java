@@ -15,8 +15,8 @@
  */
 package org.illarion.engine.backend.gdx;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-class GdxLwjglApplication extends LwjglApplication {
+class GdxLwjglApplication extends Lwjgl3Application {
     /**
      * The listener that receives the events of the application. This reference is required to forward the closing
      * request.
@@ -40,7 +40,7 @@ class GdxLwjglApplication extends LwjglApplication {
      * @param listener the listener that receives the updates
      * @param config the configuration used to create the application
      */
-    GdxLwjglApplication(@Nonnull ListenerApplication listener, @Nonnull LwjglApplicationConfiguration config) {
+    GdxLwjglApplication(@Nonnull ListenerApplication listener, @Nonnull Lwjgl3ApplicationConfiguration config) {
         super(listener, config);
         this.listener = listener;
     }
