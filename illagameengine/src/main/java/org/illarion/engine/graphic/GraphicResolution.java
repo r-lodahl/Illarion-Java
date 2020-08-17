@@ -16,13 +16,10 @@
 package org.illarion.engine.graphic;
 
 import org.jetbrains.annotations.Contract;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  * This class is used to supply and compare possible display resolutions.
@@ -50,21 +47,6 @@ public final class GraphicResolution {
      */
     private final int width;
 
-    /**
-     * Default Constructor for a graphic resolution definition.
-     * Sets width = (the local screen width) * 0.9
-     * height = (the local screen height) * 0.9
-     * refreshRate = local refreshRate;
-     */
-    public GraphicResolution(){
-        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = environment.getDefaultScreenDevice();
-        DisplayMode dm = gd.getDisplayMode();
-        height = (int) (dm.getHeight() * 0.9);
-        width = (int) (dm.getWidth() * 0.9);
-        refreshRate = dm.getRefreshRate();
-        bpp = dm.getBitDepth();
-    }
     /**
      * Constructor for a graphic resolution definition.
      *
