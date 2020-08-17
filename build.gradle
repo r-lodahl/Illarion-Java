@@ -30,21 +30,13 @@ buildscript {
     }
 }
 
-plugins {
-    id "idea"
-}
-
 wrapper {
     gradleVersion = '6.7'
 }
 
-idea {
-    project {
-        languageLevel = '15'
-    }
-}
-
 allprojects {
+    apply plugin: 'idea'
+
     if (project.hasProperty('targetRepo')) {
         ext.mavenRepo = "file://$targetRepo"
     } else {
@@ -115,18 +107,22 @@ allprojects {
     }
 }
 
-subprojects {
-    group = 'org.illarion'
+configure(subprojects) {
+    apply plugin: 'java-library'
 
     apply plugin: 'java'
     sourceCompatibility = JavaVersion.VERSION_15
     targetCompatibility = JavaVersion.VERSION_15
 
-    plugins.withType(JavaPlugin) {
-        tasks.withType(JavaCompile) {
-            options.encoding = 'UTF-8'
-        }
+    compileJava {
+        options.incremental = true
+        options.encoding = 'UTF-8'
+    }
+}
 
+subprojects {
+    group = 'org.illarion'
+    plugins.withType(JavaPlugin) {
         test {
             useTestNG()
             options {
@@ -153,7 +149,6 @@ subprojects {
         }
     }
 
-    apply plugin: 'idea'
     apply plugin: 'pmd'
 
     pmd {
