@@ -52,11 +52,9 @@ import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.*; //TODO: Remove swing and awt
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -257,6 +255,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
         if (cfg.getBoolean(CFG_FULLSCREEN)) {
             // Determine the dimensions of the window to create
             GraphicResolution res = null;
+
             String resolutionString = cfg.getString(CFG_RESOLUTION);
             if (resolutionString != null) {
                 try {
@@ -265,12 +264,15 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
                     LOGGER.error("Failed to initialize screen resolution. Falling back.");
                 }
             }
+
             if (res == null) {
-                res = new GraphicResolution(); // auto detection
+                width = 0;
+                height = 0;
+            } else {
+                width = res.getWidth();
+                height = res.getHeight();
             }
 
-            width = res.getWidth();
-            height = res.getHeight();
             fullScreen = true;
         } else {
             width = cfg.getInteger("windowWidth");
@@ -280,21 +282,26 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
 
         try {
             // Get the game container used to display the game from the engine, using the dimensions from earlier
-            gameContainer = EngineManager
-                    .createDesktopGame(Backend.libGDX, game, width, height, fullScreen);
+            gameContainer = EngineManager.createDesktopGame(Backend.libGDX, game, width, height, fullScreen);
         } catch (@Nonnull EngineException e) {
             LOGGER.error("Fatal error creating game screen!!!", e);
             System.exit(-1);
         }
 
         gameContainer.setTitle(APPLICATION.getApplicationIdentifier());
-        gameContainer.setIcons("illarion_client16.png", "illarion_client32.png", "illarion_client64.png", "illarion_client256.png");
+        gameContainer.setIcons("illarion_client16.png",
+                "illarion_client32.png",
+                "illarion_client64.png",
+                "illarion_client256.png");
 
         EventBus.subscribe(CFG_FULLSCREEN, this);
         EventBus.subscribe(CFG_RESOLUTION, this);
 
         try {
             gameContainer.setResizeable(true);
+            System.out.println("Startup done.");
+            //MacOSx notice: in case AWT cannot be completely removed from the game (error messages etc)
+            //it is needed to initialize AWT once (by calling getDefaultToolkit) before initGLFW
             gameContainer.startGame();
         } catch (@Nonnull Exception e) {
             LOGGER.error("Exception while launching game.", e);
@@ -316,10 +323,8 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
         cfg.setDefault(ChatLog.CFG_TEXTLOG, true);
         cfg.setDefault(CFG_FULLSCREEN, false);
 
-        GraphicResolution defaultResolution = new GraphicResolution();
-        cfg.setDefault(CFG_RESOLUTION, defaultResolution.toString());
-        cfg.setDefault("windowWidth", defaultResolution.getWidth());
-        cfg.setDefault("windowHeight", defaultResolution.getHeight());
+        cfg.setDefault("windowWidth", 1280);
+        cfg.setDefault("windowHeight", 1024);
         cfg.setDefault("savePassword", false);
         cfg.setDefault("showFps", false);
         cfg.setDefault("showPing", false);
@@ -371,13 +376,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
         cfg.setDefault(Translator.CFG_KEY_PROVIDER, Translator.CFG_VALUE_PROVIDER_NONE);
         cfg.setDefault(Translator.CFG_KEY_DIRECTION, Translator.CFG_VALUE_DIRECTION_DEFAULT);
 
-        @Nonnull Toolkit awtDefaultToolkit = Toolkit.getDefaultToolkit();
-        @Nullable Object doubleClick = awtDefaultToolkit.getDesktopProperty("awt.multiClickInterval");
-        if (doubleClick instanceof Number) {
-            cfg.set("doubleClickInterval", ((Number) doubleClick).intValue() * 2);
-        } else {
-            cfg.set("doubleClickInterval", 1000);
-        }
+        cfg.set("doubleClickInterval", 1000);
 
         Crypto crypt = new Crypto();
         crypt.loadPublicKey();
@@ -417,7 +416,6 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
         Thread.setDefaultUncaughtExceptionHandler(DefaultCrashHandler.getInstance());
 
         //noinspection UseOfSystemOutOrSystemErr
-        System.out.println("Startup done.");
         LOGGER.info("{} started.", APPLICATION.getApplicationIdentifier());
         LOGGER.info("VM: {}", System.getProperty("java.version"));
         LOGGER.info("OS: {} {} {}", System.getProperty("os.name"), System.getProperty("os.version"),

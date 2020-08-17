@@ -99,9 +99,6 @@ public class ApplicationGameContainer implements DesktopGameContainer {
         config.useVsync(true);
         config.setIdleFPS(10);
 
-        windowHeight = height;
-        windowWidth = width;
-
         isFullscreen = fullScreen;
         config.setResizable(!isFullscreen);
 
@@ -114,6 +111,14 @@ public class ApplicationGameContainer implements DesktopGameContainer {
                 .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode(monitor));
 
         fullScreenResolution = new GraphicResolution(mode.width, mode.height, mode.bitsPerPixel, mode.refreshRate);
+
+        if (height == 0 && width == 0) {
+            windowHeight = mode.height;
+            windowWidth = mode.width;
+        } else {
+            windowHeight = height;
+            windowWidth = width;
+        }
 
         if (isFullscreen) {
             config.setFullscreenMode(mode);

@@ -16,10 +16,10 @@
 package illarion.client.graphics;
 
 import illarion.common.types.DisplayCoordinate;
+import illarion.common.types.Rectangle;
 import org.illarion.engine.graphic.Sprite;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 /**
  * This fading corridor is used to fade out the objects that would block the
@@ -94,10 +94,8 @@ public final class FadingCorridor {
      * avatar image (spoken in z order), so returning {@code true}
      * means that the tested object needs to be faded out
      */
-    boolean isInCorridor(
-            int testLocX, int testLocY, int testLayer, int width, int height) {
-        TEMP_RECT.setBounds(testLocX, testLocY, width, height);
-
+    boolean isInCorridor(int testLocX, int testLocY, int testLayer, int width, int height) {
+        TEMP_RECT.set(testLocX, testLocY, width, height);
         return (testLayer < back) && fading.intersects(TEMP_RECT);
     }
 
@@ -115,9 +113,9 @@ public final class FadingCorridor {
      */
     void setCorridor(@Nonnull AbstractEntity<?> character) {
         Sprite characterSprite = character.getTemplate().getSprite();
-        fading.setBounds(character.getDisplayCoordinate().getX() + TOLERANCE,
+        fading.set(character.getDisplayCoordinate().getX() + TOLERANCE,
                 (character.getDisplayCoordinate().getY() + TOLERANCE) - characterSprite.getHeight(),
-                         characterSprite.getWidth(), characterSprite.getHeight());
+                characterSprite.getWidth(), characterSprite.getHeight());
         back = character.getOrder() - (DisplayCoordinate.ROW_DISTANCE / 2);
     }
 }
