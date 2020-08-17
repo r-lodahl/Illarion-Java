@@ -17,6 +17,7 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.illarion.engine.GameListener;
 
@@ -66,6 +67,9 @@ class ListenerApplication extends ApplicationAdapter {
 
     @Override
     public void render() {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         listener.update(container, Math.round(Gdx.graphics.getDeltaTime() * 1000.f));
 
         GdxGraphics graphics = container.getEngine().getGraphics();
