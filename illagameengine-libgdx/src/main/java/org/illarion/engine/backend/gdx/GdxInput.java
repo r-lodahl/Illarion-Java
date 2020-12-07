@@ -610,10 +610,10 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public boolean scrolled(float amountX, float amountY) {
         events.offer(() -> {
             assert inputListener != null;
-            inputListener.mouseWheelMoved(getMouseX(), getMouseY(), -amount);
+            inputListener.mouseWheelMoved(getMouseX(), getMouseY(), -(int)(amountX+amountY));
         });
         return true;
     }
