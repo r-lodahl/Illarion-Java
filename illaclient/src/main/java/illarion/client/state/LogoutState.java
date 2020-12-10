@@ -13,22 +13,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.client.states;
+package illarion.client.state;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.Game;
 import illarion.client.IllaClient;
 import illarion.client.world.World;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.annotation.Nonnull;
 
 /**
  * This state is activated during the shutdown of the game.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class LogoutState implements GameState {
     /**
@@ -37,10 +32,12 @@ public final class LogoutState implements GameState {
     @Nonnull
     private static final Logger log = LoggerFactory.getLogger(LogoutState.class);
 
+    private int logoutDelay;
+
     @Override
-    public void create(@Nonnull Game game, @Nonnull GameContainer container, @Nonnull Nifty nifty) {
+    public void create(BackendBinding binding) {
         log.trace("Creating logout state.");
-        Util.loadXML(nifty, "illarion/client/gui/xml/logout.xml");
+        //Util.loadXML(nifty, "illarion/client/gui/xml/logout.xml");
     }
 
     @Override
@@ -48,13 +45,7 @@ public final class LogoutState implements GameState {
     }
 
     @Override
-    public void resize(@Nonnull GameContainer container, int width, int height) {
-    }
-
-    private int logoutDelay;
-
-    @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(int delta) {
         if (logoutDelay == 0) {
             World.shutdownWorld();
         }
@@ -65,8 +56,7 @@ public final class LogoutState implements GameState {
     }
 
     @Override
-    public void render(@Nonnull GameContainer container) {
-    }
+    public void render() { }
 
     @Override
     public boolean isClosingGame() {
@@ -74,12 +64,11 @@ public final class LogoutState implements GameState {
     }
 
     @Override
-    public void enterState(@Nonnull GameContainer container, @Nonnull Nifty nifty) {
+    public void enterState() {
         logoutDelay = 0;
-        nifty.gotoScreen("clientLogout");
+        //nifty.gotoScreen("clientLogout");
     }
 
     @Override
-    public void leaveState(@Nonnull GameContainer container) {
-    }
+    public void leaveState() { }
 }

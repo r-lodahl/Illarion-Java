@@ -15,21 +15,15 @@
  */
 package org.illarion.engine;
 
-import javax.annotation.Nonnull;
-
 /**
  * This class needs to be implemented by the game itself. It provides the callbacks required to interact with the
  * lifecycle of the game.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-public interface GameListener {
+public interface GameStateManager {
     /**
      * This function is called once the game is created.
-     *
-     * @param container the game container
      */
-    void create(@Nonnull GameContainer container);
+    void create(BackendBinding binding);
 
     /**
      * This function is called at the destruction of the game. (Should be used for cleanups before the shutdown itself)
@@ -37,29 +31,16 @@ public interface GameListener {
     void dispose();
 
     /**
-     * This function is called in case the application got a resize. Its called right before the
-     * {@link #update(GameContainer, int)} function is called.
-     *
-     * @param container the game container
-     * @param width the new width
-     * @param height the new height
-     */
-    void resize(@Nonnull GameContainer container, int width, int height);
-
-    /**
      * During the call of this function the application is supposed to perform the update of the game logic.
      *
-     * @param container the game container
      * @param delta the time since the last update call
      */
-    void update(@Nonnull GameContainer container, int delta);
+    void update(int delta);
 
     /**
      * During the call of this function the application is supposed to perform all rendering operations.
-     *
-     * @param container the game container
      */
-    void render(@Nonnull GameContainer container);
+    void render();
 
     /**
      * This function is called in case the game receives a request to be closed.

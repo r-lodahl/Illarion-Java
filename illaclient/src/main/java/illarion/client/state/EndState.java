@@ -13,41 +13,27 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.client.states;
+package illarion.client.state;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.Game;
-import org.illarion.engine.GameContainer;
-
-import javax.annotation.Nonnull;
+import org.illarion.engine.BackendBinding;
 
 /**
  * This state is activated during the shutdown of the game.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class EndState implements GameState {
-
     @Override
-    public void create(@Nonnull Game game, @Nonnull GameContainer container, @Nonnull Nifty nifty) {
-        Util.loadXML(nifty, "illarion/client/gui/xml/shutdown.xml");
+    public void create(BackendBinding binding) {
+        //Util.loadXML(nifty, "illarion/client/gui/xml/shutdown.xml");
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() { }
 
     @Override
-    public void resize(@Nonnull GameContainer container, int width, int height) {
-    }
+    public void update(int delta) { }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-    }
-
-    @Override
-    public void render(@Nonnull GameContainer container) {
-    }
+    public void render() { }
 
     @Override
     public boolean isClosingGame() {
@@ -55,11 +41,10 @@ public final class EndState implements GameState {
     }
 
     @Override
-    public void enterState(@Nonnull GameContainer container, @Nonnull Nifty nifty) {
-        nifty.gotoScreen("clientEnd");
+    public void enterState() {
+        //nifty.gotoScreen("clientEnd");
     }
 
     @Override
-    public void leaveState(@Nonnull GameContainer container) {
-    }
+    public void leaveState() { }
 }

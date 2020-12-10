@@ -13,21 +13,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.client.states;
+package illarion.client.state;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.Game;
 import illarion.client.gui.controller.LoadScreenController;
 import illarion.client.loading.Loading;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 
 import javax.annotation.Nonnull;
 
 /**
  * This game state is active while the game loads. It takes care for showing the loading screen and to trigger the
  * actual loading.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class LoadingState implements GameState {
     /**
@@ -41,28 +37,24 @@ public final class LoadingState implements GameState {
     @Nonnull
     private final Loading loadingManager = new Loading();
 
-    @Override
-    public void create(@Nonnull Game game, @Nonnull GameContainer container, @Nonnull Nifty nifty) {
-        controller = new LoadScreenController(game);
-        nifty.registerScreenController(controller);
+    private BackendBinding binding;
 
-        Util.loadXML(nifty, "illarion/client/gui/xml/loading.xml");
+    @Override
+    public void create(BackendBinding binding) {
+        this.binding = binding;
+        controller = new LoadScreenController();
+        //nifty.registerScreenController(controller);
+        //Util.loadXML(nifty, "illarion/client/gui/xml/loading.xml");
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() { }
 
     @Override
-    public void resize(@Nonnull GameContainer container, int width, int height) {
-    }
+    public void update(int delta) { }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-    }
-
-    @Override
-    public void render(@Nonnull GameContainer container) {
+    public void render() {
         loadingManager.load();
         controller.setProgress(loadingManager.getProgress());
 
@@ -77,12 +69,11 @@ public final class LoadingState implements GameState {
     }
 
     @Override
-    public void enterState(@Nonnull GameContainer container, @Nonnull Nifty nifty) {
-        loadingManager.enlistMissingComponents(container.getEngine());
-        nifty.gotoScreen("loading");
+    public void enterState() {
+        loadingManager.enlistMissingComponents(binding.getAssets());
+        //nifty.gotoScreen("loading");
     }
 
     @Override
-    public void leaveState(@Nonnull GameContainer container) {
-    }
+    public void leaveState() { }
 }

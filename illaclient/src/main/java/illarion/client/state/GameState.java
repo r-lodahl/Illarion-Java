@@ -13,30 +13,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.client.states;
+package illarion.client.state;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.Game;
-import org.illarion.engine.GameContainer;
-
-import javax.annotation.Nonnull;
+import org.illarion.engine.BackendBinding;
 
 /**
  * This interface defines the different states the game is able to enter.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public interface GameState {
     /**
      * This function is called once the game is created.
      * <p/>
      * Its called for all game states, not just for the active one.
-     *
-     * @param game the game that is running
-     * @param container the container that carries the game
-     * @param nifty the instance of the Nifty GUI that displays the game
      */
-    void create(@Nonnull Game game, @Nonnull GameContainer container, @Nonnull Nifty nifty);
+    void create(BackendBinding binding);
 
     /**
      * This function is called once the game is shut down.
@@ -46,28 +36,16 @@ public interface GameState {
     void dispose();
 
     /**
-     * This function is called for the active state once the size of the game container changes.
-     *
-     * @param container the container that carries the game
-     * @param width the new width of the game surface
-     * @param height the new height of the game surface
-     */
-    void resize(@Nonnull GameContainer container, int width, int height);
-
-    /**
      * This function is called during the update loop for the active game state.
      *
-     * @param container the container that carries the game
      * @param delta the time since the last update in milliseconds
      */
-    void update(@Nonnull GameContainer container, int delta);
+    void update(int delta);
 
     /**
      * This function is called during the render loop for the active game state.
-     *
-     * @param container the container that carries the game
      */
-    void render(@Nonnull GameContainer container);
+    void render();
 
     /**
      * This function is called once the game is requested to close. Its called for the active game state. This state
@@ -79,13 +57,11 @@ public interface GameState {
 
     /**
      * This function is called once the game is entered
-     *
-     * @param nifty the active instance of the Nifty-GUI
      */
-    void enterState(@Nonnull GameContainer container, @Nonnull Nifty nifty);
+    void enterState();
 
     /**
      * This function is called once a formerly active state is left.
      */
-    void leaveState(@Nonnull GameContainer container);
+    void leaveState();
 }

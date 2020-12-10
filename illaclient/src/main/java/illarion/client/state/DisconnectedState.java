@@ -13,44 +13,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.client.states;
+package illarion.client.state;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.Game;
-import org.illarion.engine.GameContainer;
-
-import javax.annotation.Nonnull;
+import org.illarion.engine.BackendBinding;
 
 /**
  * This state is triggered in case the connection is terminated by a error or by the server.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class DisconnectedState implements GameState {
     @Override
-    public void create(@Nonnull Game game, @Nonnull GameContainer container, @Nonnull Nifty nifty) {
-
-    }
+    public void create(BackendBinding binding) { }
 
     @Override
-    public void dispose() {
-
-    }
+    public void dispose() { }
 
     @Override
-    public void resize(@Nonnull GameContainer container, int width, int height) {
-
-    }
+    public void update(int delta) { }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-
-    }
-
-    @Override
-    public void render(@Nonnull GameContainer container) {
-
-    }
+    public void render() { }
 
     @Override
     public boolean isClosingGame() {
@@ -58,12 +39,8 @@ public class DisconnectedState implements GameState {
     }
 
     @Override
-    public void enterState(@Nonnull GameContainer container, @Nonnull Nifty nifty) {
-
-    }
+    public void enterState() { }
 
     @Override
-    public void leaveState(@Nonnull GameContainer container) {
-
-    }
+    public void leaveState() { }
 }
