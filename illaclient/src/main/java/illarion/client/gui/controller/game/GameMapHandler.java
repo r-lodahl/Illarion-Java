@@ -124,7 +124,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
         this.input = input;
 
         AnnotationProcessor.process(this);
-        followMouseWithPathFinding = IllaClient.getCfg().getBoolean("followMousePathFinding");
+        followMouseWithPathFinding = IllaClient.getConfig().getBoolean("followMousePathFinding");
     }
 
     /**

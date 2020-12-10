@@ -18,6 +18,7 @@ package org.illarion.engine.nifty;
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
+import org.illarion.engine.assets.EffectManager;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.WorldMap;
@@ -51,16 +52,16 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
     /**
      * Create a new render engine that shows the mini map.
      *
-     * @param engine the used instance of the game engine
+     * @param effectManager the used instance of the game engine
      * @param map the world map that supplied the data
      * @param radius the radius of the mini map
      * @throws EngineException in case the creation of this image fails for any reason
      */
     public IgeMiniMapRenderImage(
-            @Nonnull Engine engine, @Nonnull WorldMap map, int radius) throws EngineException {
+            @Nonnull EffectManager effectManager, @Nonnull WorldMap map, int radius) throws EngineException {
         this.map = map;
         this.radius = radius;
-        effect = engine.getAssets().getEffectManager().getMiniMapEffect(map, false);
+        effect = effectManager.getMiniMapEffect(map, false);
     }
 
     @Override

@@ -30,7 +30,6 @@ import de.lessvoid.nifty.tools.SizeValue;
 import illarion.client.gui.MiniMapGui;
 import illarion.client.world.World;
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -156,7 +155,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
         if (pointer instanceof MiniMapArrowPointer) {
             MiniMapArrowPointer arrowPointer = (MiniMapArrowPointer) pointer;
 
-            World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+            World.getUpdateTaskManager().addTaskForLater((delta) -> {
                 if (arrowPointer.getParentElement().isVisible()) {
                     arrowPointer.getParentElement().hide(() -> {
                         activeArrowPointers.remove(arrowPointer);
@@ -169,7 +168,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
             });
         } else if (pointer instanceof MiniMapStartPointer) {
             MiniMapStartPointer startPointer = (MiniMapStartPointer) pointer;
-            World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+            World.getUpdateTaskManager().addTaskForLater((delta) -> {
                 if (startPointer.getParentElement().isVisible()) {
                     startPointer.getParentElement().hide(() -> {
                         activeStartPointers.remove(startPointer);
@@ -185,7 +184,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
 
     @Override
     public void addPointer(@Nonnull Pointer pointer) {
-        World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+        World.getUpdateTaskManager().addTaskForLater((delta) -> {
             if (pointer instanceof MiniMapArrowPointer) {
                 MiniMapArrowPointer arrowPointer = (MiniMapArrowPointer) pointer;
                 arrowPointer.getParentElement().show(() -> {
@@ -214,7 +213,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
      */
     @Override
     public void toggleMiniMap(){
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (miniMapPanel != null) {
                 if (miniMapPanel.isVisible()) {
                     hideMiniMap();
@@ -225,14 +224,14 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
         });
     }
     public void showMiniMap(){
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (miniMapPanel != null) {
                 miniMapPanel.show();
             }
         });
     }
     public void hideMiniMap(){
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (miniMapPanel != null) {
                 miniMapPanel.hide();
             }
@@ -257,7 +256,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         if (World.getPlayer().isLocationSet()) {
             ServerCoordinate playerLocation = World.getPlayer().getLocation();
 

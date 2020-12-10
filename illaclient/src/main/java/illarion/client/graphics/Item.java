@@ -34,7 +34,7 @@ import illarion.common.gui.AbstractMultiActionHelper;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.SceneEvent;
@@ -198,21 +198,21 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-        super.update(container, delta);
+    public void update(BackendBinding binding, int delta) {
+        super.update(binding, delta);
 
         if (showNumber && (number != null)) {
             number.addToCamera(getDisplayCoordinate().getX(), getDisplayCoordinate().getY());
             number.updateHeightAndWidth();
             number.setOffset((MapConstants.TILE_W / 2) - number.getHeight() - number.getWidth(),
                              -number.getHeight() / 2);
-            number.update(container, delta);
+            number.update(delta);
         }
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
-    public boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
         if (getAlpha() == 0) {
             return false;
         }
@@ -230,11 +230,11 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
 
                 // Uses a method from AbstractEntity that walks the player to the point at the mouse
                 if (event instanceof ClickOnMapEvent) {
-                    return processMapClick((ClickOnMapEvent) event, container);
+                    return processMapClick(binding, (ClickOnMapEvent) event);
                 }
 
                 if (event instanceof DoubleClickOnMapEvent) {
-                    return isEventProcessed((DoubleClickOnMapEvent) event, container);
+                    return isEventProcessed(binding, (DoubleClickOnMapEvent) event);
                 }
             }
             if (event instanceof PrimaryKeyMapDrag) {
@@ -336,8 +336,6 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         return itemId;
     }
 
-
-
     private boolean isEventProcessed(@Nonnull CurrentMouseLocationEvent event) {
         if (!isMouseInInteractionRect(event.getX(), event.getY())) {
             return false;
@@ -375,14 +373,13 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      * Does not walk the player to the base of objects or avatars.
      *
      * @param event the event to be processed
-     * @param container the GameContainer; needed to process input
      * @return {@code true} if the event was processed
      */
-    boolean processMapClick(@Nonnull ClickOnMapEvent event, @Nonnull GameContainer container) {
+    boolean processMapClick(@Nonnull BackendBinding binding, @Nonnull ClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
-        Input input = container.getEngine().getInput();
+        Input input = binding.getInput();
         MapTile mouseTile = World.getMap().getInteractive().getTileOnScreenLoc(input.getMouseX(), input.getMouseY());
 
         if ((mouseTile == null) || !mouseTile.isAtPlayerLevel()) {
@@ -424,7 +421,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         return true;
     }
 
-    private boolean isEventProcessed(@Nonnull DoubleClickOnMapEvent event, @Nonnull GameContainer container) {
+    private boolean isEventProcessed(@Nonnull BackendBinding binding, @Nonnull DoubleClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
@@ -439,7 +436,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
             log.debug("Double click on item at {}, using", parentTile.getCoordinates());
             parentTile.getInteractive().use();
         } else {
-            Input input = container.getEngine().getInput();
+            Input input = binding.getInput();
             if (input.isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
                 log.debug("Double alt-click on item at {}, turning", parentTile.getCoordinates());
                 TargetTurnHandler handler = World.getPlayer().getMovementHandler().getTargetTurnHandler();
@@ -503,7 +500,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         private ServerCoordinate target;
 
         DelayGoToItemHandler() {
-            super(IllaClient.getCfg().getInteger("doubleClickInterval"), 2);
+            super(IllaClient.getConfig().getInteger("doubleClickInterval"), 2);
         }
 
         void setLocation(@Nullable ServerCoordinate target) {

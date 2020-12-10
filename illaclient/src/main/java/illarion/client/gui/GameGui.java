@@ -16,7 +16,6 @@
 package illarion.client.gui;
 
 import de.lessvoid.nifty.screen.ScreenController;
-import org.illarion.engine.GameContainer;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnull;
@@ -205,8 +204,7 @@ public interface GameGui {
     /**
      * Update the GUI. This should be called once during the update cycle.
      *
-     * @param container the container of the game
      * @param delta the time since the last update in milliseconds
      */
-    void onUpdateGame(@Nonnull GameContainer container, int delta);
+    void onUpdateGame(int delta);
 }

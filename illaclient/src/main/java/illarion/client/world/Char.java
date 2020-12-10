@@ -406,12 +406,12 @@ public final class Char implements AnimatedMove {
         delayedMove = null;
         if (finished && (localDelayedMove != null)) {
             log.info("{}: Planning delayed move for execution", this);
-            World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+            World.getUpdateTaskManager().addTaskForLater((delta) -> {
                 log.info("{}: Executing delayed move", this);
                 moveToInternal(localDelayedMove.targetLocation, localDelayedMove.mode, localDelayedMove.duration);
             });
         } else if (localDelayedMove != null) {
-            World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+            World.getUpdateTaskManager().addTaskForLater((delta) -> {
                 log.info("{}: Canceled move received while there still was a delayed more. Fixing the location.", this);
                 updateLocation(localDelayedMove.targetLocation);
             });
@@ -770,7 +770,7 @@ public final class Char implements AnimatedMove {
 
         // The update of the direction arrives before the location of the character is set. That is okay because
         // the update of the character will take the stored direction into account.
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (!move.isRunning() && (location != null)) {
                 if (avatarId.getAnimationId() == CharAnimations.STAND) {
                     updateAvatar();
@@ -1018,11 +1018,11 @@ public final class Char implements AnimatedMove {
      * @param duration the duration of the animation in milliseconds
      */
     public void moveTo(@Nonnull ServerCoordinate newPos, @Nonnull CharMovementMode mode, int duration) {
-        World.getUpdateTaskManager().addTask((container, delta) -> moveToInternal(newPos, mode, duration));
+        World.getUpdateTaskManager().addTask((delta) -> moveToInternal(newPos, mode, duration));
     }
 
     public void updateMoveDuration(int newDuration) {
-        World.getUpdateTaskManager().addTask((container, delta) -> updateMoveDurationInternal(newDuration));
+        World.getUpdateTaskManager().addTask((delta) -> updateMoveDurationInternal(newDuration));
     }
 
     private void updateMoveDurationInternal(int newDuration) {

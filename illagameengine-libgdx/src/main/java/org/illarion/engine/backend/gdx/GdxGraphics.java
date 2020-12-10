@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Pools;
 import illarion.common.types.Rectangle;
+import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.*;
 import org.illarion.engine.graphic.effects.TextureEffect;
 
@@ -35,17 +36,15 @@ import javax.annotation.Nullable;
 
 /**
  * This is the graphics engine implementation that uses libGDX.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxGraphics implements Graphics {
     @Nonnull
-    private static final float[] FLT_BUFFER = new float[20];
+    private static final float[] FLOAT_BUFFER = new float[20];
     /**
      * The libGDX graphics instance that is used to display the graphics.
      */
     @Nonnull
-    private final com.badlogic.gdx.Graphics gdxGraphics;
+    private final com.badlogic.gdx.Graphics graphics;
     /**
      * The sprite batch used to perform the batch rendering.
      */
@@ -92,11 +91,6 @@ class GdxGraphics implements Graphics {
     @Nonnull
     private final OrthographicCamera camera;
     /**
-     * The engine implementation used for the rendering.
-     */
-    @Nonnull
-    private final GdxEngine engine;
-    /**
      * The blank background texture used to render rectangles.
      */
     @Nullable
@@ -116,13 +110,19 @@ class GdxGraphics implements Graphics {
     private boolean activeClipping;
 
     /**
+     * The backend assets reference
+     */
+    @Nonnull
+    private final Assets assets;
+
+    /**
      * Create a new instance of the graphics engine that is using libGDX to render.
      *
-     * @param gdxGraphics the libGDX graphics instance that is used
+     * @param graphics the libGDX graphics instance that is used
      */
-    GdxGraphics(@Nonnull GdxEngine engine, @Nonnull com.badlogic.gdx.Graphics gdxGraphics) {
-        this.gdxGraphics = gdxGraphics;
-        this.engine = engine;
+    GdxGraphics(@Nonnull Assets assets, @Nonnull com.badlogic.gdx.Graphics graphics) {
+        this.assets = assets;
+        this.graphics = graphics;
         shapeRenderer = new ShapeRenderer();
         spriteBatch = new SpriteBatch();
         tempColor1 = new com.badlogic.gdx.graphics.Color();
@@ -144,9 +144,9 @@ class GdxGraphics implements Graphics {
 
     void setCursor(@Nullable GdxCursor cursor) {
         if (cursor == null) {
-            gdxGraphics.setSystemCursor(SystemCursor.Arrow);
+            graphics.setSystemCursor(SystemCursor.Arrow);
         } else {
-            gdxGraphics.setCursor(cursor.getGdxCursor());
+            graphics.setCursor(cursor.getGdxCursor());
         }
     }
 
@@ -154,7 +154,7 @@ class GdxGraphics implements Graphics {
      * This function needs to be called before all rendering operations of a frame. It will setup the render system.
      */
     void beginFrame() {
-        camera.setToOrtho(true, gdxGraphics.getWidth(), gdxGraphics.getHeight());
+        camera.setToOrtho(true, graphics.getWidth(), graphics.getHeight());
         resetOffset();
         clear();
 
@@ -162,7 +162,7 @@ class GdxGraphics implements Graphics {
         setBlendingMode(BlendingMode.AlphaBlend);
 
         if (blankBackground == null) {
-            blankBackground = engine.getAssets().getTextureManager().getTexture("gui/", "blank.png");
+           blankBackground = assets.getTextureManager().getTexture("gui/", "blank.png");
         }
     }
 
@@ -175,7 +175,7 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void clear() {
-        GL20 gl20 = gdxGraphics.getGL20();
+        GL20 gl20 = graphics.getGL20();
         gl20.glClearColor(0.f, 0.f, 0.f, 1.f);
         gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
@@ -306,7 +306,7 @@ class GdxGraphics implements Graphics {
         float bottomV = textureRegion.getV2();
 
 
-        float[] vertices = FLT_BUFFER;
+        float[] vertices = FLOAT_BUFFER;
         vertices[0] = topX;
         vertices[1] = topY;
         vertices[2] = topColorF;
@@ -361,7 +361,7 @@ class GdxGraphics implements Graphics {
             usedEffect.setBottomRightCoordinate(u, v);
             usedEffect.activateEffect(spriteBatch);
         }
-        spriteBatch.draw(textureRegion.getTexture(), FLT_BUFFER, 0, 20);
+        spriteBatch.draw(textureRegion.getTexture(), FLOAT_BUFFER, 0, 20);
 
         if (usedEffect != null) {
             usedEffect.disableEffect(spriteBatch);
@@ -464,7 +464,7 @@ class GdxGraphics implements Graphics {
         transferColor(bottomRightColor, tempColor4);
         shapeRenderer.rect(x, y, width, height, tempColor3, tempColor4, tempColor2, tempColor1);
         shapeRenderer.end();
-        gdxGraphics.getGL20().glDisable(GL20.GL_BLEND);
+        graphics.getGL20().glDisable(GL20.GL_BLEND);
     }
 
     private void activateSpriteBatch() {
@@ -488,7 +488,7 @@ class GdxGraphics implements Graphics {
             spriteBatchActive = false;
         }
 
-        GL20 gl20 = gdxGraphics.getGL20();
+        GL20 gl20 = graphics.getGL20();
         gl20.glEnable(GL20.GL_BLEND);
         assert lastBlendingMode != null;
         switch (lastBlendingMode) {
@@ -636,7 +636,7 @@ class GdxGraphics implements Graphics {
         if (activeClipping) {
             unsetClippingArea();
         }
-        if ((x == 0) && (y == 0) && (width == gdxGraphics.getWidth()) && (height == gdxGraphics.getHeight())) {
+        if ((x == 0) && (y == 0) && (width == graphics.getWidth()) && (height == graphics.getHeight())) {
             return;
         }
         flushAll();
@@ -644,7 +644,7 @@ class GdxGraphics implements Graphics {
         clippingRect.set(x, y, width, height);
 
         com.badlogic.gdx.math.Rectangle scissor = Pools.obtain(com.badlogic.gdx.math.Rectangle.class);
-        ScissorStack.calculateScissors(camera, 0, 0, gdxGraphics.getWidth(), gdxGraphics.getHeight(),
+        ScissorStack.calculateScissors(camera, 0, 0, graphics.getWidth(), graphics.getHeight(),
                 spriteBatch.getTransformMatrix(), clippingRect, scissor);
         Pools.free(clippingRect);
 

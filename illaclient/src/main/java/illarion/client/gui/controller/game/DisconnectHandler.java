@@ -27,7 +27,6 @@ import illarion.client.world.events.ServerNotFoundEvent;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.illarion.engine.GameContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -66,7 +65,7 @@ public class DisconnectHandler implements ScreenController, UpdatableHandler, Ev
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         if (isVisible && !isActive && (parentNifty != null) && (parentScreen != null) && (popup != null)) {
             String id = popup.getId();
             if (id == null) {

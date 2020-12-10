@@ -18,7 +18,7 @@ package illarion.client.gui.controller;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import illarion.client.Game;
+import illarion.client.state.StateManager;
 import org.illarion.nifty.controls.Progress;
 
 import javax.annotation.Nonnull;
@@ -29,11 +29,11 @@ public final class LoadScreenController implements ScreenController {
     @Nullable
     private Progress progress;
 
-    @Nonnull
-    private final Game game;
+    //@Nonnull
+    //private final StateManager stateManager;
 
-    public LoadScreenController(@Nonnull Game game) {
-        this.game = game;
+    public LoadScreenController() {
+        //this.stateManager = stateManager;
     }
 
     @Override
@@ -54,7 +54,7 @@ public final class LoadScreenController implements ScreenController {
         }
         loadingDoneCalled = true;
 
-        game.enterState(Game.STATE_LOGIN);
+        //stateManager.enterState(StateManager.State.LOGIN);
     }
 
     public void setProgress(float progressValue) {

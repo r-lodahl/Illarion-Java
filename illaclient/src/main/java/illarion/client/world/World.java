@@ -23,9 +23,11 @@ import illarion.client.net.NetComm;
 import illarion.client.util.ChatHandler;
 import illarion.client.util.UpdateTaskManager;
 import illarion.client.world.interactive.InteractionManager;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.LightTracer;
+import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnull;
@@ -322,9 +324,9 @@ public final class World {
     /**
      * Prepare all components of the world. This needs to be called before the world is used.
      *
-     * @param engine the engine that is used to display the game
+     * @param binding the engine that is used to display the game
      */
-    public static void initWorldComponents(@Nonnull Engine engine) throws EngineException {
+    public static void initWorldComponents(@Nonnull BackendBinding binding) throws EngineException {
         if (INSTANCE.init) {
             return;
         }
@@ -333,13 +335,13 @@ public final class World {
         INSTANCE.aniManager = new AnimationManager();
         INSTANCE.chatHandler = new ChatHandler();
         INSTANCE.clock = new Clock();
-        INSTANCE.map = new GameMap(engine);
+        INSTANCE.map = new GameMap(binding.getAssets());
         INSTANCE.lights = new LightTracer(INSTANCE.map);
-        INSTANCE.mapDisplay = new MapDisplayManager(engine);
-        INSTANCE.musicBox = new MusicBox(engine);
+        INSTANCE.mapDisplay = new MapDisplayManager(binding.getAssets(), binding.getWindow());
+        INSTANCE.musicBox = new MusicBox(binding.getAssets(), binding.getSounds());
         INSTANCE.net = new NetComm();
         INSTANCE.people = new People();
-        INSTANCE.player = new Player(engine);
+        INSTANCE.player = new Player(binding.getInput());
         INSTANCE.weather = new Weather();
         INSTANCE.interactionManager = new InteractionManager();
     }
@@ -347,10 +349,10 @@ public final class World {
     /**
      * Init the GUI of the game.
      *
-     * @param engine the game engine
+     * @param input the game engine
      */
-    public static void initGui(@Nonnull Engine engine) {
-        INSTANCE.gameGui = new GameScreenController(engine.getInput());
+    public static void initGui(Input input) {
+        INSTANCE.gameGui = new GameScreenController(input);
     }
 
     @Contract(pure = true)

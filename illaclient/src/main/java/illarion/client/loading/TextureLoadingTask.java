@@ -16,15 +16,13 @@
 package illarion.client.loading;
 
 import illarion.common.util.ProgressMonitor;
-import org.illarion.engine.Engine;
+import org.illarion.engine.assets.TextureManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 /**
  * The purpose of this class is to load the texture resources that are required for the game.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @NotThreadSafe
 final class TextureLoadingTask implements LoadingTask {
@@ -32,7 +30,7 @@ final class TextureLoadingTask implements LoadingTask {
      * The engine used to load the data.
      */
     @Nonnull
-    private final Engine usedEngine;
+    private final TextureManager textureManager;
 
     /**
      * This flag is turned {@code true} once the loading is started for the first time.
@@ -42,28 +40,28 @@ final class TextureLoadingTask implements LoadingTask {
     /**
      * Create a new texture loading task.
      *
-     * @param engine the engine used to load the textures
+     * @param textureManager the engine used to load the textures
      */
-    TextureLoadingTask(@Nonnull Engine engine) {
-        usedEngine = engine;
+    TextureLoadingTask(@Nonnull TextureManager textureManager) {
+        this.textureManager = textureManager;
     }
 
     @Override
     public void load() {
         if (!loadingStarted) {
-            usedEngine.getAssets().getTextureManager().startLoading();
+            textureManager.startLoading();
             loadingStarted = true;
         }
     }
 
     @Override
     public boolean isLoadingDone() {
-        return usedEngine.getAssets().getTextureManager().isLoadingDone();
+        return textureManager.isLoadingDone();
     }
 
     @Nonnull
     @Override
     public ProgressMonitor getProgressMonitor() {
-        return usedEngine.getAssets().getTextureManager().getProgress();
+        return textureManager.getProgress();
     }
 }

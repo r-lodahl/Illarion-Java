@@ -15,7 +15,8 @@
  */
 package org.illarion.engine.graphic;
 
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
+import org.illarion.engine.Window;
 import org.illarion.engine.graphic.effects.SceneEffect;
 
 import javax.annotation.Nonnull;
@@ -50,13 +51,11 @@ public interface Scene {
     void removeElement(@Nonnull SceneElement element);
 
     /**
-     * Update the scene. This will call the {@link SceneElement#update(GameContainer, int)}
-     * function of all the elements of the scene.
+     * Update the scene.
      *
-     * @param container the container of the game
      * @param delta the time since the last update
      */
-    void update(@Nonnull GameContainer container, int delta);
+    void update(@Nonnull BackendBinding binding, int delta);
 
     /**
      * This function is called to render the scene. It does so by calling the {@link SceneElement#render(Graphics)}
@@ -70,7 +69,7 @@ public interface Scene {
 
     /**
      * This function publishes events to the scene. The actual publishing is done during the call of the
-     * {@link #update(GameContainer, int)} function. This method is thread save.
+     * {@link #update(BackendBinding, int)} function. This method is thread save.
      *
      * @param event the event to publish
      */

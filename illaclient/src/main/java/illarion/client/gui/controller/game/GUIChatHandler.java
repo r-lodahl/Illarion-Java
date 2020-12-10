@@ -51,7 +51,6 @@ import illarion.client.world.World;
 import illarion.common.types.Rectangle;
 import illarion.common.util.FastMath;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.Font;
 
 import javax.annotation.Nonnull;
@@ -74,7 +73,7 @@ import java.util.regex.Pattern;
 public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenController, UpdatableHandler {
     @Override
     public void activateChatBox() {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (chatMsg != null) {
                 chatMsg.setFocus();
             }
@@ -83,7 +82,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
 
     @Override
     public void deactivateChatBox(boolean clear) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (chatMsg != null) {
                 if (chatMsg.hasFocus()) {
                     assert screen != null;
@@ -158,7 +157,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         }
 
         @Override
-        public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+        public void onUpdateGame(int delta) {
             addChatLogText(text, color);
         }
     }
@@ -191,7 +190,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         }
 
         @Override
-        public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+        public void onUpdateGame(int delta) {
             addMessageBubble(targetChar, text, color);
         }
     }
@@ -350,7 +349,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
                 } else {
                     sendText(chatMsg.getDisplayedText());
                     chatMsg.setText("");
-                    if (IllaClient.getCfg().getBoolean("disableChatAfterSending")) {
+                    if (IllaClient.getConfig().getBoolean("disableChatAfterSending")) {
                         assert screen != null;
                         screen.getFocusHandler().setKeyFocus(null);
                     }
@@ -433,7 +432,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
     @Override
     public void onStartScreen() {
         setHeightOfChatLog(CHAT_COLLAPSED_HEIGHT);
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             keyEvent(NiftyStandardInputEvent.SubmitText);
             keyEvent(NiftyStandardInputEvent.SubmitText);
         });
@@ -443,7 +442,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         cleanupChatLog();
         updateChatBubbleLocations();
     }
@@ -609,7 +608,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
             sourceElement.setVisibleToMouseEvents(false);
             dirty = true;
             translator.translate(sourceLabel.getText(),
-                    translation -> World.getUpdateTaskManager().addTask((container, delta) -> {
+                    translation -> World.getUpdateTaskManager().addTask((delta) -> {
                         if (translation == null) {
                             translationLabel.setText("");
                             translationElement.setVisible(false);

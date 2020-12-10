@@ -31,7 +31,6 @@ import illarion.client.gui.InformGui;
 import illarion.client.util.UpdateTask;
 import illarion.client.world.MapDimensions;
 import illarion.client.world.World;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +94,7 @@ public final class InformHandler implements InformGui, ScreenController {
         }
 
         @Override
-        public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+        public void onUpdateGame(int delta) {
             if (!parent.isVisible()) {
                 parent.showWithoutEffects();
             }

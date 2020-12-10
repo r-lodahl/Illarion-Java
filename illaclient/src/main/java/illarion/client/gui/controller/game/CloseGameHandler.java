@@ -129,7 +129,7 @@ public final class CloseGameHandler
     @Override
     public void onEvent(@Nonnull String topic, ButtonClickedEvent data) {
         if (topic.endsWith("#closeExitButton")) {
-            IllaClient.ensureExit();
+            //IllaClient.ensureExit();
         } else if (topic.endsWith("#closeLogoutButton")) {
             parentNifty.closePopup(popup.getId());
             dialogActive = false;
@@ -146,11 +146,11 @@ public final class CloseGameHandler
 
     @Override
     public void hideClosingDialog() {
-        World.getUpdateTaskManager().addTask((container, delta) -> hideExitDialog());
+        World.getUpdateTaskManager().addTask((delta) -> hideExitDialog());
     }
 
     @Override
     public void showClosingDialog() {
-        World.getUpdateTaskManager().addTask((container, delta) -> showExitDialog());
+        World.getUpdateTaskManager().addTask((delta) -> showExitDialog());
     }
 }

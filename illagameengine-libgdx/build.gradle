@@ -23,6 +23,7 @@ dependencies {
     api group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.9.12'
     implementation group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl3', version: '1.9.12'
     implementation group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: '1.9.12', classifier: 'natives-desktop'
+    implementation group: 'com.google.guava', name: 'guava', version: '30.0-jre'
 }
 
 jar {

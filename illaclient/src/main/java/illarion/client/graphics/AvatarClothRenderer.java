@@ -18,7 +18,7 @@ package illarion.client.graphics;
 import illarion.client.graphics.AvatarClothManager.AvatarClothGroup;
 import illarion.common.types.Direction;
 import illarion.common.types.DisplayCoordinate;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 
@@ -338,10 +338,10 @@ final class AvatarClothRenderer {
     /**
      * Update all clothes
      */
-    void update(@Nonnull GameContainer container, int delta) {
+    void update(BackendBinding binding, int delta) {
         clothLock.readLock().lock();
         try {
-            currentClothes.values().forEach((cloth) -> cloth.update(container, delta));
+            currentClothes.values().forEach((cloth) -> cloth.update(binding, delta));
         } finally {
             clothLock.readLock().unlock();
         }

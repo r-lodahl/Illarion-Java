@@ -86,7 +86,7 @@ public final class KeyMapper {
     }
 
     private static void cyclePermanentAvatarTag() {
-        Config config = IllaClient.getCfg();
+        Config config = IllaClient.getConfig();
         int currentEntry = config.getInteger("showAvatarTagPermanently");
         int newEntry = (currentEntry + 1) % 3;
 
@@ -107,7 +107,7 @@ public final class KeyMapper {
     }
 
     private void applyWasdWalkSettings() {
-        useWasdWalking = IllaClient.getCfg().getBoolean("wasdWalk");
+        useWasdWalking = IllaClient.getConfig().getBoolean("wasdWalk");
     }
 
     @EventTopicSubscriber(topic = "wasdWalk")

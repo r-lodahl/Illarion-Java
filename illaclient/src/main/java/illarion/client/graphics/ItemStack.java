@@ -19,7 +19,7 @@ import illarion.client.input.AbstractMouseLocationEvent;
 import illarion.client.world.World;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.SceneEvent;
 import org.jetbrains.annotations.Contract;
@@ -32,9 +32,6 @@ import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public class ItemStack implements DisplayItem, List<Item> {
     @Nonnull
     private static final Logger log = LoggerFactory.getLogger(ItemStack.class);
@@ -228,14 +225,14 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(BackendBinding binding, int delta) {
         lock.readLock().lock();
         try {
             int size = items.size();
             for (int i = 0; i < size; i++) {
                 Item item = items.get(i);
                 item.enableNumbers(i == (size - 1));
-                item.update(container, delta);
+                item.update(binding, delta);
             }
         } finally {
             lock.readLock().unlock();
@@ -245,7 +242,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
         if (interactiveRectangle.isEmpty()) {
             return false;
         }
@@ -264,7 +261,7 @@ public class ItemStack implements DisplayItem, List<Item> {
             for (int i = items.size() - 1; i >= 0; i--) {
                 Item item = items.get(i);
                 assert item != null;
-                if (item.isEventProcessed(container, delta, event)) {
+                if (item.isEventProcessed(binding, delta, event)) {
                     return true;
                 }
             }

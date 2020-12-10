@@ -105,7 +105,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
         if (showFixFailed) {
             message += '\n' + Lang.getMsg("crash.fixfailed");
         }
-        IllaClient.errorExit(message);
+        IllaClient.exitWithError(message);
 
         currentlyCrashing = false;
     }

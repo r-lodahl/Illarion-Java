@@ -21,7 +21,6 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.MapColor;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
@@ -217,7 +216,7 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
     }
 
     @Override
-    public void render(@Nonnull GameContainer container) {
+    public void render() {
         if (mapDirty) {
             synchronized (worldMapPixels) {
                 worldMapTexture.getTextureRegion().getTexture().draw(worldMapPixels, 0, 0);

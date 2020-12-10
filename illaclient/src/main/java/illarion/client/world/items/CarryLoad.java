@@ -69,7 +69,7 @@ public class CarryLoad {
             }
             if (messageToSend != null) {
                 String finalMessageToSend = messageToSend;
-                World.getUpdateTaskManager().addTask((container, delta) -> {
+                World.getUpdateTaskManager().addTask((delta) -> {
                     World.getGameGui().getInformGui().showScriptInform(1, finalMessageToSend);
                     World.getGameGui().getChatGui().addChatMessage(finalMessageToSend, Color.WHITE);
                 });

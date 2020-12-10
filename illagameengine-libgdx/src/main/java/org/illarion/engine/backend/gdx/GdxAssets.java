@@ -15,13 +15,16 @@
  */
 package org.illarion.engine.backend.gdx;
 
-import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Audio;
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Graphics;
 import org.illarion.engine.EngineException;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.Window;
 import org.illarion.engine.assets.*;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -62,31 +65,28 @@ class GdxAssets implements Assets {
     private final GdxSpriteFactory spriteFactory;
 
     /**
-     * The game container that shows the game.
-     */
-    @Nonnull
-    private final GameContainer container;
-
-    /**
      * The effect manager that creates the graphic effects.
      */
     @Nonnull
     private final GdxEffectManager effectManager;
 
     /**
-     * Create a new instance of the libGDX assets management.
-     *
-     * @param gdxApplication the libGDX application this asset manager is bound to
-     * @param container the game container
+     * The backends window reference.
      */
-    GdxAssets(@Nonnull Application gdxApplication, @Nonnull GameContainer container) {
-        this.container = container;
+    @Nonnull
+    private final Window window;
+
+    /**
+     * Create a new instance of the libGDX assets management.
+     */
+    GdxAssets(Graphics graphics, Files files, Audio audio, @Nonnull Window window) {
         textureManager = new GdxTextureManager();
-        fontManager = new GdxFontManager(gdxApplication.getFiles(), textureManager);
-        cursorManager = new GdxCursorManager(gdxApplication.getGraphics(), gdxApplication.getFiles());
-        soundsManager = new GdxSoundsManager(gdxApplication.getFiles(), gdxApplication.getAudio());
+        fontManager = new GdxFontManager(files, textureManager);
+        cursorManager = new GdxCursorManager(graphics, files);
+        soundsManager = new GdxSoundsManager(files, audio);
         spriteFactory = new GdxSpriteFactory();
-        effectManager = new GdxEffectManager(gdxApplication.getFiles());
+        effectManager = new GdxEffectManager(files);
+        this.window = window;
     }
 
     @Nonnull
@@ -122,7 +122,7 @@ class GdxAssets implements Assets {
     @Nonnull
     @Override
     public Scene createNewScene() {
-        return new GdxScene(container);
+        return new GdxScene(window);
     }
 
     @Nonnull

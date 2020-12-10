@@ -26,7 +26,6 @@ import illarion.client.gui.events.TooltipsRemovedEvent;
 import illarion.client.world.World;
 import illarion.common.types.Rectangle;
 import org.bushe.swing.event.EventBus;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.input.Input;
 import org.illarion.nifty.controls.tooltip.builder.ToolTipBuilder;
 import org.slf4j.Logger;
@@ -95,9 +94,9 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-        Input input = container.getEngine().getInput();
-        lastMouseX = input.getMouseX();
+    public void update(int delta) {
+        //Input input = container.getEngine().getInput();
+        /*lastMouseX = input.getMouseX();
         lastMouseY = input.getMouseY();
         if (activeTooltipArea != null) {
             if (!activeTooltipArea.isInside(lastMouseX, lastMouseY)) {
@@ -106,14 +105,14 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
                 hideToolTip();
                 EventBus.publish(new TooltipsRemovedEvent());
             }
-        }
+        }*/
     }
 
     /**
      * Hide all current tooltips.
      */
     public void hideToolTip() {
-        World.getUpdateTaskManager().addTask((container, delta) -> hideToolTipImpl());
+        World.getUpdateTaskManager().addTask((delta) -> hideToolTipImpl());
     }
 
     private void hideToolTipImpl() {
@@ -145,7 +144,7 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
 
         log.debug("Showing tooltip {} for {}", tooltip, location);
 
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             hideToolTipImpl();
             showToolTipImpl(location, tooltip);
             activeTooltipArea = location;

@@ -116,7 +116,7 @@ public final class NumberSelectPopupHandler implements ScreenController {
      */
     public void requestNewPopup(
             int minValue, int maxValue, @Nonnull Callback callback) {
-        World.getUpdateTaskManager().addTask((container, delta) -> internalCreateNewPopup(minValue, maxValue, callback));
+        World.getUpdateTaskManager().addTask((delta) -> internalCreateNewPopup(minValue, maxValue, callback));
     }
 
     /**

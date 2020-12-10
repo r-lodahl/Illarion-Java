@@ -17,7 +17,6 @@ package org.illarion.engine.graphic;
 
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.Disposable;
-import org.illarion.engine.GameContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -108,8 +107,6 @@ public interface WorldMap extends Disposable {
      * need to be applied.
      * <p/>
      * This function needs to be called during the render loop.
-     *
-     * @param container the container of the game
      */
-    void render(@Nonnull GameContainer container);
+    void render();
 }

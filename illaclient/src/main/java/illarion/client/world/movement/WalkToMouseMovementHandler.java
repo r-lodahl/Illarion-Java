@@ -68,7 +68,7 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
         this.input = input;
         lastMouseX = -1;
         lastMouseY = -1;
-        limitPathFindingToMouseDirection = IllaClient.getCfg().getBoolean("limitPathFindingToMouseDirection");
+        limitPathFindingToMouseDirection = IllaClient.getConfig().getBoolean("limitPathFindingToMouseDirection");
 
         AnnotationProcessor.process(this);
     }

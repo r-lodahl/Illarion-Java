@@ -29,7 +29,6 @@ import illarion.client.IllaClient;
 import illarion.client.docu.DocuEntry;
 import illarion.client.docu.DocuRoot;
 import illarion.client.gui.DocumentationGui;
-import org.illarion.engine.GameContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,9 +117,9 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
         documentationWindow = getDocumentationWindow();
         if (documentationWindow != null && documentationWindow.getElement() != null) {
             documentationWindow.getElement()
-                    .setConstraintX(new SizeValue(IllaClient.getCfg().getString("docuWindowPosX")));
+                    .setConstraintX(new SizeValue(IllaClient.getConfig().getString("docuWindowPosX")));
             documentationWindow.getElement()
-                    .setConstraintY(new SizeValue(IllaClient.getCfg().getString("docuWindowPosY")));
+                    .setConstraintY(new SizeValue(IllaClient.getConfig().getString("docuWindowPosY")));
         }
         createDocumentationEntries();
     }
@@ -197,13 +196,13 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
     @Override
     public void onEndScreen() {
         nifty.unsubscribeAnnotations(this);
-        IllaClient.getCfg().set("docuWindowPosX", Integer.toString(documentationWindow.getElement().getX()) + "px");
-        IllaClient.getCfg().set("docuWindowPosY", Integer.toString(documentationWindow.getElement().getY()) + "px");
+        IllaClient.getConfig().set("docuWindowPosX", Integer.toString(documentationWindow.getElement().getX()) + "px");
+        IllaClient.getConfig().set("docuWindowPosY", Integer.toString(documentationWindow.getElement().getY()) + "px");
         hideDocumentation();
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
 
     }
 

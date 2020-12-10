@@ -16,7 +16,9 @@
 package illarion.client.loading;
 
 import illarion.common.util.ProgressMonitor;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.Engine;
+import org.illarion.engine.assets.Assets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,8 +28,6 @@ import java.util.List;
 
 /**
  * This class is used to enlist the required loading tasks and perform the loading operations itself.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @NotThreadSafe
 public final class Loading {
@@ -59,14 +59,14 @@ public final class Loading {
     /**
      * Enlist all components that are still needed to be loaded.
      *
-     * @param gameEngine the game engine
+     * @param assets the game engine
      */
-    public void enlistMissingComponents(@Nonnull Engine gameEngine) {
+    public void enlistMissingComponents(@Nonnull Assets assets) {
         progressMonitor = new ProgressMonitor();
         if (!loadingDone) {
-            addToTaskList(new TextureLoadingTask(gameEngine));
-            addToTaskList(new ResourceTableLoading(gameEngine));
-            addToTaskList(new SoundLoadingTask(gameEngine));
+            addToTaskList(new TextureLoadingTask(assets.getTextureManager()));
+            addToTaskList(new ResourceTableLoading(assets));
+            addToTaskList(new SoundLoadingTask(assets));
             loadingDone = true;
         }
     }

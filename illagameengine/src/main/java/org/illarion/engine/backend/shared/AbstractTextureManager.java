@@ -142,6 +142,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
         }
     }
 
+    @Override
     public void update() {
         if (isLoadingDone()) {
             return;

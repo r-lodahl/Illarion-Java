@@ -16,11 +16,7 @@
 package illarion.client.graphics;
 
 import illarion.common.types.Rectangle;
-import org.illarion.engine.GameContainer;
-import org.illarion.engine.graphic.Color;
-import org.illarion.engine.graphic.Font;
-import org.illarion.engine.graphic.Graphics;
-import org.illarion.engine.graphic.ImmutableColor;
+import org.illarion.engine.graphic.*;
 
 import javax.annotation.Nonnull;
 
@@ -153,7 +149,7 @@ public class TextTag {
         return displayRect;
     }
 
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(int delta) {
         if (dirty) {
             dirty = false;
             displayRect.set(displayX - dX - 1, displayY - dY - 1, width + 2, height + 2);

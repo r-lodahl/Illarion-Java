@@ -25,7 +25,6 @@ import illarion.client.world.Player;
 import illarion.client.world.World;
 import illarion.client.world.characters.CharacterAttribute;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.illarion.engine.GameContainer;
 import org.illarion.nifty.controls.Progress;
 
 import javax.annotation.Nonnull;
@@ -109,7 +108,7 @@ public final class CharStatusHandler implements PlayerStatusGui, ScreenControlle
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         if ((hitPoints != currentHitPoints) && (hitPointBar != null)) {
             currentHitPoints = AnimationUtility.approach(currentHitPoints, hitPoints, 0, 10000, delta);
             hitPointBar.setProgress(currentHitPoints / 10000.f);

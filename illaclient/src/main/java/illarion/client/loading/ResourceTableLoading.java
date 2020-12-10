@@ -19,6 +19,7 @@ import illarion.client.resources.*;
 import illarion.client.resources.loaders.*;
 import illarion.common.util.ProgressMonitor;
 import org.illarion.engine.Engine;
+import org.illarion.engine.assets.Assets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -27,8 +28,6 @@ import java.util.List;
 
 /**
  * This class is used to allow the loading sequence of the client to load the resource tables.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @NotThreadSafe
 final class ResourceTableLoading implements LoadingTask {
@@ -47,19 +46,19 @@ final class ResourceTableLoading implements LoadingTask {
     /**
      * Create a new resource table loading task and enlist all the sub-tasks.
      *
-     * @param gameEngine the engine of the game
+     * @param assets the engine of the game
      */
-    ResourceTableLoading(@Nonnull Engine gameEngine) {
+    ResourceTableLoading(@Nonnull Assets assets) {
         taskList = new ArrayList<>();
         progressMonitor = new ProgressMonitor();
 
-        addTask(new TileLoader(gameEngine.getAssets()), TileFactory.getInstance());
-        addTask(new OverlayLoader(gameEngine.getAssets()), OverlayFactory.getInstance());
-        addTask(new ItemLoader(gameEngine.getAssets()), ItemFactory.getInstance());
-        addTask(new CharacterLoader(gameEngine.getAssets()), CharacterFactory.getInstance());
-        addTask(new ClothLoader(gameEngine.getAssets()), new ClothFactoryRelay());
-        addTask(new EffectLoader(gameEngine.getAssets()), EffectFactory.getInstance());
-        addTask(new MiscImageLoader(gameEngine.getAssets()), MiscImageFactory.getInstance());
+        addTask(new TileLoader(assets), TileFactory.getInstance());
+        addTask(new OverlayLoader(assets), OverlayFactory.getInstance());
+        addTask(new ItemLoader(assets), ItemFactory.getInstance());
+        addTask(new CharacterLoader(assets), CharacterFactory.getInstance());
+        addTask(new ClothLoader(assets), new ClothFactoryRelay());
+        addTask(new EffectLoader(assets), EffectFactory.getInstance());
+        addTask(new MiscImageLoader(assets), MiscImageFactory.getInstance());
         addTask(new BookLoader(), BookFactory.getInstance());
     }
 

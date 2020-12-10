@@ -20,8 +20,8 @@ import illarion.client.world.World;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
 import illarion.common.util.FastMath;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EngineException;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.*;
 import org.illarion.engine.graphic.effects.HighlightEffect;
 import org.illarion.engine.graphic.effects.TextureEffect;
@@ -396,7 +396,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(BackendBinding binding, int delta) {
         if (removedEntity) {
             shown = true;
             hide();
@@ -451,7 +451,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
 
         if (getHighlight() > 0) {
             try {
-                highlightEffect = container.getEngine().getAssets().getEffectManager().getHighlightEffect(true);
+                highlightEffect = binding.getAssets().getEffectManager().getHighlightEffect(true);
             } catch (EngineException e) {
                 LOGGER.warn("Failed to fetch highlight effect.", e);
             }
@@ -461,7 +461,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
     }
 
     @Override
-    public boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
         return false;
     }
 

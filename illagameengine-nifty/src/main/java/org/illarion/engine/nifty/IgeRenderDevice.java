@@ -22,7 +22,7 @@ import de.lessvoid.nifty.spi.render.RenderFont;
 import de.lessvoid.nifty.spi.render.RenderImage;
 import de.lessvoid.nifty.tools.Color;
 import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.assets.CursorManager;
 import org.illarion.engine.graphic.BlendingMode;
 import org.illarion.engine.graphic.Font;
@@ -40,10 +40,10 @@ import java.io.IOException;
  */
 public class IgeRenderDevice implements RenderDevice {
     /**
-     * The the container this GUI is displayed in.
+     * The binding to the graphics backend
      */
     @Nonnull
-    private final GameContainer container;
+    private final BackendBinding binding;
 
     /**
      * A instance of the color class for temporary use. This class is used to transfer the color values from
@@ -76,11 +76,10 @@ public class IgeRenderDevice implements RenderDevice {
     /**
      * Create a new render device.
      *
-     * @param container the container the GUI is displayed in
      * @param imageDirectory the directory the GUI is supposed to fetch its images from
      */
-    public IgeRenderDevice(@Nonnull GameContainer container, @Nonnull String imageDirectory) {
-        this.container = container;
+    public IgeRenderDevice(@Nonnull BackendBinding binding, @Nonnull String imageDirectory) {
+        this.binding = binding;
         tempColor1 = new org.illarion.engine.graphic.Color(org.illarion.engine.graphic.Color.WHITE);
         tempColor2 = new org.illarion.engine.graphic.Color(org.illarion.engine.graphic.Color.WHITE);
         tempColor3 = new org.illarion.engine.graphic.Color(org.illarion.engine.graphic.Color.WHITE);
@@ -95,7 +94,7 @@ public class IgeRenderDevice implements RenderDevice {
     @Nullable
     @Override
     public RenderImage createImage(@Nonnull String filename, boolean filterLinear) {
-        Texture targetTexture = container.getEngine().getAssets().getTextureManager().getTexture(filename);
+        Texture targetTexture = binding.getAssets().getTextureManager().getTexture(filename);
         if (targetTexture == null) {
             return null;
         }
@@ -105,7 +104,7 @@ public class IgeRenderDevice implements RenderDevice {
     @Nullable
     @Override
     public RenderFont createFont(@Nonnull String filename) {
-        Font requestedFont = container.getEngine().getAssets().getFontManager().getFont(filename);
+        Font requestedFont = binding.getAssets().getFontManager().getFont(filename);
         if (requestedFont == null) {
             return null;
         }
@@ -114,12 +113,12 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public int getWidth() {
-        return container.getWidth();
+        return binding.getWindow().getWidth();
     }
 
     @Override
     public int getHeight() {
-        return container.getHeight();
+        return binding.getWindow().getHeight();
     }
 
     @Override
@@ -134,12 +133,12 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public void clear() {
-        container.getEngine().getGraphics().clear();
+       binding.getGraphics().clear();
     }
 
     @Override
     public void setBlendMode(@Nonnull BlendMode renderMode) {
-        Graphics graphics = container.getEngine().getGraphics();
+        Graphics graphics = binding.getGraphics();
         switch (renderMode) {
             case MULIPLY:
                 graphics.setBlendingMode(BlendingMode.Multiply);
@@ -153,7 +152,7 @@ public class IgeRenderDevice implements RenderDevice {
     @Override
     public void renderQuad(int x, int y, int width, int height, @Nonnull Color color) {
         transferColor(color, tempColor1);
-        container.getEngine().getGraphics().drawRectangle(x, y, width, height, tempColor1);
+        binding.getGraphics().drawRectangle(x, y, width, height, tempColor1);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class IgeRenderDevice implements RenderDevice {
         transferColor(topRight, tempColor2);
         transferColor(bottomLeft, tempColor3);
         transferColor(bottomRight, tempColor4);
-        Graphics g = container.getEngine().getGraphics();
+        Graphics g = binding.getGraphics();
         g.drawRectangle(x, y, width, height, tempColor1, tempColor2, tempColor3, tempColor4);
     }
 
@@ -180,7 +179,7 @@ public class IgeRenderDevice implements RenderDevice {
         if (image instanceof IgeRenderImage) {
             transferColor(color, tempColor1);
             ((IgeRenderImage) image)
-                    .renderImage(container.getEngine().getGraphics(), x, y, width, height, tempColor1, imageScale);
+                    .renderImage(binding.getGraphics(), x, y, width, height, tempColor1, imageScale);
         }
     }
 
@@ -202,7 +201,7 @@ public class IgeRenderDevice implements RenderDevice {
         if (image instanceof IgeRenderImage) {
             transferColor(color, tempColor1);
             ((IgeRenderImage) image)
-                    .renderImage(container.getEngine().getGraphics(), x, y, w, h, srcX, srcY, srcW, srcH, tempColor1,
+                    .renderImage(binding.getGraphics(), x, y, w, h, srcX, srcY, srcW, srcH, tempColor1,
                                  scale, centerX, centerY);
         }
     }
@@ -217,7 +216,7 @@ public class IgeRenderDevice implements RenderDevice {
             float sizeX,
             float sizeY) {
         if (font instanceof IgeRenderFont) {
-            Graphics g = container.getEngine().getGraphics();
+            Graphics g = binding.getGraphics();
             transferColor(fontColor, tempColor1);
             g.drawText(((IgeRenderFont) font).getFont(), text, tempColor1, x, y, sizeX, sizeY);
         }
@@ -239,19 +238,19 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public void enableClip(int x0, int y0, int x1, int y1) {
-        container.getEngine().getGraphics().setClippingArea(x0, y0, x1 - x0, y1 - y0);
+        binding.getGraphics().setClippingArea(x0, y0, x1 - x0, y1 - y0);
     }
 
     @Override
     public void disableClip() {
-        container.getEngine().getGraphics().unsetClippingArea();
+        binding.getGraphics().unsetClippingArea();
     }
 
     @Nullable
     @Override
     public MouseCursor createMouseCursor(@Nonnull String filename, int hotspotX, int hotspotY)
             throws IOException {
-        CursorManager cursorManager = container.getEngine().getAssets().getCursorManager();
+        CursorManager cursorManager = binding.getAssets().getCursorManager();
         org.illarion.engine.MouseCursor cursor = cursorManager.getCursor(filename, hotspotX, hotspotY);
         if (cursor == null) {
             return null;
@@ -262,12 +261,12 @@ public class IgeRenderDevice implements RenderDevice {
     @Override
     public void enableMouseCursor(@Nonnull MouseCursor mouseCursor) {
         if (mouseCursor instanceof IgeMouseCursor) {
-            container.setMouseCursor(((IgeMouseCursor) mouseCursor).getCursor());
+            //container.setMouseCursor(((IgeMouseCursor) mouseCursor).getCursor());
         }
     }
 
     @Override
     public void disableMouseCursor() {
-        container.setMouseCursor(null);
+        //container.setMouseCursor(null);
     }
 }

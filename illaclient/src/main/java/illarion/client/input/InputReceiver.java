@@ -63,7 +63,7 @@ public final class InputReceiver implements InputListener {
          * The constructor that sets the used timeout interval to the system default double click interval.
          */
         private ButtonMultiClickHelper() {
-            super(IllaClient.getCfg().getInteger("doubleClickInterval"), 2);
+            super(IllaClient.getConfig().getInteger("doubleClickInterval"), 2);
         }
 
         /**

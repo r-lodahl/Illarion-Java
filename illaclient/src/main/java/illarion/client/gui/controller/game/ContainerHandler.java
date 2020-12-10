@@ -48,7 +48,6 @@ import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.Font;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
@@ -111,7 +110,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * The task that is executed to update the merchant overlays.
      */
     @Nonnull
-    private final UpdateTask updateMerchantOverlays = (container, delta) -> updateAllMerchantOverlays();
+    private final UpdateTask updateMerchantOverlays = (delta) -> updateAllMerchantOverlays();
     /**
      * The input system that is used to query the state of the keyboard.
      */
@@ -165,7 +164,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
 
     @Nonnull
     private static SizeValue getSizeValueFromConfig(@Nonnull String key) {
-        String configEntry = IllaClient.getCfg().getString(key);
+        String configEntry = IllaClient.getConfig().getString(key);
         if (configEntry == null) {
             return SizeValue.def();
         }
@@ -272,8 +271,8 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
             return;
         }
         String prefix = getPrefix(id);
-        IllaClient.getCfg().set(prefix + "DisplayPosX", container.getElement().getConstraintX().toString());
-        IllaClient.getCfg().set(prefix + "DisplayPosY", container.getElement().getConstraintY().toString());
+        IllaClient.getConfig().set(prefix + "DisplayPosX", container.getElement().getConstraintX().toString());
+        IllaClient.getConfig().set(prefix + "DisplayPosY", container.getElement().getConstraintY().toString());
 
         container.closeWindow();
 
@@ -452,7 +451,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         activeScreen = screen;
 
         /* Lets build some new containers for the cache, so Merung is not crying that the container open to0 slowly. */
-        int preLoadBagCount = IllaClient.getCfg().getInteger("preLoadBagCount");
+        int preLoadBagCount = IllaClient.getConfig().getInteger("preLoadBagCount");
         for (int i = 0; i < preLoadBagCount; i++) {
             itemContainerCache.add(buildNewContainer(100));
         }
@@ -487,7 +486,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      */
     @Override
     public void closeContainer(int containerId) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (isContainerCreated(containerId)) {
                 tooltipHandler.hideToolTip();
                 removeItemContainer(containerId);
@@ -718,7 +717,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         }
 
         @Override
-        public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+        public void onUpdateGame(int delta) {
             if (!isContainerCreated(itemContainer.getContainerId())) {
                 createNewContainer(itemContainer);
             }

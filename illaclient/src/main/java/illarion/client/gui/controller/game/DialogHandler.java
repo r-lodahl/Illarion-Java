@@ -45,7 +45,6 @@ import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.Font;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
@@ -199,7 +198,7 @@ public final class DialogHandler
     @Override
     public void showSelectionDialog(int dialogId, @Nonnull String title, @Nonnull String content,
                                     @Nonnull Collection<SelectionItem> items) {
-        World.getUpdateTaskManager().addTask((container, delta) ->
+        World.getUpdateTaskManager().addTask((delta) ->
                 showSelectionDialogImpl(dialogId, title, content, items));
     }
 
@@ -411,7 +410,7 @@ public final class DialogHandler
     @Override
     public void showMerchantDialog(int dialogId, @Nonnull String title,
                                    @Nonnull Collection<MerchantItem> items) {
-        World.getUpdateTaskManager().addTask((container, delta) -> showMerchantDialogImpl(dialogId, title, items));
+        World.getUpdateTaskManager().addTask((delta) -> showMerchantDialogImpl(dialogId, title, items));
     }
 
     private void showMerchantDialogImpl(int dialogId, @Nonnull String title, @Nonnull Iterable<MerchantItem> items) {
@@ -526,13 +525,13 @@ public final class DialogHandler
     @Override
     public void showCraftingDialog(int dialogId, @Nonnull String title, @Nonnull Collection<String> groups,
                                    @Nonnull Collection<CraftingItem> items) {
-        World.getUpdateTaskManager().addTask((container, delta) -> showCraftingDialogImpl(dialogId, title, groups, items));
+        World.getUpdateTaskManager().addTask((delta) -> showCraftingDialogImpl(dialogId, title, groups, items));
     }
 
     @Override
     public void startProductionIndicator(int dialogId, int remainingItemCount,
                                          double requiredTime) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if ((craftingDialog != null) && openCraftDialog && (craftingDialog.getDialogId() == dialogId)) {
                 craftingDialog.setAmount(remainingItemCount);
                 craftingDialog.startProgress(requiredTime);
@@ -543,7 +542,7 @@ public final class DialogHandler
 
     @Override
     public void finishProduction(int dialogId) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if ((craftingDialog != null) && openCraftDialog && (craftingDialog.getDialogId() == dialogId)) {
                 craftingDialog.setAmount(craftingDialog.getAmount() - 1);
                 craftingDialog.setProgress(0.f);
@@ -554,7 +553,7 @@ public final class DialogHandler
 
     @Override
     public void abortProduction(int dialogId) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if ((craftingDialog != null) && openCraftDialog && (craftingDialog.getDialogId() == dialogId)) {
                 craftingDialog.setProgress(0.f);
                 craftingInProgress = false;
@@ -634,7 +633,7 @@ public final class DialogHandler
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(int delta) {
         while (true) {
             BuildWrapper wrapper = builders.poll();
             if (wrapper == null) {

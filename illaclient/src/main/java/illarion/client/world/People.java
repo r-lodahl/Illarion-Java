@@ -83,7 +83,7 @@ public final class People {
         chars = new HashMap<>();
         charsLock = new ReentrantReadWriteLock();
 
-        permanentAvatarTagState = IllaClient.getCfg().getInteger("showAvatarTagPermanently");
+        permanentAvatarTagState = IllaClient.getConfig().getInteger("showAvatarTagPermanently");
         AnnotationProcessor.process(this);
     }
 

@@ -36,7 +36,7 @@ public final class ClientEndScreenController implements ScreenController, KeyInp
 
     @Override
     public void onStartScreen() {
-        IllaClient.exitGameContainer();
+        IllaClient.exit();
     }
 
     @Override

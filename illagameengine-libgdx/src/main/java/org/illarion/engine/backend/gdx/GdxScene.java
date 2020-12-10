@@ -20,12 +20,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
+import org.illarion.engine.Window;
 import org.illarion.engine.backend.shared.AbstractScene;
 import org.illarion.engine.graphic.Graphics;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.naming.Binding;
 
 /**
  * This is the scene implementation for libGDX.
@@ -33,12 +35,6 @@ import javax.annotation.Nullable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxScene extends AbstractScene<GdxSceneEffect> {
-    /**
-     * The container that displays the scene
-     */
-    @Nonnull
-    private final GameContainer container;
-
     /**
      * The first of two frame buffers that can be used to buffer the scene to apply the post processing effects.
      */
@@ -63,26 +59,31 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
     private final OrthographicCamera camera;
 
     /**
+     * The window reference to the backend.
+     */
+    @Nonnull
+    private final Window window;
+
+    /**
      * Create a new render scene for libGDX.
      *
-     * @param container the container that displays the scene
      */
-    GdxScene(@Nonnull GameContainer container) {
-        this.container = container;
+    GdxScene(@Nonnull Window window) {
+        this.window = window;
         camera = new OrthographicCamera();
         camera.setToOrtho(true);
     }
 
     @Override
-    public void update(@Nonnull GameContainer c, int delta) {
-        updateScene(c, delta);
+    public void update(@Nonnull BackendBinding binding, int delta) {
+        updateScene(binding, delta);
 
         int effectCount = getEffectCount();
         for (int i = 0; i < effectCount; i++) {
             getEffect(i).update(delta);
         }
 
-        camera.setToOrtho(true, c.getWidth(), c.getHeight());
+        camera.setToOrtho(true, window.getWidth(), window.getHeight());
         camera.update();
     }
 
@@ -101,7 +102,7 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
             gdxGraphics.resetOffset();
         } else {
             gdxGraphics.endFrame();
-            FrameBuffer currentFrameBuffer = getNextFrameBuffer(container.getWidth(), container.getHeight());
+            FrameBuffer currentFrameBuffer = getNextFrameBuffer(window.getWidth(), window.getHeight());
             currentFrameBuffer.begin();
             gdxGraphics.beginFrame();
             gdxGraphics.applyOffset(offsetX, offsetY);
@@ -115,11 +116,11 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
             renderBatch.setColor(Color.WHITE);
             FrameBuffer lastFrameBuffer = currentFrameBuffer;
             for (int i = 0; i < effectCount; i++) {
-                currentFrameBuffer = getNextFrameBuffer(container.getWidth(), container.getHeight());
+                currentFrameBuffer = getNextFrameBuffer(window.getWidth(), window.getHeight());
                 currentFrameBuffer.begin();
                 renderBatch.begin();
                 GdxSceneEffect effect = getEffect(i);
-                effect.activateEffect(renderBatch, container.getWidth(), container.getHeight(),
+                effect.activateEffect(renderBatch, window.getWidth(), window.getHeight(),
                                       currentFrameBuffer.getColorBufferTexture().getWidth(),
                                       currentFrameBuffer.getColorBufferTexture().getHeight());
                 renderBatch.draw(lastFrameBuffer.getColorBufferTexture(), 0.f, 0.f);

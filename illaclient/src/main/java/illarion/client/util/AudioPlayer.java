@@ -79,7 +79,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
         }
         INSTANCE.sounds = sounds;
         AnnotationProcessor.process(this);
-        updateSettings(null, IllaClient.getCfg());
+        updateSettings(null, IllaClient.getConfig());
 
         EventBus.subscribe("soundOn", this);
         EventBus.subscribe("soundVolume", this);
@@ -205,7 +205,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
         }
         if ((setting == null) || "musicVolume".equals(setting)) {
             float musicVolume = cfg.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
-            if (IllaClient.getCfg().getBoolean("musicOn")) {
+            if (IllaClient.getConfig().getBoolean("musicOn")) {
                 sounds.setMusicVolume(musicVolume);
             }
         }
@@ -220,7 +220,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
         }
         if ((setting == null) || "soundVolume".equals(setting)) {
             float soundVolume = cfg.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
-            if (IllaClient.getCfg().getBoolean("soundOn")) {
+            if (IllaClient.getConfig().getBoolean("soundOn")) {
                 sounds.setSoundVolume(soundVolume);
             }
         }

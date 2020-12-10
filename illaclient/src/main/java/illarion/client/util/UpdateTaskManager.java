@@ -15,8 +15,6 @@
  */
 package illarion.client.util;
 
-import org.illarion.engine.GameContainer;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -39,13 +37,6 @@ public final class UpdateTaskManager {
      * This value is set {@code true} while the updates are executed.
      */
     private boolean isInUpdateCall;
-
-    /**
-     * This is the container the current update run is executed for.
-     */
-    @Nullable
-    private GameContainer currentContainer;
-
     /**
      * The delta value of the current update run.
      */
@@ -67,11 +58,9 @@ public final class UpdateTaskManager {
     /**
      * This function is triggered during the update loop of the game and triggers the update tasks.
      *
-     * @param container the game container
      * @param delta the time since the last update
      */
-    public void onUpdateGame(@Nonnull GameContainer container, int delta) {
-        currentContainer = container;
+    public void onUpdateGame(int delta) {
         currentDelta = delta;
         currentThread = Thread.currentThread();
         isInUpdateCall = true;
@@ -82,11 +71,10 @@ public final class UpdateTaskManager {
                     return;
                 }
 
-                task.onUpdateGame(container, delta);
+                task.onUpdateGame(delta);
             }
         } finally {
             isInUpdateCall = false;
-            currentContainer = null;
         }
     }
 
@@ -97,8 +85,8 @@ public final class UpdateTaskManager {
      * @param task the task to execute
      */
     public void addTask(@Nonnull UpdateTask task) {
-        if (isInUpdateCall && Objects.equals(currentThread, Thread.currentThread()) && (currentContainer != null)) {
-            task.onUpdateGame(currentContainer, currentDelta);
+        if (isInUpdateCall && Objects.equals(currentThread, Thread.currentThread())) {
+            task.onUpdateGame(currentDelta);
         } else {
             taskQueue.offer(task);
         }

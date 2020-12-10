@@ -17,11 +17,7 @@ package illarion.client.graphics;
 
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
-import org.illarion.engine.GameContainer;
-import org.illarion.engine.graphic.Color;
-import org.illarion.engine.graphic.Font;
-import org.illarion.engine.graphic.Graphics;
-import org.illarion.engine.graphic.ImmutableColor;
+import org.illarion.engine.graphic.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -268,7 +264,7 @@ public final class AvatarTextTag {
         return displayRect;
     }
 
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(int delta) {
         calculateTextLocations();
     }
 }

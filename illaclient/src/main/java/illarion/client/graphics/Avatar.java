@@ -36,8 +36,7 @@ import illarion.client.world.movement.TargetTurnHandler;
 import illarion.common.gui.AbstractMultiActionHelper;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.ServerCoordinate;
-import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.ImmutableColor;
@@ -154,7 +153,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         this.parentChar = parentChar;
 
         if (parentChar.isHuman() || parentChar.isNPC()) {
-            int interval = IllaClient.getCfg().getInteger("doubleClickInterval");
+            int interval = IllaClient.getConfig().getInteger("doubleClickInterval");
             delayedWalkingHandler = new AbstractMultiActionHelper(interval, 2) {
                 @Override
                 public void executeAction(int count) {
@@ -327,8 +326,8 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
-        super.update(container, delta);
+    public void update(BackendBinding binding, int delta) {
+        super.update(binding, delta);
 
         if (!isShown()) {
             return;
@@ -337,7 +336,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         int usedAlpha = getAlpha();
 
         clothRender.setAlpha(usedAlpha);
-        clothRender.update(container, delta);
+        clothRender.update(binding, delta);
 
         Color locLight = getLight();
         if (animateLight && !AnimationUtility.approach(locLight, targetLight, delta)) {
@@ -346,7 +345,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         }
         locLight.setAlpha(usedAlpha);
 
-        Input input = container.getEngine().getInput();
+        Input input = binding.getInput();
 
         if (World.getPlayer().isPlayer(parentChar.getCharId())) {
             renderName = false;
@@ -358,33 +357,33 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         if (isMouseInInteractionRect(input) && World.getPlayer().getCombatHandler().canBeAttacked(parentChar)) {
             showAttackAvailable = true;
             attackAvailableMark.setAlpha(usedAlpha);
-            attackAvailableMark.update(container, delta);
+            attackAvailableMark.update(binding, delta);
         } else {
             showAttackAvailable = false;
         }
 
         if (renderName) {
             avatarTextTag.setDisplayLocation(getDisplayCoordinate());
-            avatarTextTag.update(container, delta);
+            avatarTextTag.update(delta);
         }
 
         if (World.getPlayer().getCombatHandler().isAttacking(parentChar)) {
             attackMarkerVisible = true;
             attackMark.setAlpha(usedAlpha);
-            attackMark.update(container, delta);
+            attackMark.update(binding, delta);
         } else if (World.getPlayer().getCombatHandler().isGoingToAttack(parentChar)) {
             attackMarkerVisible = true;
             attackMark.setAlpha(usedAlpha / 2);
-            attackMark.update(container, delta);
+            attackMark.update(binding, delta);
         } else {
             attackMarkerVisible = false;
         }
     }
 
     @Override
-    public boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
         if (event instanceof ClickOnMapEvent) {
-            return isEventProcessed(container, delta, (ClickOnMapEvent) event);
+            return isEventProcessed(binding, delta, (ClickOnMapEvent) event);
         }
         if (parentChar.isNPC()) {
             if (event instanceof CurrentMouseLocationEvent) {
@@ -406,10 +405,10 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
             if (delayedWalkingHandler != null) {
                 delayedWalkingHandler.reset();
             }
-            return isEventProcessed(container, delta, (DoubleClickOnMapEvent) event);
+            return isEventProcessed(binding, delta, (DoubleClickOnMapEvent) event);
         }
 
-        return super.isEventProcessed(container, delta, event);
+        return super.isEventProcessed(binding, delta, event);
     }
 
     @Override
@@ -452,13 +451,12 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     /**
      * This function handles click events on the avatars.
      *
-     * @param container the game container
      * @param delta the time since the last update
      * @param event the event that actually happened
      * @return {@code true} in case the event was handled
      */
     @SuppressWarnings("UnusedParameters")
-    private boolean isEventProcessed(GameContainer container, int delta, @Nonnull ClickOnMapEvent event) {
+    private boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull ClickOnMapEvent event) {
         if (World.getPlayer().isPlayer(parentChar.getCharId())) {
             return false;
         }
@@ -477,7 +475,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         }
 
         if (event.getKey() == Button.Left) {
-            Input input = container.getEngine().getInput();
+            Input input = binding.getInput();
             if (input.isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
                 ServerCoordinate target = parentChar.getLocation();
                 log.debug("Single alt-click on character {} at {}", parentChar, target);
@@ -513,13 +511,12 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     /**
      * This function handles double click events on the avatars.
      *
-     * @param container the game container
      * @param delta the time since the last update
      * @param event the event that actually happened
      * @return {@code true} in case the event was handled
      */
     @SuppressWarnings("UnusedParameters")
-    private boolean isEventProcessed(GameContainer container, int delta, @Nonnull DoubleClickOnMapEvent event) {
+    private boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull DoubleClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
@@ -538,7 +535,6 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
             World.getNet().sendCommand(new LookAtCharCmd(parentChar.getCharId(), LookAtCharCmd.LOOKAT_STARE));
         } else {
             InteractiveChar interactiveChar = parentChar.getInteractive();
-            Input input = container.getEngine().getInput();
 
             if (interactiveChar.isInUseRange()) {
                 log.debug("Using the character {}", interactiveChar);
@@ -546,7 +542,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
             } else {
                 ServerCoordinate target = parentChar.getLocation();
                 if (target != null) {
-                    if (input.isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
+                    if (binding.getInput().isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
                         log.debug("Double alt-click to turn to character {} at {}", parentChar, target);
                         TargetTurnHandler handler = World.getPlayer().getMovementHandler().getTargetTurnHandler();
                         handler.turnTo(target);

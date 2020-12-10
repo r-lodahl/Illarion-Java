@@ -16,7 +16,7 @@
 package org.illarion.engine.backend.shared;
 
 import illarion.common.memory.MemoryPools;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.SceneElement;
@@ -128,10 +128,9 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     /**
      * This function performs the actual calling of the update functions for all scene elements.
      *
-     * @param container the game container that is forwarded to the scene elements
      * @param delta the time since the last update that is reported to the elements
      */
-    protected final void updateScene(@Nonnull GameContainer container, int delta) {
+    protected final void updateScene(BackendBinding binding, int delta) {
         SceneElement[] sceneElementArray = workingArray;
         int sceneElementCount;
         synchronized (sceneElements) {
@@ -148,7 +147,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
             boolean processed = false;
             for (int i = sceneElementCount - 1; i >= 0; i--) {
                 SceneElement element = sceneElementArray[i];
-                if (element.isEventProcessed(container, delta, event)) {
+                if (element.isEventProcessed(binding, delta, event)) {
                     processed = true;
                     break;
                 }
@@ -163,7 +162,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
 
         for (int i = 0; i < sceneElementCount; i++) {
             SceneElement element = workingArray[i];
-            element.update(container, delta);
+            element.update(binding, delta);
         }
     }
 

@@ -54,7 +54,7 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
     private ScheduledFuture<Void> delayedMoveTask;
 
     @Nonnull
-    private final UpdateTask updateMovementTask = (container, delta) -> getMovement().update();
+    private final UpdateTask updateMovementTask = (delta) -> getMovement().update();
 
     SimpleKeyboardMovementHandler(@Nonnull Movement movement, @Nonnull Input input) {
         super(movement);

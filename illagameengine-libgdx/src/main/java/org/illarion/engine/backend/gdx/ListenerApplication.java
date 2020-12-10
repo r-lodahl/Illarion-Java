@@ -23,6 +23,7 @@ import com.google.common.eventbus.Subscribe;
 import org.illarion.engine.Diagnostics;
 import org.illarion.engine.EventBus;
 import org.illarion.engine.GameStateManager;
+import org.illarion.engine.Window;
 import org.illarion.engine.event.GameExitEnforcedEvent;
 import org.illarion.engine.event.GameExitRequestedEvent;
 import org.illarion.engine.event.WindowResizedEvent;
@@ -64,12 +65,14 @@ class ListenerApplication extends ApplicationAdapter {
 
     @Override
     public void create() {
-        graphics = new GdxGraphics(Gdx.graphics);
-        assets = new GdxAssets(Gdx.graphics, Gdx.files, Gdx.audio);
+        Window window = new GdxWindow();
+
+        assets = new GdxAssets(Gdx.graphics, Gdx.files, Gdx.audio, window);
+        graphics = new GdxGraphics(assets, Gdx.graphics);
         input = new GdxInput(Gdx.input);
         sounds = new GdxSounds();
 
-        stateManager.create(new GdxBinding(graphics, sounds, input, assets, new GdxWindow()));
+        stateManager.create(new GdxBinding(graphics, sounds, input, assets, window));
 
         EventBus.INSTANCE.register(this);
     }

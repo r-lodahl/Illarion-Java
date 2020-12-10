@@ -24,7 +24,7 @@ import de.lessvoid.nifty.input.NiftyStandardInputEvent;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import illarion.client.Game;
+import illarion.client.state.StateManager;
 import illarion.client.IllaClient;
 import illarion.client.Login;
 import illarion.client.Servers;
@@ -58,7 +58,7 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
      * The game that is the parent of this class.
      */
     @Nonnull
-    private final Game game;
+    private final StateManager stateManager;
     /**
      * The last error code that was received from the server. This will be {@code 0} in case there was no error or
      * any larger value in case there is a error.
@@ -110,8 +110,8 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
     @Nullable
     private DropDown<String> server;
 
-    public LoginScreenController(@Nonnull Game game, @Nonnull Engine engine) {
-        this.game = game;
+    public LoginScreenController(@Nonnull StateManager stateManager, @Nonnull Engine engine) {
+        this.stateManager = stateManager;
         this.engine = engine;
     }
 
@@ -146,7 +146,7 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
                 server.addItem("${login-bundle.server.test}");
                 server.addItem("${login-bundle.server.game}");
                 server.addItem("${login-bundle.server.custom}");
-                server.selectItemByIndex(IllaClient.getCfg().getInteger("server"));
+                server.selectItemByIndex(IllaClient.getConfig().getInteger("server"));
             } else {
                 LOGGER.error("Failed to find server drop down on the login screen.");
             }
@@ -172,7 +172,7 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
         audioPlayer.initAudioPlayer(engine.getSounds());
         Music illarionTheme = SongFactory.getInstance().getSong(2, engine.getAssets().getSoundsManager());
         audioPlayer.setLastMusic(illarionTheme);
-        if (IllaClient.getCfg().getBoolean("musicOn")) {
+        if (IllaClient.getConfig().getBoolean("musicOn")) {
             if (illarionTheme != null) {
                 if (!audioPlayer.isCurrentMusic(illarionTheme)) {
                     // may be null in case OpenAL is not working
@@ -242,7 +242,7 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
      */
     @NiftyEventSubscriber(id = "exitBtn")
     public void onExitButtonClicked(String topic, ButtonClickedEvent event) {
-        IllaClient.ensureExit();
+        //IllaClient.ensureExit();
     }
 
     /**
@@ -281,7 +281,7 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
             });
         } else {
             engine.getSounds().stopMusic(15);
-            game.enterState(Game.STATE_PLAYING);
+            stateManager.enterState(StateManager.State.PLAYING);
         }
     }
 
@@ -312,8 +312,8 @@ public final class LoginScreenController implements ScreenController, KeyInputHa
     @NiftyEventSubscriber(id = "server")
     public void onServerChangedEvent(String topic, @Nonnull DropDownSelectionChangedEvent<String> event) {
         if (event.getSelectionItemIndex() == 4) {
-            nameTxt.setText(IllaClient.getCfg().getString("testserverLogin"));
-            passwordTxt.setText(IllaClient.getCfg().getString("testserverPass"));
+            nameTxt.setText(IllaClient.getConfig().getString("testserverLogin"));
+            passwordTxt.setText(IllaClient.getConfig().getString("testserverPass"));
         } else {
             Login login = Login.getInstance();
             nameTxt.setText(login.getLoginName());

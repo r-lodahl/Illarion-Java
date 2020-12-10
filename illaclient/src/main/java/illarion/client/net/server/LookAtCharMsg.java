@@ -73,7 +73,7 @@ public final class LookAtCharMsg implements ServerReply {
             text = "No description received from the server.";
         }
         World.getUpdateTaskManager().addTaskForLater(
-                (container1, delta1) -> World.getGameGui().getDialogInputGui().showCharacterDialog(charId, text));
+                (delta) -> World.getGameGui().getDialogInputGui().showCharacterDialog(charId, text));
         return ServerReplyResult.Success;
     }
 

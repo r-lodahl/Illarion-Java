@@ -18,12 +18,9 @@ package illarion.client.loading;
 import illarion.client.resources.SongFactory;
 import illarion.client.resources.SoundFactory;
 import illarion.common.util.ProgressMonitor;
-import org.illarion.engine.Engine;
-
+import org.illarion.engine.assets.Assets;
 import javax.annotation.Nonnull;
-import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -42,7 +39,7 @@ class SoundLoadingTask implements LoadingTask {
      * The game engine instance used to load the sounds.
      */
     @Nonnull
-    private final Engine engine;
+    private final Assets assets;
 
     /**
      * The list of songs that need to be loaded.
@@ -66,8 +63,8 @@ class SoundLoadingTask implements LoadingTask {
      */
     private int remaining;
 
-    SoundLoadingTask(@Nonnull Engine engine) {
-        this.engine = engine;
+    SoundLoadingTask(@Nonnull Assets assets) {
+        this.assets = assets;
         monitor = new ProgressMonitor(3.f);
 
         songsToLoad = new LinkedList<>(SongFactory.getInstance().getSongNames());
@@ -79,9 +76,9 @@ class SoundLoadingTask implements LoadingTask {
     @Override
     public void load() {
         if (!songsToLoad.isEmpty()) {
-            SongFactory.getInstance().loadSong(engine.getAssets().getSoundsManager(), songsToLoad.poll());
+            SongFactory.getInstance().loadSong(assets.getSoundsManager(), songsToLoad.poll());
         } else if (!soundsToLoad.isEmpty()) {
-            SoundFactory.getInstance().loadSound(engine.getAssets().getSoundsManager(), soundsToLoad.poll());
+            SoundFactory.getInstance().loadSound(assets.getSoundsManager(), soundsToLoad.poll());
         }
         remaining--;
 

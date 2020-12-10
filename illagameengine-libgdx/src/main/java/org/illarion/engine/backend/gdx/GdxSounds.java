@@ -15,6 +15,8 @@
  */
 package org.illarion.engine.backend.gdx;
 
+import com.google.common.eventbus.Subscribe;
+import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
 import org.illarion.engine.sound.Sounds;

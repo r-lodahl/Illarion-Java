@@ -46,7 +46,6 @@ import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
@@ -83,7 +82,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     @Nonnull
     private final Input input;
     @Nonnull
-    private final UpdateTask updateMerchantOverlays = (container, delta) -> {
+    private final UpdateTask updateMerchantOverlays = (delta) -> {
         Inventory inventory = World.getPlayer().getInventory();
         for (int i = 0; i < Inventory.SLOT_COUNT; i++) {
             updateMerchantOverlay(i, inventory.getItem(i).getItemID());
@@ -173,7 +172,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
      */
     @Override
     public void hideInventory() {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (inventoryWindow != null) {
                 tooltipHandler.hideToolTip();
                 inventoryWindow.hide();
@@ -196,10 +195,10 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
 
     @Override
     public void showInventory() {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (inventoryWindow != null) {
                 inventoryWindow.show(() -> {
-                    World.getUpdateTaskManager().addTaskForLater((container1, delta1) -> updateCarryLoad());
+                    World.getUpdateTaskManager().addTaskForLater((delta1) -> updateCarryLoad());
                     inventoryWindow.getNiftyControl(Window.class).moveToFront();
                 });
             }
@@ -217,7 +216,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
 
     @Override
     public void toggleInventory() {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             if (inventoryWindow != null) {
                 if (inventoryWindow.isVisible()) {
                     hideInventory();
@@ -230,7 +229,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
 
     @Override
     public void updateCarryLoad() {
-        World.getUpdateTaskManager().addTask((container, delta) -> updateCarryLoadImpl());
+        World.getUpdateTaskManager().addTask((delta) -> updateCarryLoadImpl());
     }
 
     @Override
@@ -373,8 +372,8 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
             invSlots[i] = inventoryWindow.findElementById(slots[i]);
         }
 
-        inventoryWindow.setConstraintX(new SizeValue(IllaClient.getCfg().getString("inventoryPosX")));
-        inventoryWindow.setConstraintY(new SizeValue(IllaClient.getCfg().getString("inventoryPosY")));
+        inventoryWindow.setConstraintX(new SizeValue(IllaClient.getConfig().getString("inventoryPosX")));
+        inventoryWindow.setConstraintY(new SizeValue(IllaClient.getConfig().getString("inventoryPosY")));
         //inventoryWindow.getParent().layoutElements();
 
         /* Workaround to fix a internal Nifty-GUI problem with changing the styles. */
@@ -404,8 +403,8 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     @Override
     public void onEndScreen() {
         activeNifty.unsubscribeAnnotations(this);
-        IllaClient.getCfg().set("inventoryPosX", Integer.toString(inventoryWindow.getX()) + "px");
-        IllaClient.getCfg().set("inventoryPosY", Integer.toString(inventoryWindow.getY()) + "px");
+        IllaClient.getConfig().set("inventoryPosX", Integer.toString(inventoryWindow.getX()) + "px");
+        IllaClient.getConfig().set("inventoryPosY", Integer.toString(inventoryWindow.getY()) + "px");
     }
 
     /**
@@ -531,7 +530,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
         }
 
         @Override
-        public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+        public void onUpdateGame(int delta) {
             setSlotItem(slotId, itemId, itemCount);
         }
     }

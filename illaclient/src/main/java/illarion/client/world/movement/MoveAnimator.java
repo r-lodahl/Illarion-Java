@@ -85,7 +85,7 @@ class MoveAnimator implements AnimatedMove {
     private void scheduleTask(@Nonnull MoveAnimatorTask task) {
         taskQueue.offer(task);
         if (!animationInProgress) {
-            World.getUpdateTaskManager().addTaskForLater((container, delta) -> {
+            World.getUpdateTaskManager().addTaskForLater((delta) -> {
                 if (!animationInProgress) {
                     executeNext();
                 }
@@ -120,7 +120,7 @@ class MoveAnimator implements AnimatedMove {
         if (task == null) {
             log.debug(marker, "Received cancel move, but there is no unconfirmed move. Settings location to {}",
                     allowedTarget);
-            utm.addTaskForLater((container, delta) -> {
+            utm.addTaskForLater((delta) -> {
                 log.debug(marker, "Setting player location to {} now.", allowedTarget);
                 parentPlayer.setLocation(allowedTarget);
             });
@@ -131,7 +131,7 @@ class MoveAnimator implements AnimatedMove {
                 confirmedMoveTask = null;
                 if (moveAnimation.isRunning()) {
                     log.debug(marker, "Received cancel move, move was already in progress. Resetting");
-                    utm.addTaskForLater((container, delta) -> {
+                    utm.addTaskForLater((delta) -> {
                         log.debug(marker, "Resetting location to {} for cancel.", allowedTarget);
                         parentPlayer.setLocation(allowedTarget);
                         parentPlayer.getCharacter().resetAnimation(true);
@@ -139,7 +139,7 @@ class MoveAnimator implements AnimatedMove {
                     });
                 } else {
                     log.debug(marker, "Move seems to be done already.");
-                    utm.addTaskForLater((container, delta) -> parentPlayer.setLocation(allowedTarget));
+                    utm.addTaskForLater((delta) -> parentPlayer.setLocation(allowedTarget));
                 }
             } else {
                 log.debug(marker, "Move did not start yet. We are good.");

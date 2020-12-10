@@ -328,7 +328,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
 
     @Override
     public void updateAllQuests() {
-        World.getUpdateTaskManager().addTask((container, delta) -> updateAllQuestsInternal());
+        World.getUpdateTaskManager().addTask((delta) -> updateAllQuestsInternal());
     }
 
     private void updateAllQuestsInternal() {
@@ -451,7 +451,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
      */
     @NiftyEventSubscriber(id = "questLog#showFinishedCheckbox")
     public void onShowFinishedChange(@Nonnull String topic, @Nonnull CheckBoxStateChangedEvent event) {
-        IllaClient.getCfg().set("questShowFinished", event.isChecked());
+        IllaClient.getConfig().set("questShowFinished", event.isChecked());
         showFinishedQuests = event.isChecked();
 
         if (showFinishedQuests) {
@@ -529,8 +529,8 @@ public final class QuestHandler implements QuestGui, ScreenController {
 
         Element questWindow = getQuestWindowElement();
         if (questWindow != null) {
-            IllaClient.getCfg().set("questWindowPosX", questWindow.getX() + "px");
-            IllaClient.getCfg().set("questWindowPosY", questWindow.getY() + "px");
+            IllaClient.getConfig().set("questWindowPosX", questWindow.getX() + "px");
+            IllaClient.getConfig().set("questWindowPosY", questWindow.getY() + "px");
         }
         hideQuestLog();
 
@@ -549,12 +549,12 @@ public final class QuestHandler implements QuestGui, ScreenController {
 
         Element questWindowElement = getQuestWindowElement();
         if (questWindowElement != null) {
-            questWindowElement.setConstraintX(new SizeValue(IllaClient.getCfg().getString("questWindowPosX")));
-            questWindowElement.setConstraintY(new SizeValue(IllaClient.getCfg().getString("questWindowPosY")));
+            questWindowElement.setConstraintX(new SizeValue(IllaClient.getConfig().getString("questWindowPosX")));
+            questWindowElement.setConstraintY(new SizeValue(IllaClient.getConfig().getString("questWindowPosY")));
 
             CheckBox showFinished = questWindowElement.findNiftyControl("#showFinishedCheckbox", CheckBox.class);
             if (showFinished != null) {
-                showFinished.setChecked(IllaClient.getCfg().getBoolean("questShowFinished"));
+                showFinished.setChecked(IllaClient.getConfig().getBoolean("questShowFinished"));
                 showFinishedQuests = showFinished.isChecked();
             }
         }
@@ -562,7 +562,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
 
     @Override
     public void removeQuest(int questId) {
-        World.getUpdateTaskManager().addTask((container, delta) -> removeQuestInternal(questId));
+        World.getUpdateTaskManager().addTask((delta) -> removeQuestInternal(questId));
     }
 
     /**
@@ -603,7 +603,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
             @Nonnull String description,
             boolean finished,
             @Nonnull List<ServerCoordinate> locations) {
-        World.getUpdateTaskManager().addTask((container, delta) -> setQuestInternal(questId, name, description, finished, locations));
+        World.getUpdateTaskManager().addTask((delta) -> setQuestInternal(questId, name, description, finished, locations));
     }
 
     @Override

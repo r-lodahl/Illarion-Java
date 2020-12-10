@@ -268,7 +268,7 @@ public class Movement {
     }
 
     public void executeServerLocation(@Nonnull ServerCoordinate target) {
-        World.getUpdateTaskManager().addTask((container, delta) -> {
+        World.getUpdateTaskManager().addTask((delta) -> {
             MovementHandler currentHandler = activeHandler;
             if (currentHandler != null) {
                 currentHandler.disengage(false);

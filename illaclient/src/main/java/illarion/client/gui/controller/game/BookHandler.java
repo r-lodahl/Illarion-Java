@@ -29,7 +29,6 @@ import illarion.client.gui.BookGui;
 import illarion.client.resources.BookFactory;
 import illarion.client.util.Lang;
 import illarion.common.data.*;
-import org.illarion.engine.GameContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,8 +68,8 @@ public final class BookHandler implements BookGui, ScreenController, UpdatableHa
         bookScrollArea = bookDisplay.getElement().findNiftyControl("#scrollArea", ScrollPanel.class);
         pageNumberLabel = bookDisplay.getElement().findNiftyControl("#pageNumber", Label.class);
 
-        bookDisplay.getElement().setConstraintX(new SizeValue(IllaClient.getCfg().getString("bookDisplayPosX")));
-        bookDisplay.getElement().setConstraintY(new SizeValue(IllaClient.getCfg().getString("bookDisplayPosY")));
+        bookDisplay.getElement().setConstraintX(new SizeValue(IllaClient.getConfig().getString("bookDisplayPosX")));
+        bookDisplay.getElement().setConstraintY(new SizeValue(IllaClient.getConfig().getString("bookDisplayPosY")));
         //bookDisplay.getElement().getParent().layoutElements();
     }
 
@@ -83,12 +82,12 @@ public final class BookHandler implements BookGui, ScreenController, UpdatableHa
     public void onEndScreen() {
         nifty.unsubscribeAnnotations(this);
 
-        IllaClient.getCfg().set("bookDisplayPosX", Integer.toString(bookDisplay.getElement().getX()) + "px");
-        IllaClient.getCfg().set("bookDisplayPosY", Integer.toString(bookDisplay.getElement().getY()) + "px");
+        IllaClient.getConfig().set("bookDisplayPosX", Integer.toString(bookDisplay.getElement().getX()) + "px");
+        IllaClient.getConfig().set("bookDisplayPosY", Integer.toString(bookDisplay.getElement().getY()) + "px");
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         if (!dirty) {
             return;
         }

@@ -22,7 +22,6 @@ import illarion.client.world.Char;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
-import org.illarion.engine.GameContainer;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,7 @@ public final class CharacterAnimationMsg implements ServerReply, UpdateTask {
     }
 
     @Override
-    public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+    public void onUpdateGame(int delta) {
         Char character = World.getPeople().getCharacter(charId);
         if (character == null) {
             log.error("Received animation request for character {}, but the character is nowhere to be found", charId);

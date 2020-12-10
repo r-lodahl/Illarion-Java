@@ -78,4 +78,6 @@ public interface TextureManager {
      * @return {@code true} if the loading is done
      */
     boolean isLoadingDone();
+
+    void update();
 }

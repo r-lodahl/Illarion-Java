@@ -21,9 +21,13 @@ import illarion.client.world.World;
 import illarion.client.world.characters.CharacterAttribute;
 import illarion.common.memory.MemoryPools;
 import illarion.common.types.DisplayCoordinate;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.Window;
+import org.illarion.engine.assets.Assets;
+import org.illarion.engine.assets.EffectManager;
+import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.effects.FogEffect;
 import org.illarion.engine.graphic.effects.GrayScaleEffect;
@@ -64,21 +68,27 @@ public final class MapDisplayManager implements AnimatedMove {
      */
     private boolean deadViewEnabled;
 
-    public MapDisplayManager(@Nonnull Engine engine) {
+    /**
+     * The backend's window reference.
+     */
+    @Nonnull
+    private final Window window;
+
+    public MapDisplayManager(@Nonnull Assets assets, @Nonnull Window window) {
+        this.window = window;
+
         active = false;
 
         corridor = FadingCorridor.getInstance();
 
-        gameScene = engine.getAssets().createNewScene();
+        gameScene = assets.createNewScene();
     }
 
-    private static int getMapCenterX() {
-        GameContainer window = IllaClient.getInstance().getContainer();
+    private int getMapCenterX() {
         return window.getWidth() >> 1;
     }
 
-    private static int getMapCenterY() {
-        GameContainer window = IllaClient.getInstance().getContainer();
+    private int getMapCenterY() {
         return window.getHeight() >> 1;
     }
 
@@ -126,17 +136,18 @@ public final class MapDisplayManager implements AnimatedMove {
     /**
      * Update the display entries.
      *
-     * @param container the container that holds the game
      * @param delta the time in milliseconds since the last update
      */
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(BackendBinding binding, int delta) {
         if (!isActive()) {
             return;
         }
         assert origin != null;
 
-        int centerX = container.getWidth() >> 1;
-        int centerY = container.getHeight() >> 1;
+        Window window = binding.getWindow();
+
+        int centerX = window.getWidth() >> 1;
+        int centerY = window.getHeight() >> 1;
 
         int offX = centerX - origin.getX();
         int offY = centerY - origin.getY();
@@ -146,29 +157,25 @@ public final class MapDisplayManager implements AnimatedMove {
             corridor.setCorridor(av);
         }
 
-        Camera.getInstance().setViewport(-offX, -offY, container.getWidth(), container.getHeight());
+        Camera.getInstance().setViewport(-offX, -offY, window.getWidth(), window.getHeight());
 
-        Input engineInput = container.getEngine().getInput();
         CurrentMouseLocationEvent event = MemoryPools.get(CurrentMouseLocationEvent.class);
-        event.set(engineInput.getMouseX(), engineInput.getMouseY());
+        event.set(binding.getInput().getMouseX(), binding.getInput().getMouseY());
         gameScene.publishEvent(event);
-        gameScene.update(container, delta);
-        updateFog(container);
-        updateDeadView(container);
+        gameScene.update(binding, delta);
+        updateFog(binding.getAssets().getEffectManager());
+        updateDeadView(binding.getAssets().getEffectManager());
     }
 
     /**
      * Update the graphical effects applied in case the character died.
-     *
-     * @param container the game container
      */
-    private void updateDeadView(@Nonnull GameContainer container) {
+    private void updateDeadView(EffectManager effectManager) {
         int hitPoints = World.getPlayer().getCharacter().getAttribute(CharacterAttribute.HitPoints);
         if (hitPoints == 0) {
             if (!deadViewEnabled) {
                 try {
-                    GrayScaleEffect effect =
-                            container.getEngine().getAssets().getEffectManager().getGrayScaleEffect(true);
+                    GrayScaleEffect effect = effectManager.getGrayScaleEffect(true);
                     gameScene.addEffect(effect);
                     deadViewEnabled = true;
                 } catch (EngineException e) {
@@ -178,8 +185,7 @@ public final class MapDisplayManager implements AnimatedMove {
         } else {
             if (deadViewEnabled) {
                 try {
-                    GrayScaleEffect effect =
-                            container.getEngine().getAssets().getEffectManager().getGrayScaleEffect(true);
+                    GrayScaleEffect effect = effectManager.getGrayScaleEffect(true);
                     gameScene.removeEffect(effect);
                     deadViewEnabled = false;
                 } catch (EngineException e) {
@@ -191,14 +197,12 @@ public final class MapDisplayManager implements AnimatedMove {
 
     /**
      * Update the graphical effect that shows the fog on the map.
-     *
-     * @param container the game container
      */
-    private void updateFog(@Nonnull GameContainer container) {
+    private void updateFog(EffectManager effectManager) {
         float fog = World.getWeather().getFog();
         if (fog > 0.f) {
             try {
-                FogEffect effect = container.getEngine().getAssets().getEffectManager().getFogEffect(true);
+                FogEffect effect = effectManager.getFogEffect(true);
                 effect.setDensity(fog);
                 if (!fogEnabled) {
                     gameScene.addEffect(effect);
@@ -209,7 +213,7 @@ public final class MapDisplayManager implements AnimatedMove {
             }
         } else if (fogEnabled) {
             try {
-                FogEffect effect = container.getEngine().getAssets().getEffectManager().getFogEffect(true);
+                FogEffect effect = effectManager.getFogEffect(true);
                 gameScene.removeEffect(effect);
                 fogEnabled = false;
             } catch (EngineException e) {
@@ -220,16 +224,14 @@ public final class MapDisplayManager implements AnimatedMove {
 
     /**
      * Render all visible map items
-     *
-     * @param container the game container the map is rendered in
      */
-    public void render(@Nonnull GameContainer container) {
+    public void render(Graphics graphics) {
         if (!isActive()) {
             return;
         }
 
         Camera camera = Camera.getInstance();
-        gameScene.render(container.getEngine().getGraphics(), camera.getViewportOffsetX(), camera.getViewportOffsetY());
+        gameScene.render(graphics, camera.getViewportOffsetX(), camera.getViewportOffsetY());
     }
 
     /**

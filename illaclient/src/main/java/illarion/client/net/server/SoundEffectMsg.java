@@ -17,26 +17,19 @@ package illarion.client.net.server;
 
 import illarion.client.net.CommandList;
 import illarion.client.net.annotations.ReplyMessage;
-import illarion.client.resources.SoundFactory;
 import illarion.client.util.UpdateTask;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
-import org.illarion.engine.assets.SoundsManager;
-import org.illarion.engine.sound.Sound;
-import org.illarion.engine.sound.Sounds;
+import org.illarion.engine.EventBus;
 import org.jetbrains.annotations.Contract;
-
+import org.illarion.engine.event.NetSoundRequestedEvent;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
  * Server message: Sound effect
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- * @author Nop
  */
 @ReplyMessage(replyId = CommandList.MSG_SOUND_FX)
 public final class SoundEffectMsg implements UpdateTask, ServerReply {
@@ -69,23 +62,12 @@ public final class SoundEffectMsg implements UpdateTask, ServerReply {
     }
 
     @Override
-    public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+    public void onUpdateGame(int delta) {
         if (location == null) {
             throw new NotDecodedException(); // this can't happen.
         }
 
-        ServerCoordinate plyLoc = World.getPlayer().getLocation();
-        SoundsManager manager = container.getEngine().getAssets().getSoundsManager();
-        Sound sound = SoundFactory.getInstance().getSound(effectId, manager);
-        if (sound == null) {
-            return;
-        }
-        Sounds sounds = container.getEngine().getSounds();
-
-        int dX = location.getX() - plyLoc.getX();
-        int dY = location.getY() - plyLoc.getY();
-        int dZ = location.getZ() - plyLoc.getZ();
-        sounds.playSound(sound, sounds.getSoundVolume(), dX, dY, dZ);
+        EventBus.INSTANCE.post(new NetSoundRequestedEvent(location, effectId));
     }
 
     @Nonnull

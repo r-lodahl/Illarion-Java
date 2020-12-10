@@ -23,7 +23,7 @@ import illarion.common.types.ServerCoordinate;
 import illarion.common.util.Stoppable;
 import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
 import org.illarion.engine.graphic.WorldMapDataProviderCallback;
@@ -131,9 +131,9 @@ public final class GameMiniMap implements WorldMapDataProvider, Stoppable {
     /**
      * Constructor of the game map that sets up all instance variables.
      */
-    public GameMiniMap(@Nonnull Engine engine) throws EngineException {
-        worldMap = engine.getAssets().createWorldMap(this);
-        miniMapImage = new IgeMiniMapRenderImage(engine, worldMap, MINI_RADIUS);
+    public GameMiniMap(@Nonnull Assets assets) throws EngineException {
+        worldMap = assets.createWorldMap(this);
+        miniMapImage = new IgeMiniMapRenderImage(assets.getEffectManager(), worldMap, MINI_RADIUS);
 
         mapDataStorage = new HashMap<>();
         strongMapDataStorage = new ArrayList<>(5);
@@ -178,8 +178,8 @@ public final class GameMiniMap implements WorldMapDataProvider, Stoppable {
     /**
      * Update the world map texture.
      */
-    public void render(@Nonnull GameContainer container) {
-        worldMap.render(container);
+    public void render() {
+        worldMap.render();
     }
 
     /**

@@ -32,6 +32,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicPatternSubscriber;
 import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
+import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.LightingMap;
 import org.jetbrains.annotations.Contract;
@@ -107,7 +108,7 @@ public final class GameMap implements LightingMap, Stoppable {
     /**
      * Default constructor of the map handler.
      */
-    public GameMap(@Nonnull Engine engine) throws EngineException {
+    public GameMap(@Nonnull Assets assets) throws EngineException {
         tiles = new HashMap<>();
         interactive = new InteractiveMap(this);
 
@@ -117,10 +118,10 @@ public final class GameMap implements LightingMap, Stoppable {
 
         mapLock = new ReentrantReadWriteLock();
 
-        miniMap = new GameMiniMap(engine);
+        miniMap = new GameMiniMap(assets);
 
-        showQuestsOnMiniMap = IllaClient.getCfg().getBoolean("showQuestsOnMiniMap");
-        showQuestsOnGameMap = IllaClient.getCfg().getBoolean("showQuestsOnGameMap");
+        showQuestsOnMiniMap = IllaClient.getConfig().getBoolean("showQuestsOnMiniMap");
+        showQuestsOnGameMap = IllaClient.getConfig().getBoolean("showQuestsOnGameMap");
 
         AnnotationProcessor.process(this);
     }

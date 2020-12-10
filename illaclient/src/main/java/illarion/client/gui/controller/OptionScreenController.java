@@ -29,8 +29,6 @@ import illarion.client.util.AudioPlayer;
 import illarion.client.util.translation.Translator;
 import illarion.common.bug.CrashReporter;
 import illarion.common.config.Config;
-import org.illarion.engine.DesktopGameContainer;
-import org.illarion.engine.graphic.GraphicResolution;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,8 +40,8 @@ public final class OptionScreenController implements ScreenController {
     private Nifty nifty;
     private Screen screen;
 
-    //private DropDown<String> charNameLength;
-    //private CheckBox showCharId;
+    private DropDown<String> charNameLength;
+    private CheckBox showCharId;
     private CheckBox wasdWalk;
     private CheckBox disableChatAfterSending;
     private CheckBox showQuestsOnGameMap;
@@ -138,34 +136,34 @@ public final class OptionScreenController implements ScreenController {
     public void onStartScreen() {
         //charNameLength.selectItemByIndex(IllaClient.getCfg().getInteger(People.CFG_NAMEMODE_KEY) - 1);
         //showCharId.setChecked(IllaClient.getCfg().getBoolean(People.CFG_SHOWID_KEY));
-        wasdWalk.setChecked(IllaClient.getCfg().getBoolean("wasdWalk"));
-        disableChatAfterSending.setChecked(IllaClient.getCfg().getBoolean("disableChatAfterSending"));
-        showQuestsOnGameMap.setChecked(IllaClient.getCfg().getBoolean("showQuestsOnGameMap"));
-        showQuestsOnMiniMap.setChecked(IllaClient.getCfg().getBoolean("showQuestsOnMiniMap"));
+        wasdWalk.setChecked(IllaClient.getConfig().getBoolean("wasdWalk"));
+        disableChatAfterSending.setChecked(IllaClient.getConfig().getBoolean("disableChatAfterSending"));
+        showQuestsOnGameMap.setChecked(IllaClient.getConfig().getBoolean("showQuestsOnGameMap"));
+        showQuestsOnMiniMap.setChecked(IllaClient.getConfig().getBoolean("showQuestsOnMiniMap"));
 
-        sendCrashReports.selectItemByIndex(IllaClient.getCfg().getInteger(CrashReporter.CFG_KEY));
-        resolutions.selectItem(IllaClient.getCfg().getString(IllaClient.CFG_RESOLUTION));
-        fullscreen.setChecked(IllaClient.getCfg().getBoolean(IllaClient.CFG_FULLSCREEN));
-        showFps.setChecked(IllaClient.getCfg().getBoolean("showFps"));
-        showPing.setChecked(IllaClient.getCfg().getBoolean("showPing"));
+        sendCrashReports.selectItemByIndex(IllaClient.getConfig().getInteger(CrashReporter.CFG_KEY));
+        //resolutions.selectItem(IllaClient.getCfg().getString(IllaClient.CFG_RESOLUTION));
+        fullscreen.setChecked(IllaClient.getConfig().getBoolean(IllaClient.CFG_FULLSCREEN));
+        showFps.setChecked(IllaClient.getConfig().getBoolean("showFps"));
+        showPing.setChecked(IllaClient.getConfig().getBoolean("showPing"));
 
-        translationProviders.selectItemByIndex(IllaClient.getCfg().getInteger(Translator.CFG_KEY_PROVIDER));
-        translationDirections.selectItemByIndex(IllaClient.getCfg().getInteger(Translator.CFG_KEY_DIRECTION));
+        translationProviders.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CFG_KEY_PROVIDER));
+        translationDirections.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CFG_KEY_DIRECTION));
 
-        soundOn.setChecked(IllaClient.getCfg().getBoolean("soundOn"));
-        soundVolume.setValue(IllaClient.getCfg().getFloat("soundVolume"));
-        musicOn.setChecked(IllaClient.getCfg().getBoolean("musicOn"));
-        musicVolume.setValue(IllaClient.getCfg().getFloat("musicVolume"));
+        soundOn.setChecked(IllaClient.getConfig().getBoolean("soundOn"));
+        soundVolume.setValue(IllaClient.getConfig().getFloat("soundVolume"));
+        musicOn.setChecked(IllaClient.getConfig().getBoolean("musicOn"));
+        musicVolume.setValue(IllaClient.getConfig().getFloat("musicVolume"));
 
         if (serverAddress != null) {
-            serverAddress.setText(IllaClient.getCfg().getString("serverAddress"));
-            serverPort.setText(Integer.toString(IllaClient.getCfg().getInteger("serverPort")));
-            if (IllaClient.getCfg().getBoolean("clientVersionOverwrite")) {
-                clientVersion.setText(Integer.toString(IllaClient.getCfg().getInteger("clientVersion")));
+            serverAddress.setText(IllaClient.getConfig().getString("serverAddress"));
+            serverPort.setText(Integer.toString(IllaClient.getConfig().getInteger("serverPort")));
+            if (IllaClient.getConfig().getBoolean("clientVersionOverwrite")) {
+                clientVersion.setText(Integer.toString(IllaClient.getConfig().getInteger("clientVersion")));
             } else {
                 clientVersion.setText(Integer.toString(Servers.Customserver.getClientVersion()));
             }
-            serverAccountLogin.setChecked(IllaClient.getCfg().getBoolean("serverAccountLogin"));
+            serverAccountLogin.setChecked(IllaClient.getConfig().getBoolean("serverAccountLogin"));
             serverResetSettings.setChecked(false);
         }
     }
@@ -176,16 +174,16 @@ public final class OptionScreenController implements ScreenController {
 
     @Nonnull
     public static List<String> getResolutionList() {
-        DesktopGameContainer container = IllaClient.getInstance().getContainer();
+        /*DesktopGameContainer container = IllaClient.getInstance().getContainer();
 
         GraphicResolution[] resolutions = container.getFullScreenResolutions();
-
+*/
         List<String> resList = new ArrayList<>();
 
-        for (GraphicResolution resolution : resolutions) {
+  /*      for (GraphicResolution resolution : resolutions) {
             resList.add(resolution.toString());
         }
-
+*/
         return resList;
     }
 
@@ -216,7 +214,7 @@ public final class OptionScreenController implements ScreenController {
     @NiftyEventSubscriber(id = "saveButton")
     public void onSaveButtonClickedEvent(String topic, ButtonClickedEvent event) {
         nifty.gotoScreen("login");
-        Config configSystem = IllaClient.getCfg();
+        Config configSystem = IllaClient.getConfig();
 
         //configSystem.set(People.CFG_NAMEMODE_KEY, charNameLength.getSelectedIndex() + 1);
         //configSystem.set(People.CFG_SHOWID_KEY, showCharId.isChecked());
@@ -229,9 +227,9 @@ public final class OptionScreenController implements ScreenController {
 
         String resolutionSelection = resolutions.getSelection();
 
-        if (resolutionSelection != null) {
-            configSystem.set(IllaClient.CFG_RESOLUTION, resolutionSelection);
-        }
+        //if (resolutionSelection != null) {
+        //    configSystem.set(IllaClient.CFG_RESOLUTION, resolutionSelection);
+       // }
 
         configSystem.set(IllaClient.CFG_FULLSCREEN, fullscreen.isChecked());
         configSystem.set("showFps", showFps.isChecked());

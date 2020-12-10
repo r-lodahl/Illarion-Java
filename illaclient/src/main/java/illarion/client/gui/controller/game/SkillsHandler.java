@@ -37,7 +37,6 @@ import illarion.common.config.Config;
 import illarion.common.data.Skill;
 import illarion.common.data.SkillGroup;
 import illarion.common.data.SkillGroups;
-import org.illarion.engine.GameContainer;
 import org.illarion.nifty.controls.Progress;
 import org.illarion.nifty.controls.progress.builder.ProgressBuilder;
 import org.slf4j.Logger;
@@ -86,8 +85,8 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     public void onStartScreen() {
         Element skillWindowElement = getSkillWindowElement();
         if (skillWindowElement != null) {
-            skillWindowElement.setConstraintX(new SizeValue(IllaClient.getCfg().getString("skillWindowPosX")));
-            skillWindowElement.setConstraintY(new SizeValue(IllaClient.getCfg().getString("skillWindowPosY")));
+            skillWindowElement.setConstraintX(new SizeValue(IllaClient.getConfig().getString("skillWindowPosX")));
+            skillWindowElement.setConstraintY(new SizeValue(IllaClient.getConfig().getString("skillWindowPosY")));
         }
 
         nifty.subscribeAnnotations(this);
@@ -99,7 +98,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
 
         Element skillWindowElement = getSkillWindowElement();
         if (skillWindowElement != null) {
-            Config cfg = IllaClient.getCfg();
+            Config cfg = IllaClient.getConfig();
             cfg.set("skillWindowPosX", Integer.toString(skillWindowElement.getX()) + "px");
             cfg.set("skillWindowPosY", Integer.toString(skillWindowElement.getY()) + "px");
         }
@@ -110,7 +109,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
 
     @Override
     public void showSkillWindow() {
-        World.getUpdateTaskManager().addTask((container, delta) -> internalShowSkillWindow());
+        World.getUpdateTaskManager().addTask((delta) -> internalShowSkillWindow());
     }
 
     private void internalShowSkillWindow() {
@@ -123,7 +122,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
 
     @Override
     public void hideSkillWindow() {
-        World.getUpdateTaskManager().addTask((container, delta) -> internalHideSkillWindow());
+        World.getUpdateTaskManager().addTask((delta) -> internalHideSkillWindow());
     }
 
     private void internalHideSkillWindow() {
@@ -223,7 +222,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
 
     @Override
     public void updateSkill(@Nonnull Skill skill, int value, int minor) {
-        World.getUpdateTaskManager().addTask((container, delta) -> internalUpdateSkill(skill, value, minor));
+        World.getUpdateTaskManager().addTask((delta) -> internalUpdateSkill(skill, value, minor));
     }
 
     @Nullable
@@ -379,7 +378,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     }
 
     @Override
-    public void update(GameContainer container, int delta) {
+    public void update(int delta) {
         if (layoutDirty) {
             layoutDirty = false;
 

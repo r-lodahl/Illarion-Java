@@ -25,7 +25,7 @@ import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.SizeValue;
-import illarion.client.Game;
+import illarion.client.state.StateManager;
 import illarion.client.Login;
 import illarion.client.util.Lang;
 import illarion.common.config.ConfigChangedEvent;
@@ -63,7 +63,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
      * The game instance that is used.
      */
     @Nonnull
-    private final Game game;
+    private final StateManager stateManager;
 
     /**
      * The label that displays any problems to the player.
@@ -86,10 +86,10 @@ public final class CharScreenController implements ScreenController, KeyInputHan
     /**
      * Create a instance of the character screen controller.
      *
-     * @param game the reference to the game that is required by the controller
+     * @param stateManager the reference to the game that is required by the controller
      */
-    public CharScreenController(@Nonnull Game game) {
-        this.game = game;
+    public CharScreenController(@Nonnull StateManager stateManager) {
+        this.stateManager = stateManager;
         AnnotationProcessor.process(this);
     }
 
@@ -165,7 +165,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
         }
 
         Login.getInstance().setLoginCharacter(listBox.getSelection().get(0));
-        game.enterState(Game.STATE_PLAYING);
+        stateManager.enterState(StateManager.State.PLAYING);
     }
 
     public void logout() {

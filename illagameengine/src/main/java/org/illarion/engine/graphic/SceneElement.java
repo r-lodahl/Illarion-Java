@@ -15,7 +15,7 @@
  */
 package org.illarion.engine.graphic;
 
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 
 import javax.annotation.Nonnull;
 
@@ -42,18 +42,16 @@ public interface SceneElement {
     /**
      * This function is called when the element is supposed to perform a update.
      *
-     * @param container the game container this scene is assigned to
      * @param delta the time since the last update
      */
-    void update(@Nonnull GameContainer container, int delta);
+    void update(BackendBinding binding, int delta);
 
     /**
      * This function is called for events that are send to the scene.
      *
-     * @param container the game container this scene is assigned to
      * @param delta the time since the last update
      * @param event the event
      * @return {@code true} in case this element handled the event
      */
-    boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event);
+    boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event);
 }

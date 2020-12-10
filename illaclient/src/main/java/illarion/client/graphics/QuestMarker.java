@@ -21,7 +21,7 @@ import illarion.client.world.MapTile;
 import illarion.common.graphics.Layer;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.GameContainer;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.ImmutableColor;
 
@@ -113,11 +113,11 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(BackendBinding binding, int delta) {
         if (appliedOffset != parentTile.getQuestMarkerElevation()) {
             updateScreenPosition(delta);
         }
-        super.update(container, delta);
+        super.update(binding, delta);
     }
 
     @Override

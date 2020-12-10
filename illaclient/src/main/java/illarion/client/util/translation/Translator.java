@@ -56,8 +56,8 @@ public class Translator {
     private TranslationDirection direction;
 
     public Translator() {
-        provider = getCfgProvider(IllaClient.getCfg());
-        direction = getCfgDirection(IllaClient.getCfg());
+        provider = getCfgProvider(IllaClient.getConfig());
+        direction = getCfgDirection(IllaClient.getConfig());
         executorService = Executors.newCachedThreadPool();
         AnnotationProcessor.process(this);
     }

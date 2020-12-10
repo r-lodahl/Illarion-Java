@@ -22,7 +22,6 @@ import illarion.client.IllaClient;
 import illarion.client.gui.*;
 import illarion.client.gui.controller.game.*;
 import illarion.client.world.World;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
 
@@ -290,7 +289,7 @@ public final class GameScreenController implements GameGui, ScreenController {
     public void onEndScreen() {
         childControllers.forEach(ScreenController::onEndScreen);
         World.cleanEnvironment();
-        IllaClient.getCfg().save();
+        IllaClient.getConfig().save();
     }
 
     /**
@@ -305,13 +304,12 @@ public final class GameScreenController implements GameGui, ScreenController {
      * This function is called once inside the game loop with the delta value of the current update loop. Inside this
      * functions changes to the actual representation of the GUI should be done.
      *
-     * @param container the container that displays the game
      * @param delta the time since the last update call
      */
     @Override
-    public void onUpdateGame(@Nonnull GameContainer container, int delta) {
+    public void onUpdateGame(int delta) {
         for (UpdatableHandler childController : childUpdateControllers) {
-            childController.update(container, delta);
+            childController.update(delta);
         }
     }
 

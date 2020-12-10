@@ -20,7 +20,10 @@ import illarion.client.util.AudioPlayer;
 import illarion.common.util.Stoppable;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.illarion.engine.Engine;
+import org.illarion.engine.assets.Assets;
 import org.illarion.engine.sound.Music;
+import org.illarion.engine.sound.Sounds;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +34,6 @@ import javax.annotation.concurrent.NotThreadSafe;
  * This is the music box. What is does is playing music. This class handles the playback of the background music
  * according to the settings. Also it ensures that the different overwriting levels of the music are kept as they are
  * supposed to be.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @NotThreadSafe
 public final class MusicBox implements Stoppable{
@@ -65,7 +66,7 @@ public final class MusicBox implements Stoppable{
     private int overrideSoundId;
 
     @Nonnull
-    private final Engine engine;
+    private final Assets assets;
 
     @Nonnull
     private final AudioPlayer audioPlayer;
@@ -73,12 +74,12 @@ public final class MusicBox implements Stoppable{
     /**
      * This is the constructor that prepares this class for proper operation.
      */
-    MusicBox(@Nonnull Engine engine) {
-        this.engine = engine;
+    MusicBox(@Nonnull Assets assets, @Nonnull Sounds sounds) {
+        this.assets = assets;
         overrideSoundId = NO_TRACK;
         currentDefaultTrack = NO_TRACK;
         audioPlayer = AudioPlayer.getInstance();
-        audioPlayer.initAudioPlayer(engine.getSounds());
+        audioPlayer.initAudioPlayer(sounds);
         AnnotationProcessor.process(this);
     }
 
@@ -127,7 +128,7 @@ public final class MusicBox implements Stoppable{
             return;
         }
 
-        Music currentMusic = SongFactory.getInstance().getSong(id, engine.getAssets().getSoundsManager());
+        Music currentMusic = SongFactory.getInstance().getSong(id, assets.getSoundsManager());
         if (currentMusic == null) {
             log.error("Requested music was not found: {}", id);
             return;

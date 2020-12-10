@@ -33,15 +33,14 @@ import illarion.common.graphics.TileInfo;
 import illarion.common.types.Direction;
 import illarion.common.types.Rectangle;
 import illarion.common.types.ServerCoordinate;
+import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EngineException;
-import org.illarion.engine.GameContainer;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.SceneEvent;
 import org.illarion.engine.graphic.effects.TextureEffect;
 import org.illarion.engine.graphic.effects.TileLightEffect;
 import org.illarion.engine.input.Button;
-import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,11 +182,11 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     }
 
     @Override
-    public void update(@Nonnull GameContainer container, int delta) {
+    public void update(BackendBinding binding, int delta) {
         parentTile.updateColor(delta);
         if (tileLightEffect == null) {
             try {
-                tileLightEffect = container.getEngine().getAssets().getEffectManager().getTileLightEffect(true);
+                tileLightEffect = binding.getAssets().getEffectManager().getTileLightEffect(true);
             } catch (EngineException ignored) {
             }
         }
@@ -197,7 +196,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
         } else {
             setFadingCorridorEffectEnabled(true);
         }
-        super.update(container, delta);
+        super.update(binding, delta);
 
         if (parentTile.hasLightGradient()) {
             topColor = getCornerColor(topColor, TOP_COLOR_DIRECTIONS);
@@ -213,7 +212,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     }
 
     @Override
-    public boolean isEventProcessed(@Nonnull GameContainer container, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(@Nonnull BackendBinding binding, int delta, @Nonnull SceneEvent event) {
         if (event instanceof PointOnMapEvent) {
             if (!isVisible()) {
                 return false;
@@ -237,8 +236,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
                 return false;
             }
 
-            Input input = container.getEngine().getInput();
-            if (input.isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
+            if (binding.getInput().isAnyKeyDown(Key.LeftAlt, Key.RightAlt)) {
                 log.debug("Single alt-click on tile at {}", parentTile.getCoordinates());
                 TargetTurnHandler handler = World.getPlayer().getMovementHandler().getTargetTurnHandler();
                 handler.turnTo(parentTile.getCoordinates());

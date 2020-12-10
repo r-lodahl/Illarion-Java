@@ -28,6 +28,7 @@ import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.FastMath;
 import org.illarion.engine.Engine;
+import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,8 +151,8 @@ public final class Player {
     /**
      * Constructor for the player that receives the character name from the login data automatically.
      */
-    public Player(@Nonnull Engine engine) {
-        this(engine, Login.getInstance().getLoginCharacter());
+    public Player(@Nonnull Input input) {
+        this(input, Login.getInstance().getLoginCharacter());
     }
 
     /**
@@ -159,7 +160,7 @@ public final class Player {
      *
      * @param charName the character name of the player playing this game
      */
-    public Player(@Nonnull Engine engine, @Nonnull String charName) {
+    public Player(@Nonnull Input input, @Nonnull String charName) {
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         path = userDir.resolve(charName);
         chatLog = new ChatLog(path);
@@ -179,7 +180,7 @@ public final class Player {
         character.setName(charName);
 
         combatHandler = new CombatHandler();
-        movementHandler = new Movement(this, engine.getInput(), World.getMapDisplay());
+        movementHandler = new Movement(this, input, World.getMapDisplay());
         inventory = new Inventory();
         containers = new HashMap<>();
         containerLock = new ReentrantReadWriteLock();
