@@ -27,12 +27,15 @@ import org.xmlpull.v1.XmlSerializer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.*;
+import java.nio.channels.ScatteringByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.zip.GZIPInputStream;
@@ -49,16 +52,8 @@ import static java.nio.file.StandardOpenOption.*;
  * configuration is saved or load the other parts of the application can't access the data of this configuration and
  * are blocked until its save to read again.
  * </p>
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class ConfigSystem implements Config {
-    /**
-     * The encoding used to encode the XML configuration files.
-     */
-    @Nonnull
-    private static final String ENCODING = "UTF-8"; //$NON-NLS-1$
-
     /**
      * The logger instance that takes care for the logging output of this class.
      */
@@ -66,23 +61,11 @@ public class ConfigSystem implements Config {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSystem.class);
 
     /**
-     * The name of the root node in the XML file.
-     */
-    @Nonnull
-    private static final String ROOT_NAME = "config"; //$NON-NLS-1$
-
-    /**
      * This flag is set to {@code true} in case any changes where applied
      * to the configuration. Only in case those changes got applied the
      * configuration file needs to be saved at all.
      */
     private boolean changed;
-
-    /**
-     * The load entries of the configuration file.
-     */
-    @Nonnull
-    private final Map<String, Object> configEntries;
 
     /**
      * The file that stores the configuration.
@@ -99,114 +82,127 @@ public class ConfigSystem implements Config {
     private final ReadWriteLock lock;
 
     /**
+     * The properties file containing the default configuration that will be used
+     * in case that no configuration file exists.
+     */
+    @Nonnull
+    private static final String DEFAULT_CONFIG_FILENAME = "default-config.properties";
+
+    @Nonnull
+    private final Properties userProperties;
+
+    /**
      * Create a configuration object with a file as source. The configuration
      * system will try to load the data from this source.
      *
      * @param source The configuration file that is supposed to be load
      */
-    @Deprecated
-    public ConfigSystem(@Nonnull File source) {
-        this(source.toPath());
-    }
-
-    public ConfigSystem(@Nonnull Path source) {
+    public ConfigSystem(@Nonnull Path source, InputStream defaultPropertiesStream) {
         configFile = source;
+        changed = false;
 
-        configEntries = new HashMap<>();
+        boolean configLoaded = false;
+        Properties defaultProperties = new Properties();
+        try {
+            defaultProperties.load(defaultPropertiesStream);
+            configLoaded = true;
+        } catch (IOException e) {
+            LOGGER.warn("Failed to load default configuration file - try to continue");
+        }
+
+        userProperties = new Properties(defaultProperties);
+        if (Files.exists(configFile)) {
+            try {
+                userProperties.load(Files.newInputStream(configFile));
+                configLoaded = true;
+            } catch (IOException e) {
+                LOGGER.warn("Failed to load existing user configuration - try to continue");
+            }
+        } else {
+            changed = true;
+        }
+
+        if (!configLoaded) {
+            throw new NoSuchElementException("Could not load default or user configuration. Please check the" +
+                    "installation and the access rights of the application.");
+        }
+
 
         lock = new ReentrantReadWriteLock();
-
-        loadConfig();
-        changed = false;
     }
 
     @Override
     public boolean getBoolean(@Nonnull String key) {
-        Object value = getObject(key);
-
-        if (value == null) {
-            return false;
-        }
-
-        if (!(value instanceof Boolean)) {
-            LOGGER.warn("Illegal config entry for: {}", key);
-            return false;
-        }
-
-        return (Boolean) value;
+        return Boolean.parseBoolean(getString(key));
     }
 
     @Override
     public double getDouble(@Nonnull String key) {
-        Object value = getObject(key);
+        String value = getString(key);
 
         if (value == null) {
             return 0.d;
         }
 
-        if (!(value instanceof Double)) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
             LOGGER.warn("Illegal config entry for: {}", key);
             return 0.d;
         }
-
-        return (Double) value;
     }
 
     @Nullable
     @Override
     public Path getPath(@Nonnull String key) {
-        Object value = getObject(key);
+        String value = getString(key);
 
         if (value == null) {
             return null;
         }
 
-        if (!(value instanceof String)) {
-            LOGGER.warn("Illegal config entry for: {}", key);
-            return null;
-        }
-
-        return Paths.get(value.toString());
+        return Paths.get(value);
     }
 
     @Override
     public float getFloat(@Nonnull String key) {
-        Object value = getObject(key);
+        String value = getString(key);
 
         if (value == null) {
             return 0.f;
         }
 
-        if (!(value instanceof Float)) {
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
             LOGGER.warn("Illegal config entry for: {}", key);
             return 0.f;
         }
-
-        return (Float) value;
     }
 
     @Override
     public int getInteger(@Nonnull String key) {
-        Object value = getObject(key);
+        String value = getString(key);
 
         if (value == null) {
             return 0;
         }
 
-        if (!(value instanceof Integer)) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
             LOGGER.warn("Illegal config entry for: {}", key);
             return 0;
         }
-
-        return (Integer) value;
     }
 
     @Nullable
-    public Object getObject(String key) {
-        Object value;
+    @Override
+    public String getString(String key) {
+        String value;
         lock.readLock().lock();
         try {
-            value = configEntries.get(key);
+            value = userProperties.getProperty(key);
         } finally {
             lock.readLock().unlock();
         }
@@ -219,26 +215,9 @@ public class ConfigSystem implements Config {
         return value;
     }
 
-    @Nullable
-    @Override
-    public String getString(@Nonnull String key) {
-        Object value = getObject(key);
-
-        if (value == null) {
-            return null;
-        }
-
-        if (!(value instanceof String)) {
-            LOGGER.warn("Illegal config entry for: {}", key);
-            return null;
-        }
-
-        return value.toString();
-    }
-
     @Override
     public void remove(@Nonnull String key) {
-        configEntries.remove(key);
+        userProperties.remove(key);
     }
 
     private interface ConfigTypeConverter {
@@ -357,7 +336,7 @@ public class ConfigSystem implements Config {
     @Override
     public void save() {
         if (!changed) {
-            return; // no changes applied
+            return;
         }
 
         if (Files.isDirectory(configFile)) {
@@ -366,48 +345,11 @@ public class ConfigSystem implements Config {
         }
 
         lock.writeLock().lock();
-        try (OutputStream out = new GZIPOutputStream(
-                Files.newOutputStream(configFile, CREATE, TRUNCATE_EXISTING, WRITE))) {
-            XmlSerializer serializer = XmlPullParserFactory.newInstance().newSerializer();
-            serializer.setOutput(out, ENCODING);
-
-            serializer.startDocument(ENCODING, true);
-            serializer.startTag(null, ROOT_NAME);
-
-            for (Entry<String, Object> entry : configEntries.entrySet()) {
-                String key = entry.getKey();
-                @SuppressWarnings("ConstantConditions") Class<?> valueClass = entry.getValue().getClass();
-                String value = null;
-                String type = null;
-                //noinspection ConstantConditions
-                for (ConfigTypes configType : ConfigTypes.values()) {
-                    if (configType.getTypeClass().equals(valueClass)) {
-                        type = configType.getTypeName();
-                        value = configType.getConverter().getString(entry.getValue());
-                        break;
-                    }
-                }
-
-                if (value == null) {
-                    continue;
-                }
-
-                serializer.startTag(null, "entry");
-                serializer.attribute(null, "key", key);
-                serializer.attribute(null, "type", type);
-                serializer.attribute(null, "value", value);
-                serializer.endTag(null, "entry");
-            }
-
-            serializer.endTag(null, ROOT_NAME);
-            serializer.endDocument();
-            serializer.flush();
-            out.flush();
+        try (OutputStream stream = Files.newOutputStream(configFile)){
+            userProperties.store(stream, "Writing user properties file.");
             changed = false;
         } catch (@Nonnull IOException e) {
             LOGGER.error("Configuration not saved: error accessing config file.");
-        } catch (@Nonnull XmlPullParserException e) {
-            LOGGER.error("Configuration not saved: Error creating XML serializer");
         } finally {
             lock.writeLock().unlock();
         }
@@ -445,22 +387,21 @@ public class ConfigSystem implements Config {
      * @param value the value that is stored along with the key
      */
     public void set(@Nonnull String key, @Nonnull Object value) {
-        lock.writeLock().lock();
-        try {
-            if (value.equals(configEntries.get(key))) {
-                return;
-            }
-
-            configEntries.put(key, value);
-            reportChangedKey(key);
-        } finally {
-            lock.writeLock().unlock();
-        }
+        set(key, value.toString());
     }
 
     @Override
     public void set(@Nonnull String key, @Nonnull String value) {
-        set(key, (Object) value);
+        lock.writeLock().lock();
+        try {
+            if (value.equals(userProperties.getProperty(key))) {
+                return;
+            }
+            userProperties.setProperty(key, value);
+            reportChangedKey(key);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -473,8 +414,8 @@ public class ConfigSystem implements Config {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    public void setDefault(@Nonnull String key, boolean value) {
-        if (!(configEntries.get(key) instanceof Boolean)) {
+    public void setDefault(@Nonnull String key, String value) {
+        if (!(userProperties.get(key) instanceof String)) {
             set(key, value);
         }
     }
@@ -490,7 +431,7 @@ public class ConfigSystem implements Config {
      * @param value the value that is stored along with the key
      */
     public void setDefault(@Nonnull String key, double value) {
-        if (!(configEntries.get(key) instanceof Double)) {
+        if (!(userProperties.get(key) instanceof Double)) {
             set(key, value);
         }
     }
@@ -506,134 +447,8 @@ public class ConfigSystem implements Config {
      * @param value the value that is stored along with the key
      */
     public void setDefault(@Nonnull String key, @Nonnull Path value) {
-        if (!(configEntries.get(key) instanceof String)) {
+        if (!(userProperties.get(key) instanceof String)) {
             set(key, value);
-        }
-    }
-
-    /**
-     * Set the default value for a key. In this case the value is a float value. Setting default values does
-     * basically the same as setting the normal values, but only in case the key has no value yet.
-     * <p>
-     * <b>Note:</b> This method is not exposed by the {@link Config} interface.
-     * </p>
-     *
-     * @param key the key the value is stored with
-     * @param value the value that is stored along with the key
-     */
-    public void setDefault(@Nonnull String key, float value) {
-        if (!(configEntries.get(key) instanceof Float)) {
-            set(key, value);
-        }
-    }
-
-    /**
-     * Set the default value for a key. In this case the value is a integer value. Setting default values does
-     * basically the same as setting the normal values, but only in case the key has no value yet.
-     * <p>
-     * <b>Note:</b> This method is not exposed by the {@link Config} interface.
-     * </p>
-     *
-     * @param key the key the value is stored with
-     * @param value the value that is stored along with the key
-     */
-    public void setDefault(@Nonnull String key, int value) {
-        if (!(configEntries.get(key) instanceof Integer)) {
-            set(key, value);
-        }
-    }
-
-    /**
-     * Set the default value for a key. In this case the value is a String value. Setting default values does
-     * basically the same as setting the normal values, but only in case the key has no value yet.
-     * <p>
-     * <b>Note:</b> This method is not exposed by the {@link Config} interface.
-     * </p>
-     *
-     * @param key the key the value is stored with
-     * @param value the value that is stored along with the key
-     */
-    public void setDefault(@Nonnull String key, @Nonnull String value) {
-        if (!(configEntries.get(key) instanceof String)) {
-            set(key, value);
-        }
-    }
-
-    /**
-     * Load the configuration from the file system.
-     */
-    private void loadConfig() {
-        if (!Files.exists(configFile)) {
-            return;
-        }
-
-        if (Files.isDirectory(configFile)) {
-            LOGGER.warn("Configuration not loaded: Config file located at invalid location");
-            return;
-        }
-
-        lock.writeLock().lock();
-        try (InputStream in = new GZIPInputStream(Files.newInputStream(configFile, READ))) {
-            XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-            parser.setInput(in, ENCODING);
-
-            Map<String, Object> loadedMap = new HashMap<>();
-
-            int currentTag = parser.nextToken();
-            while (currentTag != XmlPullParser.END_DOCUMENT) {
-                if ((currentTag == XmlPullParser.START_TAG) && "entry".equals(parser.getName())) {
-                    String key = null;
-                    String type = null;
-                    String value = null;
-                    int count = parser.getAttributeCount();
-                    for (int i = 0; i < count; i++) {
-                        String name = parser.getAttributeName(i);
-                        //noinspection SwitchStatementWithoutDefaultBranch
-                        switch (name) {
-                            case "key":
-                                key = parser.getAttributeValue(i);
-                                break;
-                            case "type":
-                                type = parser.getAttributeValue(i);
-                                break;
-                            case "value":
-                                value = parser.getAttributeValue(i);
-                                break;
-                        }
-                    }
-                    if ((key != null) && (type != null) && (value != null)) {
-                        Object realValue = null;
-                        //noinspection ConstantConditions
-                        for (ConfigTypes configType : ConfigTypes.values()) {
-                            if (type.equals(configType.getTypeName())) {
-                                realValue = configType.getConverter().getObject(value);
-                                break;
-                            }
-                        }
-                        if (realValue != null) {
-                            loadedMap.put(key, realValue);
-                        }
-                    }
-                }
-                currentTag = parser.nextToken();
-            }
-
-            if (loadedMap.isEmpty()) {
-                LOGGER.warn("Configuration not loaded: no config data load");
-                return;
-            }
-
-            configEntries.putAll(loadedMap);
-        } catch (@Nonnull FileNotFoundException e) {
-            LOGGER.warn("Configuration not loaded: config file disappeared.");
-        } catch (@Nonnull ClassCastException e) {
-            LOGGER.error("Configuration not loaded: illegal config data.");
-        } catch (@Nonnull IOException e) {
-            LOGGER.error("Configuration not loaded: error accessing the file system.");
-        } catch (@Nonnull XmlPullParserException e) {
-            LOGGER.error("Error while creating XML pull parser.", e);
-        } finally {
-            lock.writeLock().unlock();
         }
     }
 
