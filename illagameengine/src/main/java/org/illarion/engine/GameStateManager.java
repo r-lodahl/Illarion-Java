@@ -48,4 +48,6 @@ public interface GameStateManager {
      * @return {@code true} in case the game is supposed to shutdown, else the closing request is rejected
      */
     boolean isClosingGame();
+
+    void enterState(State state);
 }

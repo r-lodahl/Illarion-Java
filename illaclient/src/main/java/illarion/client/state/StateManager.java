@@ -21,6 +21,7 @@ import illarion.client.input.InputReceiver;
 import illarion.client.net.NetworkEventConsumer;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.GameStateManager;
+import org.illarion.engine.State;
 import org.illarion.engine.assets.TextureManager;
 import org.illarion.engine.sound.Sounds;
 import org.jetbrains.annotations.NotNull;
@@ -36,17 +37,6 @@ import java.util.Map;
  * states of the game and allow switching them.
  */
 public final class StateManager implements GameStateManager {
-
-    public enum State {
-        NONE,      // Null state
-        LOGIN,     // Login
-        LOADING,   // Loading screen
-        PLAYING,   // Game screen
-        ENDING,    // Last screen before shutdown
-        LOGOUT,    // Last screen before shutdown
-        DISCONNECT // Lost connection screen
-    }
-
     private final Map<State, GameState> gameStates;
     private BackendBinding binding;
     private NetworkEventConsumer networkEventConsumer;
@@ -66,6 +56,7 @@ public final class StateManager implements GameStateManager {
      * Game will advance to the given state upon the next call of update()
      * @param state the state to enter.
      */
+    @Override
     public void enterState(State state) {
         nextState = state;
     }

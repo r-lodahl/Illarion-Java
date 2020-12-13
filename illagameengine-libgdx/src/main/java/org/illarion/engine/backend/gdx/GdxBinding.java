@@ -6,6 +6,7 @@ import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.sound.Sounds;
+import org.illarion.engine.ui.UserInterface;
 
 import java.nio.file.Files;
 
@@ -15,13 +16,15 @@ public class GdxBinding implements BackendBinding {
     private final Input input;
     private final Assets assets;
     private final Window window;
+    private final UserInterface gui;
 
-    public GdxBinding(Graphics graphics, Sounds sounds, Input input, Assets assets, Window window) {
+    public GdxBinding(Graphics graphics, Sounds sounds, Input input, Assets assets, Window window, UserInterface gui) {
         this.graphics = graphics;
         this.sounds = sounds;
         this.input = input;
         this.assets = assets;
         this.window = window;
+        this.gui = gui;
     }
 
     @Override
@@ -47,5 +50,10 @@ public class GdxBinding implements BackendBinding {
     @Override
     public Window getWindow() {
         return window;
+    }
+
+    @Override
+    public UserInterface getGui() {
+        return gui;
     }
 }

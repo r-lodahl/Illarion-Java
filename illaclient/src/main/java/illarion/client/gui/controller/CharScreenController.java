@@ -31,6 +31,7 @@ import illarion.client.util.Lang;
 import illarion.common.config.ConfigChangedEvent;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.illarion.engine.State;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -165,7 +166,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
         }
 
         Login.getInstance().setLoginCharacter(listBox.getSelection().get(0));
-        stateManager.enterState(StateManager.State.PLAYING);
+        stateManager.enterState(State.PLAYING);
     }
 
     public void logout() {

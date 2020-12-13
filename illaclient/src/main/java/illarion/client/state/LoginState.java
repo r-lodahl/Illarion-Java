@@ -15,6 +15,7 @@
  */
 package illarion.client.state;
 
+import illarion.client.gui.controller.LoginScreenController;
 import org.illarion.engine.BackendBinding;
 
 /**
@@ -25,32 +26,24 @@ public class LoginState implements GameState {
     /**
      * The screen controller that takes care for the login screen.
      */
-    //private LoginScreenController loginScreenController;
+    private LoginScreenController loginScreenController;
 
     @Override
     public void create(BackendBinding binding) {
-        //loginScreenController = new LoginScreenController(stateManager, container.getEngine());
-        /*nifty.registerScreenController(loginScreenController, new CharScreenController(game),
-                                       new CreditsStartScreenController(container.getEngine()));
-
-        Util.loadXML(nifty, "illarion/client/gui/xml/login.xml");
-        Util.loadXML(nifty, "illarion/client/gui/xml/charselect.xml");
-        Util.loadXML(nifty, "illarion/client/gui/xml/options.xml");
-        Util.loadXML(nifty, "illarion/client/gui/xml/credits.xml");*/
+        loginScreenController = new LoginScreenController(binding.getSounds(), binding.getAssets(), binding.getGui());
     }
 
     @Override
-    public void dispose() { }
+    public void dispose() {
+    }
 
     @Override
     public void update(int delta) {
-        //if (loginScreenController != null) {
-        //    loginScreenController.update();
-        //}
     }
 
     @Override
-    public void render() { }
+    public void render() {
+    }
 
     @Override
     public boolean isClosingGame() {
@@ -59,9 +52,10 @@ public class LoginState implements GameState {
 
     @Override
     public void enterState() {
-        //nifty.gotoScreen("login");
+        loginScreenController.onStartStage();
     }
 
     @Override
-    public void leaveState() { }
+    public void leaveState() {
+    }
 }

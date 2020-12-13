@@ -20,10 +20,14 @@ import illarion.client.net.client.LoginCmd;
 import illarion.client.util.GlobalExecutorService;
 import illarion.client.util.Lang;
 import illarion.client.world.World;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
+import org.illarion.engine.EngineException;
+import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +61,10 @@ import java.util.concurrent.Callable;
 /**
  * This class is used to store the login parameters and handle the requests that
  * need to be send to the server in order to perform the login properly.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-public final class Login {
-    @Nonnull
-    private static final Login INSTANCE = new Login();
+public enum Login {
+    INSTANCE;
+
     /**
      * The instance of the logger that is used write the log output of this class.
      */
@@ -72,37 +74,205 @@ public final class Login {
      * The string that defines the name of a error node
      */
     private static final String NODE_NAME_ERROR = "error";
-    // The list of available characters for login
+
     @Nonnull
-    private final List<CharEntry> charList;
-    // The chosen character for login
+    private final List<CharEntry> charList = new ArrayList<>();
+
     @Nullable
     private String loginCharacter;
-    // The ACCOUNT name of the player
-    @Nullable
-    private String loginName;
-    @Nullable
-    private String password;
-    @Nullable
-    private Servers server;
-    private boolean storePassword;
 
-    private Login() {
-        charList = new ArrayList<>();
-    }
+
+
 
     @Nonnull
-    public static Login getInstance() {
-        return INSTANCE;
+    private Servers currentServer = Servers.Illarionserver;
+
+    @Nonnull
+    private LoginData[] loginData = new LoginData[0];
+
+    /**
+     * Load the saved server from the configuration file and use it
+     * to select the default server.
+     */
+    public Servers restoreLastUsedServer() {
+        int restoredServerKey = IllaClient.getConfig().getInteger("server");
+
+        for (Servers server : Servers.values()) {
+            if (server.getServerKey() == restoredServerKey) {
+                currentServer = server;
+                return server;
+            }
+        }
+
+        LOGGER.warn("Malformed configuration file detected: Illegal Server Key");
+
+        return Servers.Illarionserver;
     }
+
+    /**
+     * Restores the login data currently saved in the configuration files
+     * @return the login data, indexed via server key
+     */
+    public LoginData[] restoreLoginData() {
+        if (loginData.length == 0) {
+            Servers[] servers = Servers.values();
+
+            loginData = new LoginData[servers.length];
+            for (Servers server : servers) {
+                loginData[server.getServerKey()] = new LoginData(
+                        server.getServerKey(),
+                        server.getServerName(),
+                        restoreLoginName(server),
+                        restorePassword(server),
+                        restoreStorePassword(server)
+                );
+            }
+        }
+
+        return loginData;
+    }
+
+    /**
+     * Load the saved password from the configuration file.
+     */
+    private String restorePassword(Servers server) {
+        String encoded;
+
+        if (server == Servers.Customserver) {
+            encoded = IllaClient.getConfig().getString("customFingerprint");
+        } else {
+            encoded = IllaClient.getConfig().getString("fingerprint");
+        }
+
+        return (encoded != null) ? shufflePassword(encoded, true) : "";
+    }
+
+    /**
+     * Load the saved login from the configuration file.
+     */
+    private String restoreLoginName(Servers server) {
+        if (server == Servers.Customserver) {
+            return IllaClient.getConfig().getString("customLastLogin");
+        } else {
+            return IllaClient.getConfig().getString("lastLogin");
+        }
+    }
+
+    /**
+     * Load the saved decision for whether to save the password.
+     */
+    private boolean restoreStorePassword(Servers server) {
+        if (server == Servers.Customserver) {
+            return IllaClient.getConfig().getBoolean("customSavePassword");
+        } else {
+            return IllaClient.getConfig().getBoolean("savePassword");
+        }
+    }
+
+    /**
+     * Changes the current server to the server identified by the server key.
+     *
+     * @param serverKey the key of the server to switch to
+     */
+    public void setCurrentServerByKey(int serverKey) {
+        for (Servers server : Servers.values()) {
+            if (server.getServerKey() == serverKey) {
+                currentServer = server;
+                return;
+            }
+        }
+
+        LOGGER.warn("Tried to set a server with an invalid server key: [%s]".formatted(serverKey));
+
+        currentServer = Servers.Illarionserver;
+    }
+
+    /**
+     * Sets the login data for the currently selected server.
+     *
+     * @param username the username
+     * @param password the password
+     * @param savePassword true if the password should be saved
+     */
+    public void setLoginDataForCurrentServer(String username, String password, boolean savePassword) {
+        int serverKey = currentServer.getServerKey();
+
+        LoginData newLoginData = new LoginData(
+                currentServer.getServerKey(),
+                currentServer.getServerName(),
+                username,
+                password,
+                savePassword
+        );
+
+        loginData[serverKey] = newLoginData;
+    }
+
+    /**
+     * Saves the login data of the current server into the config
+     */
+    public void storeData() {
+        int serverKey = currentServer.getServerKey();
+        LoginData serverLoginData = loginData[serverKey];
+
+        IllaClient.getConfig().set("server", serverKey);
+        IllaClient.getInstance().setUsedServer(currentServer);
+
+        if (currentServer == Servers.Customserver) {
+            IllaClient.getConfig().set("customLastLogin", serverLoginData.username);
+            IllaClient.getConfig().set("customSavePassword", serverLoginData.savePassword);
+        } else {
+            IllaClient.getConfig().set("lastLogin", serverLoginData.username);
+            IllaClient.getConfig().set("savePassword", serverLoginData.savePassword);
+        }
+
+        if (serverLoginData.savePassword) {
+            storePassword(serverLoginData.password);
+        } else {
+            deleteStoredPassword();
+        }
+
+        IllaClient.getConfig().save();
+    }
+
+    /**
+     * Store the password in the configuration file or remove the stored password from the configuration.
+     *
+     * @param password the password that stall be stored to the configuration file
+     */
+    private void storePassword(@Nonnull String password) {
+        if (currentServer == Servers.Customserver) {
+            IllaClient.getConfig().set("customSavePassword", true);
+            IllaClient.getConfig().set("customFingerprint", shufflePassword(password, false));
+        } else {
+            IllaClient.getConfig().set("savePassword", true);
+            IllaClient.getConfig().set("fingerprint", shufflePassword(password, false));
+        }
+    }
+
+    /**
+     * Remove the stored password.
+     */
+    private void deleteStoredPassword() {
+        if (currentServer == Servers.Customserver) {
+            IllaClient.getConfig().set("customSavePassword", false);
+            IllaClient.getConfig().remove("customFingerprint");
+        } else {
+            IllaClient.getConfig().set("savePassword", false);
+            IllaClient.getConfig().remove("fingerprint");
+        }
+    }
+
+
+
+
+
+
+
 
     @Nonnull
     public List<CharEntry> getCharacterList() {
         return Collections.unmodifiableList(charList);
-    }
-
-    public boolean getStorePassword() {
-        return storePassword;
     }
 
     /**
@@ -122,14 +292,14 @@ public final class Login {
         }
 
         int clientVersion;
-        if (getServer() == Servers.Customserver) {
+        if (currentServer == Servers.Customserver) {
             if (IllaClient.getConfig().getBoolean("clientVersionOverwrite")) {
                 clientVersion = IllaClient.getConfig().getInteger("clientVersion");
             } else {
-                clientVersion = getServer().getClientVersion();
+                clientVersion = currentServer.getClientVersion();
             }
         } else {
-            clientVersion = getServer().getClientVersion();
+            clientVersion = currentServer.getClientVersion();
         }
         World.getNet().sendCommand(new LoginCmd(loginChar, getPassword(), clientVersion));
 
@@ -137,53 +307,28 @@ public final class Login {
     }
 
     @Nullable
-    public String getLoginCharacter() {
+    private String getLoginCharacter() {
         if (!isCharacterListRequired()) {
-            return loginName;
+            return loginData[currentServer.getServerKey()].username;
         }
         return loginCharacter;
     }
 
-    public void setLoginCharacter(@Nonnull String character) {
-        loginCharacter = character;
-    }
-
     @Nonnull
     @Contract(pure = true)
-    public Servers getServer() {
-        if (server == null) {
-            return Servers.Illarionserver;
-        }
-        return server;
-    }
-
-    /**
-     * Changes the current server to the given server
-     *
-     * @param server the server to switch to
-     */
-    public void setServer(@Nonnull Servers server) {
-        this.server = server;
-    }
-
-    @Nonnull
-    @Contract(pure = true)
-    public String getPassword() {
-        if (password == null) {
-            return "";
-        }
-        return password;
+    private String getPassword() {
+        return loginData[currentServer.getServerKey()].password;
     }
 
     @Contract(pure = true)
     public boolean isCharacterListRequired() {
-        return (getServer() != Servers.Customserver) || IllaClient.getConfig().getBoolean("serverAccountLogin");
+        return (currentServer != Servers.Customserver) || IllaClient.getConfig().getBoolean("serverAccountLogin");
     }
 
     /**
      * Parses the given XML document and
      *
-     * @param root           The XML document to read
+     * @param root The XML document to read
      * @param resultCallback
      */
     private void readXML(@Nonnull Node root, @Nonnull RequestCharListCallback resultCallback) {
@@ -238,12 +383,10 @@ public final class Login {
         try {
             URL requestURL = new URL("https://" + serverURI + "/account/xml_charlist.php");
 
-            StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder.append("name=");
-            queryBuilder.append(URLEncoder.encode(getLoginName(), "UTF-8"));
-            queryBuilder.append("&passwd=");
-            queryBuilder.append(URLEncoder.encode(getPassword(), "UTF-8"));
-            String query = queryBuilder.toString();
+            String query = "name=" +
+                    URLEncoder.encode(loginData[currentServer.getServerKey()].username, StandardCharsets.UTF_8) +
+                    "&passwd=" +
+                    URLEncoder.encode(getPassword(), StandardCharsets.UTF_8);
 
             HttpsURLConnection conn = (HttpsURLConnection) requestURL.openConnection();
             conn.setDoOutput(true);
@@ -251,7 +394,7 @@ public final class Login {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("charset", "utf-8");
-            conn.setRequestProperty("Content-Length", Integer.toString(query.getBytes("UTF-8").length));
+            conn.setRequestProperty("Content-Length", Integer.toString(query.getBytes(StandardCharsets.UTF_8).length));
             conn.setUseCaches(false);
 
             //SSLSocketFactory sslSocketFactory = IllarionSSLSocketFactory.getFactory();
@@ -261,7 +404,7 @@ public final class Login {
 
             conn.connect();
             // Send the query to the server
-            try (OutputStreamWriter output = new OutputStreamWriter(conn.getOutputStream(), "UTF-8")) {
+            try (OutputStreamWriter output = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8)) {
                 output.write(query);
                 output.flush();
             }
@@ -280,50 +423,6 @@ public final class Login {
         }
     }
 
-    public void restoreLoginData() {
-        restoreLogin();
-        restorePassword();
-        restoreStorePassword();
-    }
-
-    /**
-     * Load the saved login from the configuration file and insert it to the
-     * login field on the login window.
-     */
-    private void restoreLogin() {
-        if (getServer() == Servers.Customserver) {
-            loginName = IllaClient.getConfig().getString("customLastLogin");
-        } else {
-            loginName = IllaClient.getConfig().getString("lastLogin");
-        }
-    }
-
-    /**
-     * Load the saved password from the configuration file and insert it to the
-     * password field on the login window.
-     */
-    private void restorePassword() {
-        String encoded;
-        if (getServer() == Servers.Customserver) {
-            encoded = IllaClient.getConfig().getString("customFingerprint");
-        } else {
-            encoded = IllaClient.getConfig().getString("fingerprint");
-        }
-
-        password = (encoded != null) ? shufflePassword(encoded, true) : "";
-    }
-
-    /**
-     * Load the saved decision for whether to save the password
-     */
-    private void restoreStorePassword() {
-        if (getServer() == Servers.Customserver) {
-            storePassword = IllaClient.getConfig().getBoolean("customSavePassword");
-        } else {
-            storePassword = IllaClient.getConfig().getBoolean("savePassword");
-        }
-    }
-
     /**
      * Shuffle the letters of the password around a bit.
      *
@@ -334,9 +433,8 @@ public final class Login {
      */
     @Nonnull
     private static String shufflePassword(@Nonnull String pw, boolean decode) {
-
         try {
-            Charset usedCharset = Charset.forName("UTF-8");
+            Charset usedCharset = StandardCharsets.UTF_8;
             // creating the key
             Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
             KeySpec keySpec = new DESKeySpec(userDir.toAbsolutePath().toString().getBytes(usedCharset));
@@ -354,113 +452,13 @@ public final class Login {
             byte[] cleartext = pw.getBytes(usedCharset);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return new String(Base64.getEncoder().encode(cipher.doFinal(cleartext)), usedCharset);
-        } catch (@Nonnull GeneralSecurityException e) {
+        } catch (@Nonnull GeneralSecurityException | IllegalArgumentException e) {
             if (decode) {
                 LOGGER.warn("Decoding the password failed");
             } else {
                 LOGGER.warn("Encoding the password failed");
             }
             return "";
-        } catch (@Nonnull IllegalArgumentException e) {
-            if (decode) {
-                LOGGER.warn("Decoding the password failed");
-            } else {
-                LOGGER.warn("Encoding the password failed");
-            }
-            return "";
-        }
-    }
-
-    /**
-     * Load the saved server from the configuration file and use it
-     * to select the default server
-     */
-    public void restoreServer() {
-        applyServerByKey(IllaClient.getConfig().getInteger("server"));
-    }
-
-    /**
-     * Changes the server to the server at the given key
-     *
-     * @param server an int to select the server, see class constants
-     */
-    public void applyServerByKey(int server) {
-        for (Servers serverEntry : Servers.values()) {
-            if (serverEntry.getServerKey() == server) {
-                setServer(serverEntry);
-                return;
-            }
-        }
-    }
-
-    public void setLoginData(String name, String pass) {
-        loginName = name;
-        password = pass;
-    }
-
-    /**
-     * Saves the content of the fields to the config system
-     *
-     * @param storePassword whether or not to save the password
-     */
-    public void storeData(boolean storePassword) {
-        if (IllaClient.DEFAULT_SERVER == Servers.Illarionserver) {
-            IllaClient.getInstance().setUsedServer(Servers.Illarionserver);
-        } else {
-            IllaClient.getConfig().set("server", getServer().getServerKey());
-            IllaClient.getInstance().setUsedServer(getServer());
-        }
-
-        if (getServer() == Servers.Customserver) {
-            IllaClient.getConfig().set("customLastLogin", getLoginName());
-            IllaClient.getConfig().set("customSavePassword", storePassword);
-        } else {
-            IllaClient.getConfig().set("lastLogin", getLoginName());
-            IllaClient.getConfig().set("savePassword", storePassword);
-        }
-
-        if (storePassword) {
-            storePassword(getPassword());
-        } else {
-            deleteStoredPassword();
-        }
-
-        IllaClient.getConfig().save();
-    }
-
-    @Nonnull
-    public String getLoginName() {
-        if (loginName == null) {
-            return "";
-        }
-        return loginName;
-    }
-
-    /**
-     * Store the password in the configuration file or remove the stored password from the configuration.
-     *
-     * @param pw the password that stall be stored to the configuration file
-     */
-    private void storePassword(@Nonnull String pw) {
-        if (getServer() == Servers.Customserver) {
-            IllaClient.getConfig().set("customSavePassword", true);
-            IllaClient.getConfig().set("customFingerprint", shufflePassword(pw, false));
-        } else {
-            IllaClient.getConfig().set("savePassword", true);
-            IllaClient.getConfig().set("fingerprint", shufflePassword(pw, false));
-        }
-    }
-
-    /**
-     * Remove the stored password.
-     */
-    private void deleteStoredPassword() {
-        if (getServer() == Servers.Customserver) {
-            IllaClient.getConfig().set("customSavePassword", false);
-            IllaClient.getConfig().remove("customFingerprint");
-        } else {
-            IllaClient.getConfig().set("savePassword", false);
-            IllaClient.getConfig().remove("fingerprint");
         }
     }
 

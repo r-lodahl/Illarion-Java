@@ -19,11 +19,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.Subscribe;
-import org.illarion.engine.Diagnostics;
-import org.illarion.engine.EventBus;
-import org.illarion.engine.GameStateManager;
-import org.illarion.engine.Window;
+import org.illarion.engine.*;
+import org.illarion.engine.backend.gdx.ui.GdxUserInterface;
 import org.illarion.engine.event.GameExitEnforcedEvent;
 import org.illarion.engine.event.GameExitRequestedEvent;
 import org.illarion.engine.event.WindowResizedEvent;
@@ -52,6 +51,7 @@ class ListenerApplication extends ApplicationAdapter {
     private GdxAssets assets;
     private GdxSounds sounds;
     private GdxInput input;
+    private GdxUserInterface gui;
 
     /**
      * Create a new listener application that forwards the events of libGDX to the engine listener.
@@ -72,9 +72,14 @@ class ListenerApplication extends ApplicationAdapter {
         input = new GdxInput(Gdx.input);
         sounds = new GdxSounds();
 
-        stateManager.create(new GdxBinding(graphics, sounds, input, assets, window));
+        Skin skin = new Skin(Gdx.files.internal("skin/skin.json"));
+        gui = new GdxUserInterface(skin);
+
+        stateManager.create(new GdxBinding(graphics, sounds, input, assets, window, gui));
 
         EventBus.INSTANCE.register(this);
+
+        stateManager.enterState(State.LOGIN);
     }
 
     @Override
@@ -84,16 +89,15 @@ class ListenerApplication extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         int updateDelta = Math.round(Gdx.graphics.getDeltaTime() * 1000.f);
 
         stateManager.update(updateDelta);
+        assets.getTextureManager().update();
 
         graphics.beginFrame();
-        assets.getTextureManager().update();
+
         stateManager.render();
+        gui.render();
 
         if (!diagnostics.isEnabled()) {
             graphics.endFrame();
