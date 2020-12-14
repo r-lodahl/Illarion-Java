@@ -26,7 +26,6 @@ import java.util.Base64;
 
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
-import org.illarion.engine.EngineException;
 import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
@@ -349,13 +348,7 @@ public enum Login {
         }
         NodeList children = root.getChildNodes();
         int count = children.getLength();
-        // Fetches the Account language and sets the local config language to match
-        String accLang = root.getAttributes().getNamedItem("lang").getNodeValue();
-        if ("de".equals(accLang)) {
-            IllaClient.getConfig().set(Lang.LOCALE_CFG, Lang.LOCALE_CFG_GERMAN);
-        } else if ("us".equals(accLang)) {
-            IllaClient.getConfig().set(Lang.LOCALE_CFG, Lang.LOCALE_CFG_ENGLISH);
-        }
+
         // Fills the charList with each character the account has on the selected server
         charList.clear();
         for (int i = 0; i < count; i++) {
