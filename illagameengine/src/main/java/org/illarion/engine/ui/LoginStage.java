@@ -3,7 +3,7 @@ package org.illarion.engine.ui;
 import java.util.function.Consumer;
 
 public interface LoginStage {
-    void setLoginData(LoginData[] data);
+    void setLoginData(LoginData[] data, int initialServer);
     void setCharacterData(CharacterSelectionData[] data);
     void setOptionsData(OptionsData data);
 

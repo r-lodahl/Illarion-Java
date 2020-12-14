@@ -123,10 +123,8 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setLoginData(LoginData[] data) {
-        for (LoginData loginData : data) {
-            //login.addLogin(loginData);
-        }
+    public void setLoginData(LoginData[] data, int initialServer) {
+        login.setLoginData(data, initialServer);
     }
 
     @Override

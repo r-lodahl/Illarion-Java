@@ -1,12 +1,23 @@
 package org.illarion.engine.backend.gdx.ui.login;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import org.illarion.engine.ui.LoginData;
+
+import java.util.Arrays;
 
 public class LoginTable extends Table {
     private final TextButton optionsButton, creditsButton, exitButton, loginButton;
+    private final SelectBox<String> serverSelection;
+    private final TextField accountNameField, passwordField;
+    private final CheckBox savePasswordCheckbox;
+
+    private LoginData[] loginData;
+    private int currentServerIndex;
 
     public LoginTable(Skin skin) {
         setFillParent(true);
@@ -15,13 +26,12 @@ public class LoginTable extends Table {
         //Texture titleImageTexture = new Texture("skin/illarion_title.png");
         //Image titleImage = new Image(titleImageTexture);
 
-        SelectBox<String> serverSelection = new SelectBox<>(skin);
-        serverSelection.setItems("Game Server", "Dev Server", "Local Server", "User-Defined Server");
-        TextField accountNameField = new TextField("", skin);
-        TextField passwordField = new TextField("", skin);
+        serverSelection = new SelectBox<>(skin);
+        accountNameField = new TextField("", skin);
+        passwordField = new TextField("", skin);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
-        CheckBox savePasswordCheckbox = new CheckBox("", skin);
+        savePasswordCheckbox = new CheckBox("", skin);
 
         loginButton = new TextButton("Login", skin);
         loginButton.pad(20f, 70f, 20f, 70f);
@@ -29,6 +39,16 @@ public class LoginTable extends Table {
         optionsButton = new TextButton("Options", skin);
         creditsButton = new TextButton("Credits", skin);
         exitButton = new TextButton("Exit", skin);
+
+        /* Internal Listener Setup */
+        serverSelection.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                changeCurrentServer(serverSelection.getSelectedIndex());
+            }
+        });
+
+
 
         /* Layout Setup */
         //row();
@@ -70,6 +90,20 @@ public class LoginTable extends Table {
 
         layout();
         pack();
+    }
+
+    public void setLoginData(LoginData[] data, int initialServer) {
+        loginData = data;
+        serverSelection.setItems(Arrays.stream(data).map(x -> x.server).toArray(String[]::new));
+
+        changeCurrentServer(initialServer);
+    }
+
+    private void changeCurrentServer(int index) {
+        LoginData data = loginData[index];
+        accountNameField.setText(data.username);
+        passwordField.setText(data.password);
+        savePasswordCheckbox.setChecked(data.savePassword);
     }
 
     public void setOnOptionsCallback(ClickListener onClick) {

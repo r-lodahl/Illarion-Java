@@ -17,8 +17,10 @@ package illarion.client.gui.controller;
 
 import illarion.client.IllaClient;
 import illarion.client.Login;
+import illarion.client.Servers;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
+import illarion.client.util.Lang;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
@@ -63,12 +65,15 @@ public final class LoginScreenController {
             }
         }
 
+        int serverKey = IllaClient.DEFAULT_SERVER.getServerKey();
+
         Login login = Login.INSTANCE;
+        login.setCurrentServerByKey(serverKey);
         LoginData[] loginData = login.restoreLoginData();
 
-        stage = gui.activateLoginStage();
+        stage = gui.activateLoginStage(Lang.INSTANCE.getLoginResourceBundle());
 
-        stage.setLoginData(loginData);
+        stage.setLoginData(loginData, serverKey);
     }
 
     public void onEndStage() {
