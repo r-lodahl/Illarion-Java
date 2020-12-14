@@ -16,32 +16,18 @@
 package illarion.common.config;
 
 import org.bushe.swing.event.EventBus;
-import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import org.xmlpull.v1.XmlSerializer;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.*;
-import java.nio.channels.ScatteringByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
-import static java.nio.file.StandardOpenOption.*;
 
 /**
  * This is the main class for the configuration system. It contains the storage for the configuration values and
@@ -80,13 +66,6 @@ public class ConfigSystem implements Config {
      */
     @Nonnull
     private final ReadWriteLock lock;
-
-    /**
-     * The properties file containing the default configuration that will be used
-     * in case that no configuration file exists.
-     */
-    @Nonnull
-    private static final String DEFAULT_CONFIG_FILENAME = "default-config.properties";
 
     @Nonnull
     private final Properties userProperties;
@@ -140,7 +119,7 @@ public class ConfigSystem implements Config {
     public double getDouble(@Nonnull String key) {
         String value = getString(key);
 
-        if (value == null) {
+        if (value.equals("")) {
             return 0.d;
         }
 
@@ -157,7 +136,7 @@ public class ConfigSystem implements Config {
     public Path getPath(@Nonnull String key) {
         String value = getString(key);
 
-        if (value == null) {
+        if (value.equals("")) {
             return null;
         }
 
@@ -168,7 +147,7 @@ public class ConfigSystem implements Config {
     public float getFloat(@Nonnull String key) {
         String value = getString(key);
 
-        if (value == null) {
+        if (value.equals("")) {
             return 0.f;
         }
 
@@ -184,7 +163,7 @@ public class ConfigSystem implements Config {
     public int getInteger(@Nonnull String key) {
         String value = getString(key);
 
-        if (value == null) {
+        if (value.equals("")) {
             return 0;
         }
 
@@ -196,9 +175,9 @@ public class ConfigSystem implements Config {
         }
     }
 
-    @Nullable
+    @Nonnull
     @Override
-    public String getString(String key) {
+    public String getString(@Nonnull String key) {
         String value;
         lock.readLock().lock();
         try {
@@ -208,8 +187,8 @@ public class ConfigSystem implements Config {
         }
 
         if (value == null) {
-            LOGGER.warn("No config entry found for: {}", key);
-            return null;
+            LOGGER.warn("No config entry found for: {}. Returning empty string.", key);
+            return "";
         }
 
         return value;
@@ -218,119 +197,6 @@ public class ConfigSystem implements Config {
     @Override
     public void remove(@Nonnull String key) {
         userProperties.remove(key);
-    }
-
-    private interface ConfigTypeConverter {
-        @Nonnull
-        String getString(@Nonnull Object object);
-
-        Object getObject(@Nonnull String string);
-    }
-
-    private abstract static class AbstractConfigTypeConverter implements ConfigTypeConverter {
-        @Nonnull
-        @Override
-        public final String getString(@Nonnull Object object) {
-            return object.toString();
-        }
-    }
-
-    private enum ConfigTypes {
-        BooleanEntry("bool", Boolean.class, new AbstractConfigTypeConverter() {
-            @Override
-            public Boolean getObject(@Nonnull String string) {
-                return Boolean.valueOf(string);
-            }
-        }),
-        ByteEntry("byte", Byte.class, new AbstractConfigTypeConverter() {
-            @Override
-            public Byte getObject(@Nonnull String string) {
-                return Byte.valueOf(string);
-            }
-        }),
-        DoubleEntry("double", Double.class, new AbstractConfigTypeConverter() {
-            @Nonnull
-            @Override
-            public Double getObject(@Nonnull String string) {
-                return Double.valueOf(string);
-            }
-        }),
-        FileEntry("file", Path.class, new ConfigTypeConverter() {
-            @Nonnull
-            @Override
-            public String getString(@Nonnull Object object) {
-                return ((Path) object).toAbsolutePath().toString();
-            }
-
-            @Nonnull
-            @Override
-            public Path getObject(@Nonnull String string) {
-                return Paths.get(string);
-            }
-        }),
-        FloatEntry("float", Float.class, new AbstractConfigTypeConverter() {
-            @Nonnull
-            @Override
-            public Float getObject(@Nonnull String string) {
-                return Float.valueOf(string);
-            }
-        }),
-        IntegerEntry("int", Integer.class, new AbstractConfigTypeConverter() {
-            @Override
-            public Integer getObject(@Nonnull String string) {
-                return Integer.valueOf(string);
-            }
-        }),
-        LongEntry("long", Long.class, new AbstractConfigTypeConverter() {
-            @Override
-            public Long getObject(@Nonnull String string) {
-                return Long.valueOf(string);
-            }
-        }),
-        ShortEntry("short", Short.class, new AbstractConfigTypeConverter() {
-            @Override
-            public Short getObject(@Nonnull String string) {
-                return Short.valueOf(string);
-            }
-        }),
-        StringEntry("string", String.class, new AbstractConfigTypeConverter() {
-            @Nonnull
-            @Override
-            public String getObject(@Nonnull String string) {
-                return string;
-            }
-        });
-
-        @Nonnull
-        private final String typeName;
-        @Nonnull
-        private final Class<?> typeClass;
-        @Nonnull
-        private final ConfigTypeConverter converter;
-
-        ConfigTypes(@Nonnull String typeName, @Nonnull Class<?> typeClass, @Nonnull ConfigTypeConverter converter) {
-            this.typeClass = typeClass;
-            this.typeName = typeName;
-            this.converter = converter;
-        }
-
-        @Nonnull
-        @Contract(pure = true)
-        public String getTypeName() {
-            return typeName;
-        }
-
-        @Nonnull
-        @Contract(pure = true)
-        public Class<?> getTypeClass() {
-            return typeClass;
-        }
-
-        @Nonnull
-        @Contract(pure = true)
-        public ConfigTypeConverter getConverter() {
-            return converter;
-        }
     }
 
     @Override
