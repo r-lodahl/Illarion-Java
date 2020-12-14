@@ -188,7 +188,7 @@ public final class ChatHandler {
         if (mode == SpeechMode.Emote) {
             // we need some kind of name
             if (talkingChar == null) {
-                textBuilder.append(Lang.getMsg("chat.someone"));
+                textBuilder.append(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.someone"));
             } else {
                 textBuilder.append(talkingChar.getName());
             }
@@ -201,20 +201,20 @@ public final class ChatHandler {
             World.getGameGui().getChatGui().showChatBubble(talkingChar, emoteText, ChatGui.COLOR_EMOTE);
         } else {
             if (talkingChar == null) {
-                textBuilder.append(Lang.getMsg("chat.distantShout"));
+                textBuilder.append(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.distantShout"));
             } else {
                 textBuilder.append(talkingChar.getName());
 
                 switch (mode) {
                     case Shout:
-                        textBuilder.append(' ').append(Lang.getMsg("log.shout"));
+                        textBuilder.append(' ').append(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.shout"));
                         break;
                     case Whisper:
-                        textBuilder.append(' ').append(Lang.getMsg("log.whisper"));
+                        textBuilder.append(' ').append(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.whisper"));
                         break;
                     case Normal:
                     case Ooc:
-                        textBuilder.append(' ').append(Lang.getMsg("log.say"));
+                        textBuilder.append(' ').append(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.say"));
                         break;
                     case Emote:
                         break;

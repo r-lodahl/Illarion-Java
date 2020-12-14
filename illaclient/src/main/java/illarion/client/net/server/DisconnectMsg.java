@@ -46,7 +46,7 @@ public final class DisconnectMsg implements ServerReply {
     @Nonnull
     @Override
     public ServerReplyResult execute() {
-        IllaClient.sendDisconnectEvent(Lang.getMsg("logout") + '\n' + Lang.getMsg("logout.reason") + ' ' +
+        IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout") + '\n' + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.reason") + ' ' +
                 getMessageForReason(reason), true);
         return ServerReplyResult.Success;
     }
@@ -57,31 +57,31 @@ public final class DisconnectMsg implements ServerReply {
     private static String getMessageForReason(int reason) {
         switch (reason) {
             case 1:
-                return Lang.getMsg("logout.old_client");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.old_client");
             case 2:
-                return Lang.getMsg("logout.already_logged_in");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.already_logged_in");
             case 3:
-                return Lang.getMsg("logout.wrong_pw");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.wrong_pw");
             case 4:
-                return Lang.getMsg("logout.server_shutdown");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.server_shutdown");
             case 5:
-                return Lang.getMsg("logout.kicked");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.kicked");
             //6
             case 7:
-                return Lang.getMsg("logout.no_place");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.no_place");
             case 8:
-                return Lang.getMsg("logout.not_found");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.not_found");
             //9
             case 10:
-                return Lang.getMsg("logout.unstable");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.unstable");
             case 11:
-                return Lang.getMsg("logout.no_account");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.no_account");
             case 12:
-                return Lang.getMsg("logout.no_skillpack");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.no_skillpack");
             case 13:
-                return Lang.getMsg("logout.corrupt_inventory");
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.corrupt_inventory");
             default:
-                return Lang.getMsg("logout.unknown") + ' ' + Integer.toHexString(reason);
+                return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.unknown") + ' ' + Integer.toHexString(reason);
         }
     }
 

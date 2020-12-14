@@ -348,14 +348,14 @@ final class Receiver extends Thread implements NetCommReader {
             } catch (@Nonnull IOException e) {
                 if (running) {
                     log.error("The connection to the server is not working anymore.", e);
-                    IllaClient.sendDisconnectEvent(Lang.getMsg("error.receiver"), true);
+                    IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);
                     running = false;
                     return;
                 }
             } catch (@Nonnull Exception e) {
                 if (running) {
                     log.error("General error in the receiver", e);
-                    IllaClient.sendDisconnectEvent(Lang.getMsg("error.receiver"), true);
+                    IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);
                     running = false;
                     return;
                 }

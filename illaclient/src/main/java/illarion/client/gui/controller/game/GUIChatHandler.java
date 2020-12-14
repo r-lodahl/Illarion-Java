@@ -603,7 +603,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         if ((translationLabel.getText() == null) || translationLabel.getText().isEmpty()) {
             translationElement.setMarginTop(SizeValue.def());
             translationElement.setConstraintHeight(SizeValue.def());
-            translationLabel.setText(Lang.getMsg("chat.translating"));
+            translationLabel.setText(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.translating"));
             translationElement.setVisible(true);
             sourceElement.setVisibleToMouseEvents(false);
             dirty = true;
@@ -617,7 +617,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
                             }
                         } else {
                             translationElement.setMarginTop(SizeValue.def());
-                            translationLabel.setText(Lang.getMsg("chat.translation.header") + ' ' + translation);
+                            translationLabel.setText(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.translation.header") + ' ' + translation);
                 }
                         dirty = true;
                     }));

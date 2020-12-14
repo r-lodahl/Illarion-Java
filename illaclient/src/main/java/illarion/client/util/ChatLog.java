@@ -99,7 +99,7 @@ public final class ChatLog {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
 
         logger.info("");
-        logger.info("{} - {}", Lang.getMsg("log.newSession"), sdf.format(new Date()));
+        logger.info("{} - {}", Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.newSession"), sdf.format(new Date()));
 
         AnnotationProcessor.process(this);
     }

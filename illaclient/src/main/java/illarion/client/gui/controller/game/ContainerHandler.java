@@ -661,7 +661,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
                                                        new TextureRenderImage(displayedItem));
 
                 conSlot.setImage(niftyImage);
-                conSlot.setLabelText(count.getShortText(Lang.getInstance().getLocale()));
+                conSlot.setLabelText(count.getShortText(Lang.INSTANCE.getLocale()));
                 if (count.getValue() > 1) {
                     conSlot.showLabel();
                 } else {

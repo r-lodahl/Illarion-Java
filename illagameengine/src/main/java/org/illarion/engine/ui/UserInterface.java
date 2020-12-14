@@ -1,6 +1,6 @@
 package org.illarion.engine.ui;
 
 public interface UserInterface {
-    LoginStage activateLoginStage();
+    LoginStage activateLoginStage(NullSecureResourceBundle loginResources);
     void removeLoginStage();
 }

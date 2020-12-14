@@ -92,13 +92,13 @@ public final class KeyMapper {
 
         switch (newEntry) {
             case 0:
-                World.getGameGui().getInformGui().showServerInform(Lang.getMsg("info.nameDisplay.noNames"));
+                World.getGameGui().getInformGui().showServerInform(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("info.nameDisplay.noNames"));
                 break;
             case 1:
-                World.getGameGui().getInformGui().showServerInform(Lang.getMsg("info.nameDisplay.humanNames"));
+                World.getGameGui().getInformGui().showServerInform(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("info.nameDisplay.humanNames"));
                 break;
             case 2:
-                World.getGameGui().getInformGui().showServerInform(Lang.getMsg("info.nameDisplay.allNames"));
+                World.getGameGui().getInformGui().showServerInform(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("info.nameDisplay.allNames"));
                 break;
             default:
                 break;

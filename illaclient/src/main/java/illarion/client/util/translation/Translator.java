@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -89,7 +90,7 @@ public class Translator {
                 return TranslationDirection.GermanToEnglish;
             case CFG_VALUE_DIRECTION_DEFAULT:
             default:
-                return Lang.getInstance().isEnglish() ? TranslationDirection.GermanToEnglish :
+                return Lang.INSTANCE.getLocale().equals(Locale.ENGLISH) ? TranslationDirection.GermanToEnglish :
                         TranslationDirection.EnglishToGerman;
         }
     }

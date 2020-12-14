@@ -58,7 +58,8 @@ public final class NetCommCrashHandler extends AbstractCrashHandler {
     @Nonnull
     @Override
     protected String getCrashMessage(@Nonnull Thread t, @Nonnull Throwable e) {
-        return Lang.getMsg("crash.netcomm") + '\n' + e.getLocalizedMessage();
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.netcomm")
+                + '\n' + e.getLocalizedMessage();
     }
 
     /**

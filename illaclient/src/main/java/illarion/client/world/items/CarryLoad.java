@@ -48,23 +48,23 @@ public class CarryLoad {
         if (World.getGameGui().isReady() && !World.getGameGui().getDialogCraftingGui().isCraftingInProgress()) {
             String messageToSend = null;
             if (isFirst && !isRunningPossible()) {
-                messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.RunningImpossible");
+                messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.RunningImpossible");
             } else if (oldRunningPossible != isRunningPossible()) {
                 if (oldRunningPossible) {
-                    messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.RunningImpossible");
+                    messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.RunningImpossible");
                 }
                 if (!isFirst && !oldRunningPossible) {
-                    messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.RunningPossible");
+                    messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.RunningPossible");
                 }
             }
             if (isFirst && !isWalkingPossible()) {
-                messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.WalkingImpossible");
+                messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.WalkingImpossible");
             } else if (oldWalkingPossible != isWalkingPossible()) {
                 if (oldWalkingPossible) {
-                    messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.WalkingImpossible");
+                    messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.WalkingImpossible");
                 }
                 if (!isFirst && !oldWalkingPossible) {
-                    messageToSend = Lang.getMsg("illarion.client.world.items.CarryLoad.WalkingPossible");
+                    messageToSend = Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("illarion.client.world.items.CarryLoad.WalkingPossible");
                 }
             }
             if (messageToSend != null) {

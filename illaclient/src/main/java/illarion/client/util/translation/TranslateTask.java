@@ -64,7 +64,7 @@ class TranslateTask implements Callable<String> {
             usedText = usedText.substring(2, usedText.length() - 2);
         }
 
-        BreakIterator iterator = BreakIterator.getSentenceInstance(Lang.getInstance().getLocale());
+        BreakIterator iterator = BreakIterator.getSentenceInstance(Lang.INSTANCE.getLocale());
         iterator.setText(usedText);
 
         Collection<Future<String>> translationTasks = new ArrayList<>();
@@ -106,25 +106,25 @@ class TranslateTask implements Callable<String> {
     }
 
     @Nonnull
-    private static final Pattern PATTERN_SAY = Pattern.compile("^(.+?)\\s" + Lang.getMsg("log.say") + ":\\s");
+    private static final Pattern PATTERN_SAY = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.say") + ":\\s");
     @Nonnull
-    private static final Pattern PATTERN_SHOUT = Pattern.compile("^(.+?)\\s" + Lang.getMsg("log.shout") + ":\\s");
+    private static final Pattern PATTERN_SHOUT = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.shout") + ":\\s");
     @Nonnull
-    private static final Pattern PATTERN_WHISPER = Pattern.compile("^(.+?)\\s" + Lang.getMsg("log.whisper") + ":\\s");
+    private static final Pattern PATTERN_WHISPER = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.whisper") + ":\\s");
 
     @Nullable
     private String findHeader(@Nonnull String input) {
-        if (input.startsWith(Lang.getMsg("chat.distantShout") + ": ")) {
-            return Lang.getMsg("chat.distantShout") + ": ";
+        if (input.startsWith(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.distantShout") + ": ")) {
+            return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.distantShout") + ": ";
         }
-        if (input.startsWith(Lang.getMsg("chat.broadcast") + ": ")) {
-            return Lang.getMsg("chat.broadcast") + ": ";
+        if (input.startsWith(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.broadcast") + ": ")) {
+            return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.broadcast") + ": ";
         }
-        if (input.startsWith(Lang.getMsg("chat.textto") + ": ")) {
-            return Lang.getMsg("chat.textto") + ": ";
+        if (input.startsWith(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.textto") + ": ")) {
+            return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.textto") + ": ";
         }
-        if (input.startsWith(Lang.getMsg("chat.scriptInform") + ": ")) {
-            return Lang.getMsg("chat.scriptInform") + ": ";
+        if (input.startsWith(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.scriptInform") + ": ")) {
+            return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.scriptInform") + ": ";
         }
         String sayHeader = findPattern(input, PATTERN_SAY);
         if (sayHeader != null) {

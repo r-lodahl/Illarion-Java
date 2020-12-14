@@ -32,6 +32,7 @@ import illarion.common.data.CreditsPerson;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -69,7 +70,7 @@ public final class CreditsMultiScreenController implements ScreenController, Key
         }
 
         CreditsList list = iterator.next();
-        if (Lang.getInstance().isGerman()) {
+        if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
             titleLabel.setText(list.getNameGerman());
         } else {
             titleLabel.setText(list.getNameEnglish());

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.backend.gdx.ui.login.GdxLoginStage;
 import org.illarion.engine.ui.LoginStage;
+import org.illarion.engine.ui.NullSecureResourceBundle;
 import org.illarion.engine.ui.UserInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,7 @@ public class GdxUserInterface implements UserInterface {
     }
 
     @Override
-    public LoginStage activateLoginStage() {
-        log.debug("LOGIN UI REQUESTED");
-
+    public LoginStage activateLoginStage(NullSecureResourceBundle resourceBundle) {
         if (loginStage == null) {
             loginStage = new GdxLoginStage(skin);
         }

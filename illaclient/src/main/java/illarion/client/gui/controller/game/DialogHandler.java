@@ -603,10 +603,10 @@ public final class DialogHandler
         if (parentArea.findElementById(dialogName) != null) {
             return;
         }
-        DialogCharacterBuilder builder = new DialogCharacterBuilder(dialogName, Lang.getMsg("gui.dialog.character.title"));
-        builder.description(String.format(Lang.getMsg("gui.dialog.character.description"), chara.getName()));
-        builder.buttonLeft(Lang.getMsg("gui.dialog.character.ok"));
-        builder.buttonRight(Lang.getMsg("gui.dialog.character.cancel"));
+        DialogCharacterBuilder builder = new DialogCharacterBuilder(dialogName, Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("gui.dialog.character.title"));
+        builder.description(String.format(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("gui.dialog.character.description"), chara.getName()));
+        builder.buttonLeft(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("gui.dialog.character.ok"));
+        builder.buttonRight(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("gui.dialog.character.cancel"));
         builder.dialogId(charId.getAsInteger());
         builder.lookAt(lookAt);
         builder.maxLength(255);

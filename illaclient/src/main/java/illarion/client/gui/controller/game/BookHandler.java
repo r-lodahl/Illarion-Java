@@ -228,7 +228,7 @@ public final class BookHandler implements BookGui, ScreenController, UpdatableHa
     public void showBook(int id) {
         Book book = BookFactory.getInstance().getBook(id);
         if (book != null) {
-            showBook = book.getLocalisedBook(Lang.getInstance().getLocale());
+            showBook = book.getLocalisedBook(Lang.INSTANCE.getLocale());
             showPage = 0;
         } else {
             showBook = null;

@@ -61,9 +61,10 @@ public final class DefaultCrashHandler extends AbstractCrashHandler {
     @Override
     protected String getCrashMessage(@Nonnull Thread t, @Nonnull Throwable e) {
         if (isMissingOpenGLSupportMessage(t, e)) {
-            return Lang.getMsg("crash.noOpenGL");
+            return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.noOpenGL");
         }
-        return Lang.getMsg("crash.default") + '\n' + e.getLocalizedMessage();
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.default")
+                + '\n' + e.getLocalizedMessage();
     }
 
     @Override

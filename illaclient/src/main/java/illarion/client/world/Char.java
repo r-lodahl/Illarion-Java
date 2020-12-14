@@ -933,7 +933,7 @@ public final class Char implements AnimatedMove {
                 key = "chat.someone";
                 break;
         }
-        return Lang.getMsg(key);
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(key);
     }
 
     @Nullable

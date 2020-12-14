@@ -27,11 +27,8 @@ import illarion.client.resources.SoundFactory;
 import illarion.client.resources.loaders.SongLoader;
 import illarion.client.resources.loaders.SoundLoader;
 import illarion.client.state.StateManager;
-import illarion.client.util.ChatLog;
 import illarion.client.util.GlobalExecutorService;
 import illarion.client.util.Lang;
-import illarion.client.util.translation.Translator;
-import illarion.client.world.Player;
 import illarion.client.world.World;
 import illarion.client.world.events.ConnectionLostEvent;
 import illarion.common.bug.CrashReporter;
@@ -84,11 +81,7 @@ public final class IllaClient {
      */
     @Nonnull
     public static final Servers DEFAULT_SERVER;
-    /**
-     * The singleton instance of this class.
-     */
-    @Nonnull
-    private static final IllaClient INSTANCE = new IllaClient();
+
     /**
      * The error and debug logger of the client.
      */
@@ -117,7 +110,11 @@ public final class IllaClient {
      */
     @Nonnull
     private Servers usedServer = DEFAULT_SERVER;
-
+    /**
+     * The singleton instance of this class.
+     */
+    @Nonnull
+    private static final IllaClient INSTANCE = new IllaClient();
     /**
      * The default empty constructor used to create the singleton instance of this class.
      */
@@ -186,10 +183,8 @@ public final class IllaClient {
      */
     public static void main(String... args) {
         // Setup the crash reporter so the client is able to crash properly.
-        CrashReporter.getInstance().setMessageSource(Lang.getInstance());
-
-        // in case the server is now known, update the files if needed and
-        // launch the client.
+        //CrashReporter.getInstance().setMessageSource(Lang.INSTANCE);
+        //TODO: investigate if crash reporter still works (removal of awt/swing in client)
 
         INSTANCE.init();
     }
@@ -207,7 +202,7 @@ public final class IllaClient {
             e.printStackTrace(System.err);
         }
 
-        Lang.getInstance().recheckLocale(config.getString(Lang.LOCALE_CFG));
+        Lang.INSTANCE.setLocale(new Locale(config.getString(Lang.INSTANCE.CONFIG_KEY_LOCALIZATION)));
         CrashReporter.getInstance().setConfig(getConfig());
 
         // Report errors of the released version only
@@ -257,12 +252,11 @@ public final class IllaClient {
 
         //TODO: Set default for RESOLUTION ASAP
 
-        // If the system locale is german, set to german. Otherwise, default to English
-        config.setDefault(Lang.LOCALE_CFG,
-                Locale.getDefault(Category.DISPLAY).getLanguage().equals("de") ?
-                        Lang.LOCALE_CFG_GERMAN :
-                        Lang.LOCALE_CFG_ENGLISH
-                );
+        config.setDefault(
+                Lang.INSTANCE.CONFIG_KEY_LOCALIZATION,
+                Locale.getDefault(Category.DISPLAY).equals(Locale.GERMAN)
+                        ? Locale.GERMAN.toString()
+                        : Locale.ENGLISH.toString());
 
         Crypto crypt = new Crypto();
         crypt.loadPublicKey();

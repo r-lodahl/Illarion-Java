@@ -54,14 +54,14 @@ public final class DocuLeaf implements DocuEntry {
     @Override
     @Contract(pure = true)
     public String getDescription() {
-        return Lang.getMsg(docuDesc);
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuDesc);
     }
 
     @Nonnull
     @Override
     @Contract(pure = true)
     public String getTitle() {
-        return Lang.getMsg(docuTitle);
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuTitle);
     }
 
     @Nonnull

@@ -431,7 +431,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
             invSlot.setImage(niftyImage);
             if (ItemCount.isGreaterOne(count)) {
                 assert count != null;
-                invSlot.setLabelText(count.getShortText(Lang.getInstance().getLocale()));
+                invSlot.setLabelText(count.getShortText(Lang.INSTANCE.getLocale()));
                 slotLabelVisibility[slotId] = true;
                 invSlot.showLabel();
             } else {

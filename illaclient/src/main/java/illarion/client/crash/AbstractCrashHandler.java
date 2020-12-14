@@ -103,7 +103,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
     protected final void crashClient(@Nonnull Thread t, @Nonnull Throwable e, boolean showFixFailed) {
         String message = getCrashMessage(t, e);
         if (showFixFailed) {
-            message += '\n' + Lang.getMsg("crash.fixfailed");
+            message += '\n' + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.fixfailed");
         }
         IllaClient.exitWithError(message);
 

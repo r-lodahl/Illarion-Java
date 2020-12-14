@@ -68,7 +68,7 @@ public final class DocuNode implements DocuEntry {
     @Override
     @Contract(pure = true)
     public String getTitle() {
-        return Lang.getMsg(docuTitle);
+        return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuTitle);
     }
 
     public void addChild(@Nonnull String child) {

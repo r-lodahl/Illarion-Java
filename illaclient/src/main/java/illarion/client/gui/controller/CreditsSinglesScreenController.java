@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -70,7 +71,7 @@ public final class CreditsSinglesScreenController implements ScreenController, K
         }
 
         CreditsList list = iterator.next();
-        if (Lang.getInstance().isGerman()) {
+        if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
             titleLabel.setText(list.getNameGerman());
         } else {
             titleLabel.setText(list.getNameEnglish());
@@ -87,7 +88,7 @@ public final class CreditsSinglesScreenController implements ScreenController, K
             if (i < (nameCount - 2)) {
                 builder.append(", ");
             } else if (i < (nameCount - 1)) {
-                if (Lang.getInstance().isGerman()) {
+                if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
                     builder.append(" und ");
                 } else {
                     builder.append(" and ");

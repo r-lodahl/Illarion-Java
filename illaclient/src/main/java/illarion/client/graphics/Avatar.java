@@ -652,22 +652,22 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     public void setHealthPoints(int value) {
         //noinspection IfStatementWithTooManyBranches
         if (value == 10000) {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.unharmed"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.unharmed"));
             avatarTextTag.setHealthStateColor(COLOR_UNHARMED);
         } else if (value > 8000) {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.slightlyHarmed"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.slightlyHarmed"));
             avatarTextTag.setHealthStateColor(COLOR_SLIGHTLY_HARMED);
         } else if (value > 5000) {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.harmed"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.harmed"));
             avatarTextTag.setHealthStateColor(COLOR_HARMED);
         } else if (value > 2000) {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.badlyHarmed"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.badlyHarmed"));
             avatarTextTag.setHealthStateColor(COLOR_BADLY_HARMED);
         } else if (value > 0) {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.nearDead"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.nearDead"));
             avatarTextTag.setHealthStateColor(COLOR_NEAR_DEATH);
         } else {
-            avatarTextTag.setHealthState(Lang.getMsg("char.health.dead"));
+            avatarTextTag.setHealthState(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("char.health.dead"));
             avatarTextTag.setHealthStateColor(COLOR_DEAD);
         }
     }

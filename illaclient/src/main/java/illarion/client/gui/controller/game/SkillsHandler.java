@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 
 /**
  * This handler controls the skill window.
@@ -164,7 +165,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
             LabelBuilder headline = new LabelBuilder(groupId + "#headline");
             headline.font("menuFont");
 
-            if (Lang.getInstance().isGerman()) {
+            if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
                 headline.label(group.getNameGerman());
             } else {
                 headline.label(group.getNameEnglish());
@@ -180,7 +181,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
                 skillPanel.width(content.getConstraintWidth().toString());
 
                 LabelBuilder skillName = new LabelBuilder(skillId + "#name");
-                if (Lang.getInstance().isGerman()) {
+                if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
                     skillName.label(skill.getNameGerman());
                 } else {
                     skillName.label(skill.getNameEnglish());

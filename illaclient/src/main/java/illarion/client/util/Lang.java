@@ -15,199 +15,106 @@
  */
 package illarion.client.util;
 
+import com.google.common.eventbus.Subscribe;
+import illarion.client.gui.events.LocalizationChangedEvent;
 import illarion.common.config.ConfigChangedEvent;
-import illarion.common.util.MessageSource;
-import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.bushe.swing.event.annotation.EventTopicSubscriber;
-import org.jetbrains.annotations.Contract;
+import org.illarion.engine.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Localized text handler. Loads the localized messages and returns them if
  * requested, regarding the language settings of the client.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- * @author Nop
  */
-public final class Lang implements MessageSource {
-    /**
-     * The string that is the key of the language settings in the configuration
-     * file.
-     */
-    @Nonnull
-    public static final String LOCALE_CFG = "locale";
-
-    /**
-     * The string stores in the configuration for English language.
-     */
-    @Nonnull
-    public static final String LOCALE_CFG_ENGLISH = "en";
-
-    /**
-     * The string stores in the configuration for German language.
-     */
-    @Nonnull
-    public static final String LOCALE_CFG_GERMAN = "de";
-
-    /**
-     * The singleton instance of this class.
-     */
-    @Nonnull
-    private static final Lang INSTANCE = new Lang();
+public enum Lang {
+    INSTANCE;
 
     /**
      * The logger instance that handles the log output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Lang.class);
+    @Nonnull private static final Logger log = LoggerFactory.getLogger(Lang.class);
 
     /**
-     * The file name of the message bundles the client loads for the language.
+     * The string that is the key of the language settings in the configuration
+     * file.
      */
-    @Nonnull
-    private static final String MESSAGE_BUNDLE = "messages";
+    @Nonnull public final String CONFIG_KEY_LOCALIZATION = "locale";
+
+    @Nonnull private final Set<Locale> validLocales = Set.of(Locale.ENGLISH, Locale.GERMAN);
+
+    @Nonnull private final Locale defaultLocale = Locale.ENGLISH;
 
     /**
      * The current local settings.
      */
-    @Nonnull
-    private Locale locale;
+    private Locale currentLocale;
 
-    /**
-     * The storage of the localized messages. Holds the key for the string and
-     * the localized full message.
-     */
-    @Nonnull
-    private ResourceBundle messages;
+    @Nonnull private final SecureResourceBundle messagesResourceBundle;
+    @Nonnull private final SecureResourceBundle loginResourceBundle;
+    @Nonnull private final SecureResourceBundle ingameResourceBundle;
 
-    /**
-     * Constructor of the game. Triggers the messages to load.
-     */
-    private Lang() {
-        locale = Locale.ENGLISH;
-
-        messages = ResourceBundle.getBundle(MESSAGE_BUNDLE, locale, Thread.currentThread().getContextClassLoader());
-        AnnotationProcessor.process(this);
+    Lang() {
+        messagesResourceBundle = new SecureResourceBundle();
+        loginResourceBundle = new SecureResourceBundle();
+        ingameResourceBundle = new SecureResourceBundle();
+        EventBus.INSTANCE.register(this);
     }
 
-    /**
-     * Get the singleton instance of this class.
-     *
-     * @return the instance of the class
-     */
-    @Nonnull
-    @Contract(pure = true)
-    public static Lang getInstance() {
-        return INSTANCE;
+    public @NotNull SecureResourceBundle getMessagesResourceBundle() {
+        return messagesResourceBundle;
     }
 
-    /**
-     * Get a localized message from a key.
-     *
-     * @param key The key of the localized message
-     * @return the localized message or the key with surrounding < > in case the
-     * key was not found in the storage
-     */
-    @Nonnull
-    @Contract(pure = true)
-    public static String getMsg(@Nonnull String key) {
-        return INSTANCE.getMessage(key);
+    public @NotNull SecureResourceBundle getLoginResourceBundle() {
+        return loginResourceBundle;
     }
 
-    @EventTopicSubscriber(topic = LOCALE_CFG)
-    public void onConfigChanged(String topic, @Nonnull ConfigChangedEvent event) {
-        recheckLocale(event.getConfig().getString(LOCALE_CFG));
+    public @NotNull SecureResourceBundle getIngameResourceBundle() {
+        return ingameResourceBundle;
     }
 
-    /**
-     * Get the current local settings.
-     *
-     * @return the local object of the chosen local settings
-     */
+    public void setLocale(@Nonnull Locale locale) {
+        if (locale.equals(currentLocale)) {
+            return;
+        }
+
+        currentLocale = locale;
+
+        if (!validLocales.contains(locale)) {
+            log.warn("Tried to load invalid locale %s, using default locale as a fallback".formatted(locale));
+            currentLocale = defaultLocale;
+        }
+
+        messagesResourceBundle.setResourceBundle(ResourceBundle.getBundle("messages", currentLocale, Lang.class.getClassLoader()));
+        loginResourceBundle.setResourceBundle(ResourceBundle.getBundle("login", currentLocale, Lang.class.getClassLoader()));
+        ingameResourceBundle.setResourceBundle(ResourceBundle.getBundle("ingame", currentLocale, Lang.class.getClassLoader()));
+    }
+
     @Nonnull
-    @Contract(pure = true)
     public Locale getLocale() {
-        return locale;
-    }
-
-    /**
-     * Get a localized message from a key.
-     *
-     * @param key The key of the localized message
-     * @return the localized message or the key with surrounding &lt; &gt; in
-     * case the key was not found in the storage
-     */
-    @Override
-    @Nonnull
-    @Contract(pure = true)
-    public String getMessage(@Nonnull String key) {
-        try {
-            return messages.getString(key).replace("\\n", "\n");
-        } catch (@Nonnull MissingResourceException e) {
-            log.warn("Failed searching translated version of: {}", key);
-            return '<' + key + '>';
+        if (currentLocale == null) {
+            log.warn("getLocale() was accessed before locale was set, returning defaultLocale.");
+            return defaultLocale;
         }
+
+        return defaultLocale;
     }
 
     /**
-     * Check if a key contains a message.
      *
-     * @param key the key that shall be checked
-     * @return true in case a message was found
-     */
-    @Contract(pure = true)
-    public boolean hasMsg(@Nonnull String key) {
-        try {
-            messages.getString(key);
-        } catch (@Nonnull MissingResourceException e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if the client is currently running with the English language.
-     *
-     * @return true if the language is set to English
-     */
-    @Contract(pure = true)
-    public boolean isEnglish() {
-        return locale.equals(Locale.ENGLISH);
-    }
-
-    /**
-     * Check if the client is currently running with the German language.
-     *
-     * @return true if the language is set to German
-     */
-    @Contract(pure = true)
-    public boolean isGerman() {
-        return locale.equals(Locale.GERMAN);
-    }
-
-    /**
      * Check if the language settings are still correct and reload the messages if needed.
      */
-    public void recheckLocale(@Nullable String key) {
-        if (LOCALE_CFG_GERMAN.equals(key)) {
-            if (locale.equals(Locale.GERMAN)) {
-                return;
-            }
-            locale = Locale.GERMAN;
-        } else {
-            if (locale.equals(Locale.ENGLISH)) {
-                return;
-            }
-            locale = Locale.ENGLISH;
+    @Subscribe
+    public void onOptionsChanged(@Nonnull ConfigChangedEvent event) {
+        if (!event.getKey().equals(CONFIG_KEY_LOCALIZATION)) {
+            return;
         }
 
-        messages = ResourceBundle.getBundle(MESSAGE_BUNDLE, locale, Lang.class.getClassLoader());
+        Locale locale = new Locale(event.getKey());
+        setLocale(locale);
+
+        EventBus.INSTANCE.post(new LocalizationChangedEvent());
     }
 }

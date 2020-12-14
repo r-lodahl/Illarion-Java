@@ -35,6 +35,7 @@ import org.illarion.engine.State;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Locale;
 
 /**
  * This is the screen controller that takes care for the logic behind the character selection screen.
@@ -100,7 +101,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
         this.nifty = nifty;
         this.screen = screen;
 
-        nifty.setLocale(Lang.getInstance().getLocale());
+        nifty.setLocale(Lang.INSTANCE.getLocale());
         listBox = (ListBox<String>) screen.findNiftyControl("myListBox", ListBox.class);
         statusLabel = screen.findNiftyControl("statusText", Label.class);
         statusLabel.setHeight(SizeValue.px(20));
@@ -118,7 +119,6 @@ public final class CharScreenController implements ScreenController, KeyInputHan
      * @param topic the event topic
      * @param event the actual event data
      */
-    @EventTopicSubscriber(topic = Lang.LOCALE_CFG)
     public void onConfigChanged(String topic, ConfigChangedEvent event) {
         showLanguageChangedPopup = true;
     }
@@ -134,7 +134,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
         }
         if (showLanguageChangedPopup) {
             nifty.showPopup(screen, popupLanguageChange.getId(), null);
-            if (Lang.getInstance().isGerman()) {
+            if (Lang.INSTANCE.getLocale().equals(Locale.GERMAN)) {
                 popupLanguageChange.findElementById("#english").hideWithoutEffect();
             } else {
                 popupLanguageChange.findElementById("#german").hideWithoutEffect();
@@ -151,7 +151,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
     public void fillMyListBox() {
         if (listBox != null) {
             listBox.clear();
-            Login.getInstance().getCharacterList().stream().filter(entry -> entry.getStatus() == 0).forEach(entry -> listBox.addItem(entry.getName()));
+            Login.INSTANCE.getCharacterList().stream().filter(entry -> entry.getStatus() == 0).forEach(entry -> listBox.addItem(entry.getName()));
         }
     }
 
@@ -165,7 +165,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
             return;
         }
 
-        Login.getInstance().setLoginCharacter(listBox.getSelection().get(0));
+        //Login.INSTANCE.setLoginCharacter(listBox.getSelection().get(0));
         stateManager.enterState(State.PLAYING);
     }
 
