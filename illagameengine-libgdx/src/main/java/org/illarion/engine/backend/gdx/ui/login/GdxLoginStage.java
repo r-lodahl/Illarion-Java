@@ -8,9 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import illarion.common.config.ConfigReader;
 import org.illarion.engine.backend.gdx.GdxRenderable;
+import org.illarion.engine.graphic.ResolutionSet;
 import org.illarion.engine.ui.*;
-
 import java.util.function.Consumer;
 
 public class GdxLoginStage implements LoginStage, GdxRenderable {
@@ -24,7 +25,7 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
 
     private Table activeTable;
 
-    public GdxLoginStage(Skin skin) {
+    public GdxLoginStage(Skin skin, NullSecureResourceBundle resourceBundle) {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -36,11 +37,11 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
         root.fill();
         stage.addActor(root);
 
-        login = new LoginTable(skin);
-        credits = new CreditsTable(skin);
-        options = new OptionsTable(skin);
-        characterSelection = new CharacterSelectTable(skin);
-        characterCreation = new CharacterCreationTable(skin);
+        login = new LoginTable(skin, resourceBundle);
+        credits = new CreditsTable(skin, resourceBundle);
+        options = new OptionsTable(skin, resourceBundle);
+        characterSelection = new CharacterSelectTable(skin, resourceBundle);
+        characterCreation = new CharacterCreationTable(skin, resourceBundle);
         login.setOnOptionsCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -53,49 +54,16 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
                 activateTable(credits);
             }
         });
-        login.setOnExitCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-        login.setOnLoginCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                activateTable(characterSelection);
-            }
-        });
-
-        characterSelection.setOnLogoutCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                activateTable(login);
-            }
-        });
         characterSelection.setOnCreateCharacterCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(characterCreation);
             }
         });
-
         characterCreation.setOnCancelCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(characterSelection);
-            }
-        });
-        characterCreation.setOnFinishCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                activateTable(characterSelection);
-            }
-        });
-
-        options.setOnCancelCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                activateTable(login);
             }
         });
         options.setOnCancelCallback(new ClickListener() {
@@ -135,8 +103,8 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setOptionsData(OptionsData data) {
-        //options.setOptions(OptionsData);
+    public void setOptionsData(ConfigReader configReader, ResolutionSet[] resolutionSets) {
+        options.setOptions(configReader, resolutionSets);
     }
 
     @Override

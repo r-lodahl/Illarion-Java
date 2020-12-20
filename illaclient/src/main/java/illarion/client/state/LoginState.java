@@ -30,7 +30,7 @@ public class LoginState implements GameState {
 
     @Override
     public void create(BackendBinding binding) {
-        loginScreenController = new LoginScreenController(binding.getSounds(), binding.getAssets(), binding.getGui());
+        loginScreenController = new LoginScreenController(binding);
     }
 
     @Override

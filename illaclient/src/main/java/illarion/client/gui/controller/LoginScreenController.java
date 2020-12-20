@@ -17,10 +17,11 @@ package illarion.client.gui.controller;
 
 import illarion.client.IllaClient;
 import illarion.client.Login;
-import illarion.client.Servers;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
+import org.illarion.engine.BackendBinding;
+import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
@@ -42,13 +43,15 @@ public final class LoginScreenController {
     private final UserInterface gui;
     private final Sounds sounds;
     private final Assets assets;
+    private final Window window;
 
     private LoginStage stage;
 
-    public LoginScreenController(Sounds sounds, Assets assets, UserInterface gui) {
-        this.gui = gui;
-        this.sounds = sounds;
-        this.assets = assets;
+    public LoginScreenController(BackendBinding binding) {
+        this.gui = binding.getGui();
+        this.sounds = binding.getSounds();
+        this.assets = binding.getAssets();
+        this.window = binding.getWindow();
     }
 
     public void onStartStage() {
@@ -74,7 +77,15 @@ public final class LoginScreenController {
         stage = gui.activateLoginStage(Lang.INSTANCE.getLoginResourceBundle());
 
         stage.setLoginData(loginData, serverKey);
+        stage.setExitListener(IllaClient::exit);
+        stage.setLoginListener(login::login);
+        stage.setOptionsData(IllaClient.getConfig(), window.getFullscreenResolutions());
+        //stage.setOptionsListener();
     }
+
+
+
+
 
     public void onEndStage() {
         gui.removeLoginStage();

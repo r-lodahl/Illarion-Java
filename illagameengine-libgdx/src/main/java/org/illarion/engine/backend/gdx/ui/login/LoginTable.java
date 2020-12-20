@@ -7,7 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import org.illarion.engine.ui.LoginData;
+import org.illarion.engine.ui.NullSecureResourceBundle;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class LoginTable extends Table {
@@ -19,7 +21,11 @@ public class LoginTable extends Table {
     private LoginData[] loginData;
     private int currentServerIndex;
 
-    public LoginTable(Skin skin) {
+    @Nonnull NullSecureResourceBundle resourceBundle;
+
+    public LoginTable(Skin skin, NullSecureResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+
         setFillParent(true);
 
         /* Actor Setup */
@@ -33,12 +39,12 @@ public class LoginTable extends Table {
         passwordField.setPasswordCharacter('*');
         savePasswordCheckbox = new CheckBox("", skin);
 
-        loginButton = new TextButton("Login", skin);
+        loginButton = new TextButton(resourceBundle.getLocalizedString("login"), skin);
         loginButton.pad(20f, 70f, 20f, 70f);
 
-        optionsButton = new TextButton("Options", skin);
-        creditsButton = new TextButton("Credits", skin);
-        exitButton = new TextButton("Exit", skin);
+        optionsButton = new TextButton(resourceBundle.getLocalizedString("options"), skin);
+        creditsButton = new TextButton(resourceBundle.getLocalizedString("credits"), skin);
+        exitButton = new TextButton(resourceBundle.getLocalizedString("exit"), skin);
 
         /* Internal Listener Setup */
         serverSelection.addListener(new ChangeListener() {
@@ -61,19 +67,19 @@ public class LoginTable extends Table {
         loginEditFieldsTable.columnDefaults(1).width(180);
 
         loginEditFieldsTable.row();
-        loginEditFieldsTable.add(new Label("Server:", skin));
+        loginEditFieldsTable.add(new Label(resourceBundle.getLocalizedString("server"), skin));
         loginEditFieldsTable.add(serverSelection);
 
         loginEditFieldsTable.row();
-        loginEditFieldsTable.add(new Label("Accout name:", skin));
+        loginEditFieldsTable.add(new Label(resourceBundle.getLocalizedString("account"), skin));
         loginEditFieldsTable.add(accountNameField);
 
         loginEditFieldsTable.row();
-        loginEditFieldsTable.add(new Label("Password:", skin));
+        loginEditFieldsTable.add(new Label(resourceBundle.getLocalizedString("password"), skin));
         loginEditFieldsTable.add(passwordField);
 
         loginEditFieldsTable.row();
-        loginEditFieldsTable.add(new Label("Save password", skin));
+        loginEditFieldsTable.add(new Label(resourceBundle.getLocalizedString("savePassword"), skin));
         loginEditFieldsTable.add(savePasswordCheckbox).width(20f).padLeft(-4f);
         add(loginEditFieldsTable);
 
@@ -94,7 +100,7 @@ public class LoginTable extends Table {
 
     public void setLoginData(LoginData[] data, int initialServer) {
         loginData = data;
-        serverSelection.setItems(Arrays.stream(data).map(x -> x.server).toArray(String[]::new));
+        serverSelection.setItems(Arrays.stream(data).map(x -> resourceBundle.getLocalizedString(x.server)).toArray(String[]::new));
 
         changeCurrentServer(initialServer);
     }

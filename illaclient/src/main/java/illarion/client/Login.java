@@ -279,7 +279,7 @@ public enum Login {
      *
      * @return {@code true} if the login command was SENT successfully
      */
-    public boolean login() {
+    public boolean login(LoginData loginData) {
         NetComm netComm = World.getNet();
         if (!netComm.connect()) {
             return false;
