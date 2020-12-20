@@ -22,6 +22,7 @@ import illarion.download.cleanup.Cleaner;
 import illarion.download.launcher.JavaLauncher;
 import illarion.download.maven.MavenDownloader;
 import illarion.download.maven.MavenDownloaderCallback;
+import illarion.download.update.Updater;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -387,8 +388,10 @@ public class MainViewController extends AbstractController implements MavenDownl
             while (attempt < 10) {
                 attempt++;
                 try {
-                    MavenDownloader downloader = new MavenDownloader(useSnapshots, attempt, cfg);
-                    downloader.downloadArtifact(groupId, artifactId, this);
+                    Updater updater = new Updater();
+                    updater.updateClient();
+                    //MavenDownloader downloader = new MavenDownloader(useSnapshots, attempt, cfg);
+                    //downloader.downloadArtifact(groupId, artifactId, this);
                 } catch (@Nonnull Exception e) {
                     //noinspection ThrowableResultOfMethodCallIgnored
                     if (getInnerExceptionOfType(SocketTimeoutException.class, e) != null) {
