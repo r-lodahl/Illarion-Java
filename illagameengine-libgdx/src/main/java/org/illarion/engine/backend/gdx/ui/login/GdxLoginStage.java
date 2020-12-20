@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import illarion.common.config.ConfigReader;
 import org.illarion.engine.backend.gdx.GdxRenderable;
-import org.illarion.engine.graphic.ResolutionSet;
+import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
 import java.util.function.Consumer;
 
@@ -103,8 +103,8 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setOptionsData(ConfigReader configReader, ResolutionSet[] resolutionSets) {
-        options.setOptions(configReader, resolutionSets);
+    public void setOptionsData(ConfigReader configReader, ResolutionManager resolutionManager) {
+        options.setOptions(configReader, resolutionManager);
     }
 
     @Override

@@ -26,16 +26,19 @@ buildscript {
     }
     dependencies {
         classpath group: 'de.undercouch', name: 'gradle-download-task', version: '4.1.1'
-        classpath group: 'com.install4j', name: 'install4j-gradle', version: '8.0.7'
+        classpath group: 'com.install4j', name: 'install4j-gradle', version: '8.0.10'
     }
 }
 
 wrapper {
-    gradleVersion = '6.7'
+    gradleVersion = '6.8'
 }
 
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'java'
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
 
     if (project.hasProperty('targetRepo')) {
         ext.mavenRepo = "file://$targetRepo"
@@ -109,10 +112,6 @@ allprojects {
 
 configure(subprojects) {
     apply plugin: 'java-library'
-
-    apply plugin: 'java'
-    sourceCompatibility = JavaVersion.VERSION_15
-    targetCompatibility = JavaVersion.VERSION_15
 
     compileJava {
         options.incremental = true

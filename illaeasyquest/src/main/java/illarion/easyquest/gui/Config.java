@@ -238,7 +238,7 @@ public final class Config {
       The file that holds the configuration.
      */
         Path configFile = folder.resolve("easyquesteditor.xcfgz");
-        cfg = new ConfigSystem(configFile);
+        cfg = new ConfigSystem(configFile, getClass().getResourceAsStream("/default-config.properties"));
 
         cfg.setDefault(lastFilesKey, "");
         cfg.setDefault(easyQuestFolder, Paths.get(System.getProperty("user.home")));

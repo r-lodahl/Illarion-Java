@@ -36,6 +36,11 @@ public final class ResolutionManager {
         }
 
         @Override
+        public String toString() {
+            return width + " x " + height;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -55,11 +60,11 @@ public final class ResolutionManager {
     }
 
     private final class ResolutionOptions {
-        public final List<Integer> bitsPerPoints, refreshRates;
+        public final Set<Integer> bitsPerPoints, refreshRates;
 
         public ResolutionOptions() {
-            this.bitsPerPoints = new ArrayList<>();
-            this.refreshRates = new ArrayList<>();
+            this.bitsPerPoints = new HashSet<>();
+            this.refreshRates = new HashSet<>();
         }
     }
 

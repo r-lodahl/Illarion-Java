@@ -72,17 +72,17 @@ public class GuiModel {
     }
 
     @Nonnull
-    private static Config loadConfig() {
+    private Config loadConfig() {
         DirectoryManager dm = DirectoryManager.getInstance();
-        ConfigSystem cfg = new ConfigSystem(dm.resolveFile(Directory.User, "download.xcfgz"));
+        ConfigSystem cfg = new ConfigSystem(dm.resolveFile(Directory.User, "download.xcfgz"), getClass().getResourceAsStream("/default-config.properties"));
         cfg.setDefault("channelClient", 0);
         cfg.setDefault("channelEasyNpc", 1);
         cfg.setDefault("channelEasyQuest", 1);
         cfg.setDefault("channelMapEditor", 1);
-        cfg.setDefault("launchAggressive", false);
-        cfg.setDefault("stayOpenAfterLaunch", true);
-        cfg.setDefault("verifyArtifactChecksum", false);
-        cfg.set("launchAggressive", false);
+        //cfg.setDefault("launchAggressive", false);
+        //cfg.setDefault("stayOpenAfterLaunch", true);
+        //cfg.setDefault("verifyArtifactChecksum", false);
+        //cfg.set("launchAggressive", false);
         return cfg;
     }
 }

@@ -100,11 +100,11 @@ public class PlayingState implements GameState {
         //nifty.gotoScreen("gamescreen");
         inputReceiver.setEnabled(true);
 
-        if (Login.INSTANCE.login()) {
+        /*if (Login.INSTANCE.login()) {
             MapDimensions.getInstance().reportScreenSize(binding.getWindow().getWidth(), binding.getWindow().getHeight(), true);
         } else {
             EventBus.INSTANCE.post(new ServerNotFoundEvent());
-        }
+        }*/
     }
 
     @Override

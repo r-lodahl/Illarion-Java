@@ -229,13 +229,13 @@ public final class MapEditorConfig {
      */
     public void init() {
         Path userDir = checkFolder();
-        configSystem = new ConfigSystem(userDir.resolve("MapEdit.xcfgz"));
+        configSystem = new ConfigSystem(userDir.resolve("MapEdit.xcfgz"), getClass().getResourceAsStream("/default-config.properties"));
 
         configSystem.setDefault(MAPEDIT_FOLDER, Paths.get(System.getProperty("user.home")));
-        configSystem.setDefault(USE_WINDOW_DECO, true);
+        //configSystem.setDefault(USE_WINDOW_DECO, true);
         configSystem.setDefault(USED_LOOK_AND_FEEL, DEFAULT_LOOK_AND_FEEL);
         configSystem.setDefault(USED_LANGUAGE, getDefaultLanguageString());
-        configSystem.setDefault(SHOW_MAP_POSITION, false);
+        //configSystem.setDefault(SHOW_MAP_POSITION, false);
         configSystem.setDefault(WINDOW_HEIGHT, 700);
         configSystem.setDefault(WINDOW_WIDTH, 1000);
     }

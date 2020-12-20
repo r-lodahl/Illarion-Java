@@ -3,6 +3,7 @@ package org.illarion.engine.backend.gdx.ui.login;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class CharacterCreationTable extends Table {
     private final TextButton cancelButton, finishButton, nextButton, previousButton;
     private final Container<Table> dynamicContainer;
 
-    public CharacterCreationTable(Skin skin) {
+    public CharacterCreationTable(Skin skin, NullSecureResourceBundle resourceBundle) {
         characterCreationSequence = new ArrayList<>(3);
         characterCreationSequence.add(createStepOne(skin));
         characterCreationSequence.add(createStepTwo(skin));

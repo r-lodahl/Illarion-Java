@@ -1,11 +1,14 @@
 package org.illarion.engine.ui;
 
+import illarion.common.config.ConfigReader;
+import org.illarion.engine.graphic.ResolutionManager;
+
 import java.util.function.Consumer;
 
 public interface LoginStage {
     void setLoginData(LoginData[] data, int initialServer);
     void setCharacterData(CharacterSelectionData[] data);
-    void setOptionsData(OptionsData data);
+    void setOptionsData(ConfigReader configReader, ResolutionManager resolutionManager);
 
     void setExitListener(Action event);
     void setLoginListener(Consumer<LoginData> event);

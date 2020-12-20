@@ -193,8 +193,21 @@ public final class IllaClient {
      * Prepares and sets up the entire client
      */
     private void init() {
-        prepareConfig();
-        assert config != null;
+        config = new ConfigSystem(getFile("Illarion.cfg"),
+                getClass().getResourceAsStream("/default-config.properties"));
+
+        //TODO: Set default for RESOLUTION ASAP
+
+        config.setDefault(
+                Lang.INSTANCE.CONFIG_KEY_LOCALIZATION,
+                Locale.getDefault(Category.DISPLAY).getLanguage().equals(Locale.GERMAN.getLanguage())
+                        ? Locale.GERMAN.toString()
+                        : Locale.ENGLISH.toString());
+
+        Crypto crypt = new Crypto();
+        crypt.loadPublicKey();
+        TableLoader.setCrypto(crypt);
+
         try {
             initLogfiles();
         } catch (IOException e) {
@@ -241,26 +254,6 @@ public final class IllaClient {
             LOGGER.error("Exception while launching game.", e);
             exit();
         }
-    }
-
-    /**
-     * Prepare the configuration system and the decryption system.
-     */
-    private void prepareConfig() {
-        config = new ConfigSystem(getFile("Illarion.cfg"),
-        getClass().getResourceAsStream("/default-config.properties"));
-
-        //TODO: Set default for RESOLUTION ASAP
-
-        config.setDefault(
-                Lang.INSTANCE.CONFIG_KEY_LOCALIZATION,
-                Locale.getDefault(Category.DISPLAY).equals(Locale.GERMAN)
-                        ? Locale.GERMAN.toString()
-                        : Locale.ENGLISH.toString());
-
-        Crypto crypt = new Crypto();
-        crypt.loadPublicKey();
-        TableLoader.setCrypto(crypt);
     }
 
     /**

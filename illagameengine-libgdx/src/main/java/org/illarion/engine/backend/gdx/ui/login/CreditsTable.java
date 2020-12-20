@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class CreditsTable extends Table {
     private final static float TIME_PER_CREDIT = 1f;
     private float timeWaited;
 
-    public CreditsTable(Skin skinIn) {
+    public CreditsTable(Skin skinIn, NullSecureResourceBundle resourceBundle) {
         skin = skinIn;
         setFillParent(true);
 

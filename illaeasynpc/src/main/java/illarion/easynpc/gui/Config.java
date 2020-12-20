@@ -702,7 +702,7 @@ public final class Config {
         Path folder = checkFolder();
 
         Path configFile = folder.resolve("easynpceditor.xcfgz");
-        cfg = new ConfigSystem(configFile);
+        cfg = new ConfigSystem(configFile, getClass().getResourceAsStream("/default-editor-config.properties"));
 
         cfg.setDefault(LAST_FILES_KEY, "");
         cfg.setDefault(EASY_NPC_FOLDER, Paths.get(System.getProperty("user.home")));
@@ -717,9 +717,9 @@ public final class Config {
         cfg.setDefault(OPEN_FILES, "");
         cfg.setDefault(SPLIT_STATE, 0.75d);
         cfg.setDefault(UNDO_COUNT_KEY, 100);
-        cfg.setDefault(USE_SYNTAX_HIGHLIGHT, true);
-        cfg.setDefault(USE_WINDOW_DECO, true);
-        cfg.setDefault(AUTO_BUILD_KEY, true);
+        //cfg.setDefault(USE_SYNTAX_HIGHLIGHT, true);
+        //cfg.setDefault(USE_WINDOW_DECO, true);
+        //cfg.setDefault(AUTO_BUILD_KEY, true);
         cfg.setDefault(CrashReporter.CFG_KEY, CrashReporter.MODE_ASK);
 
         // init values

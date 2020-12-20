@@ -79,7 +79,7 @@ public final class LoginScreenController {
         stage.setLoginData(loginData, serverKey);
         stage.setExitListener(IllaClient::exit);
         stage.setLoginListener(login::login);
-        stage.setOptionsData(IllaClient.getConfig(), window.getFullscreenResolutions());
+        stage.setOptionsData(IllaClient.getConfig(), window.getResolutionManager());
         //stage.setOptionsListener();
     }
 
