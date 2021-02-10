@@ -15,19 +15,13 @@
  */
 package org.illarion.engine.graphic;
 
-import org.illarion.engine.Window;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 
 /**
  * This class is used to supply and compare possible display resolutions.
  */
 public final class ResolutionManager {
-    public final class WindowSize {
+    public static final class WindowSize {
         public final int height, width;
 
         private WindowSize(int width, int height) {
@@ -59,7 +53,7 @@ public final class ResolutionManager {
         }
     }
 
-    private final class ResolutionOptions {
+    public static final class ResolutionOptions {
         public final Set<Integer> bitsPerPoints, refreshRates;
 
         public ResolutionOptions() {
@@ -68,13 +62,58 @@ public final class ResolutionManager {
         }
     }
 
-    private final Map<WindowSize, ResolutionOptions> resolutions;
+    public static final class Device {
+        public final int virtualX, virtualY;
+        public final String name;
 
-    public ResolutionManager() {
-        this.resolutions = new HashMap<>(20);
+        public Device(int virtualX, int virtualY, String name) {
+            this.virtualX = virtualX;
+            this.virtualY = virtualY;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Device device = (Device) o;
+
+            if (virtualX != device.virtualX) return false;
+            if (virtualY != device.virtualY) return false;
+            return name.equals(device.name);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = virtualX;
+            result = 31 * result + virtualY;
+            result = 31 * result + name.hashCode();
+            return result;
+        }
     }
 
-    public void addResolution(int width, int height, int bitsPerPoint, int refreshRate) {
+    private final Map<Device, Map<WindowSize, ResolutionOptions>> resolutionsPerDevice;
+
+    public ResolutionManager() {
+        this.resolutionsPerDevice = new HashMap<>(2);
+    }
+
+    public void addResolution(Device device, int width, int height, int bitsPerPoint, int refreshRate) {
+        if (width < 720 || height < 720) {
+            return; // Tiny resolutions are unsupported
+        }
+
+        if (!resolutionsPerDevice.containsKey(device)) {
+            resolutionsPerDevice.put(device, new HashMap<>(10));
+        }
+        var resolutions = resolutionsPerDevice.get(device);
+
         WindowSize windowSize = new WindowSize(width, height);
 
         if (!resolutions.containsKey(windowSize)) {
@@ -86,15 +125,33 @@ public final class ResolutionManager {
         options.refreshRates.add(refreshRate);
     }
 
-    public WindowSize[] getResolutions() {
-        return resolutions.keySet().toArray(WindowSize[]::new);
+    public Device[] getDevices() {
+        if (resolutionsPerDevice.isEmpty()) {
+            // LOG WARNING, There has to be at least 1 device!
+        }
+
+        return resolutionsPerDevice.keySet().toArray(Device[]::new);
     }
 
-    public int[] getRefreshRates(WindowSize windowSize) {
-        return resolutions.get(windowSize).refreshRates.stream().mapToInt(x -> x).toArray();
+    public WindowSize[] getResolutions(Device device) {
+        if (!resolutionsPerDevice.containsKey(device)) {
+            return new WindowSize[0];
+        }
+
+        return resolutionsPerDevice.get(device).keySet().toArray(WindowSize[]::new);
     }
 
-    public int[] getBitsPerPoints(WindowSize windowSize) {
-        return resolutions.get(windowSize).bitsPerPoints.stream().mapToInt(x -> x).toArray();
+    public Optional<ResolutionOptions> getFullscreenOptions(Device device, WindowSize windowSize) {
+        if (!resolutionsPerDevice.containsKey(device)) {
+            return Optional.empty();
+        }
+
+        var resolutions = resolutionsPerDevice.get(device);
+
+        if (!resolutions.containsKey(windowSize)) {
+            return Optional.empty();
+        }
+
+        return Optional.of(resolutions.get(windowSize));
     }
 }

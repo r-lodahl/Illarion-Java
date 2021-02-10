@@ -1,10 +1,12 @@
 package org.illarion.engine.backend.gdx.ui.login;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import illarion.common.config.ConfigReader;
@@ -13,10 +15,13 @@ import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 public class OptionsTable extends Table {
+    private ResolutionManager resolutionManager;
+    private ConfigReader config;
+
+    /* UI-Elements */
+
     private final TextButton saveSettingsButton, cancelSettingsButton;
 
     private final CheckBox wasdWalkingCheckbox, disableChatAfterSendingCheckbox, showQuestsOnMapCheckbox,
@@ -26,6 +31,8 @@ public class OptionsTable extends Table {
     private final SelectBox<String> sendErrorReportsSelection, translationProviderSelection, translationDirectionSelection;
 
     private final SelectBox<Integer> refreshRateSelection, bitsPerPointSelection;
+
+    private final SelectBox<ResolutionManager.Device> deviceSelection;
 
     private final SelectBox<ResolutionManager.WindowSize> resolutionSelection;
 
@@ -65,6 +72,7 @@ public class OptionsTable extends Table {
         resolutionSelection = new SelectBox<>(skin);
         refreshRateSelection = new SelectBox<>(skin);
         bitsPerPointSelection = new SelectBox<>(skin);
+        deviceSelection = new SelectBox<>(skin);
 
         soundEffectVolume = new Slider(0f, 100f, 1f, false, skin);
         musicVolume = new Slider(0f, 100f, 1f, false, skin);
@@ -123,17 +131,20 @@ public class OptionsTable extends Table {
         graphicsTab.columnDefaults(0).align(Align.left).width(200f);
         graphicsTab.columnDefaults(1).align(Align.right);
         graphicsTab.row();
+        graphicsTab.add(new Label(resourceBundle.getLocalizedString("fullscreen"), skin));
+        graphicsTab.add(fullScreenCheckbox);
+        graphicsTab.row();
+        graphicsTab.add(new Label(resourceBundle.getLocalizedString("device"), skin));
+        graphicsTab.add(deviceSelection).width(200f);
+        graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("resolution"), skin));
         graphicsTab.add(resolutionSelection).width(200f);
         graphicsTab.row();
-        graphicsTab.add(new Label(resourceBundle.getLocalizedString("resolution"), skin));
+        graphicsTab.add(new Label(resourceBundle.getLocalizedString("refreshRate"), skin));
         graphicsTab.add(refreshRateSelection).width(200f);
         graphicsTab.row();
-        graphicsTab.add(new Label(resourceBundle.getLocalizedString("resolution"), skin));
+        graphicsTab.add(new Label(resourceBundle.getLocalizedString("bitsPerPoint"), skin));
         graphicsTab.add(bitsPerPointSelection).width(200f);
-        graphicsTab.row();
-        graphicsTab.add(new Label(resourceBundle.getLocalizedString("fullscreen"), skin));
-        graphicsTab.add(fullScreenCheckbox);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("showFps"), skin));
         graphicsTab.add(showFpsCheckbox);
@@ -235,51 +246,28 @@ public class OptionsTable extends Table {
     }
 
     public void setOptions(ConfigReader config, ResolutionManager resolutionManager) {
-        boolean isFullscreen = config.getBoolean("fullscreen");
-        int fullscreenWidth = config.getInteger("fullscreenWidth");
-        int fullscreenHeight = config.getInteger("fullscreenHeight");
-        int fullscreenRefreshRate = config.getInteger("fullscreenRefreshRate");
-        int fullscreenBitsPerPoints = config.getInteger("fullscreenBitsPerPoint");
-        int windowWidth = config.getInteger("windowWidth");
-        int windowHeight = config.getInteger("windowHeight");
+        this.resolutionManager = resolutionManager;
+        this.config = config;
 
-        ResolutionManager.WindowSize[] resolutions = resolutionManager.getResolutions();
-        resolutionSelection.setItems(resolutions);
+        int deviceVirtualX = config.getInteger("deviceVirtualX");
+        int deviceVirtualY = config.getInteger("deviceVirtualY");
+        String deviceName = config.getString("deviceName");
 
-        var currentResolution= Arrays.stream(resolutions)
-                .filter(x -> isFullscreen && x.width == fullscreenWidth && x.height == fullscreenHeight ||
-                        !isFullscreen && x.width == windowWidth && x.height == windowHeight)
+        var devices = resolutionManager.getDevices();
+        var currentDevice = Arrays.stream(devices)
+                .filter(x -> x.virtualY == deviceVirtualY && x.virtualX == deviceVirtualX && x.name.equals(deviceName))
                 .findFirst();
 
-        if (currentResolution.isPresent()) {
-            var resolution = currentResolution.get();
-            var refreshRates = ArrayUtils.toObject(resolutionManager.getRefreshRates(resolution));
-            var bitsPerPoints = ArrayUtils.toObject(resolutionManager.getBitsPerPoints(resolution));
+        var usedDevice = currentDevice.orElse(devices[0]);
 
-            resolutionSelection.setSelectedIndex(ArrayUtils.indexOf(resolutions, resolution));
+        deviceSelection.setItems(devices);
+        deviceSelection.setSelectedIndex(ArrayUtils.indexOf(devices, usedDevice));
 
-            refreshRateSelection.setItems(refreshRates);
-            refreshRateSelection.setSelectedIndex(
-                    Arrays.stream(refreshRates)
-                            .filter(x -> x == fullscreenRefreshRate)
-                            .findFirst()
-                            .map(x -> ArrayUtils.indexOf(refreshRates, x))
-                            .orElse(0));
+        updateResolutions(usedDevice);
+        updateCurrentlySelectedResolution();
+        updateFullscreenOptions(deviceSelection.getSelected(), resolutionSelection.getSelected());
 
-            bitsPerPointSelection.setItems(bitsPerPoints);
-            bitsPerPointSelection.setSelectedIndex(
-                    Arrays.stream(bitsPerPoints)
-                            .filter(x -> x == fullscreenBitsPerPoints)
-                            .findFirst()
-                            .map(x -> ArrayUtils.indexOf(bitsPerPoints, x))
-                            .orElse(0));
-        } else {
-            resolutionSelection.setSelectedIndex(0);
-            refreshRateSelection.setDisabled(true);
-            bitsPerPointSelection.setDisabled(true);
-        }
-
-        wasdWalkingCheckbox.setChecked(isFullscreen);
+        wasdWalkingCheckbox.setChecked(config.getBoolean("wasdWalking"));
         disableChatAfterSendingCheckbox.setChecked(config.getBoolean("disableChatAfterSending"));
         showQuestsOnMapCheckbox.setChecked(config.getBoolean("showQuestsOnGameMap"));
         showQuestsOnMiniMapCheckbox.setChecked(config.getBoolean("showQuestsOnMiniMap"));
@@ -300,9 +288,103 @@ public class OptionsTable extends Table {
         userDefinedServerAddress.setText(config.getString("customServer.domain"));
         userDefinedServerPort.setText(config.getString("customServer.clientVersion"));
         userDefinedClientVersion.setText(config.getString("customServer.port"));
+
+        // configure listener
+        deviceSelection.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                updateResolutions(deviceSelection.getSelected());
+                updateCurrentlySelectedResolution();
+                updateFullscreenOptions(deviceSelection.getSelected(), resolutionSelection.getSelected());
+            }
+        });
+
+        resolutionSelection.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                updateFullscreenOptions(deviceSelection.getSelected(), resolutionSelection.getSelected());
+            }
+        });
+
+        fullScreenCheckbox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setFullscreenOptionsActive(fullScreenCheckbox.isChecked());
+                updateCurrentlySelectedResolution();
+                updateFullscreenOptions(deviceSelection.getSelected(), resolutionSelection.getSelected());
+            }
+        });
+
     }
 
+    private void updateResolutions(ResolutionManager.Device device) {
+        var resolutions = resolutionManager.getResolutions(device);
 
+        Arrays.sort(resolutions, (x, y) -> {
+            int comparison = Integer.compare(x.width, y.width);
+
+            if (comparison == 0) {
+                return Integer.compare(x.height, y.height);
+            }
+
+            return comparison;
+        });
+
+        resolutionSelection.setItems(resolutions);
+    }
+
+    private void updateCurrentlySelectedResolution() {
+        boolean isFullscreen = config.getBoolean("fullscreen");
+        int fullscreenWidth = config.getInteger("fullscreenWidth");
+        int fullscreenHeight = config.getInteger("fullscreenHeight");
+        int windowWidth = config.getInteger("windowWidth");
+        int windowHeight = config.getInteger("windowHeight");
+
+        var resolutions = resolutionSelection.getItems().toArray(ResolutionManager.WindowSize.class);
+
+        var currentResolutionIndex= Arrays.stream(resolutions)
+                .filter(x -> isFullscreen && x.width == fullscreenWidth && x.height == fullscreenHeight ||
+                        !isFullscreen && x.width == windowWidth && x.height == windowHeight)
+                .findFirst()
+                .map(x -> ArrayUtils.indexOf(resolutions, x))
+                .orElse(0);
+
+        resolutionSelection.setSelectedIndex(currentResolutionIndex);
+    }
+
+    private void updateFullscreenOptions(ResolutionManager.Device device, ResolutionManager.WindowSize resolution) {
+        var fullscreenResolutionOptions = resolutionManager.getFullscreenOptions(device, resolution);
+        int fullscreenRefreshRate = config.getInteger("fullscreenRefreshRate");
+        int fullscreenBitsPerPoints = config.getInteger("fullscreenBitsPerPoint");
+
+        var bitsPerPoints = fullscreenResolutionOptions
+                .map(x -> x.bitsPerPoints.toArray(Integer[]::new))
+                .orElse(new Integer[0]);
+        var refreshRates = fullscreenResolutionOptions
+                .map(x -> x.refreshRates.toArray(Integer[]::new))
+                .orElse(new Integer[0]);
+
+        refreshRateSelection.setItems(refreshRates);
+        refreshRateSelection.setSelectedIndex(
+                Arrays.stream(refreshRates)
+                        .filter(x -> x == fullscreenRefreshRate)
+                        .findFirst()
+                        .map(x -> ArrayUtils.indexOf(refreshRates, x))
+                        .orElse(0));
+
+        bitsPerPointSelection.setItems(bitsPerPoints);
+        bitsPerPointSelection.setSelectedIndex(
+                Arrays.stream(bitsPerPoints)
+                        .filter(x -> x == fullscreenBitsPerPoints)
+                        .findFirst()
+                        .map(x -> ArrayUtils.indexOf(bitsPerPoints, x))
+                        .orElse(0));
+    }
+
+    private void setFullscreenOptionsActive(boolean isActive) {
+        refreshRateSelection.setDisabled(!isActive);
+        bitsPerPointSelection.setDisabled(!isActive);
+    }
 
     public void setOnSaveCallback(ClickListener onClick) {
         saveSettingsButton.addListener(onClick);

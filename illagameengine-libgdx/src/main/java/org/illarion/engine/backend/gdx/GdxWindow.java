@@ -12,15 +12,19 @@ public class GdxWindow implements Window {
     public GdxWindow() {
         resolutionManager = new ResolutionManager();
 
-        Graphics.Monitor monitor = Lwjgl3ApplicationConfiguration.getPrimaryMonitor();
-        Graphics.DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes(monitor);
-        for (Graphics.DisplayMode displayMode : displayModes) {
-            resolutionManager.addResolution(
-                    displayMode.width,
-                    displayMode.height,
-                    displayMode.bitsPerPixel,
-                    displayMode.refreshRate
-            );
+        var monitors = Lwjgl3ApplicationConfiguration.getMonitors();
+        for (var monitor : monitors) {
+            var device = new ResolutionManager.Device(monitor.virtualX, monitor.virtualY, monitor.name);
+            var displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes(monitor);
+            for (var displayMode : displayModes) {
+                resolutionManager.addResolution(
+                        device,
+                        displayMode.width,
+                        displayMode.height,
+                        displayMode.bitsPerPixel,
+                        displayMode.refreshRate
+                );
+            }
         }
     }
 
