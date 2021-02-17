@@ -1,9 +1,8 @@
 package org.illarion.engine.backend.gdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import illarion.common.config.ConfigReader;
 import org.illarion.engine.backend.gdx.GdxRenderable;
-import org.illarion.engine.backend.gdx.ui.login.GdxLoginStage;
+import org.illarion.engine.backend.gdx.ui.login.GdxLoginController;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 import org.illarion.engine.ui.UserInterface;
@@ -15,7 +14,7 @@ public class GdxUserInterface implements UserInterface {
 
     private final Skin skin;
 
-    private GdxLoginStage loginStage;
+    private GdxLoginController loginStage;
     private GdxRenderable currentStage;
 
     public GdxUserInterface(Skin skin) {
@@ -25,7 +24,7 @@ public class GdxUserInterface implements UserInterface {
     @Override
     public LoginStage activateLoginStage(NullSecureResourceBundle resourceBundle) {
         if (loginStage == null) {
-            loginStage = new GdxLoginStage(skin, resourceBundle);
+            loginStage = new GdxLoginController(skin, resourceBundle);
         }
 
         currentStage = loginStage;

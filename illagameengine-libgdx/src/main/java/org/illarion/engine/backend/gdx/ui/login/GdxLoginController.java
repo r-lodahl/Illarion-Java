@@ -14,19 +14,18 @@ import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
 import java.util.function.Consumer;
 
-public class GdxLoginStage implements LoginStage, GdxRenderable {
+public class GdxLoginController implements LoginStage, GdxRenderable {
     private final Stage stage;
     private final Container<Table> root;
-    private final CreditsTable credits;
-    private final OptionsTable options;
-    private final LoginTable login;
-    private final CharacterSelectTable characterSelection;
-    private final CharacterCreationTable characterCreation;
+    private final CreditView credits;
+    private final OptionsView options;
+    private final LoginView login;
+    private final CharacterSelectView characterSelection;
+    private final CharacterCreationView characterCreation;
 
     private Table activeTable;
 
-    public GdxLoginStage(Skin skin, NullSecureResourceBundle resourceBundle) {
-
+    public GdxLoginController(Skin skin, NullSecureResourceBundle resourceBundle) {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -37,11 +36,11 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
         root.fill();
         stage.addActor(root);
 
-        login = new LoginTable(skin, resourceBundle);
-        credits = new CreditsTable(skin, resourceBundle);
-        options = new OptionsTable(skin, resourceBundle);
-        characterSelection = new CharacterSelectTable(skin, resourceBundle);
-        characterCreation = new CharacterCreationTable(skin, resourceBundle);
+        login = new LoginView(skin, resourceBundle);
+        credits = new CreditView(skin, resourceBundle);
+        options = new OptionsView(skin, resourceBundle);
+        characterSelection = new CharacterSelectView(skin, resourceBundle);
+        characterCreation = new CharacterCreationView(skin, resourceBundle);
         login.setOnOptionsCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

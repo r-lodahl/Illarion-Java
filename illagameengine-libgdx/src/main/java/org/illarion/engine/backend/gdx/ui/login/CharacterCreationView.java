@@ -7,7 +7,7 @@ import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.ArrayList;
 
-public class CharacterCreationTable extends Table {
+public class CharacterCreationView extends Table {
     private final ArrayList<Table> characterCreationSequence;
     private int currentStep;
     private static final int MAX_STEP = 2;
@@ -15,7 +15,7 @@ public class CharacterCreationTable extends Table {
     private final TextButton cancelButton, finishButton, nextButton, previousButton;
     private final Container<Table> dynamicContainer;
 
-    public CharacterCreationTable(Skin skin, NullSecureResourceBundle resourceBundle) {
+    public CharacterCreationView(Skin skin, NullSecureResourceBundle resourceBundle) {
         characterCreationSequence = new ArrayList<>(3);
         characterCreationSequence.add(createStepOne(skin));
         characterCreationSequence.add(createStepTwo(skin));

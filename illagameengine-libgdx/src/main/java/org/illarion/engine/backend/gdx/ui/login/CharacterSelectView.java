@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 
-public class CharacterSelectTable extends Table {
+public class CharacterSelectView extends Table {
     private final TextButton playButton, logoutButton, newCharacterButton;
 
-    public CharacterSelectTable(Skin skin, NullSecureResourceBundle resourceBundle) {
+    public CharacterSelectView(Skin skin, NullSecureResourceBundle resourceBundle) {
         //Texture titleImageTexture = new Texture("skin/illarion_title.png");
         //Image titleImage = new Image(titleImageTexture);
 

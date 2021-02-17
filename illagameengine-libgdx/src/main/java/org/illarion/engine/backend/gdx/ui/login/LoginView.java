@@ -12,7 +12,7 @@ import org.illarion.engine.ui.NullSecureResourceBundle;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 
-public class LoginTable extends Table {
+public class LoginView extends Table {
     private final TextButton optionsButton, creditsButton, exitButton, loginButton;
     private final SelectBox<String> serverSelection;
     private final TextField accountNameField, passwordField;
@@ -21,9 +21,9 @@ public class LoginTable extends Table {
     private LoginData[] loginData;
     private int currentServerIndex;
 
-    @Nonnull NullSecureResourceBundle resourceBundle;
+    NullSecureResourceBundle resourceBundle;
 
-    public LoginTable(Skin skin, NullSecureResourceBundle resourceBundle) {
+    public LoginView(Skin skin, NullSecureResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         setFillParent(true);
