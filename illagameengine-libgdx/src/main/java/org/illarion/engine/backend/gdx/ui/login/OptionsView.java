@@ -96,6 +96,14 @@ public class OptionsView extends Table {
         return settings;
     }
 
+    public void setOnSaveCallback(ClickListener listener) {
+        btSaveSettings.addListener(listener);
+    }
+
+    public void setOnCancelCallback(ClickListener listener) {
+        btCancelSettings.addListener(listener);
+    }
+
     public void setOptions(ConfigReader config, ResolutionManager resolutionManager) {
         this.resolutionManager = resolutionManager;
         this.config = config;
@@ -105,8 +113,6 @@ public class OptionsView extends Table {
         setupResolutionSelection(config, resolutionManager);
 
         setupConfigDependentGui(config);
-
-
     }
 
     private void setupTabSwitchingListeners() {

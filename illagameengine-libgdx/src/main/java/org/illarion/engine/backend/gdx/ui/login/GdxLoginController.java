@@ -12,6 +12,8 @@ import illarion.common.config.ConfigReader;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
+
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class GdxLoginController implements LoginStage, GdxRenderable {
@@ -137,11 +139,11 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setOptionsListener(Consumer<OptionsData> event) {
-        login.setOnOptionsCallback(new ClickListener() {
+    public void setOptionsSaveListener(Consumer<Map<String, String>> event){
+        options.setOnSaveCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                //event.accept(options.getSelectedOptions());
+                event.accept(options.getCurrentSettings());
             }
         });
     }

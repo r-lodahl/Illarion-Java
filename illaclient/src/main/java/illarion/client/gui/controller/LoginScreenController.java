@@ -31,6 +31,8 @@ import org.illarion.engine.ui.UserInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 /**
  * This is the screen controller that takes care of displaying the login screen.
  */
@@ -80,7 +82,13 @@ public final class LoginScreenController {
         stage.setExitListener(IllaClient::exit);
         stage.setLoginListener(login::login);
         stage.setOptionsData(IllaClient.getConfig(), window.getResolutionManager());
-        //stage.setOptionsListener();
+        stage.setOptionsSaveListener(this::saveOptions);
+    }
+
+    public void saveOptions(Map<String, String> options) {
+        var config = IllaClient.getConfig();
+        options.forEach(config::set);
+        config.save();
     }
 
 

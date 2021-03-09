@@ -3,6 +3,7 @@ package org.illarion.engine.ui;
 import illarion.common.config.ConfigReader;
 import org.illarion.engine.graphic.ResolutionManager;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 public interface LoginStage {
@@ -13,7 +14,7 @@ public interface LoginStage {
     void setExitListener(Action event);
     void setLoginListener(Consumer<LoginData> event);
     void setLogoutListener(Action event);
-    void setOptionsListener(Consumer<OptionsData> data);
+    void setOptionsSaveListener(Consumer<Map<String, String>> event);
     void setCharacterSelectionListener(Consumer<CharacterSelectionData> data);
     void setCharacterCreationListener(Consumer<CharacterCreationData> data);
 
