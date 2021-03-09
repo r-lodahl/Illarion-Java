@@ -25,9 +25,8 @@ dependencies {
     implementation project(':easyquest')
     implementation project(':common')
     implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: project.ext.slf4jVersion
+    api group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
+    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: project.ext.slf4jVersion
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logbackVersion
     implementation group: 'com.mxgraph', name: 'jgraphx', version: '3.7.4'
 }

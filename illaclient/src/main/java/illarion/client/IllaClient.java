@@ -49,7 +49,6 @@ import org.illarion.engine.event.WindowResizedEvent;
 import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*; //TODO: Remove swing and awt
@@ -261,9 +260,6 @@ public final class IllaClient {
      */
     @SuppressWarnings("Duplicates")
     private static void initLogfiles() throws IOException {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
-
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         if (!Files.isDirectory(userDir)) {
             if (Files.exists(userDir)) {

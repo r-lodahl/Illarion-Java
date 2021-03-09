@@ -24,10 +24,8 @@ mainClassName = 'illarion.easyquest.gui.MainFrame'
 
 dependencies {
     implementation project(':common')
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: project.ext.slf4jVersion
+    api group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
+    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: project.ext.slf4jVersion
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logbackVersion
     implementation group: 'org.bushe', name: 'eventbus', version: '1.4'
     implementation group: 'com.github.insubstantial', name: 'substance', version: project.ext.insubstantialVersion
