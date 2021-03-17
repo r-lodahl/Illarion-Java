@@ -132,7 +132,7 @@ subprojects {
         }
         dependencies {
             implementation group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
-            implementation group: 'javax.annotations', name: 'javax.annotations-api', version: '1.3.2'
+            implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
         }
     }
 

@@ -15,10 +15,6 @@
  */
 package illarion.client;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 import com.google.common.eventbus.Subscribe;
 import illarion.client.crash.DefaultCrashHandler;
 import illarion.client.net.client.LogoutCmd;
