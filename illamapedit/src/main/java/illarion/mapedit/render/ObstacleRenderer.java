@@ -23,9 +23,9 @@ import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.resource.loaders.ItemLoader;
 import illarion.mapedit.util.SwingLocation;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -38,7 +38,7 @@ public class ObstacleRenderer extends AbstractMapRenderer {
     private static final int XOFFSET = 30;
     private static final int YOFFSET = -3;
 
-    @Nonnull
+    @NotNull
     private final Image image;
 
     public ObstacleRenderer(RendererManager manager) {
@@ -48,10 +48,10 @@ public class ObstacleRenderer extends AbstractMapRenderer {
 
     @Override
     public void renderMap(
-            @Nonnull Map map,
-            @Nonnull Rectangle viewport,
+            @NotNull Map map,
+            @NotNull Rectangle viewport,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         int width = map.getWidth();
         int height = map.getHeight();
         int z = map.getZ() - level;

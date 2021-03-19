@@ -20,12 +20,12 @@ import illarion.mapedit.data.MapPosition;
 import illarion.mapedit.data.MapTile;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.HistoryManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 public abstract class AbstractTool {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTool.class);
+    protected static final Logger LOGGER = LogManager.getLogger();
 
     private HistoryManager history;
 
@@ -64,12 +64,12 @@ public abstract class AbstractTool {
 
     public abstract void paintSelected(int x, int y, Map map, GroupAction action);
 
-    public final void registerManager(@Nonnull ToolManager toolManager) {
+    public final void registerManager(@NotNull ToolManager toolManager) {
         manager = toolManager;
         history = toolManager.getHistory();
     }
 
-    public void fillSelected(@Nonnull Map map) {
+    public void fillSelected(@NotNull Map map) {
         GroupAction action = new GroupAction();
         for (MapPosition pos : map.getSelectedTiles()) {
             MapTile tile = map.getTileAt(pos.getX(), pos.getY());

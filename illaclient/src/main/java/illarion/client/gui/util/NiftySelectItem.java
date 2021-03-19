@@ -22,9 +22,9 @@ import illarion.client.resources.ItemFactory;
 import illarion.client.world.items.SelectionItem;
 import illarion.common.types.ItemId;
 import org.illarion.nifty.controls.SelectListEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This implementation of the select item is very similar to the original select item. It just adds a few entries
@@ -47,7 +47,7 @@ public final class NiftySelectItem extends SelectionItem implements SelectListEn
      * @param nifty the instance of the Nifty-GUI used to create the objects for the GUI
      * @param org the original merchant item that contains the actual data
      */
-    public NiftySelectItem(@Nonnull Nifty nifty, @Nonnull SelectionItem org) {
+    public NiftySelectItem(@NotNull Nifty nifty, @NotNull SelectionItem org) {
         super(org);
 
         ItemId id = org.getId();

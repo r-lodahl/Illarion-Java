@@ -17,8 +17,8 @@ package illarion.client.resources;
 
 import illarion.client.resources.data.AvatarTemplate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The avatar factory loads and stores all graphical representations of characters.
@@ -35,7 +35,7 @@ public final class CharacterFactory extends AbstractTemplateFactory<AvatarTempla
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final CharacterFactory INSTANCE = new CharacterFactory();
 
     /**
@@ -43,7 +43,7 @@ public final class CharacterFactory extends AbstractTemplateFactory<AvatarTempla
      *
      * @return the singleton instance of the avatar factory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static CharacterFactory getInstance() {
         return INSTANCE;

@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.data;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -27,10 +28,10 @@ import java.util.NoSuchElementException;
 public class MapIterator implements Iterator<MapTile> {
     private int currentIndex = -1;
     private final int tileCount;
-    @Nonnull
+    @NotNull
     private final Map parentMap;
 
-    MapIterator(@Nonnull Map map, int tileCount) {
+    MapIterator(@NotNull Map map, int tileCount) {
         parentMap = map;
         this.tileCount = tileCount;
     }

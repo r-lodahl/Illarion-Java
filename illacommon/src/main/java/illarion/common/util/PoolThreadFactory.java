@@ -15,8 +15,9 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,15 +29,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class PoolThreadFactory implements ThreadFactory {
-    @Nonnull
+    @NotNull
     private final String threadNameHead;
     private final boolean daemonThreads;
     @Nullable
     private final ThreadGroup group;
-    @Nonnull
+    @NotNull
     private final AtomicInteger threadNumber;
 
-    public PoolThreadFactory(@Nonnull String poolName, boolean daemonThreads) {
+    public PoolThreadFactory(@NotNull String poolName, boolean daemonThreads) {
         threadNameHead = poolName + " Thread-";
         this.daemonThreads = daemonThreads;
 
@@ -46,7 +47,7 @@ public final class PoolThreadFactory implements ThreadFactory {
     }
 
     @Override
-    public Thread newThread(@Nonnull Runnable r) {
+    public Thread newThread(@NotNull Runnable r) {
         Thread createdThread = new Thread(group, r, threadNameHead + threadNumber.getAndIncrement(), 0);
         if (createdThread.isDaemon() != daemonThreads) {
             createdThread.setDaemon(daemonThreads);

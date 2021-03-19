@@ -23,16 +23,17 @@ import illarion.mapedit.data.formats.Decoder;
 import illarion.mapedit.data.formats.DecoderFactory;
 import illarion.mapedit.events.menu.MapLoadErrorEvent;
 import illarion.mapedit.events.menu.MapLoadedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -49,38 +50,38 @@ import java.util.regex.Pattern;
  * @author Tim
  */
 public final class MapIO {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapIO.class);
-    @Nonnull
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
+    @NotNull
     private static final String HEADER_V = "V:";
-    @Nonnull
+    @NotNull
     private static final String HEADER_L = "L:";
-    @Nonnull
+    @NotNull
     private static final String HEADER_X = "X:";
-    @Nonnull
+    @NotNull
     private static final String HEADER_Y = "Y:";
-    @Nonnull
+    @NotNull
     private static final String HEADER_W = "W:";
-    @Nonnull
+    @NotNull
     private static final String HEADER_H = "H:";
-    @Nonnull
+    @NotNull
     public static final String EXT_WARP = ".warps.txt";
-    @Nonnull
+    @NotNull
     public static final String EXT_ITEM = ".items.txt";
-    @Nonnull
+    @NotNull
     public static final String EXT_TILE = ".tiles.txt";
-    @Nonnull
+    @NotNull
     public static final String EXT_ANNO = ".annot.txt";
     private static final char NEWLINE = '\n';
-    @Nonnull
+    @NotNull
     private static final Pattern VERSION_PATTERN = Pattern.compile("V: (\\d+)");
-    @Nonnull
+    @NotNull
     private static final CopyrightHeader COPYRIGHT_HEADER = new CopyrightHeader(80, null, null, "# ", null);
-    @Nonnull
+    @NotNull
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-    @Nonnull
-    private static final Charset CHARSET = Charset.forName("ISO-8859-1");
-    @Nonnull
+    @NotNull
+    private static final Charset CHARSET = StandardCharsets.ISO_8859_1;
+    @NotNull
     private static final DecoderFactory DECODER_FACTORY = new DecoderFactory();
 
     private MapIO() {
@@ -108,10 +109,10 @@ public final class MapIO {
     }
 
     private static final class LoadFileCallable implements Callable<List<String>> {
-        @Nonnull
+        @NotNull
         private final Path file;
 
-        private LoadFileCallable(@Nonnull Path file) {
+        private LoadFileCallable(@NotNull Path file) {
             this.file = file;
         }
 
@@ -126,15 +127,15 @@ public final class MapIO {
     }
 
     private static final class LoadMapDataCallable implements Callable<Void> {
-        @Nonnull
+        @NotNull
         private final DataType type;
-        @Nonnull
+        @NotNull
         private final Decoder decoder;
-        @Nonnull
+        @NotNull
         private final List<String> lines;
 
         private LoadMapDataCallable(
-                @Nonnull DataType type, @Nonnull Decoder decoder, @Nonnull List<String> lines) {
+                @NotNull DataType type, @NotNull Decoder decoder, @NotNull List<String> lines) {
             this.type = type;
             this.decoder = decoder;
             this.lines = lines;
@@ -152,7 +153,7 @@ public final class MapIO {
     }
 
     @Nullable
-    public static Map loadMapThread(@Nonnull Path path, @Nonnull String name) throws IOException {
+    public static Map loadMapThread(@NotNull Path path, @NotNull String name) throws IOException {
         LOGGER.debug("Load map {} at {}", name, path);
         //        Open the streams for all 3 files, containing the map data
         Path tileFile = path.resolve(name + EXT_TILE);
@@ -206,7 +207,7 @@ public final class MapIO {
             LOGGER.debug("W={}; H={}; X={}; Y={}; L={};", m.getWidth(), m.getHeight(), m.getX(), m.getY(), m.getZ());
 
             return m;
-        } catch (@Nonnull InterruptedException | ExecutionException e) {
+        } catch (@NotNull InterruptedException | ExecutionException e) {
             throw new IOException("Error while loading map.", e);
         }
     }
@@ -217,7 +218,7 @@ public final class MapIO {
      * @param map the map to save
      * @throws IOException
      */
-    public static void saveMap(@Nonnull Map map) throws IOException {
+    public static void saveMap(@NotNull Map map) throws IOException {
         saveMap(map, map.getName(), map.getPath());
     }
 
@@ -230,7 +231,7 @@ public final class MapIO {
      * @throws IOException
      */
     public static void saveMap(
-            @Nonnull Map map, @Nonnull String name, @Nonnull Path path) throws IOException {
+            @NotNull Map map, @NotNull String name, @NotNull Path path) throws IOException {
         Path tileFile = path.resolve(name + EXT_TILE);
         Path itemFile = path.resolve(name + EXT_ITEM);
         Path warpFile = path.resolve(name + EXT_WARP);
@@ -286,14 +287,14 @@ public final class MapIO {
         }
     }
 
-    private static void writeHeader(@Nonnull Writer writer, @Nonnull String header, int value) throws IOException {
+    private static void writeHeader(@NotNull Writer writer, @NotNull String header, int value) throws IOException {
         writer.write(header);
         writer.write(' ');
         writer.write(Integer.toString(value));
         writer.write(NEWLINE);
     }
 
-    private static void writeLine(@Nonnull BufferedWriter writer, @Nonnull Object... args) throws IOException {
+    private static void writeLine(@NotNull BufferedWriter writer, @NotNull Object... args) throws IOException {
         for (int i = 0; i < args.length; ++i) {
             writer.write(args[i].toString());
             if (i < (args.length - 1)) {
@@ -305,7 +306,7 @@ public final class MapIO {
         }
     }
 
-    private static void writeLine(@Nonnull BufferedWriter writer, @Nonnull String str) throws IOException {
+    private static void writeLine(@NotNull BufferedWriter writer, @NotNull String str) throws IOException {
         writer.write(str);
         writer.write(NEWLINE);
     }

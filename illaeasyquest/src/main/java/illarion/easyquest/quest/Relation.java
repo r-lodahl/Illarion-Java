@@ -16,8 +16,8 @@
 package illarion.easyquest.quest;
 
 import illarion.common.util.CalledByReflection;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
@@ -50,7 +50,7 @@ public class Relation implements Serializable {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         switch (type) {
             case EQUAL:
@@ -70,7 +70,7 @@ public class Relation implements Serializable {
         }
     }
 
-    @Nonnull
+    @NotNull
     public String toLua() {
         switch (type) {
             case EQUAL:

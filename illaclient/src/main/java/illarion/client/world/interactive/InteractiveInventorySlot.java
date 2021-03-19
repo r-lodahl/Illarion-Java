@@ -22,24 +22,21 @@ import illarion.client.world.items.InventorySlot;
 import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class holds the interactive representation of a inventory slot.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class InteractiveInventorySlot implements Draggable, DropTarget {
     /**
      * The inventory item this interactive class refers to.
      */
-    @Nonnull
+    @NotNull
     private final InventorySlot parentItem;
 
     /**
@@ -47,7 +44,7 @@ public final class InteractiveInventorySlot implements Draggable, DropTarget {
      *
      * @param item the inventory item that is the parent of this interactive item
      */
-    public InteractiveInventorySlot(@Nonnull InventorySlot item) {
+    public InteractiveInventorySlot(@NotNull InventorySlot item) {
         parentItem = item;
     }
 
@@ -55,21 +52,21 @@ public final class InteractiveInventorySlot implements Draggable, DropTarget {
      * Drag a inventory item to a character. Does nothing currently.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveChar targetChar, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveChar targetChar, @NotNull ItemCount count) {
         // nothing
     }
 
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(InteractiveInventorySlot.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Drag the item in this inventory slot to another inventory slot.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveInventorySlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveInventorySlot targetSlot, @NotNull ItemCount count) {
         if (!isValidItem()) {
             log.error("Tried dragging a invalid item!");
             return;
@@ -123,7 +120,7 @@ public final class InteractiveInventorySlot implements Draggable, DropTarget {
      * @param itemId the ID of the item that should be dropped on this slot
      * @return {@code true} in case its legal to drop a item with the specified ID on the inventory slot
      */
-    public boolean isAcceptingItem(@Nonnull ItemId itemId) {
+    public boolean isAcceptingItem(@NotNull ItemId itemId) {
         return !isValidItem() || itemId.equals(getItemId());
     }
 
@@ -154,7 +151,7 @@ public final class InteractiveInventorySlot implements Draggable, DropTarget {
      * @param count the amount of items to drag to the new location
      */
     @Override
-    public void dragTo(@Nonnull InteractiveMapTile targetTile, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveMapTile targetTile, @NotNull ItemCount count) {
         if (!isValidItem()) {
             return;
         }
@@ -163,7 +160,7 @@ public final class InteractiveInventorySlot implements Draggable, DropTarget {
     }
 
     @Override
-    public void dragTo(@Nonnull InteractiveContainerSlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveContainerSlot targetSlot, @NotNull ItemCount count) {
         if (!isValidItem()) {
             return;
         }

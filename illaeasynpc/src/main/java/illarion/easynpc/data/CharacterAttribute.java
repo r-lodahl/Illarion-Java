@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The list of character attributes, the easyNPC script and the LUA script is able to use.
@@ -43,7 +43,7 @@ public enum CharacterAttribute {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (CharacterAttribute attribute : CharacterAttribute.values()) {
             map.put(attribute.name(), Token.VARIABLE);
         }

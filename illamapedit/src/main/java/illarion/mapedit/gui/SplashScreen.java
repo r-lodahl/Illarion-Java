@@ -15,11 +15,12 @@
  */
 package illarion.mapedit.gui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ import java.io.IOException;
  * @author Tim
  */
 public final class SplashScreen extends JWindow {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SplashScreen.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     public static final int HEIGHT_ADJUSTMENT = 30;
     private static final int FONT_SIZE = 20;
@@ -76,13 +77,13 @@ public final class SplashScreen extends JWindow {
         }
     }
 
-    @Nonnull
+    @NotNull
     public static SplashScreen getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public void paint(@Nonnull Graphics g) {
+    public void paint(@NotNull Graphics g) {
         if (background != null) {
             g.drawImage(background, 0, 0, null);
         }

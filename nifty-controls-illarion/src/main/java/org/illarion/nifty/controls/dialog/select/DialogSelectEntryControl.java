@@ -21,9 +21,9 @@ import de.lessvoid.nifty.controls.listbox.ListBoxItemController;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import org.illarion.nifty.controls.SelectListEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This control is used to monitor the different entries of the merchant dialog.
@@ -39,7 +39,7 @@ public final class DialogSelectEntryControl extends ListBoxItemController<Select
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         selectable = Boolean.parseBoolean(parameter.get("selectable"));
 

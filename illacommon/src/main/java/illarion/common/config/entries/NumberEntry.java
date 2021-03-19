@@ -19,9 +19,9 @@ import illarion.common.config.Config;
 import illarion.common.types.Range;
 import illarion.common.util.FastMath;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is a configuration entry that is used to display a number range entry in
@@ -39,13 +39,13 @@ public final class NumberEntry implements ConfigEntry {
     /**
      * The key in the configuration that is handled by this configuration.
      */
-    @Nonnull
+    @NotNull
     private final String configEntry;
 
     /**
      * The range the value is allowed to work in.
      */
-    @Nonnull
+    @NotNull
     private final Range range;
 
     /**
@@ -55,7 +55,7 @@ public final class NumberEntry implements ConfigEntry {
      * @param minLimit the minimal value that is allowed for this entry
      * @param maxLimit the maximal value that is allowed for this entry
      */
-    public NumberEntry(@Nonnull String entry, int minLimit, int maxLimit) {
+    public NumberEntry(@NotNull String entry, int minLimit, int maxLimit) {
         configEntry = entry;
         range = new Range(minLimit, maxLimit);
     }
@@ -65,7 +65,7 @@ public final class NumberEntry implements ConfigEntry {
      *
      * @return the range of this number entry
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Range getRange() {
         return range;
@@ -91,7 +91,7 @@ public final class NumberEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 

@@ -18,12 +18,14 @@ package illarion.client.util;
 import com.google.common.eventbus.Subscribe;
 import illarion.client.gui.events.LocalizationChangedEvent;
 import illarion.common.config.ConfigChangedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.EventBus;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
-import java.util.*;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Localized text handler. Loads the localized messages and returns them if
@@ -35,26 +37,26 @@ public enum Lang {
     /**
      * The logger instance that handles the log output of this class.
      */
-    @Nonnull private static final Logger log = LoggerFactory.getLogger(Lang.class);
+    @NotNull private static final Logger log = LogManager.getLogger();
 
     /**
      * The string that is the key of the language settings in the configuration
      * file.
      */
-    @Nonnull public final String CONFIG_KEY_LOCALIZATION = "locale";
+    @NotNull public final String CONFIG_KEY_LOCALIZATION = "locale";
 
-    @Nonnull private final Set<Locale> validLocales = Set.of(Locale.ENGLISH, Locale.GERMAN);
+    @NotNull private final Set<Locale> validLocales = Set.of(Locale.ENGLISH, Locale.GERMAN);
 
-    @Nonnull private final Locale defaultLocale = Locale.ENGLISH;
+    @NotNull private final Locale defaultLocale = Locale.ENGLISH;
 
     /**
      * The current local settings.
      */
     private Locale currentLocale;
 
-    @Nonnull private final SecureResourceBundle messagesResourceBundle;
-    @Nonnull private final SecureResourceBundle loginResourceBundle;
-    @Nonnull private final SecureResourceBundle ingameResourceBundle;
+    @NotNull private final SecureResourceBundle messagesResourceBundle;
+    @NotNull private final SecureResourceBundle loginResourceBundle;
+    @NotNull private final SecureResourceBundle ingameResourceBundle;
 
     Lang() {
         messagesResourceBundle = new SecureResourceBundle();
@@ -75,7 +77,7 @@ public enum Lang {
         return ingameResourceBundle;
     }
 
-    public void setLocale(@Nonnull Locale locale) {
+    public void setLocale(@NotNull Locale locale) {
         if (locale.equals(currentLocale)) {
             return;
         }
@@ -92,7 +94,7 @@ public enum Lang {
         ingameResourceBundle.setResourceBundle(ResourceBundle.getBundle("ingame", currentLocale, Lang.class.getClassLoader()));
     }
 
-    @Nonnull
+    @NotNull
     public Locale getLocale() {
         if (currentLocale == null) {
             log.warn("getLocale() was accessed before locale was set, returning defaultLocale.");
@@ -107,7 +109,7 @@ public enum Lang {
      * Check if the language settings are still correct and reload the messages if needed.
      */
     @Subscribe
-    public void onOptionsChanged(@Nonnull ConfigChangedEvent event) {
+    public void onOptionsChanged(@NotNull ConfigChangedEvent event) {
         if (!event.getKey().equals(CONFIG_KEY_LOCALIZATION)) {
             return;
         }

@@ -17,8 +17,8 @@ package org.illarion.nifty.controls.dialog.message.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.ElementBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The builder of a message dialog.
@@ -32,7 +32,7 @@ public class DialogMessageBuilder extends ControlBuilder {
      * @param id the nifty-gui ID of the dialog
      * @param title the title of the dialog
      */
-    public DialogMessageBuilder(@Nonnull String id, @Nonnull String title) {
+    public DialogMessageBuilder(@NotNull String id, @NotNull String title) {
         super(id, CreateDialogMessageControl.NAME);
         set("title", title);
         set("closeable", "false");
@@ -48,7 +48,7 @@ public class DialogMessageBuilder extends ControlBuilder {
      * @param text the text displayed in this dialog
      */
     @Override
-    public ElementBuilder text(@Nonnull String text) {
+    public ElementBuilder text(@NotNull String text) {
         set("text", text);
         return this;
     }
@@ -58,7 +58,7 @@ public class DialogMessageBuilder extends ControlBuilder {
      *
      * @param text the button label in this dialog
      */
-    public void button(@Nonnull String text) {
+    public void button(@NotNull String text) {
         set("button", text);
     }
 

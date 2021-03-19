@@ -22,56 +22,56 @@ import illarion.common.util.DirectoryManager.Directory;
 import illarion.download.gui.Storyboard;
 import javafx.application.HostServices;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class GuiModel {
-    @Nonnull
+    @NotNull
     private final Stage stage;
 
-    @Nonnull
+    @NotNull
     private final HostServices hostServices;
 
-    @Nonnull
+    @NotNull
     private final Storyboard storyboard;
 
-    @Nonnull
+    @NotNull
     private final Config config;
 
     public GuiModel(
-            @Nonnull Stage stage,
-            @Nonnull HostServices hostServices,
-            @Nonnull Storyboard storyboard) {
+            @NotNull Stage stage,
+            @NotNull HostServices hostServices,
+            @NotNull Storyboard storyboard) {
         this.stage = stage;
         this.hostServices = hostServices;
         this.storyboard = storyboard;
         config = loadConfig();
     }
 
-    @Nonnull
+    @NotNull
     public Stage getStage() {
         return stage;
     }
 
-    @Nonnull
+    @NotNull
     public HostServices getHostServices() {
         return hostServices;
     }
 
-    @Nonnull
+    @NotNull
     public Storyboard getStoryboard() {
         return storyboard;
     }
 
-    @Nonnull
+    @NotNull
     public Config getConfig() {
         return config;
     }
 
-    @Nonnull
+    @NotNull
     private Config loadConfig() {
         DirectoryManager dm = DirectoryManager.getInstance();
         ConfigSystem cfg = new ConfigSystem(dm.resolveFile(Directory.User, "download.xcfgz"), getClass().getResourceAsStream("/default-config.properties"));

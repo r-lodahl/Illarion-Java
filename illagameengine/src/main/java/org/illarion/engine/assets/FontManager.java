@@ -16,9 +16,9 @@
 package org.illarion.engine.assets;
 
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -37,11 +37,11 @@ public interface FontManager {
      * @throws IOException in case loading the font fails
      * @throws IllegalArgumentException in case the identifier is already used for another font
      */
-    @Nonnull
+    @NotNull
     Font createFont(
-            @Nonnull Object identifier,
-            @Nonnull String fntRef,
-            @Nonnull String imageRoot) throws IOException;
+            @NotNull Object identifier,
+            @NotNull String fntRef,
+            @NotNull String imageRoot) throws IOException;
 
     /**
      * This is the function to create a new font.
@@ -54,12 +54,12 @@ public interface FontManager {
      * @throws IOException              in case loading the font fails
      * @throws IllegalArgumentException in case the identifier is already used for another font
      */
-    @Nonnull
+    @NotNull
     Font createFont(
-            @Nonnull Object identifier,
-            @Nonnull String fntRef,
-            @Nonnull String imageRoot,
-            @Nonnull Font outlineFont) throws IOException;
+            @NotNull Object identifier,
+            @NotNull String fntRef,
+            @NotNull String imageRoot,
+            @NotNull Font outlineFont) throws IOException;
 
     /**
      * Fetch a font that was created before.
@@ -68,7 +68,7 @@ public interface FontManager {
      * @return the font assigned to the identifier or {@code null} in case there is no font assigned to this identifier
      */
     @Nullable
-    Font getFont(@Nonnull Object identifier);
+    Font getFont(@NotNull Object identifier);
 
     /**
      * Set the font that is supposed to be used by default in case a font is requested that was not defined. Once the

@@ -17,9 +17,9 @@ package org.illarion.engine.backend.shared;
 
 import org.illarion.engine.assets.FontManager;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public abstract class AbstractFontManager implements FontManager {
     /**
      * The map that stores the fonts that are already load.
      */
-    @Nonnull
+    @NotNull
     private final Map<Object, Font> loadedFonts;
 
     /**
@@ -49,24 +49,24 @@ public abstract class AbstractFontManager implements FontManager {
         loadedFonts = new HashMap<>();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public final Font createFont(
-            @Nonnull Object identifier,
-            @Nonnull String fntRef,
-            @Nonnull String imageRoot) throws IOException {
+            @NotNull Object identifier,
+            @NotNull String fntRef,
+            @NotNull String imageRoot) throws IOException {
         Font font = buildFont(fntRef, imageRoot, null);
         loadedFonts.put(identifier, font);
         return font;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public final Font createFont(
-            @Nonnull Object identifier,
-            @Nonnull String fntRef,
-            @Nonnull String imageRoot,
-            @Nonnull Font outlineFont) throws IOException {
+            @NotNull Object identifier,
+            @NotNull String fntRef,
+            @NotNull String imageRoot,
+            @NotNull Font outlineFont) throws IOException {
         Font font = buildFont(fntRef, imageRoot, outlineFont);
         loadedFonts.put(identifier, font);
         return font;
@@ -81,13 +81,13 @@ public abstract class AbstractFontManager implements FontManager {
      * @return the created font
      * @throws IOException in case loading the font fails
      */
-    @Nonnull
-    protected abstract Font buildFont(@Nonnull String fntRef, @Nonnull String imageRoot, @Nullable Font outlineFont)
+    @NotNull
+    protected abstract Font buildFont(@NotNull String fntRef, @NotNull String imageRoot, @Nullable Font outlineFont)
             throws IOException;
 
     @Nullable
     @Override
-    public final Font getFont(@Nonnull Object identifier) {
+    public final Font getFont(@NotNull Object identifier) {
         @Nullable Font requestedFont = loadedFonts.get(identifier);
         if ((requestedFont == null) && (defaultFontIdentifier != null)) {
             return loadedFonts.get(defaultFontIdentifier);
@@ -106,8 +106,8 @@ public abstract class AbstractFontManager implements FontManager {
      * @param fntRef the reference to the font file
      * @return the name of the image
      */
-    @Nonnull
-    protected static String getImageName(@Nonnull String fntRef) {
+    @NotNull
+    protected static String getImageName(@NotNull String fntRef) {
         return fntRef.substring(fntRef.lastIndexOf('/') + 1).replace(".fnt", "_0.png");
     }
 }

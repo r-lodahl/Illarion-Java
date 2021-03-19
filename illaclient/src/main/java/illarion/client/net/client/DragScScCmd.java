@@ -18,8 +18,8 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Client Command: Dragging an item from one container to another ({@link CommandList#CMD_DRAG_SC_SC}).
@@ -61,7 +61,7 @@ public final class DragScScCmd extends AbstractDragCommand {
             int sourceSlot,
             int destinationContainer,
             int destinationSlot,
-            @Nonnull ItemCount count) {
+            @NotNull ItemCount count) {
         super(CommandList.CMD_DRAG_SC_SC, count);
 
         this.sourceContainer = (short) sourceContainer;
@@ -71,7 +71,7 @@ public final class DragScScCmd extends AbstractDragCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(sourceContainer);
         writer.writeUByte(sourceContainerItem);
         writer.writeUByte(targetContainer);
@@ -79,7 +79,7 @@ public final class DragScScCmd extends AbstractDragCommand {
         getCount().encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(

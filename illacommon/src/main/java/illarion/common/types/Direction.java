@@ -17,9 +17,9 @@ package illarion.common.types;
 
 import illarion.common.net.NetCommReader;
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -61,8 +61,8 @@ public enum Direction {
         return (xVec != 0) && (yVec != 0);
     }
 
-    @Nonnull
-    public static Direction getReverse(@Nonnull Direction direction) {
+    @NotNull
+    public static Direction getReverse(@NotNull Direction direction) {
         switch (direction) {
             case North:
                 return South;
@@ -84,11 +84,11 @@ public enum Direction {
         throw new IllegalArgumentException("Invalid direction");
     }
 
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte((short) serverId);
     }
 
-    public static void encode(@Nullable Direction dir, @Nonnull NetCommWriter writer) {
+    public static void encode(@Nullable Direction dir, @NotNull NetCommWriter writer) {
         if (dir == null) {
             writer.writeUByte((short) 0x0A);
         } else {
@@ -97,7 +97,7 @@ public enum Direction {
     }
 
     @Nullable
-    public static Direction decode(@Nonnull NetCommReader reader) throws IOException {
+    public static Direction decode(@NotNull NetCommReader reader) throws IOException {
         int dirId = reader.readUByte();
         return fromServerId(dirId);
     }

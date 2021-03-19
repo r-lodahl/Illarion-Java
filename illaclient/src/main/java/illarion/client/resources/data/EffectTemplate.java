@@ -16,18 +16,13 @@
 package illarion.client.resources.data;
 
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the template that contains the required data to create the graphical representation of a effect on the map.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class EffectTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The encoded light value of this effect.
@@ -43,7 +38,7 @@ public class EffectTemplate extends AbstractAnimatedEntityTemplate {
      * @param speed the animation speed
      */
     public EffectTemplate(
-            int id, @Nonnull Sprite sprite, int frames, int speed, int light) {
+            int id, @NotNull Sprite sprite, int frames, int speed, int light) {
         super(id, sprite, frames, 0, speed, null, 0);
 
         this.light = light;

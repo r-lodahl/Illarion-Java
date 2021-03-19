@@ -18,8 +18,8 @@ package org.illarion.engine.assets;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.effects.*;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the manager that creates and maintains the references to all the effects.
@@ -35,8 +35,8 @@ public interface EffectManager {
      * @return the mini map effect
      * @throws EngineException in case loading the effect fails
      */
-    @Nonnull
-    MiniMapEffect getMiniMapEffect(@Nonnull WorldMap worldMap, boolean sharedInstance) throws EngineException;
+    @NotNull
+    MiniMapEffect getMiniMapEffect(@NotNull WorldMap worldMap, boolean sharedInstance) throws EngineException;
 
     /**
      * Get the effect that should be used to highlight objects on the map.
@@ -45,7 +45,7 @@ public interface EffectManager {
      * @return the highlight effect
      * @throws EngineException in case creating the effect fails
      */
-    @Nonnull
+    @NotNull
     HighlightEffect getHighlightEffect(boolean sharedInstance) throws EngineException;
 
     /**
@@ -55,7 +55,7 @@ public interface EffectManager {
      * @return the fog effect
      * @throws EngineException in case creating the effect fails
      */
-    @Nonnull
+    @NotNull
     FogEffect getFogEffect(boolean sharedInstance) throws EngineException;
 
     /**
@@ -65,7 +65,7 @@ public interface EffectManager {
      * @return the gray scale effect
      * @throws EngineException in case creating the effect fails
      */
-    @Nonnull
+    @NotNull
     GrayScaleEffect getGrayScaleEffect(boolean sharedInstance) throws EngineException;
 
     /**
@@ -75,6 +75,6 @@ public interface EffectManager {
      * @return the tile light effect
      * @throws EngineException in case creating the effect fails
      */
-    @Nonnull
+    @NotNull
     TileLightEffect getTileLightEffect(boolean sharedInstance) throws EngineException;
 }

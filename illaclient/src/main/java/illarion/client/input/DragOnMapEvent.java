@@ -16,8 +16,8 @@
 package illarion.client.input;
 
 import org.illarion.engine.input.Button;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This event is published in case a dragging operation on the map was noted.
@@ -35,7 +35,7 @@ public class DragOnMapEvent extends AbstractMouseOnMapEvent {
      */
     private final int oldY;
 
-    @Nonnull
+    @NotNull
     private final InputReceiver inputReceiver;
 
     private final boolean startDragging;
@@ -50,8 +50,8 @@ public class DragOnMapEvent extends AbstractMouseOnMapEvent {
      * @param pressedKey the key used for the dragging operation
      */
     public DragOnMapEvent(
-            int startX, int startY, int stopX, int stopY, @Nonnull Button pressedKey, boolean firstEvent,
-            @Nonnull InputReceiver receiver) {
+            int startX, int startY, int stopX, int stopY, @NotNull Button pressedKey, boolean firstEvent,
+            @NotNull InputReceiver receiver) {
         super(pressedKey, stopX, stopY);
         oldX = startX;
         oldY = startY;
@@ -59,7 +59,7 @@ public class DragOnMapEvent extends AbstractMouseOnMapEvent {
         startDragging = firstEvent;
     }
 
-    public DragOnMapEvent(@Nonnull DragOnMapEvent org) {
+    public DragOnMapEvent(@NotNull DragOnMapEvent org) {
         super(org);
         oldX = org.oldX;
         oldY = org.oldY;
@@ -104,7 +104,7 @@ public class DragOnMapEvent extends AbstractMouseOnMapEvent {
         return getY();
     }
 
-    @Nonnull
+    @NotNull
     public InputReceiver getInputReceiver() {
         return inputReceiver;
     }

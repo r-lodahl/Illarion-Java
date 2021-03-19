@@ -16,8 +16,8 @@
 package illarion.client.input;
 
 import org.illarion.engine.input.Input;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Create a mouse event that is marking the current mouse location.
@@ -53,7 +53,7 @@ public final class CurrentMouseLocationEvent extends AbstractMouseLocationEvent 
      *
      * @param input the input handler supplying the data
      */
-    public CurrentMouseLocationEvent(@Nonnull Input input) {
+    public CurrentMouseLocationEvent(@NotNull Input input) {
         this(input.getMouseX(), input.getMouseY());
     }
 

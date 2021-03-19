@@ -22,11 +22,11 @@ import illarion.client.world.World;
 import illarion.client.world.characters.CharacterAttribute;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -37,8 +37,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_ATTRIBUTE)
 public final class AttributeMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AttributeMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The ID of the character this attribute update is related to.
@@ -56,14 +56,14 @@ public final class AttributeMsg implements ServerReply {
     private int value;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         targetCharacter = new CharacterId(reader);
         attribute = reader.readString();
         value = reader.readUShort();
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public ServerReplyResult execute() {
         //noinspection ConstantConditions
         for (CharacterAttribute charAttribute : CharacterAttribute.values()) {
@@ -93,7 +93,7 @@ public final class AttributeMsg implements ServerReply {
         return ServerReplyResult.Failed;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

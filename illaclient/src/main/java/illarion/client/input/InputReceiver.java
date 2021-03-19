@@ -19,12 +19,12 @@ import illarion.client.IllaClient;
 import illarion.client.world.World;
 import illarion.common.gui.AbstractMultiActionHelper;
 import illarion.common.memory.MemoryPools;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.illarion.engine.input.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -34,8 +34,8 @@ import java.util.Set;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class InputReceiver implements InputListener {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(InputReceiver.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     private static final int MOVE_KEY = 1;
 
     /**
@@ -73,7 +73,7 @@ public final class InputReceiver implements InputListener {
          * @param posX the x coordinate where the click happened
          * @param posY the y coordinate where the click happened
          */
-        public void setInputData(@Nonnull Button mouseKey, int posX, int posY) {
+        public void setInputData(@NotNull Button mouseKey, int posX, int posY) {
             x = posX;
             y = posY;
             key = mouseKey;
@@ -143,31 +143,31 @@ public final class InputReceiver implements InputListener {
     /**
      * The topic that is in general used to publish input events.
      */
-    @Nonnull
+    @NotNull
     public static final String EB_TOPIC = "InputEvent";
 
     /**
      * The key mapper stores the keep-action assignments of the client.
      */
-    @Nonnull
+    @NotNull
     private final KeyMapper keyMapper;
 
     /**
      * The instance of the button multi-click helper that is used in this instance of the input receiver.
      */
-    @Nonnull
+    @NotNull
     private final ButtonMultiClickHelper buttonMultiClickHelper = new ButtonMultiClickHelper();
 
     /**
      * The instance of the point at helper used by this instance of the input receiver.
      */
-    @Nonnull
+    @NotNull
     private final PointAtHelper pointAtHelper = new PointAtHelper();
 
     /**
      * The input engine.
      */
-    @Nonnull
+    @NotNull
     private final Input input;
 
     /**
@@ -176,10 +176,10 @@ public final class InputReceiver implements InputListener {
      */
     private boolean enabled;
 
-    @Nonnull
+    @NotNull
     private final Set<Button> buttonDownReceived;
 
-    @Nonnull
+    @NotNull
     private final Set<Button> buttonDownDragged;
 
     /**
@@ -187,7 +187,7 @@ public final class InputReceiver implements InputListener {
      *
      * @param input the input system this class is receiving its data from
      */
-    public InputReceiver(@Nonnull Input input) {
+    public InputReceiver(@NotNull Input input) {
         this.input = input;
         buttonDownReceived = EnumSet.noneOf(Button.class);
         buttonDownDragged = EnumSet.noneOf(Button.class);
@@ -205,14 +205,14 @@ public final class InputReceiver implements InputListener {
     }
 
     @Override
-    public void keyDown(@Nonnull Key key) {
+    public void keyDown(@NotNull Key key) {
         if (enabled) {
             keyMapper.handleKeyPressedInput(key);
         }
     }
 
     @Override
-    public void keyUp(@Nonnull Key key) {
+    public void keyUp(@NotNull Key key) {
         if (enabled) {
             keyMapper.handleKeyReleasedInput(key);
         }
@@ -224,7 +224,7 @@ public final class InputReceiver implements InputListener {
     }
 
     @Override
-    public void buttonDown(int mouseX, int mouseY, @Nonnull Button button) {
+    public void buttonDown(int mouseX, int mouseY, @NotNull Button button) {
         if (enabled) {
             buttonDownDragged.remove(button);
             buttonDownReceived.add(button);
@@ -233,7 +233,7 @@ public final class InputReceiver implements InputListener {
     }
 
     @Override
-    public void buttonUp(int mouseX, int mouseY, @Nonnull Button button) {
+    public void buttonUp(int mouseX, int mouseY, @NotNull Button button) {
         if (enabled) {
             if (buttonDownReceived.remove(button)) {
                 if (!buttonDownDragged.contains(button)) {
@@ -251,7 +251,7 @@ public final class InputReceiver implements InputListener {
     }
 
     @Override
-    public void buttonClicked(int mouseX, int mouseY, @Nonnull Button button, int count) {
+    public void buttonClicked(int mouseX, int mouseY, @NotNull Button button, int count) {
         if (enabled) {
             if (!buttonDownReceived.contains(button) || buttonDownDragged.contains(button)) {
                 log.debug("Received {} mouse clicked {} times at {}, {} but skipped it.", button, count, mouseX,
@@ -287,7 +287,7 @@ public final class InputReceiver implements InputListener {
     }
 
     @Override
-    public void mouseDragged(@Nonnull Button button, int fromX, int fromY, int toX, int toY) {
+    public void mouseDragged(@NotNull Button button, int fromX, int fromY, int toX, int toY) {
         if (enabled) {
             buttonMultiClickHelper.reset();
             if (buttonDownReceived.contains(button)) {

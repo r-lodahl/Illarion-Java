@@ -24,15 +24,12 @@ import illarion.client.util.ChatHandler;
 import illarion.client.util.UpdateTaskManager;
 import illarion.client.world.interactive.InteractionManager;
 import org.illarion.engine.BackendBinding;
-import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.LightTracer;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class is used to unify the access to the different components of the game and to ensure a proper
@@ -40,12 +37,11 @@ import javax.annotation.concurrent.ThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
 public final class World {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final World INSTANCE = new World();
 
     public static void shutdownWorld() {
@@ -94,7 +90,7 @@ public final class World {
         INSTANCE.init = false;
     }
 
-    @Nonnull
+    @NotNull
     public static AnimationManager getAnimationManager() {
         AnimationManager instance = INSTANCE.aniManager;
         if (instance == null) {
@@ -103,7 +99,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static Clock getClock() {
         Clock instance = INSTANCE.clock;
         if (instance == null) {
@@ -112,7 +108,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static ChatHandler getChatHandler() {
         ChatHandler instance = INSTANCE.chatHandler;
         if (instance == null) {
@@ -121,7 +117,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static LightTracer getLights() {
         LightTracer instance = INSTANCE.lights;
         if (instance == null) {
@@ -135,7 +131,7 @@ public final class World {
      *
      * @return the map of the game
      */
-    @Nonnull
+    @NotNull
     public static GameMap getMap() {
         GameMap instance = INSTANCE.map;
         if (instance == null) {
@@ -144,7 +140,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static MapDisplayManager getMapDisplay() {
         MapDisplayManager instance = INSTANCE.mapDisplay;
         if (instance == null) {
@@ -153,7 +149,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static MusicBox getMusicBox() {
         MusicBox instance = INSTANCE.musicBox;
         if (instance == null) {
@@ -162,7 +158,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static NetComm getNet() {
         NetComm instance = INSTANCE.net;
         if (instance == null) {
@@ -171,7 +167,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static People getPeople() {
         People instance = INSTANCE.people;
         if (instance == null) {
@@ -180,7 +176,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static Player getPlayer() {
         Player instance = INSTANCE.player;
         if (instance == null) {
@@ -189,7 +185,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static Weather getWeather() {
         Weather instance = INSTANCE.weather;
         if (instance == null) {
@@ -198,7 +194,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static InteractionManager getInteractionManager() {
         InteractionManager instance = INSTANCE.interactionManager;
         if (instance == null) {
@@ -207,7 +203,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static UpdateTaskManager getUpdateTaskManager() {
         UpdateTaskManager instance = INSTANCE.updateManager;
         if (instance == null) {
@@ -216,7 +212,7 @@ public final class World {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public static GameGui getGameGui() {
         GameGui instance = INSTANCE.gameGui;
         if (instance == null) {
@@ -326,7 +322,7 @@ public final class World {
      *
      * @param binding the engine that is used to display the game
      */
-    public static void initWorldComponents(@Nonnull BackendBinding binding) throws EngineException {
+    public static void initWorldComponents(@NotNull BackendBinding binding) throws EngineException {
         if (INSTANCE.init) {
             return;
         }

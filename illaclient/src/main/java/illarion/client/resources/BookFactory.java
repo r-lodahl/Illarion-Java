@@ -17,14 +17,14 @@ package illarion.client.resources;
 
 import illarion.client.util.IdWrapper;
 import illarion.common.data.Book;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -43,25 +43,25 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
     /**
      * The logger instance of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(BookFactory.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The map that stores the file names in relation to the book IDs.
      */
-    @Nonnull
+    @NotNull
     private final Map<Integer, String> fileMap;
 
     /**
      * The map that stores the book data in relation to the book IDs.
      */
-    @Nonnull
+    @NotNull
     private final Map<Integer, Reference<Book>> bookMap;
 
     /**
      * The singleton instance of this factory.
      */
-    @Nonnull
+    @NotNull
     private static final BookFactory INSTANCE = new BookFactory();
 
     /**
@@ -69,7 +69,7 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
      *
      * @return the singleton instance of this factory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static BookFactory getInstance() {
         return INSTANCE;
@@ -99,7 +99,7 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
      * @param resource the resource to store
      */
     @Override
-    public void storeResource(@Nonnull IdWrapper<String> resource) {
+    public void storeResource(@NotNull IdWrapper<String> resource) {
         if (getBookUrl(resource.getObject()) == null) {
             log.error("Book ID: {} not found. File {}.book.xml is missing in the resources.",
                     Integer.toString(resource.getId()), resource.getObject());
@@ -132,7 +132,7 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
      */
     @Nullable
     @Contract(pure = true)
-    private static URL getBookUrl(@Nonnull String baseName) {
+    private static URL getBookUrl(@NotNull String baseName) {
         return Thread.currentThread().getContextClassLoader().getResource("books/" + baseName + ".book.xml");
     }
 
@@ -167,11 +167,11 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
                 Document document = docBuilderFactory.newDocumentBuilder().parse(bookUrl.openStream());
                 requestedBook = new Book(document);
                 bookMap.put(id, new SoftReference<>(requestedBook));
-            } catch (@Nonnull ParserConfigurationException e) {
+            } catch (@NotNull ParserConfigurationException e) {
                 log.error("Setting up XML parser failed!", e);
-            } catch (@Nonnull SAXException e) {
+            } catch (@NotNull SAXException e) {
                 log.error("Parsing Book XML file failed!", e);
-            } catch (@Nonnull IOException e) {
+            } catch (@NotNull IOException e) {
                 log.error("Reading Book XML file failed!", e);
             }
         }

@@ -17,11 +17,9 @@ package illarion.client.net.client;
 
 import illarion.common.net.NetCommWriter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 
 /**
@@ -30,8 +28,6 @@ import java.io.IOException;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
-@Immutable
 public abstract class AbstractCommand {
     /**
      * The ID of the command.
@@ -54,7 +50,7 @@ public abstract class AbstractCommand {
      * in case this is {@code null} the command is assumed to be encoded without parameters
      * @return the string that contains the simple class name and the parameters
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     protected final String toString(@Nullable String param) {
         return getClass().getSimpleName() + '(' + ((param == null) ? "" : param) + ')';
@@ -66,7 +62,7 @@ public abstract class AbstractCommand {
      * @return the data of the command as string
      */
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public abstract String toString();
 
@@ -75,7 +71,7 @@ public abstract class AbstractCommand {
      *
      * @param writer the byte buffer the values are added to from index 0 on
      */
-    public abstract void encode(@Nonnull NetCommWriter writer) throws IOException;
+    public abstract void encode(@NotNull NetCommWriter writer) throws IOException;
 
     /**
      * Get the ID of this client command.

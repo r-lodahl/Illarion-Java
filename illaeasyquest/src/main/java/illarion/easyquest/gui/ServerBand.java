@@ -16,6 +16,7 @@
 package illarion.easyquest.gui;
 
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
@@ -24,7 +25,6 @@ import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mid
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mirror;
 import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.OutputStreamWriter;
@@ -32,7 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,7 +43,7 @@ final class ServerBand extends JRibbonBand {
      */
     private static final long serialVersionUID = 1L;
 
-    @Nonnull
+    @NotNull
     private final JCommandButton statusButton;
 
     /**
@@ -87,17 +87,17 @@ final class ServerBand extends JRibbonBand {
                 conn.setDoInput(true);
 
                 String query =
-                        "character=" + URLEncoder.encode(Config.getInstance().getCharacter(), "UTF-8") +
-                                "&password=" + URLEncoder.encode(Config.getInstance().getPassword(), "UTF-8") +
+                        "character=" + URLEncoder.encode(Config.getInstance().getCharacter(), StandardCharsets.UTF_8) +
+                                "&password=" + URLEncoder.encode(Config.getInstance().getPassword(), StandardCharsets.UTF_8) +
                                 "&questid=" + id + "&queststatus=" + status;
                 OutputStreamWriter output = new OutputStreamWriter(conn.getOutputStream(),
-                        Charset.forName("UTF-8"));
+                        StandardCharsets.UTF_8);
 
                 output.write(query);
                 output.flush();
                 output.close();
 
-                String result = new Scanner(conn.getInputStream(), "UTF-8").useDelimiter("\\A").next();
+                String result = new Scanner(conn.getInputStream(), StandardCharsets.UTF_8).useDelimiter("\\A").next();
 
                 if (result.equals("SUCCESS")) {
                     msgCaption = Lang.getMsg(ServerBand.class, "successCaption");
@@ -120,11 +120,11 @@ final class ServerBand extends JRibbonBand {
                             break;
                     }
                 }
-            } catch (@Nonnull UnknownHostException exception) {
+            } catch (@NotNull UnknownHostException exception) {
                 msgType = JOptionPane.ERROR_MESSAGE;
                 msgCaption = Lang.getMsg(ServerBand.class, "noHostCaption");
                 msgText = Lang.getMsg(ServerBand.class, "noHostText");
-            } catch (@Nonnull Exception exception) {
+            } catch (@NotNull Exception exception) {
                 msgType = JOptionPane.ERROR_MESSAGE;
                 msgCaption = Lang.getMsg(ServerBand.class, "failureCaption");
                 msgText = Lang.getMsg(ServerBand.class, "failureText");

@@ -22,9 +22,9 @@ import illarion.mapedit.history.CopyPasteAction;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.ItemPlacedAction;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +67,7 @@ public class Map implements Iterable<MapTile> {
     /**
      * The tiles.
      */
-    @Nonnull
+    @NotNull
     private final MapTile[] mapTileData;
     private int activeX = Integer.MIN_VALUE;
     private int activeY = Integer.MIN_VALUE;
@@ -79,7 +79,7 @@ public class Map implements Iterable<MapTile> {
     private int fillStartY;
     private int fillX;
     private int fillY;
-    @Nonnull
+    @NotNull
     private final SelectionManager selectionManager;
 
     /**
@@ -121,7 +121,7 @@ public class Map implements Iterable<MapTile> {
         return items;
     }
 
-    @Nonnull
+    @NotNull
     public Set<MapPosition> getSelectedTiles() {
         return selectionManager.getSelection();
     }
@@ -185,7 +185,7 @@ public class Map implements Iterable<MapTile> {
      *
      * @param mapTile the tile to add.
      */
-    public void setTileAt(int x, int y, @Nonnull MapTile mapTile) {
+    public void setTileAt(int x, int y, @NotNull MapTile mapTile) {
         setTileAtIndex(mapToIndex(x, y), mapTile);
     }
 
@@ -195,7 +195,7 @@ public class Map implements Iterable<MapTile> {
      * @param index the index where the new tile is set
      * @param mapTile the tile to add.
      */
-    private void setTileAtIndex(int index, @Nonnull MapTile mapTile) {
+    private void setTileAtIndex(int index, @NotNull MapTile mapTile) {
         mapTileData[index] = mapTile;
     }
 
@@ -238,7 +238,7 @@ public class Map implements Iterable<MapTile> {
         return index / width;
     }
 
-    public void setTileAt(@Nonnull ServerCoordinate loc, @Nonnull MapTile mapTile) {
+    public void setTileAt(@NotNull ServerCoordinate loc, @NotNull MapTile mapTile) {
         setTileAt(loc.getX(), loc.getY(), mapTile);
     }
 
@@ -295,7 +295,7 @@ public class Map implements Iterable<MapTile> {
     }
 
     @Nullable
-    public MapTile getTileAt(@Nonnull ServerCoordinate loc) {
+    public MapTile getTileAt(@NotNull ServerCoordinate loc) {
         return getTileAt(loc.getX(), loc.getY());
     }
 
@@ -441,7 +441,7 @@ public class Map implements Iterable<MapTile> {
         return selectionManager.cut(this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return name;
@@ -454,7 +454,7 @@ public class Map implements Iterable<MapTile> {
      * @param startY starting y coordinate
      * @param mapSelection tiles to paste
      */
-    public void pasteTiles(int startX, int startY, @Nonnull MapSelection mapSelection) {
+    public void pasteTiles(int startX, int startY, @NotNull MapSelection mapSelection) {
         GroupAction action = new GroupAction();
         for (MapPosition position : mapSelection.getSelectedPositions()) {
             int newX = startX + (position.getX() - mapSelection.getOffsetX());

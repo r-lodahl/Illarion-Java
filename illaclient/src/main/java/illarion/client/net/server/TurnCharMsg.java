@@ -22,12 +22,12 @@ import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
 import illarion.common.types.Direction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -38,8 +38,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_TURN_CHAR)
 public final class TurnCharMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(TurnCharMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The ID of the character that is turned.
@@ -54,12 +54,12 @@ public final class TurnCharMsg implements ServerReply {
     private Direction dir;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         dir = Direction.decode(reader);
         charId = new CharacterId(reader);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if (charId == null) {
@@ -85,7 +85,7 @@ public final class TurnCharMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

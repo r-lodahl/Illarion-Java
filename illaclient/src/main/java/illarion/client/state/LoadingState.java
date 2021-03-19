@@ -18,8 +18,8 @@ package illarion.client.state;
 import illarion.client.gui.controller.LoadScreenController;
 import illarion.client.loading.Loading;
 import org.illarion.engine.BackendBinding;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This game state is active while the game loads. It takes care for showing the loading screen and to trigger the
@@ -34,7 +34,7 @@ public final class LoadingState implements GameState {
     /**
      * The manager of the loading tasks.
      */
-    @Nonnull
+    @NotNull
     private final Loading loadingManager = new Loading();
 
     private BackendBinding binding;

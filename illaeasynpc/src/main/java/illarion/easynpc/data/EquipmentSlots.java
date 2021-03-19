@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator stores all possible slots for equipment used in the easyNPC
@@ -95,7 +95,7 @@ public enum EquipmentSlots {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (EquipmentSlots slot : EquipmentSlots.values()) {
             map.put(slot.name(), Token.VARIABLE);
         }

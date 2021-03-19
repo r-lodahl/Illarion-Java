@@ -18,10 +18,7 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.CharacterId;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Attacking a character ({@link CommandList#CMD_ATTACK}).
@@ -29,13 +26,11 @@ import javax.annotation.concurrent.NotThreadSafe;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@NotThreadSafe
 public final class AttackCmd extends AbstractCommand {
     /**
      * The ID of the character that shall be attacked.
      */
-    @Nonnull
+    @NotNull
     private final CharacterId charId;
 
     /**
@@ -43,18 +38,18 @@ public final class AttackCmd extends AbstractCommand {
      *
      * @param targetCharId the ID of the character that is attacked
      */
-    public AttackCmd(@Nonnull CharacterId targetCharId) {
+    public AttackCmd(@NotNull CharacterId targetCharId) {
         super(CommandList.CMD_ATTACK);
 
         charId = targetCharId;
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         charId.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(charId.toString());

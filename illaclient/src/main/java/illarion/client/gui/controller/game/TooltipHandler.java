@@ -22,17 +22,14 @@ import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.Color;
 import de.lessvoid.nifty.tools.SizeValue;
 import illarion.client.gui.Tooltip;
-import illarion.client.gui.events.TooltipsRemovedEvent;
 import illarion.client.world.World;
 import illarion.common.types.Rectangle;
-import org.bushe.swing.event.EventBus;
-import org.illarion.engine.input.Input;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.nifty.controls.tooltip.builder.ToolTipBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This tooltip handler takes care of showing and hiding the item tooltips on the screen.
@@ -40,8 +37,8 @@ import javax.annotation.Nullable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class TooltipHandler implements ScreenController, UpdatableHandler {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(TooltipHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The Nifty that is the parent to this handler.
@@ -76,7 +73,7 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
     private int lastMouseY;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         parentNifty = nifty;
         parentScreen = screen;
 
@@ -132,7 +129,7 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
      * Also the mouse is required to remain inside this area to keep the tooltip active
      * @param tooltip the tooltip to display
      */
-    public void showToolTip(@Nonnull Rectangle location, @Nonnull Tooltip tooltip) {
+    public void showToolTip(@NotNull Rectangle location, @NotNull Tooltip tooltip) {
         if (!tooltip.isValid()) {
             log.warn("Received a invalid tooltip from the server!");
             return;
@@ -163,8 +160,8 @@ public final class TooltipHandler implements ScreenController, UpdatableHandler 
      * @param location the tooltip should be place around, the area of this rectangle won't be hidden by the tooltip
      * @param tooltip the tooltip to display
      */
-    private void showToolTipImpl(@Nonnull Rectangle location, @Nonnull Tooltip tooltip) {
-        ToolTipBuilder builder = new ToolTipBuilder("tooltip-" + Long.toString(count++));
+    private void showToolTipImpl(@NotNull Rectangle location, @NotNull Tooltip tooltip) {
+        ToolTipBuilder builder = new ToolTipBuilder("tooltip-" + count++);
         builder.title(tooltip.getName());
 
         switch (tooltip.getRareness()) {

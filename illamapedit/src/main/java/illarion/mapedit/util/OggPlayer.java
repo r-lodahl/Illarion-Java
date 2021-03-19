@@ -16,11 +16,11 @@
 package illarion.mapedit.util;
 
 import illarion.common.util.Stoppable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.sound.sampled.*;
 import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.DataLine.Info;
@@ -34,7 +34,7 @@ public class OggPlayer extends Thread implements Stoppable {
     /**
      * This logger for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OggPlayer.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private volatile boolean running;
     private AudioInputStream audioInputStream;
@@ -122,7 +122,7 @@ public class OggPlayer extends Thread implements Stoppable {
                 }
                 stopPlaying();
             }
-        } catch (@Nonnull LineUnavailableException | IOException e) {
+        } catch (@NotNull LineUnavailableException | IOException e) {
             LOGGER.error("Failed to read Ogg file.", e);
         }
     }

@@ -16,11 +16,11 @@
 package illarion.common.data;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +40,7 @@ public final class BookLanguage implements Iterable<BookPage> {
     /**
      * The list of pages of this book.
      */
-    @Nonnull
+    @NotNull
     private final List<BookPage> pages;
 
     /**
@@ -55,7 +55,7 @@ public final class BookLanguage implements Iterable<BookPage> {
      *
      * @param source the XML node that supplies the data
      */
-    public void loadData(@Nonnull Node source) {
+    public void loadData(@NotNull Node source) {
         if (!"language".equals(source.getNodeName())) {
             return;
         }
@@ -116,7 +116,7 @@ public final class BookLanguage implements Iterable<BookPage> {
      * @return the book page assigned to the index
      * @throws IndexOutOfBoundsException if the index is out of range ({@code index &lt; 0 || index &gt;= size()})
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public BookPage getPage(int index) {
         BookPage page = pages.get(index);
@@ -126,7 +126,7 @@ public final class BookLanguage implements Iterable<BookPage> {
         return page;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<BookPage> iterator() {
         return pages.iterator();

@@ -18,9 +18,9 @@ package org.illarion.engine.graphic;
 import illarion.common.net.NetCommReader;
 import illarion.common.util.FastMath;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -134,7 +134,7 @@ public class Color {
      *
      * @param org the original color value that is the data provider
      */
-    public Color(@Nonnull Color org) {
+    public Color(@NotNull Color org) {
         this(org.red, org.green, org.blue, org.alpha);
     }
 
@@ -144,7 +144,7 @@ public class Color {
      * @param reader the reader used to fetch the color values
      * @throws IOException in case reading fails
      */
-    public Color(@Nonnull NetCommReader reader) throws IOException {
+    public Color(@NotNull NetCommReader reader) throws IOException {
         this(reader.readUByte(), reader.readUByte(), reader.readUByte(), reader.readUByte());
     }
 
@@ -153,7 +153,7 @@ public class Color {
      *
      * @param color the color that supplies the new values
      */
-    public void add(@Nonnull Color color) {
+    public void add(@NotNull Color color) {
         red += color.red;
         green += color.green;
         blue += color.blue;
@@ -168,7 +168,7 @@ public class Color {
      *
      * @return a immutable copy of this color.
      */
-    @Nonnull
+    @NotNull
     public ImmutableColor getImmutableCopy() {
         return new ImmutableColor(this);
     }
@@ -322,7 +322,7 @@ public class Color {
      *
      * @param org the color instance that supplies the new color values
      */
-    public void setColor(@Nonnull Color org) {
+    public void setColor(@NotNull Color org) {
         red = org.red;
         green = org.green;
         blue = org.blue;
@@ -334,7 +334,7 @@ public class Color {
      *
      * @param mul the color that supplies the values multiplied to this color
      */
-    public void multiply(@Nonnull Color mul) {
+    public void multiply(@NotNull Color mul) {
         red = (red * mul.red) / MAX_INT_VALUE;
         green = (green * mul.green) / MAX_INT_VALUE;
         blue = (blue * mul.blue) / MAX_INT_VALUE;
@@ -404,7 +404,7 @@ public class Color {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "Color(r:" + red + " g:" + green + " b:" + blue + " a:" + alpha + ')';

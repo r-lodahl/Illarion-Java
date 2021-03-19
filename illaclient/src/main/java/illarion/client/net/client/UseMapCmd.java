@@ -18,21 +18,18 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to tell the server that the player is using a object on the map.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class UseMapCmd extends AbstractCommand {
     /**
      * The map location that is used.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate usedLocation;
 
     /**
@@ -40,19 +37,19 @@ public final class UseMapCmd extends AbstractCommand {
      *
      * @param location the location that is used
      */
-    public UseMapCmd(@Nonnull ServerCoordinate location) {
+    public UseMapCmd(@NotNull ServerCoordinate location) {
         super(CommandList.CMD_USE);
 
         usedLocation = location;
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte((short) 1); // MAP REFERENCE
         usedLocation.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Location: " + usedLocation);

@@ -28,20 +28,20 @@ import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.resource.TileImg;
 import illarion.mapedit.util.Disposable;
 import illarion.mapedit.util.MouseButton;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Tim
  */
 public final class ToolManager implements Disposable {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ToolManager.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     public static final int TOOL_RADIUS = 10000;
     public static final int ICON_SIZE = 16;
 
@@ -92,7 +92,7 @@ public final class ToolManager implements Disposable {
     }
 
     @EventSubscriber
-    public void clickedAt(@Nonnull MapClickedEvent e) {
+    public void clickedAt(@NotNull MapClickedEvent e) {
         if (e.getButton() != MouseButton.LeftButton) {
             return;
         }
@@ -115,7 +115,7 @@ public final class ToolManager implements Disposable {
         }
     }
 
-    private boolean isAnnotated(@Nonnull MapClickedEvent e) {
+    private boolean isAnnotated(@NotNull MapClickedEvent e) {
         if ((actualTool == null) || !actualTool.isWarnAnnotated()) {
             return false;
         }
@@ -125,12 +125,12 @@ public final class ToolManager implements Disposable {
         return controller.getAnnotationChecker().isAnnotated(e.getX(), e.getY(), e.getMap());
     }
 
-    private boolean isFillAction(@Nonnull MapClickedEvent e) {
+    private boolean isFillAction(@NotNull MapClickedEvent e) {
         return (actualTool != null) && actualTool.isFillSelected() && e.getMap().isSelected(e.getX(), e.getY());
     }
 
     @EventSubscriber
-    public void onMapDragged(@Nonnull MapDraggedEvent e) {
+    public void onMapDragged(@NotNull MapDraggedEvent e) {
         if ((actualTool != null) && (e.getButton() == MouseButton.LeftButton)) {
             if (actualTool.isFillAreaAction()) {
                 e.getMap().setFillingArea(e.getX(), e.getY(), e.getStartX(), e.getStartY());
@@ -146,7 +146,7 @@ public final class ToolManager implements Disposable {
     }
 
     @EventSubscriber
-    public void onMapDragFinished(@Nonnull MapDragFinishedEvent e) {
+    public void onMapDragFinished(@NotNull MapDragFinishedEvent e) {
         if ((actualTool != null) && !actualTool.isFillSelected()) {
             currentX = Integer.MIN_VALUE;
             currentY = Integer.MIN_VALUE;
@@ -159,27 +159,27 @@ public final class ToolManager implements Disposable {
     }
 
     @EventSubscriber
-    public void onTileSelected(@Nonnull TileSelectedEvent e) {
+    public void onTileSelected(@NotNull TileSelectedEvent e) {
         selectedTile = e.getTileImg();
     }
 
     @EventSubscriber
-    public void onItemSelected(@Nonnull ItemSelectedEvent e) {
+    public void onItemSelected(@NotNull ItemSelectedEvent e) {
         selectedItem = e.getItemImg();
     }
 
     @EventSubscriber
-    public void onSelectTool(@Nonnull ToolSelectedEvent e) {
+    public void onSelectTool(@NotNull ToolSelectedEvent e) {
         setTool(e.getTool());
     }
 
-    @Nonnull
+    @NotNull
     public HistoryManager getHistory() {
         return controller.getHistoryManager();
     }
 
     @EventSubscriber
-    public void onPasteClipboard(@Nonnull ClipboardPasteEvent e) {
+    public void onPasteClipboard(@NotNull ClipboardPasteEvent e) {
         doPaste = true;
     }
 }

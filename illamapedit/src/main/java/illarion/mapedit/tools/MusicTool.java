@@ -22,10 +22,10 @@ import illarion.mapedit.data.MapTile.MapTileFactory;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.MusicIDChangedAction;
 import illarion.mapedit.tools.panel.MusicPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 public class MusicTool extends AbstractTool {
 
-    @Nonnull
+    @NotNull
     private final MusicPanel panel;
 
     public MusicTool() {
@@ -41,7 +41,7 @@ public class MusicTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         MusicIDChangedAction newAction = addMusic(x, y, map);
         if (newAction != null) {
             getHistory().addEntry(newAction);
@@ -49,7 +49,7 @@ public class MusicTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, @Nonnull GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, @NotNull GroupAction action) {
         MusicIDChangedAction newAction = addMusic(x, y, map);
         if (newAction != null) {
             action.addAction(newAction);
@@ -57,7 +57,7 @@ public class MusicTool extends AbstractTool {
     }
 
     @Nullable
-    public MusicIDChangedAction addMusic(int x, int y, @Nonnull Map map) {
+    public MusicIDChangedAction addMusic(int x, int y, @NotNull Map map) {
         MapTile tile = map.getTileAt(x, y);
         int musicID = panel.getMusicID();
         if ((tile == null) || (tile.getMusicID() == musicID)) {
@@ -79,7 +79,7 @@ public class MusicTool extends AbstractTool {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public JPanel getSettingsPanel() {
         return panel;

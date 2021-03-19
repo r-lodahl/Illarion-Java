@@ -18,17 +18,12 @@ package illarion.common.types;
 import illarion.common.graphics.MapConstants;
 import illarion.common.util.FastMath;
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 @SuppressWarnings("InstanceVariableNamingConvention")
 public class DisplayCoordinate {
     /**
@@ -50,7 +45,7 @@ public class DisplayCoordinate {
         this.layer = layer;
     }
 
-    public DisplayCoordinate(@Nonnull DisplayCoordinate org, int dX, int dY, int dLayer) {
+    public DisplayCoordinate(@NotNull DisplayCoordinate org, int dX, int dY, int dLayer) {
         this(org.getX() + dX, org.getY() + dY, org.getLayer() - dLayer);
     }
 
@@ -66,13 +61,13 @@ public class DisplayCoordinate {
         return layer;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public MapCoordinate toMapCoordinate() {
         return toMapCoordinate(x, y);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static MapCoordinate toMapCoordinate(int x, int y) {
         return new MapCoordinate(toMapColumn(x), toMapRow(y));
@@ -137,7 +132,7 @@ public class DisplayCoordinate {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "Display Coordinate (" + x + ", " + y + ", Layer: " + layer + ')';

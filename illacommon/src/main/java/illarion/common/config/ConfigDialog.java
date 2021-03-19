@@ -18,9 +18,9 @@ package illarion.common.config;
 import illarion.common.config.entries.ConfigEntry;
 import illarion.common.util.MessageSource;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,13 +44,13 @@ public final class ConfigDialog {
         /**
          * The configuration entry that is displayed next to the title.
          */
-        @Nonnull
+        @NotNull
         private final ConfigEntry entry;
 
         /**
          * The title of the entry.
          */
-        @Nonnull
+        @NotNull
         private final String title;
 
         /**
@@ -59,7 +59,7 @@ public final class ConfigDialog {
          * @param entryTitle the title of that entry that is displayed as name of this entry
          * @param configEntry the configuration entry that defines what value is controlled how
          */
-        public Entry(@Nonnull String entryTitle, @Nonnull ConfigEntry configEntry) {
+        public Entry(@NotNull String entryTitle, @NotNull ConfigEntry configEntry) {
             title = entryTitle;
             entry = configEntry;
         }
@@ -70,7 +70,7 @@ public final class ConfigDialog {
          *
          * @return the configuration entry of this entry
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public ConfigEntry getConfigEntry() {
             return entry;
@@ -81,7 +81,7 @@ public final class ConfigDialog {
          *
          * @return The title of this entry
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public String getTitle() {
             return title;
@@ -98,14 +98,14 @@ public final class ConfigDialog {
         /**
          * The list of entries that is stored on this page.
          */
-        @Nonnull
+        @NotNull
         private final List<Entry> lines;
 
         /**
          * The title of this page. This text is displayed in the tab for this
          * page.
          */
-        @Nonnull
+        @NotNull
         private final String title;
 
         /**
@@ -113,7 +113,7 @@ public final class ConfigDialog {
          *
          * @param pageTitle the title of the page that is displayed in the tab
          */
-        public Page(@Nonnull String pageTitle) {
+        public Page(@NotNull String pageTitle) {
             lines = new ArrayList<>();
             title = pageTitle;
         }
@@ -123,7 +123,7 @@ public final class ConfigDialog {
          *
          * @param entry the entry that is supposed to be added to this page
          */
-        public void addEntry(@Nonnull Entry entry) {
+        public void addEntry(@NotNull Entry entry) {
             lines.add(entry);
         }
 
@@ -135,7 +135,7 @@ public final class ConfigDialog {
          * @throws IndexOutOfBoundsException if the index is lesser then zero or larger or equal to
          * {@link #getEntryCount()}
          */
-        @Nonnull
+        @NotNull
         public Entry getEntry(int index) {
             Entry entry = lines.get(index);
             if (entry == null) {
@@ -159,13 +159,13 @@ public final class ConfigDialog {
          *
          * @return the title of this page
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public String getTitle() {
             return title;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         @Contract(pure = true)
         public Iterator<Entry> iterator() {
@@ -189,7 +189,7 @@ public final class ConfigDialog {
     /**
      * The list of pages displayed in this configuration dialog.
      */
-    @Nonnull
+    @NotNull
     private final List<Page> pages;
 
     /**
@@ -205,10 +205,10 @@ public final class ConfigDialog {
      *
      * @param page the page to add to this dialog
      */
-    public void addPage(@Nonnull Page page) {
+    public void addPage(@NotNull Page page) {
         pages.add(page);
         if (cfg != null) {
-            for (@Nonnull Entry entry : page) {
+            for (@NotNull Entry entry : page) {
                 entry.getConfigEntry().setConfig(cfg);
             }
         }
@@ -222,7 +222,7 @@ public final class ConfigDialog {
      * @throws IndexOutOfBoundsException in case the index is lesser then 0 or greater or equal then
      * {@link #getPageCount()}
      */
-    @Nonnull
+    @NotNull
     public Page getPage(int index) {
         Page result = pages.get(index);
         if (result == null) {
@@ -250,8 +250,8 @@ public final class ConfigDialog {
     public void setConfig(@Nullable Config config) {
         cfg = config;
         if (config != null) {
-            for (@Nonnull Page page : pages) {
-                for (@Nonnull Entry entry : page) {
+            for (@NotNull Page page : pages) {
+                for (@NotNull Entry entry : page) {
                     entry.getConfigEntry().setConfig(config);
                 }
             }
@@ -263,7 +263,7 @@ public final class ConfigDialog {
      *
      * @param msgSource the message source of this configuration dialog
      */
-    public void setMessageSource(@Nonnull MessageSource msgSource) {
+    public void setMessageSource(@NotNull MessageSource msgSource) {
         messages = msgSource;
     }
 

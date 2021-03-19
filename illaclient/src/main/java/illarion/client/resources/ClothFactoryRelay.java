@@ -18,9 +18,9 @@ package illarion.client.resources;
 import illarion.client.graphics.AvatarClothManager;
 import illarion.client.resources.data.AvatarClothTemplate;
 import illarion.client.resources.data.AvatarTemplate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +66,7 @@ public final class ClothFactoryRelay implements ResourceFactory<AvatarClothTempl
      * charge of maintaining this resource.
      */
     @Override
-    public void storeResource(@Nonnull AvatarClothTemplate resource) {
+    public void storeResource(@NotNull AvatarClothTemplate resource) {
         if (usedAvatars == null) {
             throw new IllegalStateException("Loading of this factory was already finished.");
         }

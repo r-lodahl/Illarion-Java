@@ -24,8 +24,8 @@ import illarion.client.gui.controller.game.*;
 import illarion.client.world.World;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -38,43 +38,43 @@ public final class GameScreenController implements GameGui, ScreenController {
     /**
      * ALL child ScreenControllers, such as Skills, Inventory, etc.
      */
-    @Nonnull
+    @NotNull
     private final Collection<ScreenController> childControllers;
     /**
      * The child ScreenControllers that are updatable
      */
-    @Nonnull
+    @NotNull
     private final Collection<UpdatableHandler> childUpdateControllers;
 
     /**
      * These handlers are all of the GUIs that can be displayed during the game
      * Any new In-Game GUIs must be declared here
      */
-    @Nonnull
+    @NotNull
     private final BookHandler bookHandler;
-    @Nonnull
+    @NotNull
     private final DialogHandler dialogHandler;
-    @Nonnull
+    @NotNull
     private final SkillsHandler skillsHandler;
-    @Nonnull
+    @NotNull
     private final InformHandler informHandler;
-    @Nonnull
+    @NotNull
     private final GUIChatHandler chatHandler;
-    @Nonnull
+    @NotNull
     private final GUIInventoryHandler inventoryHandler;
-    @Nonnull
+    @NotNull
     private final ContainerHandler containerHandler;
-    @Nonnull
+    @NotNull
     private final GameMapHandler gameMapHandler;
-    @Nonnull
+    @NotNull
     private final QuestHandler questHandler;
-    @Nonnull
+    @NotNull
     private final DocumentationHandler documentationHandler;
-    @Nonnull
+    @NotNull
     private final GameMiniMapHandler gameMiniMapHandler;
-    @Nonnull
+    @NotNull
     private final CharStatusHandler charStatusHandler;
-    @Nonnull
+    @NotNull
     private final CloseGameHandler closeGameHandler;
 
     /**
@@ -89,7 +89,7 @@ public final class GameScreenController implements GameGui, ScreenController {
      *
      * @param input The Engine's input system
      */
-    public GameScreenController(@Nonnull Input input) {
+    public GameScreenController(@NotNull Input input) {
         NumberSelectPopupHandler numberPopupHandler = new NumberSelectPopupHandler();
         TooltipHandler tooltipHandler = new TooltipHandler();
 
@@ -141,133 +141,133 @@ public final class GameScreenController implements GameGui, ScreenController {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public BookGui getBookGui() {
         return bookHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public ChatGui getChatGui() {
         return chatHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public ContainerGui getContainerGui() {
         return containerHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogGui getDialogGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogCraftingGui getDialogCraftingGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogMerchantGui getDialogMerchantGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogInputGui getDialogInputGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogMessageGui getDialogMessageGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DialogSelectionGui getDialogSelectionGui() {
         return dialogHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public GameMapGui getGameMapGui() {
         return gameMapHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public InformGui getInformGui() {
         return informHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public InventoryGui getInventoryGui() {
         return inventoryHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public PlayerStatusGui getPlayerStatusGui() {
         return charStatusHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public QuestGui getQuestGui() {
         return questHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public DocumentationGui getDocumentationGui() {
         return documentationHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public ScreenController getScreenController() {
         return this;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public SkillGui getSkillGui() {
         return skillsHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public MiniMapGui getMiniMapGui() {
         return gameMiniMapHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public CloseGameGui getCloseGameGui() {
@@ -320,7 +320,7 @@ public final class GameScreenController implements GameGui, ScreenController {
      * @param screen    The Screen for this instance of the game
      */
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         for (ScreenController childController : childControllers) {
             childController.bind(nifty, screen);
         }

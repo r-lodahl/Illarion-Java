@@ -16,8 +16,8 @@
 package org.illarion.engine.backend.gdx;
 
 import org.illarion.engine.EngineException;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the exception thrown in case the libGDX Backend causes a problem.
@@ -28,15 +28,15 @@ class GdxEngineException extends EngineException {
     GdxEngineException() {
     }
 
-    GdxEngineException(@Nonnull String message) {
+    GdxEngineException(@NotNull String message) {
         super(message);
     }
 
-    GdxEngineException(@Nonnull String message, @Nonnull Throwable cause) {
+    GdxEngineException(@NotNull String message, @NotNull Throwable cause) {
         super(message, cause);
     }
 
-    GdxEngineException(@Nonnull Throwable cause) {
+    GdxEngineException(@NotNull Throwable cause) {
         super(cause);
     }
 }

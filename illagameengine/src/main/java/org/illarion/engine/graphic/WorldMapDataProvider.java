@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines a class that is able to provide the world map texture creator with the actual map data.
@@ -31,5 +31,5 @@ public interface WorldMapDataProvider {
      * @param location the location of the requested tile
      * @param callback the callback class that is supposed to receive the tile data
      */
-    void requestTile(@Nonnull ServerCoordinate location, @Nonnull WorldMapDataProviderCallback callback);
+    void requestTile(@NotNull ServerCoordinate location, @NotNull WorldMapDataProviderCallback callback);
 }

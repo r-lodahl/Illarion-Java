@@ -15,8 +15,9 @@
  */
 package illarion.client.docu;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This entry is used to store a generic entry in the documentation. The
@@ -32,7 +33,7 @@ public interface DocuEntry extends Iterable<DocuEntry> {
      * @param index the index of the child requested
      * @return the requested child
      */
-    @Nonnull
+    @NotNull
     DocuEntry getChild(int index);
 
     /**
@@ -55,6 +56,6 @@ public interface DocuEntry extends Iterable<DocuEntry> {
      *
      * @return the title of this documentation entry
      */
-    @Nonnull
+    @NotNull
     String getTitle();
 }

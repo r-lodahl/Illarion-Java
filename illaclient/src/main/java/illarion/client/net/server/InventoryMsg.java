@@ -22,9 +22,9 @@ import illarion.common.net.NetCommReader;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -53,20 +53,20 @@ public final class InventoryMsg implements ServerReply {
     private short location;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         location = reader.readUByte();
         itemId = new ItemId(reader);
         count = ItemCount.getInstance(reader);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         World.getPlayer().getInventory().setItem(location, itemId, count);
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

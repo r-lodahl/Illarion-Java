@@ -24,9 +24,9 @@ import illarion.common.config.entries.TextEntry;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,7 +75,7 @@ public final class Config {
     /**
      * The properties that store the values of this configuration.
      */
-    @Nonnull
+    @NotNull
     private ConfigSystem cfg;
 
     /**
@@ -99,7 +99,7 @@ public final class Config {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     public static Config getInstance() {
         return INSTANCE;
     }
@@ -112,7 +112,7 @@ public final class Config {
      * @return a string with the path to the folder or null in case no folder is
      * set
      */
-    @Nonnull
+    @NotNull
     private static Path checkFolder() {
         return DirectoryManager.getInstance().getDirectory(Directory.User);
     }
@@ -122,12 +122,12 @@ public final class Config {
      *
      * @param file the file to prepend
      */
-    public void addLastOpenedFile(@Nonnull Path file) {
+    public void addLastOpenedFile(@NotNull Path file) {
         cfg.set(lastFilesKey, file.toAbsolutePath() + File.pathSeparator + cfg.getString(lastFilesKey));
         lastOpenedFilesBuffer = null;
     }
 
-    @Nonnull
+    @NotNull
     public ConfigDialog createDialog() {
         ConfigDialog dialog = new ConfigDialog();
         dialog.setConfig(cfg);
@@ -149,14 +149,14 @@ public final class Config {
         return dialog;
     }
 
-    @Nonnull
+    @NotNull
     public Path getEasyQuestFolder() {
         Path folder = cfg.getPath(easyQuestFolder);
         assert folder != null;
         return folder;
     }
 
-    @Nonnull
+    @NotNull
     public Collection<Path> getLastOpenedFiles() {
         if (lastOpenedFilesBuffer != null) {
             return Collections.unmodifiableList(lastOpenedFilesBuffer);
@@ -201,7 +201,7 @@ public final class Config {
         return returnList;
     }
 
-    @Nonnull
+    @NotNull
     public Path getExportFolder() {
         Path folder = cfg.getPath(exportFolder);
         assert folder != null;
@@ -214,7 +214,7 @@ public final class Config {
      *
      * @return the list of file paths
      */
-    @Nonnull
+    @NotNull
     public Collection<Path> getOldFiles() {
         String openFilesString = cfg.getString(openFiles);
         if (openFilesString == null || openFilesString.isEmpty()) {
@@ -256,11 +256,11 @@ public final class Config {
         cfg.save();
     }
 
-    public void setEasyQuestFolder(@Nonnull Path newFolder) {
+    public void setEasyQuestFolder(@NotNull Path newFolder) {
         cfg.set(easyQuestFolder, newFolder);
     }
 
-    public void setExportFolder(@Nonnull Path newFolder) {
+    public void setExportFolder(@NotNull Path newFolder) {
         cfg.set(exportFolder, newFolder);
     }
 
@@ -270,7 +270,7 @@ public final class Config {
      *
      * @param files the files to open
      */
-    public void setOldFiles(@Nonnull Iterable<Path> files) {
+    public void setOldFiles(@NotNull Iterable<Path> files) {
         StringBuilder buffer = new StringBuilder();
         for (Path file : files) {
             buffer.append(file.toAbsolutePath());
@@ -280,11 +280,11 @@ public final class Config {
         cfg.set(openFiles, buffer.toString());
     }
 
-    public void setCharacter(@Nonnull String newCharacter) {
+    public void setCharacter(@NotNull String newCharacter) {
         cfg.set(character, newCharacter);
     }
 
-    public void setPassword(@Nonnull String newPassword) {
+    public void setPassword(@NotNull String newPassword) {
         cfg.set(password, newPassword);
     }
 

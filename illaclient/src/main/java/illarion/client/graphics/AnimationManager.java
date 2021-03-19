@@ -15,7 +15,8 @@
  */
 package illarion.client.graphics;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,14 +34,14 @@ public final class AnimationManager {
     /**
      * The animation to add.
      */
-    @Nonnull
+    @NotNull
     private final Queue<AbstractAnimation<?>> addAnimations;
 
     /**
      * The list of animations that are registered to the manager. All animations in here need to be updated when the
      * animate function is called.
      */
-    @Nonnull
+    @NotNull
     private final List<AbstractAnimation<?>> animations;
 
     /**
@@ -88,7 +89,7 @@ public final class AnimationManager {
      *
      * @param animation the animation that shall be to the animation manager
      */
-    void register(@Nonnull AbstractAnimation<?> animation) {
+    void register(@NotNull AbstractAnimation<?> animation) {
         if (!addAnimations.contains(animation)) {
             addAnimations.add(animation);
         }

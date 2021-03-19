@@ -22,9 +22,9 @@ import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -52,13 +52,13 @@ public final class LookAtMapItemMsg implements ServerReply {
     private Tooltip tooltip;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         location = new ServerCoordinate(reader);
         stackPosition = reader.readUByte();
         tooltip = new Tooltip(reader);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((location == null) || (tooltip == null)) {
@@ -73,7 +73,7 @@ public final class LookAtMapItemMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

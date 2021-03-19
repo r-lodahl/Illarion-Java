@@ -19,116 +19,116 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.effects.TileLightEffect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class GdxTileLightEffect implements TileLightEffect, GdxTextureEffect {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(GdxTileLightEffect.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Uniform shader variable name for the top left light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_TOP_LEFT = "u_topLeft";
 
     /**
      * Uniform shader variable name for the top right light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_TOP_RIGHT = "u_topRight";
 
     /**
      * Uniform shader variable name for the bottom left light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_BOTTOM_LEFT = "u_bottomLeft";
 
     /**
      * Uniform shader variable name for the bottom right light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_BOTTOM_RIGHT = "u_bottomRight";
 
     /**
      * Uniform shader variable name for the top light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_TOP = "u_top";
 
     /**
      * Uniform shader variable name for the bottom light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_BOTTOM = "u_bottom";
 
     /**
      * Uniform shader variable name for the left light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_LEFT = "u_left";
 
     /**
      * Uniform shader variable name for the right light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_RIGHT = "u_right";
 
     /**
      * Uniform shader variable name for the center light.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_CENTER = "u_center";
 
     /**
      * Uniform shader variable name for the top left coordinates.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_TOP_LEFT_COORDS = "u_topLeftCoords";
 
     /**
      * Uniform shader variable name for the bottom right coordinates.
      */
-    @Nonnull
+    @NotNull
     private static final String UNIFORM_BOTTOM_RIGHT_COORDS = "u_bottomRightCoords";
 
     /**
      * The pixel shader that is required for this effect.
      */
-    @Nonnull
+    @NotNull
     private final ShaderProgram shader;
 
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color topLeft;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color topRight;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color bottomLeft;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color bottomRight;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color top;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color bottom;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color left;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color right;
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color center;
-    @Nonnull
+    @NotNull
     private final Vector2 topLeftCoord;
-    @Nonnull
+    @NotNull
     private final Vector2 bottomRightCoord;
 
-    GdxTileLightEffect(@Nonnull Files files) {
+    GdxTileLightEffect(@NotNull Files files) {
         //noinspection SpellCheckingInspection
         shader = new ShaderProgram(files.internal("org/illarion/engine/backend/gdx/shaders/generic.vert"),
                                    files.internal("org/illarion/engine/backend/gdx/shaders/tileLight.frag"));
@@ -151,52 +151,52 @@ public class GdxTileLightEffect implements TileLightEffect, GdxTextureEffect {
     }
 
     @Override
-    public void setTopLeftColor(@Nonnull Color color) {
+    public void setTopLeftColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, topLeft);
     }
 
     @Override
-    public void setTopRightColor(@Nonnull Color color) {
+    public void setTopRightColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, topRight);
     }
 
     @Override
-    public void setBottomLeftColor(@Nonnull Color color) {
+    public void setBottomLeftColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, bottomLeft);
     }
 
     @Override
-    public void setBottomRightColor(@Nonnull Color color) {
+    public void setBottomRightColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, bottomRight);
     }
 
     @Override
-    public void setTopColor(@Nonnull Color color) {
+    public void setTopColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, top);
     }
 
     @Override
-    public void setBottomColor(@Nonnull Color color) {
+    public void setBottomColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, bottom);
     }
 
     @Override
-    public void setLeftColor(@Nonnull Color color) {
+    public void setLeftColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, left);
     }
 
     @Override
-    public void setRightColor(@Nonnull Color color) {
+    public void setRightColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, right);
     }
 
     @Override
-    public void setCenterColor(@Nonnull Color color) {
+    public void setCenterColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, center);
     }
 
     @Override
-    public void activateEffect(@Nonnull SpriteBatch batch) {
+    public void activateEffect(@NotNull SpriteBatch batch) {
         if (shader.isCompiled()) {
             batch.setShader(shader);
             setUniform(shader, UNIFORM_TOP_LEFT, topLeft);
@@ -214,20 +214,20 @@ public class GdxTileLightEffect implements TileLightEffect, GdxTextureEffect {
     }
 
     private static void setUniform(
-            @Nonnull ShaderProgram shader, @Nonnull String name, @Nonnull com.badlogic.gdx.graphics.Color color) {
+            @NotNull ShaderProgram shader, @NotNull String name, @NotNull com.badlogic.gdx.graphics.Color color) {
         if (shader.hasUniform(name)) {
             shader.setUniformf(name, color);
         }
     }
 
-    private static void setUniform(@Nonnull ShaderProgram shader, @Nonnull String name, @Nonnull Vector2 vector2) {
+    private static void setUniform(@NotNull ShaderProgram shader, @NotNull String name, @NotNull Vector2 vector2) {
         if (shader.hasUniform(name)) {
             shader.setUniformf(name, vector2);
         }
     }
 
     @Override
-    public void disableEffect(@Nonnull SpriteBatch batch) {
+    public void disableEffect(@NotNull SpriteBatch batch) {
         batch.setShader(null);
     }
 

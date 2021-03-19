@@ -17,9 +17,9 @@ package illarion.common.bug;
 
 import illarion.common.util.MessageSource;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
@@ -44,7 +44,7 @@ public final class ReportDialogSwing implements ReportDialog {
         /**
          * The dialog that is closed upon calling this listener.
          */
-        @Nonnull
+        @NotNull
         private final JDialog closingDialog;
 
         /**
@@ -60,7 +60,7 @@ public final class ReportDialogSwing implements ReportDialog {
          * @param dialog the dialog that is closed upon calling this listener
          * @param setResult the result value that is supposed to be set
          */
-        public ButtonListener(@Nonnull JDialog dialog, int setResult) {
+        public ButtonListener(@NotNull JDialog dialog, int setResult) {
             resultValue = setResult;
             closingDialog = dialog;
         }

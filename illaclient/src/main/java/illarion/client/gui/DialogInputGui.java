@@ -15,11 +15,9 @@
  */
 package illarion.client.gui;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.world.Char;
 import illarion.common.types.CharacterId;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines the access to the GUI used to display input dialogs.
@@ -36,7 +34,7 @@ public interface DialogInputGui {
      * @param maxLength the amount of characters that are maximal allowed in this dialog
      * @param multiLine {@code true} in case the input of multiple lines should be allowed
      */
-    void showInputDialog(int dialogId, String title, @Nonnull String message, int maxLength, boolean multiLine);
+    void showInputDialog(int dialogId, String title, @NotNull String message, int maxLength, boolean multiLine);
 
-    void showCharacterDialog(@Nonnull CharacterId charId, @Nonnull String lookAt);
+    void showCharacterDialog(@NotNull CharacterId charId, @NotNull String lookAt);
 }

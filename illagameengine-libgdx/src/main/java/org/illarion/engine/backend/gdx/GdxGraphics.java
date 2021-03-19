@@ -30,65 +30,65 @@ import illarion.common.types.Rectangle;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.*;
 import org.illarion.engine.graphic.effects.TextureEffect;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the graphics engine implementation that uses libGDX.
  */
 class GdxGraphics implements Graphics {
-    @Nonnull
+    @NotNull
     private static final float[] FLOAT_BUFFER = new float[20];
     /**
      * The libGDX graphics instance that is used to display the graphics.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.Graphics graphics;
     /**
      * The sprite batch used to perform the batch rendering.
      */
-    @Nonnull
+    @NotNull
     private final SpriteBatch spriteBatch;
     /**
      * This is a temporary color that is used only to transfer data to the libGDX functions.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color tempColor1;
     /**
      * This is a temporary color that is used only to transfer data to the libGDX functions.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color tempColor2;
     /**
      * This is a temporary color that is used only to transfer data to the libGDX functions.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color tempColor3;
     /**
      * This is a temporary color that is used only to transfer data to the libGDX functions.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color tempColor4;
     /**
      * The shape renderer used to draw primitive shapes.
      */
-    @Nonnull
+    @NotNull
     private final ShapeRenderer shapeRenderer;
     /**
      * This is a temporary texture region instance that is used for some calculations.
      */
-    @Nonnull
+    @NotNull
     private final TextureRegion tempRegion;
     /**
      * A temporary rectangle used for some calculations.
      */
-    @Nonnull
+    @NotNull
     private final Rectangle tempEngineRectangle;
     /**
      * The camera that views the scene.
      */
-    @Nonnull
+    @NotNull
     private final OrthographicCamera camera;
     /**
      * The blank background texture used to render rectangles.
@@ -112,7 +112,7 @@ class GdxGraphics implements Graphics {
     /**
      * The backend assets reference
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -120,7 +120,7 @@ class GdxGraphics implements Graphics {
      *
      * @param graphics the libGDX graphics instance that is used
      */
-    GdxGraphics(@Nonnull Assets assets, @Nonnull com.badlogic.gdx.Graphics graphics) {
+    GdxGraphics(@NotNull Assets assets, @NotNull com.badlogic.gdx.Graphics graphics) {
         this.assets = assets;
         this.graphics = graphics;
         shapeRenderer = new ShapeRenderer();
@@ -137,7 +137,7 @@ class GdxGraphics implements Graphics {
         camera.setToOrtho(true);
     }
 
-    @Nonnull
+    @NotNull
     SpriteBatch getSpriteBatch() {
         return spriteBatch;
     }
@@ -182,14 +182,14 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void drawSprite(
-            @Nonnull Sprite sprite,
+            @NotNull Sprite sprite,
             int posX,
             int posY,
-            @Nonnull Color color,
+            @NotNull Color color,
             int frame,
             double scale,
             double rotation,
-            @Nonnull TextureEffect... effects) {
+            @NotNull TextureEffect... effects) {
         if (sprite instanceof GdxSprite) {
             GdxSprite gdxSprite = (GdxSprite) sprite;
 
@@ -246,15 +246,15 @@ class GdxGraphics implements Graphics {
      * @param source the engine color instance that is the source of the color data
      * @param target the libGDX color instance that is the target of the color data
      */
-    static void transferColor(@Nonnull Color source, @Nonnull com.badlogic.gdx.graphics.Color target) {
+    static void transferColor(@NotNull Color source, @NotNull com.badlogic.gdx.graphics.Color target) {
         target.set(source.getRedf(), source.getGreenf(), source.getBluef(), source.getAlphaf());
         target.clamp();
     }
 
     @Override
-    public void drawTileSprite(@Nonnull Sprite sprite, int posX, int posY, @Nonnull Color topColor,
-                               @Nonnull Color bottomColor, @Nonnull Color leftColor, @Nonnull Color rightColor,
-                               @Nonnull Color centerColor, int frame, @Nonnull TextureEffect... effects) {
+    public void drawTileSprite(@NotNull Sprite sprite, int posX, int posY, @NotNull Color topColor,
+                               @NotNull Color bottomColor, @NotNull Color leftColor, @NotNull Color rightColor,
+                               @NotNull Color centerColor, int frame, @NotNull TextureEffect... effects) {
         if (!(sprite instanceof GdxSprite)) {
             throw new IllegalArgumentException("The sprite is expected to be a sprite provided by this engine.");
         }
@@ -369,7 +369,7 @@ class GdxGraphics implements Graphics {
     }
 
     @Override
-    public void setBlendingMode(@Nonnull BlendingMode mode) {
+    public void setBlendingMode(@NotNull BlendingMode mode) {
         if (lastBlendingMode == mode) {
             return;
         }
@@ -387,15 +387,15 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void drawText(
-            @Nonnull Font font, @Nonnull CharSequence text, @Nonnull Color color, int x, int y) {
+            @NotNull Font font, @NotNull CharSequence text, @NotNull Color color, int x, int y) {
         drawText(font, text, color, x, y, 1.f, 1.f);
     }
 
     @Override
     public void drawText(
-            @Nonnull Font font,
-            @Nonnull CharSequence text,
-            @Nonnull Color color,
+            @NotNull Font font,
+            @NotNull CharSequence text,
+            @NotNull Color color,
             int x,
             int y,
             double scaleX,
@@ -433,7 +433,7 @@ class GdxGraphics implements Graphics {
     }
 
     @Override
-    public void drawRectangle(int x, int y, int width, int height, @Nonnull Color color) {
+    public void drawRectangle(int x, int y, int width, int height, @NotNull Color color) {
         activateSpriteBatch();
         if (blankBackground == null) {
             return;
@@ -443,7 +443,7 @@ class GdxGraphics implements Graphics {
     }
 
     @Override
-    public void drawRectangle(@Nonnull Rectangle rectangle, @Nonnull Color color) {
+    public void drawRectangle(@NotNull Rectangle rectangle, @NotNull Color color) {
         drawRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), color);
     }
 
@@ -453,10 +453,10 @@ class GdxGraphics implements Graphics {
             int y,
             int width,
             int height,
-            @Nonnull Color topLeftColor,
-            @Nonnull Color topRightColor,
-            @Nonnull Color bottomLeftColor,
-            @Nonnull Color bottomRightColor) {
+            @NotNull Color topLeftColor,
+            @NotNull Color topRightColor,
+            @NotNull Color bottomLeftColor,
+            @NotNull Color bottomRightColor) {
         activateShapeRenderer();
         transferColor(topLeftColor, tempColor1);
         transferColor(topRightColor, tempColor2);
@@ -504,13 +504,13 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects) {
+            @NotNull Color color,
+            @NotNull TextureEffect... effects) {
         if ((width == 0) || (height == 0)) {
             return;
         }
@@ -542,7 +542,7 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
@@ -551,8 +551,8 @@ class GdxGraphics implements Graphics {
             int texY,
             int texWidth,
             int texHeight,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects) {
+            @NotNull Color color,
+            @NotNull TextureEffect... effects) {
         if ((width == 0) || (height == 0)) {
             return;
         }
@@ -587,7 +587,7 @@ class GdxGraphics implements Graphics {
 
     @Override
     public void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
@@ -599,8 +599,8 @@ class GdxGraphics implements Graphics {
             int centerX,
             int centerY,
             double rotate,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects) {
+            @NotNull Color color,
+            @NotNull TextureEffect... effects) {
         if ((width == 0) || (height == 0)) {
             return;
         }
@@ -678,7 +678,7 @@ class GdxGraphics implements Graphics {
         }
     }
 
-    private float getFloatColor(@Nonnull Color source, @Nonnull com.badlogic.gdx.graphics.Color workingInstance) {
+    private float getFloatColor(@NotNull Color source, @NotNull com.badlogic.gdx.graphics.Color workingInstance) {
         transferColor(source, workingInstance);
         return workingInstance.toFloatBits();
     }

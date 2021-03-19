@@ -15,33 +15,34 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class OutOfRangeException extends IllegalArgumentException {
-    public OutOfRangeException(@Nonnull String parameterName, int value, int min, int max) {
+    public OutOfRangeException(@NotNull String parameterName, int value, int min, int max) {
         this(parameterName, Integer.toString(value), Integer.toString(min), Integer.toString(max));
     }
 
-    public OutOfRangeException(@Nonnull String parameterName,
-                               @Nonnull String value,
-                               @Nonnull String min,
-                               @Nonnull String max) {
+    public OutOfRangeException(@NotNull String parameterName,
+                               @NotNull String value,
+                               @NotNull String min,
+                               @NotNull String max) {
         super("Argument \"" + parameterName + "\" is out of range. " + value + " should be between " + min + " and " +
                 max);
     }
 
-    public OutOfRangeException(@Nonnull String parameterName, long value, long min, long max) {
+    public OutOfRangeException(@NotNull String parameterName, long value, long min, long max) {
         this(parameterName, Long.toString(value), Long.toString(min), Long.toString(max));
     }
 
-    public OutOfRangeException(@Nonnull String parameterName, float value, float min, float max) {
+    public OutOfRangeException(@NotNull String parameterName, float value, float min, float max) {
         this(parameterName, Float.toString(value), Float.toString(min), Float.toString(max));
     }
 
-    public OutOfRangeException(@Nonnull String parameterName, double value, double min, double max) {
+    public OutOfRangeException(@NotNull String parameterName, double value, double min, double max) {
         this(parameterName, Double.toString(value), Double.toString(min), Double.toString(max));
     }
 }

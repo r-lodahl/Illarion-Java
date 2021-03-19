@@ -15,11 +15,6 @@
  */
 package illarion.common.config;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.Serializable;
-import java.nio.file.Path;
-
 /**
  * This interface offers reduced access to the configuration system. Accessing this interface should be enough for
  * the most cases.

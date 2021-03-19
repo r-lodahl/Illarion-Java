@@ -15,21 +15,22 @@
  */
 package illarion.mapedit.events.menu;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
 
 /**
  * @author Fredrik K
  */
 public class SetFolderEvent {
-    @Nonnull
+    @NotNull
     private final Path file;
 
-    public SetFolderEvent(@Nonnull Path file) {
+    public SetFolderEvent(@NotNull Path file) {
         this.file = file;
     }
 
-    @Nonnull
+    @NotNull
     public Path getFile() {
         return file;
     }

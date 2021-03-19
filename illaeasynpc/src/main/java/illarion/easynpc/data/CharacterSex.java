@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator contains the possible values for the sex of a NPC along with all information required to handle
@@ -66,7 +66,7 @@ public enum CharacterSex {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (CharacterSex sex : CharacterSex.values()) {
             map.put(sex.name(), Token.VARIABLE);
         }

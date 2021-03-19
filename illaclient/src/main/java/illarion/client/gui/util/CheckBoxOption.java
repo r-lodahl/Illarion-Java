@@ -20,9 +20,9 @@ import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Stefano Bonicatti &lt;smjert@gmail.com&gt;
@@ -33,7 +33,7 @@ public class CheckBoxOption implements Option<Boolean, CheckBox> {
     private final CheckBox control;
     private final String key;
 
-    public CheckBoxOption(String name, @Nonnull Element parent, Nifty nifty, Screen screen) {
+    public CheckBoxOption(String name, @NotNull Element parent, Nifty nifty, Screen screen) {
         key = name;
 
         CheckboxBuilder checkBoxBuilder = new CheckboxBuilder(name + "GUI");

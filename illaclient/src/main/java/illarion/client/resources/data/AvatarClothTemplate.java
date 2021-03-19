@@ -18,10 +18,8 @@ package illarion.client.resources.data;
 import illarion.client.graphics.AvatarClothManager;
 import illarion.client.graphics.AvatarClothManager.AvatarClothGroup;
 import org.illarion.engine.graphic.Sprite;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -30,8 +28,6 @@ import java.util.Optional;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class AvatarClothTemplate extends AbstractMultiFrameEntityTemplate {
     /**
      * The ID of the parent avatar.
@@ -41,7 +37,7 @@ public class AvatarClothTemplate extends AbstractMultiFrameEntityTemplate {
     /**
      * The ID of the cloth slot this cloth is displayed in.
      */
-    @Nonnull
+    @NotNull
     private final AvatarClothGroup clothGroup;
 
     /**
@@ -53,7 +49,7 @@ public class AvatarClothTemplate extends AbstractMultiFrameEntityTemplate {
      * @param avatarId the ID of the avatar this cloth belongs to
      * @param clothSlot the ID of the slot this cloth belongs to
      */
-    public AvatarClothTemplate(int id, @Nonnull Sprite sprite, int frames, int avatarId, int clothSlot) {
+    public AvatarClothTemplate(int id, @NotNull Sprite sprite, int frames, int avatarId, int clothSlot) {
         super(id, sprite, frames, 0, null, 0);
 
         this.avatarId = avatarId;
@@ -73,12 +69,12 @@ public class AvatarClothTemplate extends AbstractMultiFrameEntityTemplate {
         return avatarId;
     }
 
-    @Nonnull
+    @NotNull
     public AvatarClothGroup getClothGroup() {
         return clothGroup;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return AvatarClothManager.toString(clothGroup);

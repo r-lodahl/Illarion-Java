@@ -18,9 +18,9 @@ package illarion.client.gui;
 import illarion.client.world.items.Inventory;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interface is used to control inventory display in the GUI.
@@ -66,7 +66,7 @@ public interface InventoryGui {
      * @param slotId the ID of the slot
      * @param tooltip the tooltip
      */
-    void showTooltip(int slotId, @Nonnull Tooltip tooltip);
+    void showTooltip(int slotId, @NotNull Tooltip tooltip);
 
     /**
      * Hide the inventory in case its shown and show it in case its hidden.

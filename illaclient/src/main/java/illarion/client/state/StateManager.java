@@ -19,15 +19,15 @@ import illarion.client.IllaClient;
 import illarion.client.graphics.FontLoader;
 import illarion.client.input.InputReceiver;
 import illarion.client.net.NetworkEventConsumer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.GameStateManager;
 import org.illarion.engine.State;
 import org.illarion.engine.assets.TextureManager;
 import org.illarion.engine.sound.Sounds;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +66,7 @@ public final class StateManager implements GameStateManager {
         return gameStates.get(currentState);
     }
 
-    private static final Logger log = LoggerFactory.getLogger(StateManager.class);
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Initializes fields and prepares the Game for launch
@@ -85,7 +85,7 @@ public final class StateManager implements GameStateManager {
 
         try {
             FontLoader.getInstance().prepareAllFonts(binding.getAssets());
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             log.error("Error while loading fonts!", e);
         }
 
@@ -105,12 +105,12 @@ public final class StateManager implements GameStateManager {
         nifty.setLocale(Lang.getInstance().getLocale());*/
         /*container.getEngine().getInput().addForwardingListener(new ForwardingListener() {
             @Override
-            public void forwardingEnabledFor(@Nonnull ForwardingTarget target) {
+            public void forwardingEnabledFor(@NotNull ForwardingTarget target) {
                 // nothing
             }
 
             @Override
-            public void forwardingDisabledFor(@Nonnull ForwardingTarget target) {
+            public void forwardingDisabledFor(@NotNull ForwardingTarget target) {
                 //if ((target == ForwardingTarget.Mouse) || (target == ForwardingTarget.All)) {
                 //    nifty.resetMouseInputEvents();
                 //}
@@ -157,7 +157,7 @@ public final class StateManager implements GameStateManager {
      * @param state the enum value of the state to use
      * @return  the state associated with the given index
      */
-    @Nonnull
+    @NotNull
     public GameState getState(State state) {
         return gameStates.get(state);
     }
@@ -167,7 +167,7 @@ public final class StateManager implements GameStateManager {
      */
     @Override
     public void dispose() {
-        for (@Nonnull GameState state : gameStates.values()) {
+        for (@NotNull GameState state : gameStates.values()) {
             state.dispose();
         }
     }

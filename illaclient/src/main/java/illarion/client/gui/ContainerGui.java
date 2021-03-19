@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.client.world.items.ItemContainer;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface is used to control the display of item containers on the GUI.
@@ -45,7 +45,7 @@ public interface ContainerGui {
      *
      * @param container the container to display
      */
-    void showContainer(@Nonnull ItemContainer container);
+    void showContainer(@NotNull ItemContainer container);
 
     /**
      * Show a tooltip for a specified slot in a specified container.
@@ -54,7 +54,7 @@ public interface ContainerGui {
      * @param slotId the Id of the slot the tooltip belongs to
      * @param tooltip the tooltip
      */
-    void showTooltip(int containerId, int slotId, @Nonnull Tooltip tooltip);
+    void showTooltip(int containerId, int slotId, @NotNull Tooltip tooltip);
 
     /**
      * Perform a update of the overlays related to the merchant dialogs.

@@ -17,8 +17,8 @@ package illarion.client.gui.util;
 
 import org.illarion.nifty.controls.CraftingCategoryEntry;
 import org.illarion.nifty.controls.CraftingItemEntry;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,13 +32,13 @@ public class NiftyCraftingCategory implements CraftingCategoryEntry {
     /**
      * The name of the category.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
      * The items inside this category.
      */
-    @Nonnull
+    @NotNull
     private final List<CraftingItemEntry> children;
 
     /**
@@ -46,18 +46,18 @@ public class NiftyCraftingCategory implements CraftingCategoryEntry {
      *
      * @param categoryName the name of the category
      */
-    public NiftyCraftingCategory(@Nonnull String categoryName) {
+    public NiftyCraftingCategory(@NotNull String categoryName) {
         name = categoryName;
         children = new ArrayList<>();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getCategoryName() {
         return name;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public List<CraftingItemEntry> getChildren() {
         return Collections.unmodifiableList(children);
@@ -68,11 +68,11 @@ public class NiftyCraftingCategory implements CraftingCategoryEntry {
      *
      * @param child the item that will belong to this category
      */
-    public void addChild(@Nonnull CraftingItemEntry child) {
+    public void addChild(@NotNull CraftingItemEntry child) {
         children.add(child);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getTreeLabel() {
         return name;

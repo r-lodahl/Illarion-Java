@@ -18,8 +18,8 @@ package org.illarion.engine.backend.gdx;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This factory is used to create sprites that are used by libGDX.
@@ -27,10 +27,10 @@ import javax.annotation.Nonnull;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxSpriteFactory implements SpriteFactory {
-    @Nonnull
+    @NotNull
     @Override
     public Sprite createSprite(
-            @Nonnull Texture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror) {
+            @NotNull Texture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror) {
         GdxTexture[] gdxTextures = new GdxTexture[textures.length];
         for (int i = 0; i < textures.length; i++) {
             if (textures[i] instanceof GdxTexture) {

@@ -17,8 +17,8 @@ package illarion.client.world.items;
 
 import illarion.client.world.interactive.InteractiveInventorySlot;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to store the data of a single slot in the inventory.
@@ -29,7 +29,7 @@ public final class InventorySlot extends AbstractItemSlot {
     /**
      * The interactive reference to this slot.
      */
-    @Nonnull
+    @NotNull
     private final InteractiveInventorySlot interactive;
 
     /**
@@ -52,7 +52,7 @@ public final class InventorySlot extends AbstractItemSlot {
      *
      * @return the interactive inventory slot
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public InteractiveInventorySlot getInteractive() {
         return interactive;

@@ -22,10 +22,10 @@ import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.resource.loaders.ItemLoader;
 import illarion.mapedit.util.SwingLocation;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.List;
@@ -44,10 +44,10 @@ public class ItemRenderer extends AbstractMapRenderer {
 
     @Override
     public void renderMap(
-            @Nonnull Map map,
-            @Nonnull Rectangle viewport,
+            @NotNull Map map,
+            @NotNull Rectangle viewport,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         AffineTransform t = g.getTransform();
 
         //actual H-Position
@@ -82,10 +82,10 @@ public class ItemRenderer extends AbstractMapRenderer {
     private void render(
             int x,
             int y,
-            @Nonnull Rectangle viewport,
-            @Nonnull Map map,
+            @NotNull Rectangle viewport,
+            @NotNull Map map,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         int z = map.getZ() - level;
         List<MapItem> items = map.getTileAt(x, y).getMapItems();
         if ((items == null) || items.isEmpty()) {
@@ -138,7 +138,7 @@ public class ItemRenderer extends AbstractMapRenderer {
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public RibbonElementPriority getPriority() {
         return RibbonElementPriority.TOP;

@@ -16,9 +16,9 @@
 package illarion.client.world;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +61,7 @@ public final class MapGroup {
      *
      * @return the root group
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public MapGroup getRootGroup() {
         MapGroup currentGroup = this;
@@ -144,7 +144,7 @@ public final class MapGroup {
      *
      * @param parent the parent of this group
      */
-    public void setParent(@Nonnull MapGroup parent) {
+    public void setParent(@NotNull MapGroup parent) {
         if (parent.parent != null) {
             throw new IllegalArgumentException("Set a parent group that is not a root group is not allowed.");
         }
@@ -171,7 +171,7 @@ public final class MapGroup {
      *
      * @param child the child to add
      */
-    private void addChild(@Nonnull MapGroup child) {
+    private void addChild(@NotNull MapGroup child) {
         if (children == null) {
             children = new ArrayList<>();
         }
@@ -185,19 +185,17 @@ public final class MapGroup {
      *
      * @param group the group to add to the list of overwriting groups
      */
-    public void addOverwritingGroup(@Nonnull MapGroup group) {
+    public void addOverwritingGroup(@NotNull MapGroup group) {
         if (parent != null) {
             throw new IllegalStateException("Adding overwriting groups no non-root groups is not allowed.");
         }
         if (overwritingGroups == null) {
             overwritingGroups = new CopyOnWriteArraySet<>();
         }
-        if (!overwritingGroups.contains(group)) {
-            overwritingGroups.add(group);
-        }
+        overwritingGroups.add(group);
     }
 
-    public void addOverwritingGroups(@Nonnull Collection<MapGroup> groups) {
+    public void addOverwritingGroups(@NotNull Collection<MapGroup> groups) {
         if (parent != null) {
             throw new IllegalStateException("Adding overwriting groups no non-root groups is not allowed.");
         }

@@ -17,8 +17,8 @@ package illarion.client.resources;
 
 import illarion.client.resources.data.MiscImageTemplate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load and store the graphics that are needed for displaying the GUI of the game.
@@ -61,7 +61,7 @@ public final class MiscImageFactory extends AbstractTemplateFactory<MiscImageTem
     /**
      * The singleton instance.
      */
-    @Nonnull
+    @NotNull
     private static final MiscImageFactory INSTANCE = new MiscImageFactory();
 
     /**
@@ -69,7 +69,7 @@ public final class MiscImageFactory extends AbstractTemplateFactory<MiscImageTem
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static MiscImageFactory getInstance() {
         return INSTANCE;

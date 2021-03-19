@@ -16,17 +16,14 @@
 package org.illarion.engine.graphic;
 
 import illarion.common.types.Rectangle;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class defines a sprite. A sprite is basically a single or multiple textures with additional data.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public interface Sprite {
     /**
      * Get one of the sprites frames.
@@ -35,7 +32,7 @@ public interface Sprite {
      * @return the texture assigned to the frame index
      * @throws IndexOutOfBoundsException in case index is less then zero or larger or equal then the amount of frames
      */
-    @Nonnull
+    @NotNull
     Texture getFrame(int index);
 
     /**
@@ -56,7 +53,7 @@ public interface Sprite {
      * in case this is {@code null} there will be a new instance created and returned
      * @return the rectangle of the covered area
      */
-    @Nonnull
+    @NotNull
     Rectangle getDisplayArea(int x, int y, double scale, double rotation, @Nullable Rectangle storage);
 
     /**

@@ -20,8 +20,8 @@ import illarion.mapedit.data.Map;
 import illarion.mapedit.data.MapTile;
 import illarion.mapedit.data.MapTile.MapTileFactory;
 import illarion.mapedit.processing.MapTransitions;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 /**
  * @author Fredrik K

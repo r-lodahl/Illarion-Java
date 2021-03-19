@@ -20,13 +20,13 @@ import illarion.client.world.CharMovementMode;
 import illarion.client.world.World;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -41,15 +41,15 @@ import static illarion.client.world.CharMovementMode.Walk;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class WalkToMovementHandler extends AbstractMovementHandler implements TargetMovementHandler, MoveCostProvider {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(WalkToMovementHandler.class);
-    @Nonnull
-    private static final Marker marker = MarkerFactory.getMarker("Movement");
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
+    private static final Marker marker = MarkerManager.getMarker("Movement");
 
     /**
      * The path finder used to calculate the paths towards the target location.
      */
-    @Nonnull
+    @NotNull
     private final PathFindingAlgorithm pathFindingAlgorithm;
 
     @Nullable
@@ -62,10 +62,10 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
     @Nullable
     private Path currentPath;
 
-    @Nonnull
+    @NotNull
     private final Collection<Direction> allowedDirections;
 
-    WalkToMovementHandler(@Nonnull Movement movement) {
+    WalkToMovementHandler(@NotNull Movement movement) {
         super(movement);
         allowedDirections = EnumSet.allOf(Direction.class);
         pathFindingAlgorithm = new AStar();
@@ -73,7 +73,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
 
     @Nullable
     @Override
-    public StepData getNextStep(@Nonnull ServerCoordinate currentLocation) {
+    public StepData getNextStep(@NotNull ServerCoordinate currentLocation) {
         ServerCoordinate target = targetLocation;
         if (target == null) {
             return null;
@@ -125,7 +125,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
     }
 
     @Nullable
-    private Direction finishMove(@Nonnull ServerCoordinate currentLocation) {
+    private Direction finishMove(@NotNull ServerCoordinate currentLocation) {
         if (targetLocation == null) {
             throw new IllegalStateException("Finishing a move is not possible while there is no target location set.");
         }
@@ -145,7 +145,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
         return action;
     }
 
-    private static boolean isPathNodeValid(@Nonnull ServerCoordinate currentLocation, @Nonnull PathNode node) {
+    private static boolean isPathNodeValid(@NotNull ServerCoordinate currentLocation, @NotNull PathNode node) {
         int distanceToPlayer = currentLocation.getStepDistance(node.getLocation());
         switch (node.getMovementMethod()) {
             case Walk:
@@ -194,7 +194,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
     }
 
     @Nullable
-    protected Path calculateNewPath(@Nonnull ServerCoordinate currentLocation) {
+    protected Path calculateNewPath(@NotNull ServerCoordinate currentLocation) {
         ServerCoordinate target = getTargetLocation();
 
         log.info(marker, "Calculating a new path from {} to {}", currentLocation, target);
@@ -212,7 +212,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
         }
     }
 
-    @Nonnull
+    @NotNull
     protected CharMovementMode getMovementMode() {
         if (!World.getPlayer().getCarryLoad().isRunningPossible()) {
             return Walk;
@@ -231,14 +231,14 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
         setTargetReachedAction(null);
     }
 
-    @Nonnull
-    protected Collection<Direction> getAllowedDirections(@Nonnull ServerCoordinate current,
-                                                         @Nonnull ServerCoordinate target) {
+    @NotNull
+    protected Collection<Direction> getAllowedDirections(@NotNull ServerCoordinate current,
+                                                         @NotNull ServerCoordinate target) {
         return Collections.unmodifiableCollection(allowedDirections);
     }
 
     @Override
-    public void walkTo(@Nonnull ServerCoordinate target, int distance) {
+    public void walkTo(@NotNull ServerCoordinate target, int distance) {
         setTargetReachedAction(null);
         targetLocation = target;
         targetDistance = distance;
@@ -256,7 +256,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Walk to target movement handler";
@@ -266,7 +266,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
         return targetLocation != null;
     }
 
-    @Nonnull
+    @NotNull
     protected ServerCoordinate getTargetLocation() {
         if (targetLocation == null) {
             throw new IllegalStateException("The target location is not set.");
@@ -275,7 +275,7 @@ class WalkToMovementHandler extends AbstractMovementHandler implements TargetMov
     }
 
     @Override
-    public int getMovementCost(@Nonnull ServerCoordinate origin, @Nonnull CharMovementMode mode, @Nonnull Direction direction) {
+    public int getMovementCost(@NotNull ServerCoordinate origin, @NotNull CharMovementMode mode, @NotNull Direction direction) {
         int cost = getMovement().getMovementDuration(origin, mode, direction);
 
         if ((cost != MoveCostProvider.BLOCKED) &&

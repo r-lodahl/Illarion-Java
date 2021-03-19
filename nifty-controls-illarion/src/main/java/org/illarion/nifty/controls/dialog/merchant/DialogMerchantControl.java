@@ -28,9 +28,9 @@ import illarion.common.types.Rectangle;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.illarion.nifty.controls.*;
 import org.illarion.nifty.controls.MerchantListEntry.EntryType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     /**
      * The event handler that handles the events on the close button.
      */
-    @Nonnull
+    @NotNull
     private final EventTopicSubscriber<ButtonClickedEvent> closeButtonEventHandler;
 
     public DialogMerchantControl() {
@@ -70,10 +70,10 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element element,
-            @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element element,
+            @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         niftyInstance = nifty;
         currentScreen = screen;
@@ -145,7 +145,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     }
 
     @Override
-    public void addAllSellingItems(@Nonnull Collection<MerchantListEntry> entry) {
+    public void addAllSellingItems(@NotNull Collection<MerchantListEntry> entry) {
         ListBox<MerchantListEntry> sellList = getSellList();
         if (sellList == null) {
             throw new IllegalStateException("Adding a sell item can't happen before properly binding the list.");
@@ -154,7 +154,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     }
 
     @Override
-    public void addSellingItem(@Nonnull MerchantListEntry entry) {
+    public void addSellingItem(@NotNull MerchantListEntry entry) {
         if (entry.getEntryType() != EntryType.Selling) {
             throw new IllegalArgumentException("Entry for selling list requires to by of type selling.");
         }
@@ -166,7 +166,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     }
 
     @Override
-    public void addAllBuyingItems(@Nonnull Collection<MerchantListEntry> entry) {
+    public void addAllBuyingItems(@NotNull Collection<MerchantListEntry> entry) {
         ListBox<MerchantListEntry> buyList = getBuyList();
         if (buyList == null) {
             throw new IllegalStateException("Adding a buy item can't happen before properly binding the list.");
@@ -185,7 +185,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     }
 
     @Override
-    public void addBuyingItem(@Nonnull MerchantListEntry entry) {
+    public void addBuyingItem(@NotNull MerchantListEntry entry) {
         if ((entry.getEntryType() != EntryType.BuyPrimary) &&
                 (entry.getEntryType() != EntryType.BuySecondary)) {
             throw new IllegalArgumentException("Entry for buying list requires to by of type buying.");
@@ -206,9 +206,9 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
         clearList(getBuyList());
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public Rectangle getRenderAreaForEntry(@Nonnull MerchantListEntry entry) {
+    public Rectangle getRenderAreaForEntry(@NotNull MerchantListEntry entry) {
         ListBox<MerchantListEntry> listBox = null;
         switch (entry.getEntryType()) {
             case BuyPrimary:
@@ -247,9 +247,9 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
     /**
      * Retrieve all controls of one type that are on the same layer inside the search root.
      */
-    @Nonnull
-    private static <T extends NiftyControl> Collection<T> getAllNiftyControls(@Nonnull Element searchRoot,
-            @Nonnull Class<T> controlClass) {
+    @NotNull
+    private static <T extends NiftyControl> Collection<T> getAllNiftyControls(@NotNull Element searchRoot,
+            @NotNull Class<T> controlClass) {
         T firstChild = searchRoot.getNiftyControl(controlClass);
         if (firstChild == null) {
             return Collections.emptyList();
@@ -290,7 +290,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
         return (root == null) ? null : root.findNiftyControl("#buyList", ListBox.class);
     }
 
-    public void buyItem(@Nonnull MerchantListEntry entry) {
+    public void buyItem(@NotNull MerchantListEntry entry) {
         String id = getId();
         if (id == null) {
             throw new IllegalStateException("The ID of a merchant dialog can't be null");
@@ -298,7 +298,7 @@ public final class DialogMerchantControl extends WindowControl implements Dialog
         niftyInstance.publishEvent(id, new DialogMerchantBuyEvent(dialogId, entry));
     }
 
-    public void lookAtItem(@Nonnull MerchantListEntry entry) {
+    public void lookAtItem(@NotNull MerchantListEntry entry) {
         String id = getId();
         if (id == null) {
             throw new IllegalStateException("The ID of a merchant dialog can't be null");

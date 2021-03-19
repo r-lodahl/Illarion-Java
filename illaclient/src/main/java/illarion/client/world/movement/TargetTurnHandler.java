@@ -16,8 +16,8 @@
 package illarion.client.world.movement;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * A movement handler that turns to the target instead of moving.
@@ -30,6 +30,6 @@ public interface TargetTurnHandler extends MovementHandler {
      *
      * @param target the target location
      */
-    void turnTo(@Nonnull ServerCoordinate target);
+    void turnTo(@NotNull ServerCoordinate target);
 
 }

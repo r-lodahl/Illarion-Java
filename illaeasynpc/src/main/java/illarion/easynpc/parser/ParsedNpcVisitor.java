@@ -34,11 +34,11 @@ import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 
 import static illarion.easynpc.grammar.EasyNpcParser.*;
@@ -50,14 +50,14 @@ import static illarion.easynpc.parser.Utils.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class ParsedNpcVisitor extends EasyNpcBaseVisitor<ParsedNpcVisitor> implements ANTLRErrorListener {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParsedNpcVisitor.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     static {
         SkillLoader.load();
     }
 
-    @Nonnull
+    @NotNull
     private final ParsedNpc npc = new ParsedNpc();
     @Nullable
     private ParsedTalk currentTalkingLine;
@@ -650,7 +650,7 @@ public class ParsedNpcVisitor extends EasyNpcBaseVisitor<ParsedNpcVisitor> imple
         return defaultResult();
     }
 
-    @Nonnull
+    @NotNull
     public ParsedNpc getParsedNpc() {
         return npc;
     }

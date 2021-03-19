@@ -23,13 +23,11 @@ import illarion.client.world.items.ContainerSlot;
 import illarion.client.world.items.InventorySlot;
 import illarion.client.world.items.ItemContainer;
 import illarion.common.types.ItemCount;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Main purpose of this class is to interconnect the GUI environment and the map environment to exchange information
@@ -37,13 +35,12 @@ import javax.annotation.concurrent.NotThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class InteractionManager {
     /**
      * The logger instance of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(InteractionManager.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The object that is currently dragged around.
      */
@@ -85,7 +82,7 @@ public final class InteractionManager {
      * @param slot the slot inside the container the object is dropped in
      * @param count the amount of objects to be dropped at the container
      */
-    public void dropAtContainer(int container, int slot, @Nonnull ItemCount count) {
+    public void dropAtContainer(int container, int slot, @NotNull ItemCount count) {
         if (draggedObject == null) {
             LOGGER.warn("Dropping to container called without an active dragging operation.");
             cancelDragging();
@@ -98,7 +95,7 @@ public final class InteractionManager {
                 try {
                     InteractiveContainerSlot targetSlot = itemContainer.getSlot(slot).getInteractive();
                     draggedObject.dragTo(targetSlot, count); // Enter the contents into the slot
-                } catch (@Nonnull IndexOutOfBoundsException ex) {
+                } catch (@NotNull IndexOutOfBoundsException ex) {
                     LOGGER.error("Tried to drop an item at a container slot that does not exist.", ex);
                 } finally {
                     cancelDragging(); // Always clean up the action
@@ -113,7 +110,7 @@ public final class InteractionManager {
      * @param slot the inventory slot
      * @param count the amount of items to be dropped in the inventory
      */
-    public void dropAtInventory(int slot, @Nonnull ItemCount count) {
+    public void dropAtInventory(int slot, @NotNull ItemCount count) {
         if (draggedObject == null) {
             LOGGER.warn("Dropping to inventory called without an active dragging operation.");
             cancelDragging();
@@ -122,7 +119,7 @@ public final class InteractionManager {
         try {
             InteractiveInventorySlot targetSlot = World.getPlayer().getInventory().getItem(slot).getInteractive();
             draggedObject.dragTo(targetSlot, count);
-        } catch (@Nonnull IndexOutOfBoundsException ex) {
+        } catch (@NotNull IndexOutOfBoundsException ex) {
             LOGGER.error("Tried to drop an item at an inventory slot that does not exist.", ex);
         } finally {
             cancelDragging();
@@ -136,7 +133,7 @@ public final class InteractionManager {
      * @param y the y coordinate on the screen to drop the object to
      * @param count the amount of objects to be dropped at the map
      */
-    public void dropAtMap(int x, int y, @Nonnull ItemCount count) {
+    public void dropAtMap(int x, int y, @NotNull ItemCount count) {
         if (draggedObject == null) {
             LOGGER.warn("Dropping to map called without an active dragging operation.");
             cancelDragging();
@@ -211,7 +208,7 @@ public final class InteractionManager {
                 endOfDragAction = endOfDragOp;
                 amount = conSlot.getCount();
                 return;
-            } catch (@Nonnull IndexOutOfBoundsException ex) {
+            } catch (@NotNull IndexOutOfBoundsException ex) {
                 LOGGER.error("Tried to start dragging from a container slot that does not exist?!", ex);
             }
         }
@@ -248,7 +245,7 @@ public final class InteractionManager {
                     amount = invSlot.getCount();
                     return;
                 }
-            } catch (@Nonnull IndexOutOfBoundsException ex) {
+            } catch (@NotNull IndexOutOfBoundsException ex) {
                 LOGGER.error("Tried to start dragging from an inventory slot that does not exist?!", ex);
             }
         }
@@ -263,7 +260,7 @@ public final class InteractionManager {
      * @param targetTile the tile on the map that is dragged around
      * @param endOfDragOp the operation to be performed at the end of the dragging operation
      */
-    public void notifyDraggingMap(@Nonnull MapTile targetTile, @Nullable Runnable endOfDragOp) {
+    public void notifyDraggingMap(@NotNull MapTile targetTile, @Nullable Runnable endOfDragOp) {
         if (!dragging) {
             InteractiveMapTile interactiveMapTile = targetTile.getInteractive();
 

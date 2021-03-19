@@ -16,42 +16,42 @@
 package illarion.easyquest.quest;
 
 import illarion.common.util.CalledByReflection;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Handler implements Serializable {
 
-    @Nonnull
+    @NotNull
     private String type;
-    @Nonnull
+    @NotNull
     private Object[] parameters;
 
     public Handler() {
     }
 
-    public Handler(@Nonnull String type, @Nonnull Object... parameters) {
+    public Handler(@NotNull String type, @NotNull Object... parameters) {
         this.type = type;
         this.parameters = parameters;
     }
 
     @CalledByReflection
-    public void setParameters(@Nonnull Object... parameters) {
+    public void setParameters(@NotNull Object... parameters) {
         this.parameters = parameters;
     }
 
     @CalledByReflection
-    public void setType(@Nonnull String type) {
+    public void setType(@NotNull String type) {
         this.type = type;
     }
 
-    @Nonnull
+    @NotNull
     public String getType() {
         return type;
     }
 
-    @Nonnull
+    @NotNull
     public Object[] getParameters() {
         return parameters;
     }

@@ -18,9 +18,9 @@ package illarion.client.gui.util;
 import de.lessvoid.nifty.controls.DropDown.DropDownViewConverter;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Stefano Bonicatti &lt;smjert@gmail.com&gt;
@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class DropDownItemViewConverter<T extends DropDownItem<?>> implements DropDownViewConverter<T> {
 
     @Override
-    public void display(@Nonnull Element itemElement, @Nullable T item) {
+    public void display(@NotNull Element itemElement, @Nullable T item) {
         TextRenderer renderer = itemElement.getRenderer(TextRenderer.class);
 
         if ((renderer != null) && (item != null)) {
@@ -38,7 +38,7 @@ public class DropDownItemViewConverter<T extends DropDownItem<?>> implements Dro
     }
 
     @Override
-    public int getWidth(@Nonnull Element itemElement, @Nullable T item) {
+    public int getWidth(@NotNull Element itemElement, @Nullable T item) {
         TextRenderer renderer = itemElement.getRenderer(TextRenderer.class);
 
         if ((renderer != null) && (item != null)) {

@@ -18,8 +18,8 @@ package illarion.easynpc.data;
 import illarion.common.types.Direction;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator contains the valid direction values a easyNPC script is allowed to contain.
@@ -39,7 +39,7 @@ public enum CharacterDirection {
     /**
      * The ID of this direction value used to identify it in the lua script.
      */
-    @Nonnull
+    @NotNull
     private final Direction dir;
 
     /**
@@ -48,7 +48,7 @@ public enum CharacterDirection {
      *
      * @param dir the ID representation of this constant.
      */
-    CharacterDirection(@Nonnull Direction dir) {
+    CharacterDirection(@NotNull Direction dir) {
         this.dir = dir;
     }
 
@@ -66,7 +66,7 @@ public enum CharacterDirection {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (CharacterDirection direction : CharacterDirection.values()) {
             map.put(direction.name(), Token.VARIABLE);
         }

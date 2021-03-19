@@ -17,8 +17,8 @@ package illarion.mapedit.history;
 
 import illarion.mapedit.data.Map;
 import illarion.mapedit.data.MapWarpPoint;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 /**
  * @author Tim

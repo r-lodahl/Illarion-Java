@@ -30,13 +30,13 @@ import illarion.client.graphics.FontLoader;
 import illarion.client.gui.QuestGui;
 import illarion.client.world.World;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,25 +59,25 @@ public final class QuestHandler implements QuestGui, ScreenController {
         /**
          * The displayed name of the quest.
          */
-        @Nonnull
+        @NotNull
         private final String name;
 
         /**
          * The description of the current quest state.
          */
-        @Nonnull
+        @NotNull
         private final String description;
 
         /**
          * The flag if this quest is now finished or not.
          */
-        @Nonnull
+        @NotNull
         private final boolean finished;
 
         /**
          * The list of valid target locations for this quest.
          */
-        @Nonnull
+        @NotNull
         private final List<ServerCoordinate> targetLocations;
 
         /**
@@ -89,8 +89,8 @@ public final class QuestHandler implements QuestGui, ScreenController {
          * @param finished {@code true} in case the quest is finished
          * @param locations the valid target locations
          */
-        QuestEntry(int questId, @Nonnull String name, @Nonnull String description, boolean finished,
-                   @Nonnull @Flow(targetIsContainer = true, sourceIsContainer = true) List<ServerCoordinate> locations) {
+        QuestEntry(int questId, @NotNull String name, @NotNull String description, boolean finished,
+                   @NotNull @Flow(targetIsContainer = true, sourceIsContainer = true) List<ServerCoordinate> locations) {
             this.questId = questId;
             this.name = name;
             this.description = description;
@@ -100,7 +100,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
         }
 
         @Override
-        public int compareTo(@Nonnull QuestEntry o) {
+        public int compareTo(@NotNull QuestEntry o) {
             if (o.finished && !finished) {
                 return -1;
             }
@@ -123,7 +123,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
             return questId;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         @Contract(pure = true)
         public String toString() {
@@ -135,7 +135,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
          *
          * @return the quest description
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public String getDescription() {
             return description;
@@ -146,7 +146,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
          *
          * @return the name of the quest
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public String getName() {
             return name;
@@ -189,7 +189,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
          * @return the assigned target location
          * @throws ArrayIndexOutOfBoundsException in case index is {@code < 0} or greater then or equal to the count
          */
-        @Nonnull
+        @NotNull
         @Contract(pure = true)
         public ServerCoordinate getTargetLocation(int index) {
             return targetLocations.get(index);
@@ -199,8 +199,8 @@ public final class QuestHandler implements QuestGui, ScreenController {
     /**
      * The logging instance of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuestHandler.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The window that shows the quest log.
@@ -211,7 +211,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
     /**
      * This is the list of quests that are currently not shown in the GUI.
      */
-    @Nonnull
+    @NotNull
     private final List<QuestEntry> hiddenList;
 
     /**
@@ -319,7 +319,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
      */
     @NiftyEventSubscriber(id = "questLog#questList")
     public void onSelectedQuestChanged(
-            @Nonnull String topic, @Nonnull ListBoxSelectionChangedEvent<QuestEntry> event) {
+            @NotNull String topic, @NotNull ListBoxSelectionChangedEvent<QuestEntry> event) {
         Element descriptionArea = getDescriptionArea();
         if (descriptionArea != null) {
             descriptionArea.hide(this::updateDisplayedQuest);
@@ -340,7 +340,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
         selectedEntries.forEach(QuestHandler::updateQuest);
     }
 
-    private static void updateQuest(@Nonnull QuestEntry quest) {
+    private static void updateQuest(@NotNull QuestEntry quest) {
         Collection<ServerCoordinate> locationList = new ArrayList<>(quest.getTargetLocationCount());
         for (int i = 0; i < quest.getTargetLocationCount(); i++) {
             ServerCoordinate target = quest.getTargetLocation(i);
@@ -450,7 +450,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
      * @param event the event data
      */
     @NiftyEventSubscriber(id = "questLog#showFinishedCheckbox")
-    public void onShowFinishedChange(@Nonnull String topic, @Nonnull CheckBoxStateChangedEvent event) {
+    public void onShowFinishedChange(@NotNull String topic, @NotNull CheckBoxStateChangedEvent event) {
         IllaClient.getConfig().set("questShowFinished", event.isChecked());
         showFinishedQuests = event.isChecked();
 
@@ -472,7 +472,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
      *
      * @param entry the entry to add
      */
-    private void insertToGuiList(@Nonnull QuestEntry entry) {
+    private void insertToGuiList(@NotNull QuestEntry entry) {
         ListBox<QuestEntry> guiList = getQuestList();
         if (guiList == null) {
             LOGGER.error("Updating the GUI list failed. GUI element not located.");
@@ -516,7 +516,7 @@ public final class QuestHandler implements QuestGui, ScreenController {
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
     }
@@ -599,10 +599,10 @@ public final class QuestHandler implements QuestGui, ScreenController {
     @Override
     public void setQuest(
             int questId,
-            @Nonnull String name,
-            @Nonnull String description,
+            @NotNull String name,
+            @NotNull String description,
             boolean finished,
-            @Nonnull List<ServerCoordinate> locations) {
+            @NotNull List<ServerCoordinate> locations) {
         World.getUpdateTaskManager().addTask((delta) -> setQuestInternal(questId, name, description, finished, locations));
     }
 
@@ -627,10 +627,10 @@ public final class QuestHandler implements QuestGui, ScreenController {
      */
     private void setQuestInternal(
             int questId,
-            @Nonnull String name,
-            @Nonnull String description,
+            @NotNull String name,
+            @NotNull String description,
             boolean finished,
-            @Nonnull List<ServerCoordinate> locations) {
+            @NotNull List<ServerCoordinate> locations) {
         QuestEntry oldEntry = findQuest(questId);
         if (finished && (oldEntry != null)) {
             Collection<ServerCoordinate> locationList = new ArrayList<>(oldEntry.getTargetLocationCount());

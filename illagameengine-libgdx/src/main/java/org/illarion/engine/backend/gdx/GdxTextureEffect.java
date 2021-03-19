@@ -17,8 +17,8 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.illarion.engine.graphic.effects.TextureEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface extends the default texture effects for libGDX.
@@ -31,14 +31,14 @@ interface GdxTextureEffect extends TextureEffect {
      *
      * @param batch the batch that is supposed to render this effect from now on
      */
-    void activateEffect(@Nonnull SpriteBatch batch);
+    void activateEffect(@NotNull SpriteBatch batch);
 
     /**
      * Remove the effect from a sprite batch.
      *
      * @param batch the batch that is now not supposed to render the effect anymore
      */
-    void disableEffect(@Nonnull SpriteBatch batch);
+    void disableEffect(@NotNull SpriteBatch batch);
 
     /**
      * Set the top left coordinate of the texture that is rendered.

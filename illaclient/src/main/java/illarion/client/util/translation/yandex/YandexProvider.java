@@ -21,12 +21,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import illarion.client.util.translation.TranslationDirection;
 import illarion.client.util.translation.TranslationProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,7 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,13 +46,13 @@ import java.util.Random;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class YandexProvider implements TranslationProvider {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(YandexProvider.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Nullable
     private final URL serviceUrl;
 
-    @Nonnull
+    @NotNull
     private final String userAgent;
 
     private boolean operational;
@@ -74,12 +74,12 @@ public class YandexProvider implements TranslationProvider {
      *
      * @return the user agent that is supposed to be used
      */
-    @Nonnull
+    @NotNull
     private static String readUserAgent() {
         String selectedUserAgent = null;
         URL resource = Thread.currentThread().getContextClassLoader().getResource("user-agents.txt");
         if (resource != null) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream(), "UTF-8"))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8))) {
                 List<String> agents = new ArrayList<>();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -98,7 +98,7 @@ public class YandexProvider implements TranslationProvider {
 
     @Nullable
     @Override
-    public String getTranslation(@Nonnull String original, @Nonnull TranslationDirection direction) {
+    public String getTranslation(@NotNull String original, @NotNull TranslationDirection direction) {
         if (!isProviderWorking()) {
             return null;
         }
@@ -106,7 +106,7 @@ public class YandexProvider implements TranslationProvider {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append(serviceUrl).append('?');
         try {
-            queryBuilder.append("text=").append(URLEncoder.encode(original, "UTF-8"));
+            queryBuilder.append("text=").append(URLEncoder.encode(original, StandardCharsets.UTF_8));
             queryBuilder.append('&').append("lang=").append(getLang(direction));
             queryBuilder.append("&srv=tr-text");
 
@@ -114,7 +114,7 @@ public class YandexProvider implements TranslationProvider {
             URLConnection connection = queryUrl.openConnection();
             connection.addRequestProperty("User-Agent", userAgent);
             try (JsonReader rd = new JsonReader(new InputStreamReader(connection.getInputStream(),
-                    Charset.forName("UTF-8")))) {
+                    StandardCharsets.UTF_8))) {
                 Gson gson = new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd HH:mm:ss")
                         .create();
@@ -151,9 +151,9 @@ public class YandexProvider implements TranslationProvider {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    private static String getLang(@Nonnull TranslationDirection direction) {
+    private static String getLang(@NotNull TranslationDirection direction) {
         switch (direction) {
             case GermanToEnglish:
                 return "de-en";

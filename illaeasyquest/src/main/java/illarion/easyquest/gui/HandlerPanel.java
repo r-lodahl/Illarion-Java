@@ -18,22 +18,22 @@ package illarion.easyquest.gui;
 import illarion.easyquest.quest.Handler;
 import illarion.easyquest.quest.HandlerTemplate;
 import illarion.easyquest.quest.HandlerTemplates;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
 @SuppressWarnings("serial")
 public class HandlerPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final JComboBox<HandlerTemplate> handlerType;
-    @Nonnull
+    @NotNull
     private final JPanel parameterPanels;
-    @Nonnull
+    @NotNull
     private final JButton addHandler;
-    @Nonnull
+    @NotNull
     private final JButton removeHandler;
     private final StatusDialog owner;
 

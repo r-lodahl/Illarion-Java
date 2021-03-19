@@ -21,8 +21,8 @@ import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -39,13 +39,13 @@ public final class ParsedTalk implements ParsedData {
     /**
      * The list of conditions that are used in this line.
      */
-    @Nonnull
+    @NotNull
     private final List<TalkCondition> conditions;
 
     /**
      * The list of consequences that are used in this line.
      */
-    @Nonnull
+    @NotNull
     private final List<TalkConsequence> consequences;
 
     /**
@@ -78,7 +78,7 @@ public final class ParsedTalk implements ParsedData {
      * Talking lines do not effect the SQL query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to add to the SQL query
     }
 
@@ -87,14 +87,14 @@ public final class ParsedTalk implements ParsedData {
      * talking lines.
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return stage == WritingStage.Talking;
     }
 
     /**
      * Get the list of modules this text line requires.
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         Collection<String> moduleList = new ArrayList<>();
@@ -122,7 +122,7 @@ public final class ParsedTalk implements ParsedData {
      * Write the LUA code needed for this talking line.
      */
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         if (stage == WritingStage.Talking) {
             target.write("do"); //$NON-NLS-1$
             target.write(LuaWriter.NL);

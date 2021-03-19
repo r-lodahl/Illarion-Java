@@ -21,13 +21,13 @@ import illarion.client.resources.data.AvatarClothTemplate;
 import illarion.client.resources.data.AvatarTemplate;
 import illarion.common.util.TableLoaderClothes;
 import illarion.common.util.TableLoaderSink;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Sprite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class takes care for loading the avatar clothes, sorts them to the avatars and prepares to render them.
@@ -39,13 +39,13 @@ public final class ClothLoader extends AbstractResourceLoader<AvatarClothTemplat
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ClothLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The assets of the game engine that are required to load the data needed for the clothes.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -53,11 +53,11 @@ public final class ClothLoader extends AbstractResourceLoader<AvatarClothTemplat
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public ClothLoader(@Nonnull Assets assets) {
+    public ClothLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<AvatarClothTemplate> call() {
         if (!hasTargetFactory()) {
@@ -92,7 +92,7 @@ public final class ClothLoader extends AbstractResourceLoader<AvatarClothTemplat
      * it should stop
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderClothes loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderClothes loader) {
         int avatarID = loader.getReferenceCharacterId();
         int itemID = loader.getReferenceItemId();
         int location = loader.getClothSlot();
@@ -113,7 +113,7 @@ public final class ClothLoader extends AbstractResourceLoader<AvatarClothTemplat
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException e) {
+        } catch (@NotNull IllegalStateException e) {
             log.error("Error adding paperdolling item to avatar: {} in group: {} to item: {}", avatarID, location,
                     itemID);
         }

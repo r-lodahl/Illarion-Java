@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.data.formats;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
 
 /**
@@ -24,8 +25,8 @@ import java.nio.file.Path;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class DecoderFactory {
-    @Nonnull
-    public Decoder getDecoder(int version, @Nonnull String mapName, @Nonnull Path mapPath) {
+    @NotNull
+    public Decoder getDecoder(int version, @NotNull String mapName, @NotNull Path mapPath) {
         switch (version) {
             case 2:
                 return new Version2Decoder(mapName, mapPath);

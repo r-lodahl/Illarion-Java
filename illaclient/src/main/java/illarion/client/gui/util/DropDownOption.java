@@ -20,9 +20,9 @@ import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Stefano Bonicatti &lt;smjert@gmail.com&gt;
@@ -33,7 +33,7 @@ public class DropDownOption<T> implements Option<T, DropDown<DropDownItem<T>>> {
     private final DropDown<DropDownItem<T>> control;
     private final String key;
 
-    public DropDownOption(String name, Element parent, Nifty nifty, @Nonnull Screen screen) {
+    public DropDownOption(String name, Element parent, Nifty nifty, @NotNull Screen screen) {
         key = name;
 
         DropDownBuilder dropDownBuilder = new DropDownBuilder(name + "GUI");

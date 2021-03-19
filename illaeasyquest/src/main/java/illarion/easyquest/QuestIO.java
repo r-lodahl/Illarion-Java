@@ -24,12 +24,12 @@ import com.mxgraph.model.mxICell;
 import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.view.mxGraph;
 import illarion.easyquest.quest.*;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,7 +69,7 @@ public final class QuestIO {
      * The character sets that will be tried to load the file. One by one. The first one in the list is
      * {@link #CHARSET} as this one is the most likely one to be the one used.
      */
-    @Nonnull
+    @NotNull
     private static final Collection<Charset> CHARSETS;
 
     /**
@@ -77,7 +78,7 @@ public final class QuestIO {
     public static final Charset CHARSET;
 
     static {
-        CHARSET = Charset.forName("ISO-8859-1");
+        CHARSET = StandardCharsets.ISO_8859_1;
         CHARSETS = new ArrayList<>();
         CHARSETS.add(CHARSET);
         CHARSETS.addAll(Charset.availableCharsets().values());
@@ -103,8 +104,8 @@ public final class QuestIO {
      * @return the graph model instance containing the data of the file
      * @throws IOException in case reading the model from the file fails for any reason
      */
-    @Nonnull
-    public static mxIGraphModel loadGraphModel(@Nonnull Path file) throws IOException {
+    @NotNull
+    public static mxIGraphModel loadGraphModel(@NotNull Path file) throws IOException {
         if (!Files.isReadable(file)) {
             throw new IOException("Can't read the required file.");
         }
@@ -121,8 +122,8 @@ public final class QuestIO {
         throw firstException;
     }
 
-    @Nonnull
-    public static mxIGraphModel loadGraphModel(@Nonnull Reader reader) throws IOException {
+    @NotNull
+    public static mxIGraphModel loadGraphModel(@NotNull Reader reader) throws IOException {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -144,7 +145,7 @@ public final class QuestIO {
      * @param target tje target in the file system that will receive the data
      * @throws IOException in case saving the file fails
      */
-    public static void saveGraphModel(@Nonnull mxIGraphModel model, @Nonnull Path target)
+    public static void saveGraphModel(@NotNull mxIGraphModel model, @NotNull Path target)
             throws IOException {
         if (!Files.isWritable(target)) {
             throw new IOException("Can't write the required file.");
@@ -176,7 +177,7 @@ public final class QuestIO {
      * @param rootDirectory the directory to store the root directory in
      * @throws IOException in case anything goes wrong
      */
-    public static void exportQuest(@Nonnull mxIGraphModel model, @Nonnull Path rootDirectory)
+    public static void exportQuest(@NotNull mxIGraphModel model, @NotNull Path rootDirectory)
             throws IOException {
         if (Files.isDirectory(rootDirectory)) {
             Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
@@ -228,7 +229,7 @@ public final class QuestIO {
             Trigger trigger = (Trigger) edge.getValue();
             TriggerTemplate template = TriggerTemplates.getInstance().getTemplate(trigger.getType());
 
-            String scriptName = "trigger" + Integer.toString(i + 1);
+            String scriptName = "trigger" + (i + 1);
             mxICell source = edge.getSource();
             mxICell target = edge.getTarget();
             Status sourceState = (Status) source.getValue();
@@ -408,7 +409,7 @@ public final class QuestIO {
         return "TYPE NOT SUPPORTED";
     }
 
-    private static String exportParameter(@Nonnull Object parameter, @Nonnull String type) {
+    private static String exportParameter(@NotNull Object parameter, @NotNull String type) {
         if ("TEXT".equals(type)) {
             String s = (String) parameter;
             return '"' + s.replace("\\", "\\\\").replace("\"", "\\\"") + '"';

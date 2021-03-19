@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.gui.util;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -46,7 +47,7 @@ public class OpenMapTableCellEditor extends AbstractCellEditor implements TableC
 
     @Override
     public Component getTableCellRendererComponent(
-            @Nonnull JTable table,
+            @NotNull JTable table,
             Object value,
             boolean isSelected,
             boolean hasFocus,

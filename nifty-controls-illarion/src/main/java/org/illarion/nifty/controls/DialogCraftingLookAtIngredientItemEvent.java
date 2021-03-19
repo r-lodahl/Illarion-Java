@@ -15,22 +15,18 @@
  */
 package org.illarion.nifty.controls;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired in case the player looks at a ingredient in the crafting dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class DialogCraftingLookAtIngredientItemEvent extends DialogEvent {
     /**
      * The item that is parent to the ingredient.
      */
-    @Nonnull
+    @NotNull
     private final CraftingItemEntry item;
 
     /**
@@ -46,7 +42,7 @@ public final class DialogCraftingLookAtIngredientItemEvent extends DialogEvent {
      * @param ingredientIndex the index of the ingredient the player is looking at
      */
     public DialogCraftingLookAtIngredientItemEvent(
-            int id, @Nonnull CraftingItemEntry item, int ingredientIndex) {
+            int id, @NotNull CraftingItemEntry item, int ingredientIndex) {
         super(id);
         this.item = item;
         this.ingredientIndex = ingredientIndex;
@@ -57,7 +53,7 @@ public final class DialogCraftingLookAtIngredientItemEvent extends DialogEvent {
      *
      * @return the item
      */
-    @Nonnull
+    @NotNull
     public CraftingItemEntry getItem() {
         return item;
     }

@@ -18,9 +18,9 @@ package illarion.client.util.pathfinding;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the path node implementation used for the A* algorithm that contains all required node information to get the
@@ -56,8 +56,8 @@ class AStarPathNode extends AbstractPathNode implements Comparable<AStarPathNode
      */
     AStarPathNode(
             @Nullable AStarPathNode parentNode,
-            @Nonnull ServerCoordinate target,
-            @Nonnull CharMovementMode method,
+            @NotNull ServerCoordinate target,
+            @NotNull CharMovementMode method,
             int cost,
             int heuristic) {
         super(target, method);
@@ -77,13 +77,13 @@ class AStarPathNode extends AbstractPathNode implements Comparable<AStarPathNode
     }
 
     @Override
-    public int compareTo(@Nonnull AStarPathNode o) {
+    public int compareTo(@NotNull AStarPathNode o) {
         int result = Integer.compare(getPredictedCost(), o.getPredictedCost());
         return (result == 0) ? 1 : result;
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return getLocation() + " Predicted cost: " + getPredictedCost();
     }

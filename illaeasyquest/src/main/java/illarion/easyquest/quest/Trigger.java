@@ -16,14 +16,14 @@
 package illarion.easyquest.quest;
 
 import illarion.common.util.CalledByReflection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Trigger implements Serializable {
-    @Nonnull
+    @NotNull
     private String name;
     @Nullable
     private String type;
@@ -43,12 +43,12 @@ public class Trigger implements Serializable {
     }
 
     @CalledByReflection
-    public void setName(@Nonnull String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
     @CalledByReflection
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
@@ -98,7 +98,7 @@ public class Trigger implements Serializable {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public final String toString() {
         return getName();
     }

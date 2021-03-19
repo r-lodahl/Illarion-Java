@@ -16,11 +16,11 @@
 package illarion.mapedit.render;
 
 import illarion.mapedit.data.Map;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -35,13 +35,13 @@ public abstract class AbstractMapRenderer implements Comparable<AbstractMapRende
     /**
      * The render manager.
      */
-    @Nonnull
+    @NotNull
     private final RendererManager manager;
 
     /**
      * Creates a new map renderer
      */
-    protected AbstractMapRenderer(@Nonnull RendererManager manager) {
+    protected AbstractMapRenderer(@NotNull RendererManager manager) {
         this.manager = manager;
     }
 
@@ -52,12 +52,12 @@ public abstract class AbstractMapRenderer implements Comparable<AbstractMapRende
         return manager.getZoom();
     }
 
-    @Nonnull
+    @NotNull
     protected Shape getTilePolygon() {
         return TILE_POLYGON;
     }
 
-    protected boolean isInViewport(@Nonnull Shape viewport, int xDisplay, int yDisplay) {
+    protected boolean isInViewport(@NotNull Shape viewport, int xDisplay, int yDisplay) {
         float viewX = calculateZoom(xDisplay, getTranslateX(), getTileWidth());
         float viewY = calculateZoom(yDisplay, getTranslateY(), getTileHeight());
         return viewport.contains(viewX, viewY);
@@ -131,7 +131,7 @@ public abstract class AbstractMapRenderer implements Comparable<AbstractMapRende
      * @return
      */
     @Override
-    public final int compareTo(@Nonnull AbstractMapRenderer o) {
+    public final int compareTo(@NotNull AbstractMapRenderer o) {
         int i = getRenderPriority();
         int j = o.getRenderPriority();
         if (i < j) {
@@ -145,12 +145,12 @@ public abstract class AbstractMapRenderer implements Comparable<AbstractMapRende
 
     public abstract boolean isDefaultOn();
 
-    @Nonnull
+    @NotNull
     public RibbonElementPriority getPriority() {
         return RibbonElementPriority.MEDIUM;
     }
 
-    @Nonnull
+    @NotNull
     protected static Image resizeImage(BufferedImage originalImage, Integer width, Integer height) {
         BufferedImage resizeImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizeImage.createGraphics();

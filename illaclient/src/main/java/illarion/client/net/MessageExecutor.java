@@ -17,13 +17,11 @@ package illarion.client.net;
 
 import illarion.client.net.server.ServerReply;
 import illarion.client.net.server.ServerReplyResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.concurrent.*;
 
 /**
@@ -32,12 +30,10 @@ import java.util.concurrent.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class MessageExecutor {
-    @Nonnull
-    private static final Marker NET = MarkerFactory.getMarker("Net");
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MessageExecutor.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    @Nonnull
+    @NotNull
     private final ExecutorService executorService;
 
     /**
@@ -47,35 +43,35 @@ final class MessageExecutor {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    void scheduleReplyExecution(@Nonnull ServerReply reply) {
-        log.debug(NET, "scheduled {}", reply);
+    void scheduleReplyExecution(@NotNull ServerReply reply) {
+        log.debug("scheduled" + reply);
         executorService.submit(() -> executeReply(reply));
     }
 
-    private void executeReply(@Nonnull ServerReply reply) {
-        log.debug(NET, "executing {}", reply);
+    private void executeReply(@NotNull ServerReply reply) {
+        log.debug("executing" + reply);
         try {
             ServerReplyResult result = reply.execute();
             switch (result) {
                 case Success:
-                    log.debug(NET, "finished with success {}", reply);
+                    log.debug("finished with success" + reply);
                     break;
                 case Failed:
-                    log.error(NET, "finished with failure {}", reply);
+                    log.error("finished with failure" + reply);
                     break;
                 case Reschedule:
-                    log.debug(NET, "delaying {}", reply);
+                    log.debug("delaying" + reply);
                     scheduleReplyExecution(reply);
             }
         } catch (Exception e) {
-            log.error(NET, "Error while executing server replay.", e);
+            log.error("Error while executing server replay." + e);
         }
     }
 
     /**
      * Shutdown the sender.
      */
-    @Nonnull
+    @NotNull
     public Future<Boolean> saveShutdown() {
         executorService.shutdown();
 
@@ -98,7 +94,7 @@ final class MessageExecutor {
             }
 
             @Override
-            @Nonnull
+            @NotNull
             public Boolean get() throws InterruptedException, ExecutionException {
                 try {
                     return get(1, TimeUnit.HOURS);
@@ -108,8 +104,8 @@ final class MessageExecutor {
             }
 
             @Override
-            @Nonnull
-            public Boolean get(long timeout, @Nonnull TimeUnit unit)
+            @NotNull
+            public Boolean get(long timeout, @NotNull TimeUnit unit)
                     throws InterruptedException, ExecutionException, TimeoutException {
                 return executorService.awaitTermination(timeout, unit);
             }

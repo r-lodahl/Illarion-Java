@@ -22,8 +22,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,7 +43,7 @@ public class ChannelSelectionController extends AbstractController {
     public ComboBox<String> targetMapEditor;
 
     @Override
-    public void initialize(URL location, @Nonnull ResourceBundle resources) {
+    public void initialize(URL location, @NotNull ResourceBundle resources) {
         ObservableList<String> targets = FXCollections
                 .observableArrayList(resources.getString("optionRelease"),
                         resources.getString("optionSnapshot"));
@@ -54,7 +54,7 @@ public class ChannelSelectionController extends AbstractController {
     }
 
     @Override
-    public void setModel(@Nonnull GuiModel model) {
+    public void setModel(@NotNull GuiModel model) {
         super.setModel(model);
 
         Config cfg = getModel().getConfig();
@@ -66,7 +66,7 @@ public class ChannelSelectionController extends AbstractController {
     }
 
     @FXML
-    public void nextStep(@Nonnull ActionEvent actionEvent) {
+    public void nextStep(@NotNull ActionEvent actionEvent) {
         Config cfg = getModel().getConfig();
         cfg.set("channelClient", targetClient.getItems().indexOf(targetClient.getValue()));
         cfg.set("channelEasyNpc", targetEasyNpc.getItems().indexOf(targetEasyNpc.getValue()));
@@ -77,7 +77,7 @@ public class ChannelSelectionController extends AbstractController {
 
         try {
             getModel().getStoryboard().showNormal();
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             // nothing
         }
     }

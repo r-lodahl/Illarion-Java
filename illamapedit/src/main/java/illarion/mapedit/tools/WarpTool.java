@@ -22,10 +22,10 @@ import illarion.mapedit.data.MapWarpPoint;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.WarpPlacedAction;
 import illarion.mapedit.tools.panel.WarpPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -35,7 +35,7 @@ public class WarpTool extends AbstractTool {
     private final WarpPanel panel = new WarpPanel();
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         WarpPlacedAction newAction = addWarp(x, y, map);
         if (newAction != null) {
             getHistory().addEntry(newAction);
@@ -43,7 +43,7 @@ public class WarpTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, @Nonnull GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, @NotNull GroupAction action) {
         WarpPlacedAction newAction = addWarp(x, y, map);
         if (newAction != null) {
             action.addAction(newAction);
@@ -51,7 +51,7 @@ public class WarpTool extends AbstractTool {
     }
 
     @Nullable
-    public WarpPlacedAction addWarp(int x, int y, @Nonnull Map map) {
+    public WarpPlacedAction addWarp(int x, int y, @NotNull Map map) {
         MapTile tile = map.getTileAt(x, y);
         if (tile == null) {
             return null;
@@ -76,7 +76,7 @@ public class WarpTool extends AbstractTool {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public JPanel getSettingsPanel() {
         return panel;

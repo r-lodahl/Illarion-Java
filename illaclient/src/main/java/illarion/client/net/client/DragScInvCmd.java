@@ -18,16 +18,13 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Dragging an item from a container to the inventory ({@link CommandList#CMD_DRAG_SC_INV}).
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class DragScInvCmd extends AbstractDragCommand {
     /**
      * The source container of the dragging event.
@@ -52,7 +49,7 @@ public final class DragScInvCmd extends AbstractDragCommand {
      * @param destination the inventory slot that is the destination of the drag
      * @param count the amount of items to move
      */
-    public DragScInvCmd(int sourceContainer, int sourceSlot, int destination, @Nonnull ItemCount count) {
+    public DragScInvCmd(int sourceContainer, int sourceSlot, int destination, @NotNull ItemCount count) {
         super(CommandList.CMD_DRAG_SC_INV, count);
 
         this.sourceContainer = (short) sourceContainer;
@@ -61,14 +58,14 @@ public final class DragScInvCmd extends AbstractDragCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(sourceContainer);
         writer.writeUByte(sourceContainerItem);
         writer.writeUByte(targetSlot);
         getCount().encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Source: " + sourceContainer + '/' + sourceContainerItem + " Destination: " + targetSlot +

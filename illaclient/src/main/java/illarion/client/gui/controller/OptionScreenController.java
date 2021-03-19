@@ -29,9 +29,9 @@ import illarion.client.util.AudioPlayer;
 import illarion.client.util.translation.Translator;
 import illarion.common.bug.CrashReporter;
 import illarion.common.config.Config;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +69,7 @@ public final class OptionScreenController implements ScreenController {
     private CheckBox serverResetSettings;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -172,7 +172,7 @@ public final class OptionScreenController implements ScreenController {
     public void onEndScreen() {
     }
 
-    @Nonnull
+    @NotNull
     public static List<String> getResolutionList() {
         /*DesktopGameContainer container = IllaClient.getInstance().getContainer();
 

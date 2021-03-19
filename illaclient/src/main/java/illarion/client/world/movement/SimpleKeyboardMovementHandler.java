@@ -23,9 +23,9 @@ import illarion.common.types.ServerCoordinate;
 import illarion.common.util.FastMath;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
@@ -39,24 +39,24 @@ import java.util.concurrent.TimeUnit;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements KeyboardMovementHandler {
-    @Nonnull
+    @NotNull
     private final Input input;
 
-    @Nonnull
+    @NotNull
     private final Set<Direction> activeDirections;
 
     private boolean delayedMove;
 
-    @Nonnull
+    @NotNull
     private final ScheduledExecutorService delayedMoveExecutor;
 
     @Nullable
     private ScheduledFuture<Void> delayedMoveTask;
 
-    @Nonnull
+    @NotNull
     private final UpdateTask updateMovementTask = (delta) -> getMovement().update();
 
-    SimpleKeyboardMovementHandler(@Nonnull Movement movement, @Nonnull Input input) {
+    SimpleKeyboardMovementHandler(@NotNull Movement movement, @NotNull Input input) {
         super(movement);
         activeDirections = EnumSet.noneOf(Direction.class);
         this.input = input;
@@ -64,7 +64,7 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
     }
 
     @Override
-    public void startMovingTowards(@Nonnull Direction direction) {
+    public void startMovingTowards(@NotNull Direction direction) {
         if (activeDirections.add(direction)) {
             if (delayedMoveTask != null) {
                 delayedMoveTask.cancel(false);
@@ -82,13 +82,13 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
     }
 
     @Override
-    public void stopMovingTowards(@Nonnull Direction direction) {
+    public void stopMovingTowards(@NotNull Direction direction) {
         activeDirections.remove(direction);
     }
 
     @Nullable
     @Override
-    public StepData getNextStep(@Nonnull ServerCoordinate currentLocation) {
+    public StepData getNextStep(@NotNull ServerCoordinate currentLocation) {
         return new DefaultStepData(getMovementMode(), getMovementDirection());
     }
 
@@ -106,7 +106,7 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
     }
 
     @Nullable
-    public static Direction getCombined(@Nonnull Iterable<Direction> activeDirections) {
+    public static Direction getCombined(@NotNull Iterable<Direction> activeDirections) {
         int xVec = 0;
         int yVec = 0;
         for (Direction activeDir : activeDirections) {
@@ -125,7 +125,7 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
         return null;
     }
 
-    @Nonnull
+    @NotNull
     private CharMovementMode getMovementMode() {
         if (input.isKeyDown(Key.LeftAlt)) {
             return CharMovementMode.None;
@@ -142,7 +142,7 @@ class SimpleKeyboardMovementHandler extends AbstractMovementHandler implements K
         return CharMovementMode.Walk;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Simple keyboard movement handler";

@@ -17,8 +17,8 @@ package illarion.client.input;
 
 import illarion.common.memory.Poolable;
 import org.illarion.engine.graphic.SceneEvent;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This event is in general triggered in case the user performs any move or action with the mouse on the map.
@@ -52,7 +52,7 @@ public abstract class AbstractMouseLocationEvent implements SceneEvent, Poolable
      *
      * @param org the original object that is copied
      */
-    protected AbstractMouseLocationEvent(@Nonnull AbstractMouseLocationEvent org) {
+    protected AbstractMouseLocationEvent(@NotNull AbstractMouseLocationEvent org) {
         x = org.x;
         y = org.y;
     }

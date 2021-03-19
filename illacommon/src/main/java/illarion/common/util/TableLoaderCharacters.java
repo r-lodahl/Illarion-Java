@@ -17,8 +17,8 @@ package illarion.common.util;
 
 import illarion.common.types.Direction;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of the table loader that targets the characters table file.
@@ -104,7 +104,7 @@ public final class TableLoaderCharacters extends TableLoader {
      */
     private static final int TB_VISIBLE = 10;
 
-    public TableLoaderCharacters(@Nonnull TableLoaderSink<TableLoaderCharacters> callback) {
+    public TableLoaderCharacters(@NotNull TableLoaderSink<TableLoaderCharacters> callback) {
         super("Chars", callback);
     }
 
@@ -183,7 +183,7 @@ public final class TableLoaderCharacters extends TableLoader {
      *
      * @return the direction the avatar is looking at
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Direction getDirection() {
         Direction dir = Direction.fromServerId(getInt(TB_DIRECTION));
@@ -259,7 +259,7 @@ public final class TableLoaderCharacters extends TableLoader {
      *
      * @return the resource name of this effect
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getResourceName() {
         return getString(TB_NAME);

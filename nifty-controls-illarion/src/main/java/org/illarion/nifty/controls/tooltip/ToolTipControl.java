@@ -29,9 +29,9 @@ import de.lessvoid.nifty.tools.Color;
 import de.lessvoid.nifty.tools.SizeValue;
 import illarion.common.types.Money;
 import org.illarion.nifty.controls.ToolTip;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the control that takes care to display the Illarion item tooltip.
@@ -43,10 +43,10 @@ import javax.annotation.Nullable;
 public final class ToolTipControl extends AbstractController implements ToolTip {
     @Override
     public void bind(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element element,
-            @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element element,
+            @NotNull Parameters parameter) {
         bind(element);
 
         boolean largeToolTip = false;
@@ -191,7 +191,7 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      *
      * @param element the element to remove
      */
-    private static void removeElement(@Nonnull Element element) {
+    private static void removeElement(@NotNull Element element) {
         element.markForRemoval(() -> element.getParent().layoutElements());
     }
 
@@ -211,7 +211,7 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      * @param strings the stings to test
      * @return {@code true} in case all strings are {@code null} or equal to {@code Integer.toString(0)}
      */
-    private static boolean isAllNull(@Nonnull String... strings) {
+    private static boolean isAllNull(@NotNull String... strings) {
         for (String value : strings) {
             if ((value != null) && (Integer.parseInt(value) > 0)) {
                 return false;
@@ -230,8 +230,8 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      * @param images the name of the gems
      */
     private static void applyGem(
-            @Nonnull Nifty nifty,
-            @Nonnull Element element,
+            @NotNull Nifty nifty,
+            @NotNull Element element,
             @Nullable String gemText,
             String elementImage,
             String images) {
@@ -247,7 +247,7 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
         }
 
         NiftyImage gemImage = nifty
-                .createImage("gui/items/" + images + Integer.toString(gemLevel - 1) + ".png", false);
+                .createImage("gui/items/" + images + (gemLevel - 1) + ".png", false);
         image.getRenderer(ImageRenderer.class).setImage(gemImage);
         image.setConstraintHeight(SizeValue.px(gemImage.getHeight()));
         image.setConstraintWidth(SizeValue.px(gemImage.getWidth()));
@@ -262,9 +262,9 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      * @param elementImage the element that contains the image of the money component
      */
     private static void applyMoney(
-            @Nonnull Element element,
+            @NotNull Element element,
             int money,
-            @Nonnull String elementCount,
+            @NotNull String elementCount,
             String elementImage) {
         if (money > 0) {
             applyTextToLabel(element.findNiftyControl(elementCount, Label.class), Integer.toString(money));
@@ -280,7 +280,7 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      * @param label the label
      * @param text the text to be stored in the label
      */
-    private static void applyTextToLabel(@Nonnull Label label, String text) {
+    private static void applyTextToLabel(@NotNull Label label, String text) {
         Element labelElement = label.getElement();
         TextRenderer renderer = labelElement.getRenderer(TextRenderer.class);
         renderer.setText(text);
@@ -299,7 +299,7 @@ public final class ToolTipControl extends AbstractController implements ToolTip 
      * @return {@code false} in any case
      */
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         return false;
     }
 }

@@ -16,13 +16,13 @@
 package illarion.download.maven;
 
 import illarion.common.util.ProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @FunctionalInterface
 interface ArtifactRequestTracer {
-    void trace(@Nonnull ProgressMonitor monitor, @Nonnull String artifact, long totalSize, long transferred);
+    void trace(@NotNull ProgressMonitor monitor, @NotNull String artifact, long totalSize, long transferred);
 }

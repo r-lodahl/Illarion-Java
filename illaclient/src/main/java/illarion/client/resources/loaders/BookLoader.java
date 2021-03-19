@@ -19,8 +19,8 @@ import illarion.client.resources.ResourceFactory;
 import illarion.client.util.IdWrapper;
 import illarion.common.util.TableLoaderBooks;
 import illarion.common.util.TableLoaderSink;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This loader is used to load the data required for the books.
@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
  */
 public final class BookLoader extends AbstractResourceLoader<IdWrapper<String>>
         implements TableLoaderSink<TableLoaderBooks> {
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<IdWrapper<String>> call() {
         if (!hasTargetFactory()) {
@@ -47,7 +47,7 @@ public final class BookLoader extends AbstractResourceLoader<IdWrapper<String>>
     }
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderBooks loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderBooks loader) {
         int id = loader.getBookId();
         String bookFile = loader.getBookFile();
 

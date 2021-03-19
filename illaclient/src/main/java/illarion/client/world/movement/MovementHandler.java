@@ -16,9 +16,9 @@
 package illarion.client.world.movement;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the main interface of a movement handler. All movement systems have to use this one.
@@ -52,5 +52,5 @@ public interface MovementHandler {
      * @return the next step or {@code null} in case no step is to be done
      */
     @Nullable
-    StepData getNextStep(@Nonnull ServerCoordinate currentLocation);
+    StepData getNextStep(@NotNull ServerCoordinate currentLocation);
 }

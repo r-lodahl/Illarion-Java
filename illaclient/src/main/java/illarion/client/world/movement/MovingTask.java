@@ -17,26 +17,26 @@ package illarion.client.world.movement;
 
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class MovingTask implements MoveAnimatorTask {
-    @Nonnull
+    @NotNull
     private final MoveAnimator moveAnimator;
-    @Nonnull
+    @NotNull
     private final CharMovementMode mode;
-    @Nonnull
+    @NotNull
     private final ServerCoordinate target;
     private final int duration;
     private boolean executed;
 
     MovingTask(
-            @Nonnull MoveAnimator moveAnimator,
-            @Nonnull CharMovementMode mode,
-            @Nonnull ServerCoordinate target,
+            @NotNull MoveAnimator moveAnimator,
+            @NotNull CharMovementMode mode,
+            @NotNull ServerCoordinate target,
             int duration) {
         this.moveAnimator = moveAnimator;
         this.mode = mode;
@@ -45,7 +45,7 @@ class MovingTask implements MoveAnimatorTask {
         executed = false;
     }
 
-    public boolean isSetupCorrectly(@Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+    public boolean isSetupCorrectly(@NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         return (this.mode == mode) && this.target.equals(target) && (this.duration == duration);
     }
 
@@ -59,7 +59,7 @@ class MovingTask implements MoveAnimatorTask {
         return executed;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Move Task - Mode: " + mode + " Target " + target + " Duration: " + duration + "ms";

@@ -24,9 +24,9 @@ import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +72,7 @@ public final class ItemUpdateMsg implements ServerReply {
     private int newTileMovePoints;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         location = new ServerCoordinate(reader);
 
         itemNumber = reader.readUByte();
@@ -85,7 +85,7 @@ public final class ItemUpdateMsg implements ServerReply {
         newTileMovePoints = reader.readUByte();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((location == null) || (itemId == null) || (itemCount == null)) {
@@ -104,7 +104,7 @@ public final class ItemUpdateMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

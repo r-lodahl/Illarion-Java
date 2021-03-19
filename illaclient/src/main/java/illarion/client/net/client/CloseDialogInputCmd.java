@@ -17,10 +17,8 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 
 /**
@@ -29,8 +27,6 @@ import java.io.IOException;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@NotThreadSafe
 public final class CloseDialogInputCmd extends AbstractCommand {
     /**
      * The ID that was send by the server to initiate text input.
@@ -40,7 +36,7 @@ public final class CloseDialogInputCmd extends AbstractCommand {
     /**
      * The text that is send to the server.
      */
-    @Nonnull
+    @NotNull
     private final String text;
 
     /**
@@ -55,7 +51,7 @@ public final class CloseDialogInputCmd extends AbstractCommand {
      * @param text the text that contains the response
      * @param success {@code true} in case the dialog was confirmed
      */
-    public CloseDialogInputCmd(int dialogID, @Nonnull String text, boolean success) {
+    public CloseDialogInputCmd(int dialogID, @NotNull String text, boolean success) {
         super(CommandList.CMD_CLOSE_DIALOG_INPUT);
         this.dialogID = dialogID;
         this.text = text;
@@ -63,7 +59,7 @@ public final class CloseDialogInputCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) throws IOException {
+    public void encode(@NotNull NetCommWriter writer) throws IOException {
         writer.writeInt(dialogID);
         if (success) {
             writer.writeUByte((byte) 0xFF);
@@ -73,7 +69,7 @@ public final class CloseDialogInputCmd extends AbstractCommand {
         writer.writeString(text);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Dialog ID: " + dialogID + " - Response: " + text + " successful: " + success);

@@ -15,7 +15,8 @@
  */
 package illarion.download.cleanup;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,11 +27,11 @@ import java.util.regex.Pattern;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class VersionComparator implements Comparator<Path>, Serializable {
-    @Nonnull
+    @NotNull
     private static final Pattern VERSION_SPLIT_PATTERN = Pattern.compile(".", Pattern.LITERAL);
 
     @Override
-    public int compare(@Nonnull Path o1, @Nonnull Path o2) {
+    public int compare(@NotNull Path o1, @NotNull Path o2) {
         String version1;
         String version2;
         if (Files.isDirectory(o1)) {

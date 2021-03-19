@@ -17,12 +17,12 @@ package illarion.client.net;
 
 import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.net.server.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,19 +38,19 @@ public final class ReplyFactory {
     /**
      * The singleton instance of this factory.
      */
-    @Nonnull
+    @NotNull
     private static final ReplyFactory INSTANCE = new ReplyFactory();
 
     /**
      * The logger that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ReplyFactory.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This map stores the message classes along with the IDs of the command encoded in them.
      */
-    @Nonnull
+    @NotNull
     private final Map<Integer, Class<? extends ServerReply>> replyMap;
 
     /**
@@ -120,7 +120,7 @@ public final class ReplyFactory {
      *
      * @param clazz the class to register as reply.
      */
-    private void register(@Nonnull Class<? extends ServerReply> clazz) {
+    private void register(@NotNull Class<? extends ServerReply> clazz) {
         ReplyMessage messageData = clazz.getAnnotation(ReplyMessage.class);
 
         if (messageData == null) {
@@ -172,7 +172,7 @@ public final class ReplyFactory {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static ReplyFactory getInstance() {
         return INSTANCE;

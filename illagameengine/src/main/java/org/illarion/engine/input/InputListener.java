@@ -15,7 +15,8 @@
  */
 package org.illarion.engine.input;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines a input listener that should be attached to the input interface. It will receive the
@@ -29,7 +30,7 @@ public interface InputListener {
      *
      * @param key the key that is pressed
      */
-    void keyDown(@Nonnull Key key);
+    void keyDown(@NotNull Key key);
 
     /**
      * This function is called for key up events. In case a button that was pressed down is released,
@@ -37,7 +38,7 @@ public interface InputListener {
      *
      * @param key the key that is released
      */
-    void keyUp(@Nonnull Key key);
+    void keyUp(@NotNull Key key);
 
     /**
      * This even is generated in case a button is typed. This is only triggered for buttons that generate a valid
@@ -54,7 +55,7 @@ public interface InputListener {
      * @param mouseY the y coordinate of the mouse cursor when this event occurred
      * @param button the button that is pressed
      */
-    void buttonDown(int mouseX, int mouseY, @Nonnull Button button);
+    void buttonDown(int mouseX, int mouseY, @NotNull Button button);
 
     /**
      * This event is generated in case a mouse button is released.
@@ -63,7 +64,7 @@ public interface InputListener {
      * @param mouseY the y coordinate of the mouse cursor when this event occurred
      * @param button the button that is released
      */
-    void buttonUp(int mouseX, int mouseY, @Nonnull Button button);
+    void buttonUp(int mouseX, int mouseY, @NotNull Button button);
 
     /**
      * This event is generated in case the mouse button is clicked (so pressed and released right after).
@@ -75,7 +76,7 @@ public interface InputListener {
      * @param button the button that was clicked
      * @param count the amount of clicks that occurred
      */
-    void buttonClicked(int mouseX, int mouseY, @Nonnull Button button, int count);
+    void buttonClicked(int mouseX, int mouseY, @NotNull Button button, int count);
 
     /**
      * This event is generated in case the mouse is moved without any buttons pressed down.
@@ -94,7 +95,7 @@ public interface InputListener {
      * @param toX the X coordinate of the new mouse location
      * @param toY the Y coordinate of the new mouse location
      */
-    void mouseDragged(@Nonnull Button button, int fromX, int fromY, int toX, int toY);
+    void mouseDragged(@NotNull Button button, int fromX, int fromY, int toX, int toY);
 
     /**
      * This event is generated in case the mouse wheel was moved.

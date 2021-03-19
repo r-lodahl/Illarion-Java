@@ -21,8 +21,8 @@ import illarion.mapedit.resource.loaders.ItemGroupLoader;
 import illarion.mapedit.resource.loaders.ItemLoader;
 import illarion.mapedit.tools.panel.cellrenderer.ItemTreeCellRenderer;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeSelectionModel;
@@ -40,10 +40,10 @@ public class ItemTree extends JScrollPane {
     private static class ItemGroupModel implements TreeModel {
 
         private static final String ROOT = "Items";
-        @Nonnull
+        @NotNull
         private final List<ItemGroup> groups;
 
-        private ItemGroupModel(@Nonnull ItemImg... items) {
+        private ItemGroupModel(@NotNull ItemImg... items) {
             ItemGroupLoader gl = ItemGroupLoader.getInstance();
             groups = new ArrayList<>();
 
@@ -76,14 +76,14 @@ public class ItemTree extends JScrollPane {
             });
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public Object getRoot() {
             return ROOT;
         }
 
         @Override
-        public Object getChild(@Nonnull Object parent, int index) {
+        public Object getChild(@NotNull Object parent, int index) {
             if (parent == getRoot()) {
                 return groups.get(index);
             }
@@ -94,7 +94,7 @@ public class ItemTree extends JScrollPane {
         }
 
         @Override
-        public int getChildCount(@Nonnull Object parent) {
+        public int getChildCount(@NotNull Object parent) {
             if (parent == getRoot()) {
                 return groups.size();
             }
@@ -118,7 +118,7 @@ public class ItemTree extends JScrollPane {
         }
 
         @Override
-        public int getIndexOfChild(@Nonnull Object parent, Object child) {
+        public int getIndexOfChild(@NotNull Object parent, Object child) {
             if (parent == getRoot()) {
                 return groups.indexOf(child);
             }
@@ -140,7 +140,7 @@ public class ItemTree extends JScrollPane {
     }
 
     private static class ItemGroup {
-        @Nonnull
+        @NotNull
         private final List<ItemImg> items;
         private final String name;
         private final int id;
@@ -151,7 +151,7 @@ public class ItemTree extends JScrollPane {
             this.name = name;
         }
 
-        @Nonnull
+        @NotNull
         public List<ItemImg> getItems() {
             return items;
         }
@@ -168,7 +168,7 @@ public class ItemTree extends JScrollPane {
             return id;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public String toString() {
             return name;

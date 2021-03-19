@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator stores the information about all towns possible to be used in the scripts.
@@ -77,7 +77,7 @@ public enum Towns {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (Towns town : Towns.values()) {
             map.put(town.name(), Token.VARIABLE);
         }

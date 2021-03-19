@@ -19,10 +19,9 @@ import illarion.easynpc.Lang;
 import illarion.easynpc.docu.DocuEntry;
 import illarion.easynpc.docu.DocuRoot;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
@@ -40,11 +39,10 @@ import java.util.List;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class DocuBrowser extends JDialog {
-    @Immutable
-    private final class DocuTreeNode implements TreeNode {
+        private final class DocuTreeNode implements TreeNode {
         @Nullable
         private final List<DocuTreeNode> children;
-        @Nonnull
+        @NotNull
         private final DocuEntry nodeEntry;
 
         @Nullable
@@ -52,11 +50,11 @@ public final class DocuBrowser extends JDialog {
         @Nullable
         private final String title;
 
-        public DocuTreeNode(@Nonnull DocuEntry entry) {
+        public DocuTreeNode(@NotNull DocuEntry entry) {
             this(entry, null);
         }
 
-        public DocuTreeNode(@Nonnull DocuEntry entry, @Nullable DocuTreeNode parent) {
+        public DocuTreeNode(@NotNull DocuEntry entry, @Nullable DocuTreeNode parent) {
             nodeEntry = entry;
             parentNode = parent;
             title = entry.getTitle();
@@ -73,7 +71,7 @@ public final class DocuBrowser extends JDialog {
             }
         }
 
-        @Nonnull
+        @NotNull
         @Override
         @Contract(pure = true)
         public Enumeration<DocuTreeNode> children() {
@@ -119,7 +117,7 @@ public final class DocuBrowser extends JDialog {
 
         @Override
         @Contract(pure = true)
-        public int getIndex(@Nonnull TreeNode node) {
+        public int getIndex(@NotNull TreeNode node) {
             if (children == null) {
                 return -1;
             }
@@ -131,7 +129,7 @@ public final class DocuBrowser extends JDialog {
         }
 
         @Contract(pure = true)
-        public int getIndex(@Nonnull DocuTreeNode node) {
+        public int getIndex(@NotNull DocuTreeNode node) {
             if (children == null) {
                 return -1;
             }
@@ -152,7 +150,7 @@ public final class DocuBrowser extends JDialog {
             return children == null;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         @Contract(pure = true)
         public String toString() {
@@ -165,28 +163,28 @@ public final class DocuBrowser extends JDialog {
      */
     private static final long serialVersionUID = 1L;
 
-    @Nonnull
+    @NotNull
     private final JTextArea descriptionContent;
 
-    @Nonnull
+    @NotNull
     private final JLabel descriptionTitle;
-    @Nonnull
+    @NotNull
     private final JTextArea exampleContent;
-    @Nonnull
+    @NotNull
     private final JLabel exampleTitle;
 
-    @Nonnull
+    @NotNull
     private final JTextArea syntaxContent;
-    @Nonnull
+    @NotNull
     private final JLabel syntaxTitle;
 
-    @Nonnull
+    @NotNull
     private final JLabel titleLabel;
 
     /**
      * The default constructor creating this documentation display.
      */
-    public DocuBrowser(@Nonnull Frame owner) {
+    public DocuBrowser(@NotNull Frame owner) {
         super(owner, Lang.getMsg(DocuBrowser.class, "title"), false);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -194,7 +192,7 @@ public final class DocuBrowser extends JDialog {
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             setIconImage(ImageIO.read(cl.getResourceAsStream("easynpc16.png")));
-        } catch (@Nonnull IOException ignored) {
+        } catch (@NotNull IOException ignored) {
         }
 
         JTree contentTree = new JTree(new DocuTreeNode(DocuRoot.getInstance()));
@@ -311,11 +309,7 @@ public final class DocuBrowser extends JDialog {
         invalidate();
 
         String titleText = entry.getTitle();
-        if (titleText != null) {
-            titleLabel.setText(titleText);
-        } else {
-            titleLabel.setText(null);
-        }
+        titleLabel.setText(titleText);
 
         String descriptionText = entry.getDescription();
         if (descriptionText != null) {

@@ -19,7 +19,9 @@
   ~ GNU General Public License for more details.
   -->
 
-<?import javafx.geometry.Insets?><?import javafx.scene.control.*?><?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="illarion.download.gui.controller.ChannelSelectionController">
     <BorderPane fx:id="footer">

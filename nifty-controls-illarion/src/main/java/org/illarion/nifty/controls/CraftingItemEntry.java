@@ -18,16 +18,13 @@ package org.illarion.nifty.controls;
 import de.lessvoid.nifty.render.NiftyImage;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines defines a single item that can be crafted and is displayed in the crafting dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public interface CraftingItemEntry extends CraftingTreeItem {
     /**
      * Get the index of this item.
@@ -48,7 +45,7 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      *
      * @return the image of this item
      */
-    @Nonnull
+    @NotNull
     NiftyImage getImage();
 
     /**
@@ -59,7 +56,7 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      * @throws IndexOutOfBoundsException in case {@code index} is less then 0 or equal or greater then the result of
      * {@link #getIngredientCount()}
      */
-    @Nonnull
+    @NotNull
     ItemCount getIngredientAmount(int index);
 
     /**
@@ -77,7 +74,7 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      * @throws IndexOutOfBoundsException in case {@code index} is less then 0 or equal or greater then the result of
      * {@link #getIngredientCount()}
      */
-    @Nonnull
+    @NotNull
     NiftyImage getIngredientImage(int index);
 
     /**
@@ -88,7 +85,7 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      * @throws IndexOutOfBoundsException in case {@code index} is less then 0 or equal or greater then the result of
      * {@link #getIngredientCount()}
      */
-    @Nonnull
+    @NotNull
     ItemId getIngredientItemId(int index);
 
     /**
@@ -96,7 +93,7 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      *
      * @return the name of the item
      */
-    @Nonnull
+    @NotNull
     String getName();
 
     /**
@@ -104,6 +101,6 @@ public interface CraftingItemEntry extends CraftingTreeItem {
      *
      * @return the size of the stack that is build
      */
-    @Nonnull
+    @NotNull
     ItemCount getBuildStackSize();
 }

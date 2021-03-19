@@ -15,8 +15,9 @@
  */
 package illarion.easyquest.quest;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,13 +70,13 @@ public class ConditionTemplate implements Comparable<ConditionTemplate> {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return (title == null) ? "" : title;
     }
 
     @Override
-    public int compareTo(@Nonnull ConditionTemplate o) {
+    public int compareTo(@NotNull ConditionTemplate o) {
         return toString().compareTo(o.toString());
     }
 
@@ -86,9 +87,7 @@ public class ConditionTemplate implements Comparable<ConditionTemplate> {
         }
         if (o instanceof ConditionTemplate) {
             ConditionTemplate otherTemplate = (ConditionTemplate) o;
-            if (otherTemplate.toString().equals(toString())) {
-                return true;
-            }
+            return otherTemplate.toString().equals(toString());
         }
         return false;
     }

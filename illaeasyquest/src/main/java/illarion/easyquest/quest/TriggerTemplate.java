@@ -15,8 +15,9 @@
  */
 package illarion.easyquest.quest;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class TriggerTemplate {
         return category;
     }
 
-    public void setCategory(@Nonnull String category) {
+    public void setCategory(@NotNull String category) {
         this.category = category;
         String idType, idDescription;
         if (category.equals("triggerfield")) {
@@ -141,7 +142,7 @@ public class TriggerTemplate {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return title;
     }

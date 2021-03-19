@@ -23,11 +23,11 @@ import com.mxgraph.view.mxGraph;
 import illarion.easyquest.Lang;
 import illarion.easyquest.quest.Status;
 import illarion.easyquest.quest.Trigger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 public class Graph extends mxGraph {
-    public Graph(@Nonnull mxIGraphModel model) {
+    public Graph(@NotNull mxIGraphModel model) {
         super(model);
         setAlternateEdgeStyle("edgeStyle=mxEdgeStyle.ElbowConnector;elbow=vertical");
         setAllowLoops(true);
@@ -77,7 +77,7 @@ public class Graph extends mxGraph {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String getToolTipForCell(Object cell) {
         String tip = "<html>";
 
@@ -93,7 +93,7 @@ public class Graph extends mxGraph {
     }
 
     @Override
-    public String convertValueToString(@Nonnull Object cell) {
+    public String convertValueToString(@NotNull Object cell) {
         if (cell instanceof mxCell) {
             Object value = ((mxCell) cell).getValue();
 

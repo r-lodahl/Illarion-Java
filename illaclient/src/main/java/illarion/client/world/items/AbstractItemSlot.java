@@ -19,8 +19,8 @@ import illarion.client.resources.ItemFactory;
 import illarion.client.resources.data.ItemTemplate;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 /**
  * This is the abstract item slot that contains all functions shared by the different item slots, like the inventory

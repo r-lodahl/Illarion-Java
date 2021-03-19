@@ -46,17 +46,17 @@ import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
 import org.illarion.nifty.controls.InventorySlot;
 import org.illarion.nifty.controls.InventorySlot.MerchantBuyLevel;
 import org.illarion.nifty.controls.Progress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -69,19 +69,19 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     /**
      * The logger that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(GUIInventoryHandler.class);
-    @Nonnull
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
     private final String[] slots;
-    @Nonnull
+    @NotNull
     private final Element[] invSlots;
-    @Nonnull
+    @NotNull
     private final boolean[] slotLabelVisibility;
     private final NumberSelectPopupHandler numberSelect;
     private final TooltipHandler tooltipHandler;
-    @Nonnull
+    @NotNull
     private final Input input;
-    @Nonnull
+    @NotNull
     private final UpdateTask updateMerchantOverlays = (delta) -> {
         Inventory inventory = World.getPlayer().getInventory();
         for (int i = 0; i < Inventory.SLOT_COUNT; i++) {
@@ -93,7 +93,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     private Nifty activeNifty;
     private Screen activeScreen;
     public GUIInventoryHandler(
-            @Nonnull Input input, NumberSelectPopupHandler numberSelectPopupHandler, TooltipHandler tooltipHandler) {
+            @NotNull Input input, NumberSelectPopupHandler numberSelectPopupHandler, TooltipHandler tooltipHandler) {
         slots = new String[Inventory.SLOT_COUNT];
         slots[0] = "invslot_bag";
         slots[1] = "invslot_head";
@@ -129,12 +129,12 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
      *
      * @param slot the slot to fetch
      */
-    private static void fetchLookAt(@Nonnull illarion.client.world.items.InventorySlot slot) {
+    private static void fetchLookAt(@NotNull illarion.client.world.items.InventorySlot slot) {
         slot.getInteractive().lookAt();
     }
 
     @NiftyEventSubscriber(id = "pickUpItemsBtn")
-    public void onPickUpItemsBtnClick(String topic, @Nonnull ButtonClickedEvent event) {
+    public void onPickUpItemsBtnClick(String topic, @NotNull ButtonClickedEvent event) {
         World.getNet().sendCommand(new PickUpAllItemsCmd());
     }
 
@@ -206,7 +206,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @Override
-    public void showTooltip(int slotId, @Nonnull Tooltip tooltip) {
+    public void showTooltip(int slotId, @NotNull Tooltip tooltip) {
         Element slot = invSlots[slotId];
         Rectangle rect = new Rectangle();
         rect.set(slot.getX(), slot.getY(), slot.getWidth(), slot.getHeight());
@@ -265,7 +265,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @NiftyEventSubscriber(pattern = "invslot_.*")
-    public void onDoubleClickInventory(@Nonnull String topic, @Nonnull NiftyMousePrimaryMultiClickedEvent data) {
+    public void onDoubleClickInventory(@NotNull String topic, @NotNull NiftyMousePrimaryMultiClickedEvent data) {
         int slotId = getSlotNumber(topic);
         log.debug("Clicking {} times in inventory slot {}", data.getClickCount(), slotId);
 
@@ -294,7 +294,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
      * @param name the name of the slot
      * @return the number of the slot fitting the name
      */
-    private int getSlotNumber(@Nonnull String name) {
+    private int getSlotNumber(@NotNull String name) {
         for (int i = 0; i < Inventory.SLOT_COUNT; i++) {
             if (name.startsWith(slots[i])) {
                 return i;
@@ -304,7 +304,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @NiftyEventSubscriber(pattern = "invslot_.*")
-    public void dragFromInventory(@Nonnull String topic, DraggableDragStartedEvent data) {
+    public void dragFromInventory(@NotNull String topic, DraggableDragStartedEvent data) {
         int slotId = getSlotNumber(topic);
         World.getInteractionManager().notifyDraggingInventory(slotId, new EndOfDragOperation(
                 invSlots[slotId].getNiftyControl(InventorySlot.class)));
@@ -312,7 +312,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @NiftyEventSubscriber(pattern = "invslot_.*")
-    public void dropInInventory(@Nonnull String topic, DroppableDroppedEvent data) {
+    public void dropInInventory(@NotNull String topic, DroppableDroppedEvent data) {
         int slotId = getSlotNumber(topic);
 
         InteractionManager iManager = World.getInteractionManager();
@@ -346,7 +346,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @NiftyEventSubscriber(pattern = "invslot_.*")
-    public void onMouseMoveOverInventory(@Nonnull String topic, NiftyMouseMovedEvent event) {
+    public void onMouseMoveOverInventory(@NotNull String topic, NiftyMouseMovedEvent event) {
         int slotId = getSlotNumber(topic);
 
         if (input.isAnyButtonDown(Button.Left, Button.Right)) {
@@ -362,7 +362,7 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         activeNifty = nifty;
         activeScreen = screen;
 
@@ -403,8 +403,8 @@ public final class GUIInventoryHandler implements InventoryGui, ScreenController
     @Override
     public void onEndScreen() {
         activeNifty.unsubscribeAnnotations(this);
-        IllaClient.getConfig().set("inventoryPosX", Integer.toString(inventoryWindow.getX()) + "px");
-        IllaClient.getConfig().set("inventoryPosY", Integer.toString(inventoryWindow.getY()) + "px");
+        IllaClient.getConfig().set("inventoryPosX", inventoryWindow.getX() + "px");
+        IllaClient.getConfig().set("inventoryPosY", inventoryWindow.getY() + "px");
     }
 
     /**

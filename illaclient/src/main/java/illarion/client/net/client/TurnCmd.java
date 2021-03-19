@@ -18,10 +18,7 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.Direction;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to inform the server that the character turns towards a specified direction.
@@ -29,13 +26,11 @@ import javax.annotation.concurrent.ThreadSafe;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class TurnCmd extends AbstractCommand {
     /**
      * The direction the character is supposed to turn to.
      */
-    @Nonnull
+    @NotNull
     private final Direction direction;
 
     /**
@@ -43,18 +38,18 @@ public final class TurnCmd extends AbstractCommand {
      *
      * @param direction the direction to turn to
      */
-    public TurnCmd(@Nonnull Direction direction) {
+    public TurnCmd(@NotNull Direction direction) {
         super(CommandList.CMD_TURN);
 
         this.direction = direction;
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         direction.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Direction: " + direction);

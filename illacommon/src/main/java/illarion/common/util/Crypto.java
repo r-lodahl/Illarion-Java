@@ -15,13 +15,12 @@
  */
 package illarion.common.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.WillNotClose;
 import javax.crypto.*;
 import java.io.*;
 import java.security.Key;
@@ -41,25 +40,25 @@ public final class Crypto {
     /**
      * The error and debug logger of the client.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Crypto.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The filename of the private key.
      */
-    @Nonnull
+    @NotNull
     private static final String PRIVATE_KEY = "private.key";
 
     /**
      * The filename of the public key.
      */
-    @Nonnull
+    @NotNull
     private static final String PUBLIC_KEY = "public.key";
 
     /**
      * String for the transformation name "RSA"
      */
-    @Nonnull
+    @NotNull
     private static final String KEY_ALGORITHM = "RSA";
 
     /**
@@ -82,12 +81,12 @@ public final class Crypto {
     /**
      * Get a stream that delivers the decrypted data.
      *
-     * @param src the stream that delivers the encryted data
+     * @param src the stream that delivers the encryted data, will not close
      * @return the stream that provides the decrypted data
      * @throws CryptoException
      */
-    @Nonnull
-    public InputStream getDecryptedStream(@Nonnull @WillNotClose InputStream src) throws CryptoException {
+    @NotNull
+    public InputStream getDecryptedStream(@NotNull InputStream src) throws CryptoException {
         if (!hasPublicKey()) {
             throw new IllegalStateException("No keys loaded");
         }
@@ -103,15 +102,15 @@ public final class Crypto {
                 n += dIn.read(wrappedKey, n, keyLength - n);
             }
 
-            @Nonnull Cipher wrappingCipher = Cipher.getInstance(KEY_ALGORITHM);
+            @NotNull Cipher wrappingCipher = Cipher.getInstance(KEY_ALGORITHM);
             wrappingCipher.init(Cipher.UNWRAP_MODE, publicKey);
             Key encryptionKey = wrappingCipher.unwrap(wrappedKey, "DES", Cipher.SECRET_KEY);
 
-            @Nonnull Cipher cipher = Cipher.getInstance("DES");
+            @NotNull Cipher cipher = Cipher.getInstance("DES");
             cipher.init(Cipher.DECRYPT_MODE, encryptionKey);
 
             return new CipherInputStream(src, cipher);
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -123,7 +122,7 @@ public final class Crypto {
      * @param out the target output stream
      * @throws IOException in case reading from the source stream or writing to the target stream fails
      */
-    private static void transferBytes(@Nonnull InputStream in, @Nonnull OutputStream out) throws IOException {
+    private static void transferBytes(@NotNull InputStream in, @NotNull OutputStream out) throws IOException {
         byte[] buffer = new byte[TRANSFER_BUFFER_SIZE];
         int n = in.read(buffer);
         while (n > -1) {
@@ -141,14 +140,14 @@ public final class Crypto {
      * @param src data to encrypt
      * @param dst target stream for encryption
      */
-    public void encrypt(@Nonnull InputStream src, @Nonnull OutputStream dst) throws CryptoException {
+    public void encrypt(@NotNull InputStream src, @NotNull OutputStream dst) throws CryptoException {
         if (!hasPrivateKey()) {
             throw new IllegalStateException("No keys loaded");
         }
 
         try (OutputStream cOutStream = getEncryptedStream(new NonClosingOutputStream(dst))) {
             transferBytes(src, cOutStream);
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -160,8 +159,8 @@ public final class Crypto {
      * @return the system that will receive the unencrypted data
      * @throws CryptoException
      */
-    @Nonnull
-    public OutputStream getEncryptedStream(@Nonnull OutputStream dst) throws CryptoException {
+    @NotNull
+    public OutputStream getEncryptedStream(@NotNull OutputStream dst) throws CryptoException {
         if (!hasPrivateKey()) {
             throw new IllegalStateException("No keys loaded");
         }
@@ -174,7 +173,7 @@ public final class Crypto {
             SecretKey key = keygen.generateKey();
 
             // wrap with RSA public key
-            @Nonnull Cipher wrappingCipher = Cipher.getInstance(KEY_ALGORITHM);
+            @NotNull Cipher wrappingCipher = Cipher.getInstance(KEY_ALGORITHM);
             wrappingCipher.init(Cipher.WRAP_MODE, privateKey);
 
             byte[] wrappedKey = wrappingCipher.wrap(key);
@@ -183,12 +182,12 @@ public final class Crypto {
                 out.write(wrappedKey);
 
                 // encrypt data
-                @Nonnull Cipher cipher = Cipher.getInstance("DES");
+                @NotNull Cipher cipher = Cipher.getInstance("DES");
                 cipher.init(Cipher.ENCRYPT_MODE, key);
 
                 return new CipherOutputStream(out, cipher);
             }
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -218,7 +217,7 @@ public final class Crypto {
      * @return the stream to read the file or {@code null} in case the file was not found
      */
     @Nullable
-    private static InputStream getResourceAsStream(@Nonnull String name) {
+    private static InputStream getResourceAsStream(@NotNull String name) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
     }
 
@@ -272,7 +271,7 @@ public final class Crypto {
      * @return the loaded key or {@code null} in case the key was not found
      */
     @Nullable
-    private static <T extends Key> T loadKeyImpl(@Nonnull String keyFile) {
+    private static <T extends Key> T loadKeyImpl(@NotNull String keyFile) {
         T resourceKey = loadKeyImpl(getResourceAsStream(keyFile));
         if (resourceKey != null) {
             return resourceKey;
@@ -287,13 +286,13 @@ public final class Crypto {
                 if (fileKey != null) {
                     return fileKey;
                 }
-            } catch (@Nonnull Exception ignored) {
+            } catch (@NotNull Exception ignored) {
                 // loading the key failed
             } finally {
                 if (keyIn != null) {
                     try {
                         keyIn.close();
-                    } catch (@Nonnull IOException ignored) {
+                    } catch (@NotNull IOException ignored) {
                     }
                 }
             }
@@ -315,7 +314,7 @@ public final class Crypto {
                 Object keyObject = keyIn.readObject();
                 //noinspection unchecked
                 return (T) keyObject;
-            } catch (@Nonnull Exception ignored) {
+            } catch (@NotNull Exception ignored) {
                 // loading the key failed
             }
         }

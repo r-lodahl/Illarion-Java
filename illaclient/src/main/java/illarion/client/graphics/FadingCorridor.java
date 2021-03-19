@@ -18,8 +18,8 @@ package illarion.client.graphics;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
 import org.illarion.engine.graphic.Sprite;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This fading corridor is used to fade out the objects that would block the
@@ -32,13 +32,13 @@ public final class FadingCorridor {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final FadingCorridor INSTANCE = new FadingCorridor();
 
     /**
      * The rectangle that is used for some temporary calculation actions.
      */
-    @Nonnull
+    @NotNull
     private static final Rectangle TEMP_RECT = new Rectangle();
 
     /**
@@ -49,7 +49,7 @@ public final class FadingCorridor {
     /**
      * The rectangle that marks the area where object need to fade out.
      */
-    @Nonnull
+    @NotNull
     private final Rectangle fading = new Rectangle();
     /**
      * The Z layer position of the fading rectangle. Object behind this area do
@@ -71,7 +71,7 @@ public final class FadingCorridor {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static FadingCorridor getInstance() {
         return INSTANCE;
     }
@@ -111,7 +111,7 @@ public final class FadingCorridor {
      * @param character the avatar that delivers the size for the fading
      * corridor
      */
-    void setCorridor(@Nonnull AbstractEntity<?> character) {
+    void setCorridor(@NotNull AbstractEntity<?> character) {
         Sprite characterSprite = character.getTemplate().getSprite();
         fading.set(character.getDisplayCoordinate().getX() + TOLERANCE,
                 (character.getDisplayCoordinate().getY() + TOLERANCE) - characterSprite.getHeight(),

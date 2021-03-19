@@ -19,6 +19,8 @@ import illarion.easynpc.Lang;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
@@ -28,8 +30,6 @@ import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mid
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mirror;
 import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -54,7 +54,7 @@ public final class SearchBand extends JRibbonBand {
      * The constructor of the search band that creates all contents of this band
      * properly.
      */
-    public SearchBand(@Nonnull MainFrame frame) {
+    public SearchBand(@NotNull MainFrame frame) {
         super(Lang.getMsg(SearchBand.class, "title"), null);
 
         startGroup(Lang.getMsg(SearchBand.class, "fastSearchGroup"));
@@ -68,7 +68,7 @@ public final class SearchBand extends JRibbonBand {
 
         textBox.addKeyListener(new KeyListener() {
             @Override
-            public void keyPressed(@Nonnull KeyEvent e) {
+            public void keyPressed(@NotNull KeyEvent e) {
                 if (e.getKeyCode() != KeyEvent.VK_ENTER) {
                     return;
                 }

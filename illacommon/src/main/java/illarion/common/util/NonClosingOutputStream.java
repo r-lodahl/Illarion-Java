@@ -15,7 +15,8 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.FilterOutputStream;
 import java.io.OutputStream;
 
@@ -27,7 +28,7 @@ import java.io.OutputStream;
  */
 public class NonClosingOutputStream extends FilterOutputStream {
 
-    public NonClosingOutputStream(@Nonnull OutputStream out) {
+    public NonClosingOutputStream(@NotNull OutputStream out) {
         super(out);
     }
 

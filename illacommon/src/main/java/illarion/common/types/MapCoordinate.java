@@ -17,17 +17,12 @@ package illarion.common.types;
 
 import illarion.common.graphics.MapConstants;
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class MapCoordinate {
     private final int column;
     private final int row;
@@ -115,7 +110,7 @@ public final class MapCoordinate {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "Map Coordinate (Column: " + column + ", Row: " + row + ')';

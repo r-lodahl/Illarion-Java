@@ -29,9 +29,9 @@ import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
@@ -44,15 +44,15 @@ public class OpenMapPanel extends JPanel {
     private static final int PREFERRED_BUTTON_CELL_WIDTH = 10;
     private static final int PREFERRED_MAP_CELL_WIDTH = 150;
     private static final int PREFERRED_RENDER_CELL_WIDTH = 20;
-    @Nonnull
+    @NotNull
     private final JPanel panel;
-    @Nonnull
+    @NotNull
     private final JToggleButton openButton;
-    @Nonnull
+    @NotNull
     private final JToggleButton renderButton;
     private JTable openTable;
     private OpenMapTableModel openTableModel;
-    @Nonnull
+    @NotNull
     private final FileTree tree;
 
     public OpenMapPanel() {
@@ -145,18 +145,18 @@ public class OpenMapPanel extends JPanel {
     }
 
     @EventSubscriber
-    public void onUpdateMapList(@Nonnull UpdateMapListEvent e) {
+    public void onUpdateMapList(@NotNull UpdateMapListEvent e) {
         openTableModel.setTableData(e.getMaps());
         EventBus.publish(new MapSelectedEvent(e.getSelectedIndex()));
     }
 
     @EventTopicSubscriber(topic = MapEditorConfig.MAPEDIT_FOLDER)
-    public void onConfigChanged(String topic, @Nonnull ConfigChangedEvent event) {
+    public void onConfigChanged(String topic, @NotNull ConfigChangedEvent event) {
         tree.setDirectory(MapEditorConfig.getInstance().getMapFolder());
     }
 
     @EventSubscriber
-    public void onFolderList(@Nonnull SetFolderEvent e) {
+    public void onFolderList(@NotNull SetFolderEvent e) {
         tree.setDirectory(e.getFile());
     }
 }

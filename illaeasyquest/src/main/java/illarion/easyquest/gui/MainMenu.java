@@ -18,13 +18,13 @@ package illarion.easyquest.gui;
 import illarion.common.config.ConfigDialog;
 import illarion.common.config.gui.ConfigDialogSwing;
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
 
-import javax.annotation.Nonnull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
@@ -49,11 +49,11 @@ final class MainMenu extends RibbonApplicationMenu {
         RibbonApplicationMenuEntrySecondary[] workingEntries = new RibbonApplicationMenuEntrySecondary[oldFiles
                 .size()];
         int entryIndex = 0;
-        for (@Nonnull Path openFile : oldFiles) {
+        for (@NotNull Path openFile : oldFiles) {
             workingEntries[entryIndex] = new RibbonApplicationMenuEntrySecondary(
                     Utils.getResizableIconFromResource("source.png"), openFile.getFileName().toString(),
                     new ActionListener() {
-                        @Nonnull
+                        @NotNull
                         private final Path fileToOpen = openFile;
 
                         @Override

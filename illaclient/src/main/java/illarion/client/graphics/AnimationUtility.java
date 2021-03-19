@@ -17,8 +17,8 @@ package illarion.client.graphics;
 
 import illarion.common.util.FastMath;
 import org.illarion.engine.graphic.Color;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a utility class that provides a few static functions that are handy when handling animations.
@@ -75,7 +75,7 @@ public final class AnimationUtility {
      * @param delta the time since the last update
      * @return {@code true} in case the colors got changed
      */
-    public static boolean approach(@Nonnull Color workingColor, @Nonnull Color targetColor, int delta) {
+    public static boolean approach(@NotNull Color workingColor, @NotNull Color targetColor, int delta) {
         if (workingColor.equals(targetColor)) {
             return false;
         }

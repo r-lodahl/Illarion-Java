@@ -16,8 +16,8 @@
 package illarion.mapedit.tools.panel;
 
 import illarion.mapedit.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,17 +26,17 @@ import java.awt.*;
  */
 public class WarpPanel extends JPanel {
 
-    @Nonnull
+    @NotNull
     public final JSpinner xSpinner;
-    @Nonnull
+    @NotNull
     public final JSpinner ySpinner;
-    @Nonnull
+    @NotNull
     public final JSpinner zSpinner;
-    @Nonnull
+    @NotNull
     public final JCheckBox delCheckBox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillSelectedCheckbox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillAreaCheckbox;
 
     public WarpPanel() {

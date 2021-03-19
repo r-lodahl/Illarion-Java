@@ -16,9 +16,9 @@
 package illarion.client.util.translation;
 
 import illarion.client.util.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,20 +32,20 @@ import java.util.regex.Pattern;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class TranslateTask implements Callable<String> {
-    @Nonnull
+    @NotNull
     private final ExecutorService executorService;
-    @Nonnull
+    @NotNull
     private final TranslationProvider provider;
-    @Nonnull
+    @NotNull
     private final TranslationDirection direction;
-    @Nonnull
+    @NotNull
     private final String original;
-    @Nonnull
+    @NotNull
     private final TranslatorCallback callback;
 
-    TranslateTask(@Nonnull ExecutorService executorService, @Nonnull TranslationProvider provider,
-                  @Nonnull TranslationDirection direction, @Nonnull String original,
-                  @Nonnull TranslatorCallback callback) {
+    TranslateTask(@NotNull ExecutorService executorService, @NotNull TranslationProvider provider,
+                  @NotNull TranslationDirection direction, @NotNull String original,
+                  @NotNull TranslatorCallback callback) {
         this.executorService = executorService;
         this.provider = provider;
         this.direction = direction;
@@ -105,15 +105,15 @@ class TranslateTask implements Callable<String> {
         return result;
     }
 
-    @Nonnull
+    @NotNull
     private static final Pattern PATTERN_SAY = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.say") + ":\\s");
-    @Nonnull
+    @NotNull
     private static final Pattern PATTERN_SHOUT = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.shout") + ":\\s");
-    @Nonnull
+    @NotNull
     private static final Pattern PATTERN_WHISPER = Pattern.compile("^(.+?)\\s" + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("log.whisper") + ":\\s");
 
     @Nullable
-    private String findHeader(@Nonnull String input) {
+    private String findHeader(@NotNull String input) {
         if (input.startsWith(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.distantShout") + ": ")) {
             return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("chat.distantShout") + ": ";
         }
@@ -135,14 +135,11 @@ class TranslateTask implements Callable<String> {
             return shoutHeader;
         }
         String whisperHeader = findPattern(input, PATTERN_WHISPER);
-        if (whisperHeader != null) {
-            return whisperHeader;
-        }
-        return null;
+        return whisperHeader;
     }
 
     @Nullable
-    private String findPattern(@Nonnull String input, @Nonnull Pattern pattern) {
+    private String findPattern(@NotNull String input, @NotNull Pattern pattern) {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return matcher.group();

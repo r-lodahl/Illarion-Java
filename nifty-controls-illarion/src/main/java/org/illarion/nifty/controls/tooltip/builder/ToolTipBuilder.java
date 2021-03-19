@@ -17,8 +17,8 @@ package org.illarion.nifty.controls.tooltip.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.tools.Color;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Build the tooltip.
@@ -30,31 +30,31 @@ public class ToolTipBuilder extends ControlBuilder {
         super("tooltip");
     }
 
-    public ToolTipBuilder(@Nonnull String id) {
+    public ToolTipBuilder(@NotNull String id) {
         super(id, "tooltip");
     }
 
-    public void title(@Nonnull String value) {
+    public void title(@NotNull String value) {
         set("title", value);
     }
 
-    public void titleColor(@Nonnull Color value) {
+    public void titleColor(@NotNull Color value) {
         titleColor(value.getColorString());
     }
 
-    public void titleColor(@Nonnull String value) {
+    public void titleColor(@NotNull String value) {
         set("titleColor", value);
     }
 
-    public void description(@Nonnull String value) {
+    public void description(@NotNull String value) {
         set("description", value);
     }
 
-    public void producer(@Nonnull String value) {
+    public void producer(@NotNull String value) {
         set("producer", value);
     }
 
-    public void type(@Nonnull String value) {
+    public void type(@NotNull String value) {
         set("itemtype", value);
     }
 
@@ -62,15 +62,15 @@ public class ToolTipBuilder extends ControlBuilder {
         set("level", Integer.toString(value));
     }
 
-    public void levelColor(@Nonnull Color value) {
+    public void levelColor(@NotNull Color value) {
         levelColor(value.getColorString());
     }
 
-    public void levelColor(@Nonnull String value) {
+    public void levelColor(@NotNull String value) {
         set("levelColor", value);
     }
 
-    public void weight(@Nonnull String value) {
+    public void weight(@NotNull String value) {
         set("weight", value);
     }
 
@@ -78,11 +78,11 @@ public class ToolTipBuilder extends ControlBuilder {
         set("worth", Long.toString(value));
     }
 
-    public void quality(@Nonnull String value) {
+    public void quality(@NotNull String value) {
         set("quality", value);
     }
 
-    public void durability(@Nonnull String value) {
+    public void durability(@NotNull String value) {
         set("durability", value);
     }
 
@@ -114,7 +114,7 @@ public class ToolTipBuilder extends ControlBuilder {
         set("topazLevel", Integer.toString(value));
     }
 
-    public void gemBonus(@Nonnull String value) {
+    public void gemBonus(@NotNull String value) {
         set("gemBonus", value);
     }
 }

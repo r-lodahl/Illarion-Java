@@ -17,8 +17,8 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This abstract command is shared by all commands that refer to a trading dialog.
@@ -50,12 +50,12 @@ public abstract class AbstractTradeItemCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeInt(dialogId);
         writer.writeByte(subCommandId);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "dialog ID: " + dialogId;

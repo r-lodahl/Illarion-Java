@@ -51,11 +51,8 @@ class UserDirectoryFilenameFilter implements Filter<Path> {
             return true;
         }
         // old config file
-        if (name.endsWith(".cfg")) {
-            return true;
-        }
+        return name.endsWith(".cfg");
 
         // keep everything else
-        return false;
     }
 }

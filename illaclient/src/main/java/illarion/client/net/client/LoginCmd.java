@@ -19,9 +19,8 @@ import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.util.Md5Crypto;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 
 /**
@@ -30,18 +29,17 @@ import java.io.IOException;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class LoginCmd extends AbstractCommand {
     /**
      * The name of the character that shall log in.
      */
-    @Nonnull
+    @NotNull
     private final String charName;
 
     /**
      * The account password that is used. This contains the plain text password.
      */
-    @Nonnull
+    @NotNull
     private final String password;
 
     /**
@@ -57,7 +55,7 @@ public final class LoginCmd extends AbstractCommand {
      * @param password the password used to login
      * @param version the version of the client to report to the server
      */
-    public LoginCmd(@Nonnull String charName, @Nonnull String password, int version) {
+    public LoginCmd(@NotNull String charName, @NotNull String password, int version) {
         super(CommandList.CMD_LOGIN);
         this.charName = charName;
 
@@ -67,13 +65,13 @@ public final class LoginCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) throws IOException {
+    public void encode(@NotNull NetCommWriter writer) throws IOException {
         writer.writeUByte(version);
         writer.writeString(charName);
         writer.writeString(password);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

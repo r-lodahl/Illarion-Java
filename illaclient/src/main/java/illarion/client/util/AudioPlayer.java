@@ -26,9 +26,9 @@ import org.bushe.swing.event.annotation.EventTopicPatternSubscriber;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
 import org.illarion.engine.sound.Sounds;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class is the base for interacting with GdxSounds.
@@ -46,11 +46,11 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final AudioPlayer INSTANCE = new AudioPlayer();
 
 
-    @Nonnull
+    @NotNull
     private Sounds sounds;
 
 
@@ -58,7 +58,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
     /**
      * This variable is set {@code true} once the music player is initialized.
      */
-    private boolean init = false;
+    private boolean init;
 
     /**
      * Private constructor to ensure the sole instance is the singleton
@@ -73,7 +73,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
      * If the INSTANCE has already been initialized, does nothing
      * @param sounds    The engine's sound system
      */
-    public void initAudioPlayer(@Nonnull Sounds sounds) {
+    public void initAudioPlayer(@NotNull Sounds sounds) {
         if (init){
             return;
         }
@@ -189,11 +189,11 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
 
     @Override
     @EventTopicPatternSubscriber(topicPattern = "((music)|(sound))((On)|(Volume))")
-    public void onEvent(@Nonnull String topic, @Nonnull ConfigChangedEvent data) {
+    public void onEvent(@NotNull String topic, @NotNull ConfigChangedEvent data) {
         updateSettings(topic, data.getConfig());
     }
 
-    private void updateSettings(@Nullable String setting, @Nonnull Config cfg) {
+    private void updateSettings(@Nullable String setting, @NotNull Config cfg) {
         if ((setting == null) || "musicOn".equals(setting)) {
             boolean musicEnabled = cfg.getBoolean("musicOn");
             if (musicEnabled) {

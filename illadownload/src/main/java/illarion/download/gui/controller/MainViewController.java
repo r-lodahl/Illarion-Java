@@ -37,15 +37,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -79,11 +79,11 @@ public class MainViewController extends AbstractController implements MavenDownl
 
     private ResourceBundle resourceBundle;
 
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MainViewController.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Override
-    public void initialize(URL location, @Nonnull ResourceBundle resources) {
+    public void initialize(URL location, @NotNull ResourceBundle resources) {
         resourceBundle = resources;
         progress.setProgress(0.0);
         progressDescription.setText(resources.getString("selectStartApp"));
@@ -91,7 +91,7 @@ public class MainViewController extends AbstractController implements MavenDownl
         new Thread(() -> {
             try {
                 readNewsAndQuests();
-            } catch (@Nonnull XmlPullParserException | IOException | ParseException e) {
+            } catch (@NotNull XmlPullParserException | IOException | ParseException e) {
                 log.error("Failed reading news and quests.", e);
             }
         }).start();
@@ -114,21 +114,21 @@ public class MainViewController extends AbstractController implements MavenDownl
     private boolean useSnapshots;
 
     private static class NewsQuestEntry implements Comparable<NewsQuestEntry> {
-        @Nonnull
+        @NotNull
         public final String title;
         @Nullable
         public final Date timeStamp;
-        @Nonnull
+        @NotNull
         public final URL linkTarget;
 
-        NewsQuestEntry(@Nonnull String title, @Nullable Date timeStamp, @Nonnull URL linkTarget) {
+        NewsQuestEntry(@NotNull String title, @Nullable Date timeStamp, @NotNull URL linkTarget) {
             this.title = title;
             this.timeStamp = (timeStamp == null) ? null : (Date) timeStamp.clone();
             this.linkTarget = linkTarget;
         }
 
         @Override
-        public int compareTo(@Nonnull NewsQuestEntry o) {
+        public int compareTo(@NotNull NewsQuestEntry o) {
             if ((timeStamp == null) && (o.timeStamp != null)) {
                 return -1;
             }
@@ -168,9 +168,9 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     private static void parseLauncherXml(
-            @Nonnull XmlPullParser parser,
-            @Nonnull List<NewsQuestEntry> newsList,
-            @Nonnull List<NewsQuestEntry> questList) throws IOException, XmlPullParserException, ParseException {
+            @NotNull XmlPullParser parser,
+            @NotNull List<NewsQuestEntry> newsList,
+            @NotNull List<NewsQuestEntry> questList) throws IOException, XmlPullParserException, ParseException {
         while (true) {
             int current = parser.nextToken();
             switch (current) {
@@ -196,7 +196,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     private static void parserEntryXml(
-            @Nonnull XmlPullParser parser, @Nonnull List<NewsQuestEntry> list)
+            @NotNull XmlPullParser parser, @NotNull List<NewsQuestEntry> list)
             throws IOException, XmlPullParserException, ParseException {
         boolean useGerman = Locale.getDefault().getLanguage().equals(Locale.GERMAN.getLanguage());
 
@@ -264,15 +264,15 @@ public class MainViewController extends AbstractController implements MavenDownl
         return (testString == null) || testString.isEmpty();
     }
 
-    private void showNewsInList(@Nonnull Iterable<NewsQuestEntry> list) {
+    private void showNewsInList(@NotNull Iterable<NewsQuestEntry> list) {
         showNewsQuestInList(list, newsPane, DateFormat.getDateInstance(DateFormat.MEDIUM));
     }
 
-    private void showQuestsInList(@Nonnull Iterable<NewsQuestEntry> list) {
+    private void showQuestsInList(@NotNull Iterable<NewsQuestEntry> list) {
         showNewsQuestInList(list, questsPane, DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT));
     }
 
-    private void showNewsQuestInList(@Nonnull Iterable<NewsQuestEntry> list, @Nonnull Pane display, @Nonnull
+    private void showNewsQuestInList(@NotNull Iterable<NewsQuestEntry> list, @NotNull Pane display, @NotNull
     DateFormat dateFormat) {
         VBox storage = new VBox();
         storage.setFillWidth(true);
@@ -282,7 +282,7 @@ public class MainViewController extends AbstractController implements MavenDownl
         AnchorPane.setRightAnchor(storage, 3.0);
 
         int entryCount = 0;
-        for (@Nonnull NewsQuestEntry entry : list) {
+        for (@NotNull NewsQuestEntry entry : list) {
             if (entryCount == 4) {
                 break;
             }
@@ -318,30 +318,30 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @FXML
-    public void goToAccount(@Nonnull ActionEvent actionEvent) {
+    public void goToAccount(@NotNull ActionEvent actionEvent) {
         getModel().getHostServices().showDocument("https://illarion.org/community/account/index.php");
     }
 
     @FXML
-    public void startEasyNpc(@Nonnull ActionEvent actionEvent) {
+    public void startEasyNpc(@NotNull ActionEvent actionEvent) {
         updateLaunchButtons(false, false, true, false, false);
         launch("org.illarion", "easynpc", "illarion.easynpc.gui.MainFrame", "channelEasyNpc");
     }
 
     @FXML
-    public void startEasyQuest(@Nonnull ActionEvent actionEvent) {
+    public void startEasyQuest(@NotNull ActionEvent actionEvent) {
         updateLaunchButtons(false, false, false, true, false);
         launch("org.illarion", "easyquest", "illarion.easyquest.gui.MainFrame", "channelEasyQuest");
     }
 
     @FXML
-    public void startMapEdit(@Nonnull ActionEvent actionEvent) {
+    public void startMapEdit(@NotNull ActionEvent actionEvent) {
         updateLaunchButtons(false, false, false, false, true);
         launch("org.illarion", "mapeditor", "illarion.mapedit.MapEditor", "channelMapEditor");
     }
 
     @FXML
-    public void launchClient(@Nonnull ActionEvent actionEvent) {
+    public void launchClient(@NotNull ActionEvent actionEvent) {
         updateLaunchButtons(false, true, false, false, false);
         launch("org.illarion", "client", "illarion.client.IllaClient", "channelClient");
     }
@@ -374,10 +374,10 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     private void launch(
-            @Nonnull String groupId,
-            @Nonnull String artifactId,
-            @Nonnull String launchClass,
-            @Nonnull String configKey) {
+            @NotNull String groupId,
+            @NotNull String artifactId,
+            @NotNull String launchClass,
+            @NotNull String configKey) {
         Config cfg = getModel().getConfig();
 
         this.launchClass = launchClass;
@@ -389,7 +389,7 @@ public class MainViewController extends AbstractController implements MavenDownl
                 try {
                     MavenDownloader downloader = new MavenDownloader(useSnapshots, attempt, cfg);
                     downloader.downloadArtifact(groupId, artifactId, this);
-                } catch (@Nonnull Exception e) {
+                } catch (@NotNull Exception e) {
                     //noinspection ThrowableResultOfMethodCallIgnored
                     if (getInnerExceptionOfType(SocketTimeoutException.class, e) != null) {
                         log.warn("Timeout detected. Restarting download with longer timeout.");
@@ -404,7 +404,7 @@ public class MainViewController extends AbstractController implements MavenDownl
 
     @Nullable
     private static <T extends Throwable> T getInnerExceptionOfType(
-            @Nonnull Class<T> clazz, @Nonnull Throwable search) {
+            @NotNull Class<T> clazz, @NotNull Throwable search) {
         @Nullable Throwable currentEx = search;
         while (currentEx != null) {
             if (currentEx.getClass().equals(clazz)) {
@@ -418,7 +418,7 @@ public class MainViewController extends AbstractController implements MavenDownl
 
     @Override
     public void reportNewState(
-            @Nonnull State state,
+            @NotNull State state,
             @Nullable ProgressMonitor progress,
             boolean offline,
             @Nullable String detail) {
@@ -452,7 +452,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @Override
-    public void resolvingDone(@Nonnull Collection<File> classpath) {
+    public void resolvingDone(@NotNull Collection<File> classpath) {
         if (launchClass == null) {
             cancelLaunch();
             Platform.runLater(() -> {
@@ -492,7 +492,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @Override
-    public void resolvingFailed(@Nonnull Exception ex) {
+    public void resolvingFailed(@NotNull Exception ex) {
         //noinspection ThrowableResultOfMethodCallIgnored
         if (getInnerExceptionOfType(SocketTimeoutException.class, ex) != null) {
             return;
@@ -505,7 +505,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @Override
-    public void updatedProgress(@Nonnull ProgressMonitor monitor) {
+    public void updatedProgress(@NotNull ProgressMonitor monitor) {
         progress.setProgress(monitor.getProgress());
     }
 
@@ -514,10 +514,10 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @FXML
-    public void showOptions(@Nonnull ActionEvent actionEvent) {
+    public void showOptions(@NotNull ActionEvent actionEvent) {
         try {
             getModel().getStoryboard().showOptions();
-        } catch (@Nonnull IOException ignored) {
+        } catch (@NotNull IOException ignored) {
         }
     }
 }

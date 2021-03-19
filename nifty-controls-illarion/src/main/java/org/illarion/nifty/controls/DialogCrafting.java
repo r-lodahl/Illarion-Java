@@ -17,10 +17,9 @@ package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.controls.Window;
 import de.lessvoid.nifty.elements.Element;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.Collection;
 
 /**
@@ -28,28 +27,27 @@ import java.util.Collection;
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@NotThreadSafe
 public interface DialogCrafting extends Window {
     /**
      * Add a category along with its items to the list.
      *
      * @param entries the categories to add
      */
-    void addCraftingItems(@Nonnull CraftingCategoryEntry... entries);
+    void addCraftingItems(@NotNull CraftingCategoryEntry... entries);
 
     /**
      * Add a category along with its items to the list.
      *
      * @param entries the categories to add
      */
-    <T extends CraftingCategoryEntry> void addCraftingItems(@Nonnull Collection<T> entries);
+    <T extends CraftingCategoryEntry> void addCraftingItems(@NotNull Collection<T> entries);
 
     /**
      * Get the Nifty element that displays the crafting item.
      *
      * @return the Nifty element that is displaying the selected item
      */
-    @Nonnull
+    @NotNull
     Element getCraftingItemDisplay();
 
     /**
@@ -60,7 +58,7 @@ public interface DialogCrafting extends Window {
      * @throws IndexOutOfBoundsException in case {@code index} is less then 0 or larger or equal to the amount of
      * ingredients of the selected item
      */
-    @Nonnull
+    @NotNull
     Element getIngredientItemDisplay(int index);
 
     /**

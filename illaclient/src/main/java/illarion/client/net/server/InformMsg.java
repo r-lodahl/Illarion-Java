@@ -22,12 +22,12 @@ import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.util.Lang;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -40,8 +40,8 @@ public final class InformMsg implements ServerReply {
     /**
      * The logger that is used for the log output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(InformMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     private static final int SERVER = 0;
     private static final int BROADCAST = 1;
@@ -62,12 +62,12 @@ public final class InformMsg implements ServerReply {
     private String informText;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         informType = reader.readUByte();
         informText = reader.readString();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @SuppressWarnings("OverlyLongMethod")
     public ServerReplyResult execute() {
@@ -110,7 +110,7 @@ public final class InformMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

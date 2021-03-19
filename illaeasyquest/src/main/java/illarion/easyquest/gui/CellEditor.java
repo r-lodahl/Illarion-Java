@@ -21,9 +21,9 @@ import com.mxgraph.swing.view.mxICellEditor;
 import com.mxgraph.view.mxCellState;
 import illarion.easyquest.quest.Status;
 import illarion.easyquest.quest.Trigger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.EventObject;
 
 /**
@@ -58,7 +58,7 @@ public class CellEditor implements mxICellEditor {
       * @see com.mxgraph.swing.view.mxICellEditor#startEditing(java.lang.Object, java.util.EventObject)
       */
     @Override
-    public void startEditing(@Nonnull Object cell, EventObject evt) {
+    public void startEditing(@NotNull Object cell, EventObject evt) {
         if (editingCell != null) {
             stopEditing(true);
         }
@@ -129,7 +129,7 @@ public class CellEditor implements mxICellEditor {
         }
     }
 
-    @Nonnull
+    @NotNull
     public Status getCurrentNodeValue() {
         Status result = new Status();
 
@@ -140,7 +140,7 @@ public class CellEditor implements mxICellEditor {
         return result;
     }
 
-    @Nonnull
+    @NotNull
     public Trigger getCurrentEdgeValue() {
         Trigger result = new Trigger();
 

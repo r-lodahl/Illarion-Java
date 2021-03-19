@@ -21,8 +21,8 @@ import de.lessvoid.nifty.input.NiftyStandardInputEvent;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -31,7 +31,7 @@ public final class CreditsEndScreenController implements ScreenController, KeyIn
     private Nifty nifty;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
     }
 
@@ -46,7 +46,7 @@ public final class CreditsEndScreenController implements ScreenController, KeyIn
     }
 
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         if (inputEvent == NiftyStandardInputEvent.Escape) {
             nifty.gotoScreen("login");
             return true;

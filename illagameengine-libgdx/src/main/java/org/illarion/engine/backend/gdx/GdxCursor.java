@@ -17,8 +17,8 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.graphics.Cursor;
 import org.illarion.engine.MouseCursor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the mouse cursor implementation for libGDX.
@@ -32,7 +32,7 @@ class GdxCursor implements MouseCursor {
     /**
      * The actual mouse cursor of libGDX
      */
-    @Nonnull
+    @NotNull
     private final Cursor gdxCursor;
 
     /**
@@ -40,7 +40,7 @@ class GdxCursor implements MouseCursor {
      *
      * @param gdxCursor the lwjgl mouse cursor
      */
-    GdxCursor(@Nonnull Cursor gdxCursor) {
+    GdxCursor(@NotNull Cursor gdxCursor) {
         this.gdxCursor = gdxCursor;
     }
 
@@ -56,7 +56,7 @@ class GdxCursor implements MouseCursor {
      *
      * @return the LWJGL mouse cursor
      */
-    @Nonnull
+    @NotNull
     Cursor getGdxCursor() {
         return gdxCursor;
     }

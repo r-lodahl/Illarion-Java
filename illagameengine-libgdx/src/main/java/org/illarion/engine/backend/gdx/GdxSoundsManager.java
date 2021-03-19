@@ -21,9 +21,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.illarion.engine.backend.shared.AbstractSoundsManager;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the sounds manager implementation for the libGDX backend.
@@ -34,7 +34,7 @@ class GdxSoundsManager extends AbstractSoundsManager {
     /**
      * The file system handler that is used to load the sound data.
      */
-    @Nonnull
+    @NotNull
     private final Files files;
 
     /**
@@ -49,33 +49,33 @@ class GdxSoundsManager extends AbstractSoundsManager {
      * @param files the file system handler used to load the data
      * @param audio the audio interface of libGDX that is supposed to be used
      */
-    GdxSoundsManager(@Nonnull Files files, @Nullable Audio audio) {
+    GdxSoundsManager(@NotNull Files files, @Nullable Audio audio) {
         this.files = files;
         this.audio = audio;
     }
 
     @Nullable
     @Override
-    protected Sound loadSound(@Nonnull String ref) {
+    protected Sound loadSound(@NotNull String ref) {
         if (audio == null) {
             return null;
         }
         try {
             return new GdxSound(ref, audio.newSound(files.internal(ref)));
-        } catch (@Nonnull GdxRuntimeException e) {
+        } catch (@NotNull GdxRuntimeException e) {
             return null;
         }
     }
 
     @Nullable
     @Override
-    protected Music loadMusic(@Nonnull String ref) {
+    protected Music loadMusic(@NotNull String ref) {
         if (audio == null) {
             return null;
         }
         try {
             return new GdxMusic(ref, new SaveGdxOpenALMusic(audio, files.internal(ref)));
-        } catch (@Nonnull GdxRuntimeException e) {
+        } catch (@NotNull GdxRuntimeException e) {
             return null;
         }
     }

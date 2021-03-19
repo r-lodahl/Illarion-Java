@@ -19,8 +19,8 @@ import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -55,19 +55,19 @@ public class ParsedGuardText implements ParsedData {
     /**
      * The type of this parsed text instance.
      */
-    @Nonnull
+    @NotNull
     private final TextType type;
 
     /**
      * The german text stored in this text instance.
      */
-    @Nonnull
+    @NotNull
     private final String german;
 
     /**
      * The english text stored in this text instance.
      */
-    @Nonnull
+    @NotNull
     private final String english;
 
     /**
@@ -77,29 +77,29 @@ public class ParsedGuardText implements ParsedData {
      * @param german the german text
      * @param english the english text
      */
-    public ParsedGuardText(@Nonnull TextType type, @Nonnull String german, @Nonnull String english) {
+    public ParsedGuardText(@NotNull TextType type, @NotNull String german, @NotNull String english) {
         this.type = type;
         this.german = german;
         this.english = english;
     }
 
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
     }
 
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return stage == WritingStage.Guarding;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.singleton("npc.base.guard");
     }
 
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         if (stage != WritingStage.Guarding) {
             throw new IllegalArgumentException("This function did not request a call for a stage but guarding.");
         }

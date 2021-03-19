@@ -18,8 +18,8 @@ package illarion.client.util.pathfinding;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface is used in the path finding algorithms to supply them with the movement costs for a step from one
@@ -42,5 +42,5 @@ public interface MoveCostProvider {
      * @param direction the direction of the move
      * @return the cost of the move or {@link #BLOCKED} in case the move is not possible
      */
-    int getMovementCost(@Nonnull ServerCoordinate origin, @Nonnull CharMovementMode mode, @Nonnull Direction direction);
+    int getMovementCost(@NotNull ServerCoordinate origin, @NotNull CharMovementMode mode, @NotNull Direction direction);
 }

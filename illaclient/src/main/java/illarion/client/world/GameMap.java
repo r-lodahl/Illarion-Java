@@ -30,17 +30,14 @@ import illarion.common.types.ServerCoordinate;
 import illarion.common.util.Stoppable;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicPatternSubscriber;
-import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.LightingMap;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,43 +55,41 @@ import java.util.stream.Collectors;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @author Andreas Grob &lt;vilarion@illarion.org&gt;
  */
-@ThreadSafe
 public final class GameMap implements LightingMap, Stoppable {
     /**
      * The interactive map that is used to handle the player interaction with the map.
      */
-    @Nonnull
+    @NotNull
     private final InteractiveMap interactive;
     /**
      * The lock that secures the map tiles.
      */
-    @Nonnull
+    @NotNull
     private final ReadWriteLock mapLock;
     /**
      * The handler for the overview map.
      */
-    @Nonnull
+    @NotNull
     private final GameMiniMap miniMap;
     /**
      * The tiles of the map. The key of the hash map is the location key of the tiles location.
      */
-    @Nonnull
-    @GuardedBy("mapLock")
+    @NotNull
     private final Map<ServerCoordinate, MapTile> tiles;
     /**
      * This is the list of active quest markers that show where a quest starts.
      */
-    @Nonnull
+    @NotNull
     private final Map<ServerCoordinate, QuestMarkerCarrier> activeQuestStartMarkers;
     /**
      * This is the list of active quest markers that show the target of a quest.
      */
-    @Nonnull
+    @NotNull
     private final Map<ServerCoordinate, QuestMarkerCarrier> activeQuestTargetMarkers;
     /**
      * This is the list of quest markers that show the target of the quest, that are not visible on the map yet.
      */
-    @Nonnull
+    @NotNull
     private final Map<ServerCoordinate, QuestMarkerCarrier> inactiveQuestTargetLocations;
     /**
      * This is set {@code true} in case the quest markers are supposed to be displayed on the mini map.
@@ -108,7 +103,7 @@ public final class GameMap implements LightingMap, Stoppable {
     /**
      * Default constructor of the map handler.
      */
-    public GameMap(@Nonnull Assets assets) throws EngineException {
+    public GameMap(@NotNull Assets assets) throws EngineException {
         tiles = new HashMap<>();
         interactive = new InteractiveMap(this);
 
@@ -127,7 +122,7 @@ public final class GameMap implements LightingMap, Stoppable {
     }
 
     @EventTopicPatternSubscriber(topicPattern = "showQuestsOn.+Map")
-    public void onQuestMarkerSettingsChanged(@Nonnull String topic, @Nonnull ConfigChangedEvent event) {
+    public void onQuestMarkerSettingsChanged(@NotNull String topic, @NotNull ConfigChangedEvent event) {
         if ("showQuestsOnMiniMap".equals(topic)) {
             showQuestsOnMiniMap = event.getConfig().getBoolean("showQuestsOnMiniMap");
         } else if ("showQuestsOnGameMap".equals(topic)) {
@@ -135,12 +130,12 @@ public final class GameMap implements LightingMap, Stoppable {
         }
     }
 
-    public void applyQuestTargetLocations(@Nonnull Iterable<ServerCoordinate> targets) {
+    public void applyQuestTargetLocations(@NotNull Iterable<ServerCoordinate> targets) {
         //removeAllQuestMarkers();
         Collection<ServerCoordinate> oldMarkers = new HashSet<>(activeQuestTargetMarkers.keySet());
         oldMarkers.addAll(inactiveQuestTargetLocations.keySet());
 
-        for (@Nonnull ServerCoordinate markerLocation : targets) {
+        for (@NotNull ServerCoordinate markerLocation : targets) {
             if (oldMarkers.contains(markerLocation)) {
                 oldMarkers.remove(markerLocation);
             } else {
@@ -164,7 +159,7 @@ public final class GameMap implements LightingMap, Stoppable {
                 }
             }
         }
-        for (@Nonnull ServerCoordinate markerLocation : oldMarkers) {
+        for (@NotNull ServerCoordinate markerLocation : oldMarkers) {
 
             QuestMarkerCarrier activeCarrier = activeQuestTargetMarkers.get(markerLocation);
             if (activeCarrier != null) {
@@ -179,12 +174,12 @@ public final class GameMap implements LightingMap, Stoppable {
         }
     }
 
-    public void removeQuestMarkers(@Nonnull Iterable<ServerCoordinate> targets) {
+    public void removeQuestMarkers(@NotNull Iterable<ServerCoordinate> targets) {
         Collection<ServerCoordinate> currentMarkers = new HashSet<>(activeQuestTargetMarkers.keySet());
         currentMarkers.addAll(inactiveQuestTargetLocations.keySet());
         currentMarkers.addAll(activeQuestStartMarkers.keySet());
 
-        for (@Nonnull ServerCoordinate markerLocation : targets) {
+        for (@NotNull ServerCoordinate markerLocation : targets) {
             QuestMarkerCarrier activeStartCarrier = activeQuestStartMarkers.remove(markerLocation);
             if (activeStartCarrier != null) {
                 activeStartCarrier.removeMarker();
@@ -209,7 +204,7 @@ public final class GameMap implements LightingMap, Stoppable {
      * @param availableSoon the list of quests that will become available soon
      */
     public void applyQuestStartLocations(
-            @Nonnull Iterable<ServerCoordinate> available, @Nonnull Iterable<ServerCoordinate> availableSoon) {
+            @NotNull Iterable<ServerCoordinate> available, @NotNull Iterable<ServerCoordinate> availableSoon) {
         Collection<ServerCoordinate> currentMarkers = new HashSet<>(activeQuestStartMarkers.keySet());
 
         for (int i = 0; i < 2; i++) {
@@ -227,7 +222,7 @@ public final class GameMap implements LightingMap, Stoppable {
                 default:
                     continue;
             }
-            for (@Nonnull ServerCoordinate markerLocation : collection) {
+            for (@NotNull ServerCoordinate markerLocation : collection) {
                 QuestMarkerCarrier carrier = activeQuestStartMarkers.get(markerLocation);
                 if (carrier != null) {
                     QuestMarker mapMarker = carrier.getMapMarker();
@@ -272,7 +267,7 @@ public final class GameMap implements LightingMap, Stoppable {
             }
         }
 
-        for (@Nonnull ServerCoordinate markerLocation : currentMarkers) {
+        for (@NotNull ServerCoordinate markerLocation : currentMarkers) {
             QuestMarkerCarrier carrier = activeQuestStartMarkers.remove(markerLocation);
             if (carrier != null) {
                 carrier.removeMarker();
@@ -289,7 +284,7 @@ public final class GameMap implements LightingMap, Stoppable {
      * @return {@code true} if the position accepts the light, false if not
      */
     @Override
-    public boolean acceptsLight(@Nonnull ServerCoordinate coordinate, int dx, int dy) {
+    public boolean acceptsLight(@NotNull ServerCoordinate coordinate, int dx, int dy) {
         MapTile tile = getMapAt(coordinate);
         if (tile != null) {
             switch (tile.getFace()) {
@@ -321,7 +316,7 @@ public final class GameMap implements LightingMap, Stoppable {
      */
     @Override
     @Contract(pure = true)
-    public int blocksView(@Nonnull ServerCoordinate coordinate) {
+    public int blocksView(@NotNull ServerCoordinate coordinate) {
         MapTile tile = getMapAt(coordinate);
         if (tile == null) {
             return 0;
@@ -355,7 +350,7 @@ public final class GameMap implements LightingMap, Stoppable {
      * @param color the color that shall be set for this tile
      */
     @Override
-    public void setLight(@Nonnull ServerCoordinate coordinate, @Nonnull Color color) {
+    public void setLight(@NotNull ServerCoordinate coordinate, @NotNull Color color) {
         MapTile tile = getMapAt(coordinate);
         if (tile != null) {
             tile.addLight(color);
@@ -388,7 +383,7 @@ public final class GameMap implements LightingMap, Stoppable {
             oldTile.markAsRemoved();
         }
 
-        for (@Nonnull Entry<ServerCoordinate, QuestMarkerCarrier> markers : activeQuestTargetMarkers.entrySet()) {
+        for (@NotNull Entry<ServerCoordinate, QuestMarkerCarrier> markers : activeQuestTargetMarkers.entrySet()) {
             QuestMarker questMarker = markers.getValue().getMapMarker();
             if (questMarker != null) {
                 questMarker.markAsRemoved();
@@ -398,7 +393,7 @@ public final class GameMap implements LightingMap, Stoppable {
         }
         activeQuestTargetMarkers.clear();
 
-        for (@Nonnull Entry<ServerCoordinate, QuestMarkerCarrier> markers : activeQuestStartMarkers.entrySet()) {
+        for (@NotNull Entry<ServerCoordinate, QuestMarkerCarrier> markers : activeQuestStartMarkers.entrySet()) {
             markers.getValue().removeMarker();
         }
         activeQuestStartMarkers.clear();
@@ -431,7 +426,7 @@ public final class GameMap implements LightingMap, Stoppable {
      * @return the elevation value
      */
     @Contract(pure = true)
-    public int getElevationAt(@Nonnull ServerCoordinate loc) {
+    public int getElevationAt(@NotNull ServerCoordinate loc) {
         MapTile ground = getMapAt(loc);
         if (ground != null) {
             return ground.getElevation();
@@ -444,7 +439,7 @@ public final class GameMap implements LightingMap, Stoppable {
      *
      * @return the map used to interact with this map
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public InteractiveMap getInteractive() {
         return interactive;
@@ -458,7 +453,7 @@ public final class GameMap implements LightingMap, Stoppable {
      */
     @Nullable
     @Contract(pure = true)
-    public MapTile getMapAt(@Nonnull ServerCoordinate coordinate) {
+    public MapTile getMapAt(@NotNull ServerCoordinate coordinate) {
         mapLock.readLock().lock();
         try {
             return tiles.get(coordinate);
@@ -472,7 +467,7 @@ public final class GameMap implements LightingMap, Stoppable {
      *
      * @return the object that handles the overview map
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public GameMiniMap getMiniMap() {
         return miniMap;
@@ -558,10 +553,10 @@ public final class GameMap implements LightingMap, Stoppable {
         }
     }
 
-    public void updateTiles(@Nonnull Iterable<TileUpdate> updateDataList) {
+    public void updateTiles(@NotNull Iterable<TileUpdate> updateDataList) {
         mapLock.writeLock().lock();
         try {
-            for (@Nonnull TileUpdate updateData : updateDataList) {
+            for (@NotNull TileUpdate updateData : updateDataList) {
                 updateTile(updateData);
             }
         } finally {
@@ -575,7 +570,7 @@ public final class GameMap implements LightingMap, Stoppable {
      *
      * @param updateData the data of the update
      */
-    public void updateTile(@Nonnull TileUpdate updateData) {
+    public void updateTile(@NotNull TileUpdate updateData) {
         boolean changedSomething = false;
         ServerCoordinate coordinate = updateData.getLocation();
 
@@ -637,7 +632,7 @@ public final class GameMap implements LightingMap, Stoppable {
 
     @Nullable
     @Contract(pure = true)
-    private MapTile getMapAt(@Nonnull ServerCoordinate origin, @Nonnull Direction direction) {
+    private MapTile getMapAt(@NotNull ServerCoordinate origin, @NotNull Direction direction) {
         return getMapAt(new ServerCoordinate(origin, direction));
     }
 
@@ -646,7 +641,7 @@ public final class GameMap implements LightingMap, Stoppable {
      *
      * @param tile the new tile that is added
      */
-    private void setColorLinks(@Nonnull MapTile tile) {
+    private void setColorLinks(@NotNull MapTile tile) {
         ServerCoordinate tileLocation = tile.getCoordinates();
 
         mapLock.readLock().lock();

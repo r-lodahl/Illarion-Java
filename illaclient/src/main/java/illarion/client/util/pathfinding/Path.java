@@ -17,9 +17,9 @@ package illarion.client.util.pathfinding;
 
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -31,7 +31,7 @@ public final class Path {
     /**
      * List if the path nodes that create this path.
      */
-    @Nonnull
+    @NotNull
     private final LinkedList<PathNode> path;
 
     @Nullable
@@ -40,7 +40,7 @@ public final class Path {
     /**
      * Default constructor for a new path.
      */
-    public Path(@Nonnull Collection<PathNode> nodes) {
+    public Path(@NotNull Collection<PathNode> nodes) {
         path = new LinkedList<>(nodes);
         if (path.isEmpty()) {
             destination = null;
@@ -94,7 +94,7 @@ public final class Path {
      *
      * @return the string that defines the path
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         if (path.isEmpty()) {

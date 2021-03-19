@@ -18,8 +18,8 @@ package illarion.client.gui;
 import illarion.client.resources.data.AbstractEntityTemplate;
 import illarion.client.resources.data.ItemTemplate;
 import org.illarion.engine.nifty.IgeTextureRenderImage;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This implementation of a slick render image is used to show a image that is usually used in the game graphics,
@@ -33,10 +33,10 @@ public class TextureRenderImage extends IgeTextureRenderImage {
      *
      * @param entity the entity the image refers to
      */
-    public TextureRenderImage(@Nonnull ItemTemplate entity) {
+    public TextureRenderImage(@NotNull ItemTemplate entity) {
         super(entity.getGuiTexture());
     }
-    public TextureRenderImage(@Nonnull AbstractEntityTemplate entity) {
+    public TextureRenderImage(@NotNull AbstractEntityTemplate entity) {
         super(entity.getSprite().getFrame(0));
     }
 }

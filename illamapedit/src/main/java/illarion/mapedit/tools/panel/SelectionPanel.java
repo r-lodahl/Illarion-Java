@@ -17,8 +17,8 @@ package illarion.mapedit.tools.panel;
 
 import illarion.mapedit.Lang;
 import illarion.mapedit.tools.ToolManager;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -28,9 +28,9 @@ import java.awt.*;
  * @author Fredrik K
  */
 public class SelectionPanel extends JPanel {
-    @Nonnull
+    @NotNull
     protected JCheckBox delCheckBox;
-    @Nonnull
+    @NotNull
     private final JSpinner radiusSpinner;
 
     /**

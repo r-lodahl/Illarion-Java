@@ -17,10 +17,10 @@ package illarion.download.cleanup;
 
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.Files;
@@ -37,8 +37,8 @@ class UserDataCleaner implements Callable<Void> {
     /**
      * The logger that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(UserDataCleaner.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Override
     public Void call() throws Exception {
@@ -59,7 +59,7 @@ class UserDataCleaner implements Callable<Void> {
      *
      * @return the files that should be removed
      */
-    @Nonnull
+    @NotNull
     private static Collection<Path> getRemovalTargets() throws IOException {
         DirectoryManager dm = DirectoryManager.getInstance();
 

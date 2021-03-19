@@ -17,9 +17,9 @@ package illarion.client.gui;
 
 import de.lessvoid.nifty.tools.Color;
 import illarion.client.world.Char;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interfaces defines the access on the chat related GUI.
@@ -75,7 +75,7 @@ public interface ChatGui {
      * @param message the message to add to the chat box
      * @param color the color of the message
      */
-    void addChatMessage(@Nonnull String message, @Nonnull Color color);
+    void addChatMessage(@NotNull String message, @NotNull Color color);
 
     /**
      * Display a chat bubble on the screen.
@@ -84,7 +84,7 @@ public interface ChatGui {
      * @param message the message that is displayed
      * @param color the color of the message
      */
-    void showChatBubble(@Nullable Char character, @Nonnull String message, @Nonnull Color color);
+    void showChatBubble(@Nullable Char character, @NotNull String message, @NotNull Color color);
 
     /**
      * Check if the chat box is currently activated.

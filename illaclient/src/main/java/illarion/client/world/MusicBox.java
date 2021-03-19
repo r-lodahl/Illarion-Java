@@ -18,24 +18,19 @@ package illarion.client.world;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.common.util.Stoppable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.illarion.engine.Engine;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 
 /**
  * This is the music box. What is does is playing music. This class handles the playback of the background music
  * according to the settings. Also it ensures that the different overwriting levels of the music are kept as they are
  * supposed to be.
  */
-@NotThreadSafe
 public final class MusicBox implements Stoppable{
 
     /**
@@ -65,16 +60,16 @@ public final class MusicBox implements Stoppable{
      */
     private int overrideSoundId;
 
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
-    @Nonnull
+    @NotNull
     private final AudioPlayer audioPlayer;
 
     /**
      * This is the constructor that prepares this class for proper operation.
      */
-    MusicBox(@Nonnull Assets assets, @Nonnull Sounds sounds) {
+    MusicBox(@NotNull Assets assets, @NotNull Sounds sounds) {
         this.assets = assets;
         overrideSoundId = NO_TRACK;
         currentDefaultTrack = NO_TRACK;
@@ -139,8 +134,8 @@ public final class MusicBox implements Stoppable{
     /**
      * The logging instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MusicBox.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Update the location where the player is currently at. This will update the soundtrack that is played in case

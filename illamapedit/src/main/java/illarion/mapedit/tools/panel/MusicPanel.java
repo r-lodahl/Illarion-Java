@@ -19,9 +19,9 @@ import illarion.mapedit.Lang;
 import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.tools.ToolManager;
 import illarion.mapedit.tools.panel.components.SongTable;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,13 +30,13 @@ import java.awt.*;
  * @author Fredrik K
  */
 public class MusicPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final JCheckBox delCheckBox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillSelectedCheckbox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillAreaCheckbox;
-    @Nonnull
+    @NotNull
     private final SongTable songTable;
 
     /**

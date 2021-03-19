@@ -16,10 +16,10 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -29,12 +29,11 @@ import java.util.Arrays;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public class Md5Crypto {
     /**
      * This is the digest used to calculate the MD5 stuff.
      */
-    @Nonnull
+    @NotNull
     private final MessageDigest md5Digest;
 
     /**
@@ -43,19 +42,19 @@ public class Md5Crypto {
     public Md5Crypto() {
         try {
             md5Digest = MessageDigest.getInstance("MD5");
-        } catch (@Nonnull NoSuchAlgorithmException e) {
+        } catch (@NotNull NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    @Nonnull
-    public String crypt(@Nonnull String message, @Nonnull String salt) {
+    @NotNull
+    public String crypt(@NotNull String message, @NotNull String salt) {
         return crypt(message, salt, "$1$");
     }
 
     @SuppressWarnings("OverlyComplexMethod")
-    @Nonnull
-    public String crypt(@Nonnull String message, @Nonnull String salt, @Nonnull String magic) {
+    @NotNull
+    public String crypt(@NotNull String message, @NotNull String salt, @NotNull String magic) {
         String cleanedSalt;
 
         cleanedSalt = salt.startsWith(magic) ? salt.substring(magic.length()) : salt;
@@ -67,7 +66,7 @@ public class Md5Crypto {
             cleanedSalt = cleanedSalt.substring(0, 8);
         }
 
-        Charset charset = Charset.forName("ISO-8859-1");
+        Charset charset = StandardCharsets.ISO_8859_1;
         byte[] messageBytes = message.getBytes(charset);
         byte[] magicBytes = magic.getBytes(charset);
         byte[] saltBytes = cleanedSalt.getBytes(charset);
@@ -137,7 +136,7 @@ public class Md5Crypto {
     /**
      * This is the string of characters used to perform the ITOA 64 encoding of a value.
      */
-    @Nonnull
+    @NotNull
     private static final String ITOA_64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     /**
@@ -147,7 +146,7 @@ public class Md5Crypto {
      * @param size the size of the resulting text in characters
      * @return the generated text
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private static String to64(long v, int size) {
         StringBuilder result = new StringBuilder(size);

@@ -26,12 +26,12 @@ import de.lessvoid.nifty.render.image.ImageMode;
 import de.lessvoid.nifty.render.image.ImageModeFactory;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.nifty.controls.Progress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The control of the progress bar.
@@ -41,8 +41,8 @@ import javax.annotation.Nullable;
  */
 @Deprecated
 public final class ProgressControl extends AbstractController implements Progress {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ProgressControl.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     private int minImageWidth;
     private int maxWidth;
     @Nullable
@@ -60,10 +60,10 @@ public final class ProgressControl extends AbstractController implements Progres
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element element,
-            @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element element,
+            @NotNull Parameters parameter) {
         bind(element);
 
         minImageWidth = parameter.getAsInteger("minImageWidth", 0);
@@ -72,7 +72,7 @@ public final class ProgressControl extends AbstractController implements Progres
     }
 
     @Override
-    public void init(@Nonnull Parameters parameter) {
+    public void init(@NotNull Parameters parameter) {
         super.init(parameter);
 
         NiftyImage fillImage = getFillImage();
@@ -153,7 +153,7 @@ public final class ProgressControl extends AbstractController implements Progres
     }
 
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         return false;
     }
 

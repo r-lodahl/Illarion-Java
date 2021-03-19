@@ -20,14 +20,14 @@ import illarion.client.util.Lang;
 import illarion.client.util.translation.mymemory.MyMemoryProvider;
 import illarion.common.config.Config;
 import illarion.common.config.ConfigChangedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class Translator {
-    @Nonnull
+    @NotNull
     public static final String CFG_KEY_PROVIDER = "translator_provider";
     public static final int CFG_VALUE_PROVIDER_NONE = 0;
     public static final int CFG_VALUE_PROVIDER_MY_MEMORY = 1;
@@ -47,13 +47,13 @@ public class Translator {
     public static final int CFG_VALUE_DIRECTION_DEFAULT = 0;
     public static final int CFG_VALUE_DIRECTION_EN_DE = 1;
     public static final int CFG_VALUE_DIRECTION_DE_EN = 2;
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Translator.class);
-    @Nonnull
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
     private final ExecutorService executorService;
     @Nullable
     private TranslationProvider provider;
-    @Nonnull
+    @NotNull
     private TranslationDirection direction;
 
     public Translator() {
@@ -64,7 +64,7 @@ public class Translator {
     }
 
     @Nullable
-    private static TranslationProvider getCfgProvider(@Nonnull Config cfg) {
+    private static TranslationProvider getCfgProvider(@NotNull Config cfg) {
         int value = cfg.getInteger(CFG_KEY_PROVIDER);
         switch (value) {
             case CFG_VALUE_PROVIDER_MY_MEMORY:
@@ -79,9 +79,9 @@ public class Translator {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    private static TranslationDirection getCfgDirection(@Nonnull Config cfg) {
+    private static TranslationDirection getCfgDirection(@NotNull Config cfg) {
         int value = cfg.getInteger(CFG_KEY_DIRECTION);
         switch (value) {
             case CFG_VALUE_DIRECTION_EN_DE:
@@ -96,16 +96,16 @@ public class Translator {
     }
 
     @EventTopicSubscriber(topic = CFG_KEY_PROVIDER)
-    private void onConfigProviderChanged(@Nonnull String key, @Nonnull ConfigChangedEvent event) {
+    private void onConfigProviderChanged(@NotNull String key, @NotNull ConfigChangedEvent event) {
         provider = getCfgProvider(event.getConfig());
     }
 
     @EventTopicSubscriber(topic = CFG_KEY_DIRECTION)
-    private void onConfigDirectionChanged(@Nonnull String key, @Nonnull ConfigChangedEvent event) {
+    private void onConfigDirectionChanged(@NotNull String key, @NotNull ConfigChangedEvent event) {
         direction = getCfgDirection(event.getConfig());
     }
 
-    public void translate(@Nonnull String original, @Nonnull TranslatorCallback callback) {
+    public void translate(@NotNull String original, @NotNull TranslatorCallback callback) {
         if (isServiceEnabled()) {
             assert provider != null; // ensured by: isServiceEnabled()
             executorService.submit(new TranslateTask(executorService, provider, direction, original, callback));

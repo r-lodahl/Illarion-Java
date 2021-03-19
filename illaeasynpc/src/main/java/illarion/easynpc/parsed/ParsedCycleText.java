@@ -19,8 +19,8 @@ import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -58,7 +58,7 @@ public final class ParsedCycleText implements ParsedData {
      * Cycle texts do not effect the SQL query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to add to the query.
     }
 
@@ -66,14 +66,14 @@ public final class ParsedCycleText implements ParsedData {
      * Check if the selected stage is effected by this cycle text.
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return stage == WritingStage.Talking;
     }
 
     /**
      * Get the modules required for this cycle text to work properly.
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.singleton("npc.base.talk");
@@ -84,7 +84,7 @@ public final class ParsedCycleText implements ParsedData {
      */
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         if (stage == WritingStage.Talking) {
             target.write("talkingNPC:addCycleText(\""); //$NON-NLS-1$
             target.write(german);

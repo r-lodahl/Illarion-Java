@@ -19,6 +19,7 @@ import illarion.mapedit.Lang;
 import illarion.mapedit.events.map.RepaintRequestEvent;
 import illarion.mapedit.render.*;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.High2Low;
@@ -26,7 +27,6 @@ import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mid
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mirror;
 import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class ViewBand extends JRibbonBand {
 
-    public ViewBand(@Nonnull RendererManager manager) {
+    public ViewBand(@NotNull RendererManager manager) {
         super(Lang.getMsg("gui.viewband.Name"), null);
 
         TileRenderer tileRenderer = new TileRenderer(manager);
@@ -59,7 +59,7 @@ public class ViewBand extends JRibbonBand {
         setResizePolicies(resize);
     }
 
-    private void newRenderButton(@Nonnull RendererManager manager, @Nonnull AbstractMapRenderer renderer) {
+    private void newRenderButton(@NotNull RendererManager manager, @NotNull AbstractMapRenderer renderer) {
         JCommandToggleButton btn = new JCommandToggleButton(renderer.getLocalizedName(),
                                                                   renderer.getRendererIcon());
         btn.getActionModel().setSelected(renderer.isDefaultOn());
@@ -76,7 +76,7 @@ public class ViewBand extends JRibbonBand {
         addCommandButton(btn, renderer.getPriority());
     }
 
-    private void renderEmptyTilesButton(@Nonnull TileRenderer renderer) {
+    private void renderEmptyTilesButton(@NotNull TileRenderer renderer) {
         JCommandToggleButton btn = new JCommandToggleButton(renderer.getEmptyTileLocalizedName(),
                                                                   renderer.getEmptyTileRendererIcon());
         btn.getActionModel().setSelected(renderer.isEmptyTileDefaultOn());

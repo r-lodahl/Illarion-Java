@@ -16,11 +16,11 @@
 package illarion.client.graphics;
 
 import illarion.client.world.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -37,7 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 abstract class AbstractAnimation<T extends Animated> {
-    private static final Logger log = LoggerFactory.getLogger(AbstractAnimation.class);
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The current time of the animation. This value is always between the 0 and
@@ -71,7 +71,7 @@ abstract class AbstractAnimation<T extends Animated> {
      * animation. All targets handled by one animation are updated at the same
      * time in a synchronized way.
      */
-    @Nonnull
+    @NotNull
     private final List<T> targets;
 
     private float storyboardStart;
@@ -104,7 +104,7 @@ abstract class AbstractAnimation<T extends Animated> {
      * @param firstTarget the first animation target, so the first object that
      * is actually animated
      */
-    protected AbstractAnimation(@Nullable T firstTarget, @Nonnull AbstractAnimation<T> sourceAnimation) {
+    protected AbstractAnimation(@Nullable T firstTarget, @NotNull AbstractAnimation<T> sourceAnimation) {
         this(firstTarget);
         duration = sourceAnimation.duration;
     }
@@ -239,7 +239,7 @@ abstract class AbstractAnimation<T extends Animated> {
      * @param finished true in case the animation finished, false if not
      */
     protected final void animationFinished(boolean finished) {
-        for (@Nonnull Animated target : targets) {
+        for (@NotNull Animated target : targets) {
             target.animationFinished(finished);
         }
     }

@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.client.world.items.CraftingItem;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -34,7 +34,7 @@ public interface DialogCraftingGui {
      * @param ingredientIndex the index of the ingredient
      * @param tooltip the tooltip
      */
-    void showCraftIngredientTooltip(int dialogId, int index, int ingredientIndex, @Nonnull Tooltip tooltip);
+    void showCraftIngredientTooltip(int dialogId, int index, int ingredientIndex, @NotNull Tooltip tooltip);
 
     /**
      * Show a tooltip for a crafting item.
@@ -43,7 +43,7 @@ public interface DialogCraftingGui {
      * @param index the index of the crafted item
      * @param tooltip the tooltip
      */
-    void showCraftItemTooltip(int dialogId, int index, @Nonnull Tooltip tooltip);
+    void showCraftItemTooltip(int dialogId, int index, @NotNull Tooltip tooltip);
 
     /**
      * Show a new crafting dialog or update a existing one.
@@ -53,8 +53,8 @@ public interface DialogCraftingGui {
      * @param groups   the names of the categories of the dialog
      * @param items    the items in the dialog
      */
-    void showCraftingDialog(int dialogId, @Nonnull String title, @Nonnull Collection<String> groups,
-                            @Nonnull Collection<CraftingItem> items);
+    void showCraftingDialog(int dialogId, @NotNull String title, @NotNull Collection<String> groups,
+                            @NotNull Collection<CraftingItem> items);
 
     /**
      * Start the production indicator.

@@ -19,12 +19,11 @@ import illarion.client.IllaClient;
 import illarion.client.net.server.ServerReply;
 import illarion.client.util.Lang;
 import illarion.common.net.NetCommReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -39,7 +38,6 @@ import java.nio.charset.CharsetDecoder;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @author Nop
  */
-@NotThreadSafe
 final class Receiver extends Thread implements NetCommReader {
     /**
      * Length of the byte buffer used to store the data from the server.
@@ -55,8 +53,8 @@ final class Receiver extends Thread implements NetCommReader {
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Receiver.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Time the receiver waits for more data before throwing away the incomplete things it already got.
@@ -65,28 +63,28 @@ final class Receiver extends Thread implements NetCommReader {
     /**
      * The decoder that is used to decode the strings that are send to the client by the server.
      */
-    @Nonnull
+    @NotNull
     private final CharsetDecoder decoder;
     /**
      * The buffer that is used to temporary store the decoded characters that were send to the player.
      */
-    @Nonnull
+    @NotNull
     private final CharBuffer decodingBuffer = CharBuffer.allocate(65535);
     /**
      * The input stream of the connection socket of the connection to the server.
      */
-    @Nonnull
+    @NotNull
     private final ReadableByteChannel inChannel;
     /**
      * The list that stores the commands there were decoded and prepared for the NetComm for execution.
      */
-    @Nonnull
+    @NotNull
     private final MessageExecutor executor;
     /**
      * The buffer that stores the byte that we received from the server for decoding.
      */
     @Nullable
-    private ByteBuffer buffer = null;
+    private ByteBuffer buffer;
     /**
      * Indicator if the Receiver is currently running.
      */
@@ -104,7 +102,7 @@ final class Receiver extends Thread implements NetCommReader {
      * @param in the input stream of the socket connection to the server that contains the data that needs to
      * be decoded
      */
-    Receiver(@Nonnull MessageExecutor executor, @Nonnull ReadableByteChannel in) {
+    Receiver(@NotNull MessageExecutor executor, @NotNull ReadableByteChannel in) {
         super("Illarion input thread");
 
         this.executor = executor;
@@ -114,12 +112,12 @@ final class Receiver extends Thread implements NetCommReader {
         setDaemon(true);
     }
 
-    @Nonnull
+    @NotNull
     private ByteBuffer getBuffer() {
         return getBuffer(0);
     }
 
-    @Nonnull
+    @NotNull
     private ByteBuffer getBuffer(int bufferSize) {
         ByteBuffer oldBuffer = buffer;
         if ((oldBuffer != null) && (oldBuffer.capacity() >= bufferSize)) {
@@ -182,7 +180,7 @@ final class Receiver extends Thread implements NetCommReader {
      * @throws IOException If there are more byte read then there are written in
      * the buffer
      */
-    @Nonnull
+    @NotNull
     @Override
     public String readString() throws IOException {
         int len = readUShort();
@@ -337,7 +335,7 @@ final class Receiver extends Thread implements NetCommReader {
                                 // throw away the command that was incorrectly decoded
                                 buffer.position(len + CommandList.HEADER_SIZE);
                             }
-                        } catch (@Nonnull IllegalArgumentException ex) {
+                        } catch (@NotNull IllegalArgumentException ex) {
                             log.error("Invalid command id received {}", Integer.toHexString(id));
                         }
 
@@ -345,14 +343,14 @@ final class Receiver extends Thread implements NetCommReader {
                         buffer.flip();
                     }
                 }
-            } catch (@Nonnull IOException e) {
+            } catch (@NotNull IOException e) {
                 if (running) {
                     log.error("The connection to the server is not working anymore.", e);
                     IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);
                     running = false;
                     return;
                 }
-            } catch (@Nonnull Exception e) {
+            } catch (@NotNull Exception e) {
                 if (running) {
                     log.error("General error in the receiver", e);
                     IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);

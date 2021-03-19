@@ -19,8 +19,8 @@ import illarion.easynpc.Lang;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -40,7 +40,7 @@ public final class SearchDialog extends JDialog {
      * The constructor of the dialog that prepares the dialog for proper
      * display.
      */
-    public SearchDialog(@Nonnull MainFrame frame) {
+    public SearchDialog(@NotNull MainFrame frame) {
         super(frame, Lang.getMsg(SearchDialog.class, "title"), false);
 
         SearchDialog dialog = this;

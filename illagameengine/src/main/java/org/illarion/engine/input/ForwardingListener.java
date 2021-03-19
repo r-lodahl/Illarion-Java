@@ -15,7 +15,8 @@
  */
 package org.illarion.engine.input;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This listener is used to monitor changes of the forwarding input system.
@@ -28,12 +29,12 @@ public interface ForwardingListener {
      *
      * @param target the forwarding target that got enabled
      */
-    void forwardingEnabledFor(@Nonnull ForwardingTarget target);
+    void forwardingEnabledFor(@NotNull ForwardingTarget target);
 
     /**
      * This function in case the forwarding for a specific target got disabled.
      *
      * @param target the forwarding target that got disabled
      */
-    void forwardingDisabledFor(@Nonnull ForwardingTarget target);
+    void forwardingDisabledFor(@NotNull ForwardingTarget target);
 }

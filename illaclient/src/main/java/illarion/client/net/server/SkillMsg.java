@@ -21,11 +21,11 @@ import illarion.client.world.World;
 import illarion.common.data.Skill;
 import illarion.common.data.Skills;
 import illarion.common.net.NetCommReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -39,8 +39,8 @@ public final class SkillMsg implements ServerReply {
     /**
      * The logger instance of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(SkillMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * The current minor skill points of that skill.
      */
@@ -57,13 +57,13 @@ public final class SkillMsg implements ServerReply {
     private int value;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         skill = reader.readUByte();
         value = reader.readUShort();
         minor = reader.readUShort();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if (!World.getGameGui().isReady()) {
@@ -80,7 +80,7 @@ public final class SkillMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

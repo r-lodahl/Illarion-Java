@@ -23,6 +23,10 @@ import illarion.common.util.AppIdent;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.easyquest.Lang;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
@@ -30,12 +34,8 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.OfficeSilver2007Skin;
 import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -50,7 +50,7 @@ public class MainFrame extends JRibbonFrame {
     /**
      * The identification of this application.
      */
-    @Nonnull
+    @NotNull
     public static final AppIdent APPLICATION = new AppIdent("Illarion easyQuest Editor"); //$NON-NLS-1$
 
     public static final int CREATE_NOTHING = 0;
@@ -60,14 +60,14 @@ public class MainFrame extends JRibbonFrame {
     /**
      * The error and debug logger of the client.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MainFrame.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     private int createType;
 
     private final VetoableTabCloseListener editorTabListener = new VetoableTabCloseListener() {
         @Override
-        public void tabClosed(@Nonnull JTabbedPane pane, Component component) {
+        public void tabClosed(@NotNull JTabbedPane pane, Component component) {
             //((Editor) component).cleanup();
             if (pane.getTabCount() == 0) {
                 addNewQuest();
@@ -105,7 +105,7 @@ public class MainFrame extends JRibbonFrame {
 
     private static MainFrame instance;
 
-    @Nonnull
+    @NotNull
     private final JTabbedPane tabbedEditorArea;
 
     public MainFrame() {
@@ -261,12 +261,12 @@ public class MainFrame extends JRibbonFrame {
         return instance;
     }
 
-    @Nonnull
+    @NotNull
     public Editor getCurrentQuestEditor() {
         return getQuestEditor(tabbedEditorArea.getSelectedIndex());
     }
 
-    @Nonnull
+    @NotNull
     protected Editor getQuestEditor(int index) {
         return (Editor) tabbedEditorArea.getComponentAt(index);
     }
@@ -290,7 +290,7 @@ public class MainFrame extends JRibbonFrame {
         setTabTitle(tabbedEditorArea.getSelectedIndex(), title);
     }
 
-    @Nonnull
+    @NotNull
     protected Editor addNewQuest(@Nullable Path quest) {
         Editor editor = Editor.loadQuest(quest);
         editor.putClientProperty(SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY, Boolean.TRUE);
@@ -300,12 +300,12 @@ public class MainFrame extends JRibbonFrame {
         return editor;
     }
 
-    @Nonnull
+    @NotNull
     public Editor addNewQuest() {
         return addNewQuest(null);
     }
 
-    protected int alreadyOpen(@Nonnull Path file) {
+    protected int alreadyOpen(@NotNull Path file) {
         int count = tabbedEditorArea.getComponentCount();
         Editor currentComp;
         for (int i = 0; i < count; i++) {

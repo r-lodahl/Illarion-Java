@@ -15,7 +15,8 @@
  */
 package illarion.common.data;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.regex.Pattern;
 
 /**
@@ -31,11 +32,11 @@ public class BookPageEntry {
         Right
     }
 
-    @Nonnull
+    @NotNull
     private static final Pattern REMOVE_LINE_BREAKS_PATTERN = Pattern.compile("\\s+");
-    @Nonnull
+    @NotNull
     private static final Pattern COLLAPSE_SPACE_PATTERN = Pattern.compile("[ \t]+");
-    @Nonnull
+    @NotNull
     private static final Pattern LINE_BREAK_PATTERN = Pattern.compile("\n\r?");
     /**
      * In case this flag this {@code true} this entry is a headline and no paragraph.
@@ -45,10 +46,10 @@ public class BookPageEntry {
     /**
      * The text that belongs to this entry.
      */
-    @Nonnull
+    @NotNull
     private final String text;
 
-    @Nonnull
+    @NotNull
     private final Align alignment;
 
     /**
@@ -59,7 +60,7 @@ public class BookPageEntry {
      * @param keepLineBreaks keep the line breaks as is
      * @param alignment the alignment of the paragraph
      */
-    public BookPageEntry(boolean headline, @Nonnull String text, boolean keepLineBreaks, @Nonnull Align alignment) {
+    public BookPageEntry(boolean headline, @NotNull String text, boolean keepLineBreaks, @NotNull Align alignment) {
         this.headline = headline;
         this.alignment = alignment;
         if (keepLineBreaks) {
@@ -92,12 +93,12 @@ public class BookPageEntry {
      *
      * @return the text of this entry
      */
-    @Nonnull
+    @NotNull
     public String getText() {
         return text;
     }
 
-    @Nonnull
+    @NotNull
     public Align getAlignment() {
         return alignment;
     }

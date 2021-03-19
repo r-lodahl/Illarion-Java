@@ -16,21 +16,21 @@
 package illarion.easynpc.docu;
 
 import illarion.easynpc.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Fredrik K
  */
 public class DocuLeaf implements DocuEntry {
-    @Nonnull
+    @NotNull
     private final String docuDesc;
-    @Nonnull
+    @NotNull
     private final String docuEx;
-    @Nonnull
+    @NotNull
     private final String docuSyntax;
-    @Nonnull
+    @NotNull
     private final String docuTitle;
 
     public DocuLeaf(String type, String name) {
@@ -47,7 +47,7 @@ public class DocuLeaf implements DocuEntry {
         docuSyntax = String.format("illarion.easynpc.parser.%s.Docu.syntax", type);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public DocuEntry getChild(int index) {
         throw new IllegalArgumentException("There are no childs to request.");

@@ -16,9 +16,9 @@
 package illarion.common.config.entries;
 
 import illarion.common.config.Config;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -39,32 +39,32 @@ public final class FileEntry implements ConfigEntry {
     /**
      * The key in the configuration that is handled by this configuration.
      */
-    @Nonnull
+    @NotNull
     private final String configEntry;
 
     /**
      * The directory that is displayed by default.
      */
-    @Nonnull
+    @NotNull
     private final String dir;
 
     /**
      * The description of the select able files displayed in the file open
      * dialog.
      */
-    @Nonnull
+    @NotNull
     private final String fileDesc;
 
     /**
      * The list of file names that are allowed to be selected
      */
-    @Nonnull
+    @NotNull
     private final String fileEndings;
 
     /**
      * The name of the file that is created using this dialog.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
@@ -78,11 +78,11 @@ public final class FileEntry implements ConfigEntry {
      * @param defaultName the default name of the file to be created using this file entry
      */
     public FileEntry(
-            @Nonnull String entry,
-            @Nonnull String allowedFileEndings,
-            @Nonnull String fileDescription,
+            @NotNull String entry,
+            @NotNull String allowedFileEndings,
+            @NotNull String fileDescription,
             @Nullable String defaultDir,
-            @Nonnull String defaultName) {
+            @NotNull String defaultName) {
         configEntry = entry;
         fileEndings = allowedFileEndings;
         fileDesc = fileDescription;
@@ -95,7 +95,7 @@ public final class FileEntry implements ConfigEntry {
      *
      * @return the directory displayed by default
      */
-    @Nonnull
+    @NotNull
     public String getDefaultDir() {
         return dir;
     }
@@ -105,7 +105,7 @@ public final class FileEntry implements ConfigEntry {
      *
      * @return the file description of the dialog
      */
-    @Nonnull
+    @NotNull
     public String getFileDesc() {
         return fileDesc;
     }
@@ -115,7 +115,7 @@ public final class FileEntry implements ConfigEntry {
      *
      * @return the list of file entries
      */
-    @Nonnull
+    @NotNull
     public String getFileEndings() {
         return fileEndings;
     }
@@ -125,7 +125,7 @@ public final class FileEntry implements ConfigEntry {
      *
      * @return the default name of the file to be created
      */
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
@@ -150,7 +150,7 @@ public final class FileEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 
@@ -159,7 +159,7 @@ public final class FileEntry implements ConfigEntry {
      *
      * @param newValue the new configuration value
      */
-    public void setValue(@Nonnull Path newValue) {
+    public void setValue(@NotNull Path newValue) {
         if (cfg == null) {
             throw new IllegalStateException("Reference to configurations system is missing.");
         }

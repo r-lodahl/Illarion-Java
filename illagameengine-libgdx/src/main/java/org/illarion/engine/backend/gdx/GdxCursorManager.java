@@ -25,9 +25,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.illarion.engine.MouseCursor;
 import org.illarion.engine.backend.shared.AbstractCursorManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the implementation of the cursor manager for libGDX.
@@ -41,13 +41,13 @@ class GdxCursorManager extends AbstractCursorManager {
     /**
      * The graphics handler of libGDX.
      */
-    @Nonnull
+    @NotNull
     private final Graphics graphics;
 
     /**
      * The file system handler of libGDX that is supposed to be used by this manager.
      */
-    @Nonnull
+    @NotNull
     private final Files files;
 
     /**
@@ -56,14 +56,14 @@ class GdxCursorManager extends AbstractCursorManager {
      * @param graphics the libGDX graphics implementation.
      * @param files the files implementation that is supposed to be used to load the data
      */
-    GdxCursorManager(@Nonnull Graphics graphics, @Nonnull Files files) {
+    GdxCursorManager(@NotNull Graphics graphics, @NotNull Files files) {
         this.graphics = graphics;
         this.files = files;
     }
 
     @Nullable
     @Override
-    protected MouseCursor loadCursor(@Nonnull String ref, int hotSpotX, int hotSpotY) {
+    protected MouseCursor loadCursor(@NotNull String ref, int hotSpotX, int hotSpotY) {
         try {
             Pixmap cursorPixels = new Pixmap(files.internal(ref));
 
@@ -85,7 +85,7 @@ class GdxCursorManager extends AbstractCursorManager {
                 return new GdxCursor(cursor);
             }
             return null;
-        } catch (@Nonnull GdxRuntimeException e) {
+        } catch (@NotNull GdxRuntimeException e) {
             return null;
         }
     }

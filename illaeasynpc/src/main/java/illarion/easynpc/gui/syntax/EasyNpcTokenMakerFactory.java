@@ -17,9 +17,9 @@ package illarion.easynpc.gui.syntax;
 
 import org.fife.ui.rsyntaxtextarea.TokenMaker;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class EasyNpcTokenMakerFactory extends TokenMakerFactory {
     /**
      * The name of the syntax style for the easyNPC syntax highlighting.
      */
-    @Nonnull
+    @NotNull
     public static final String SYNTAX_STYLE_EASY_NPC = "EasyNPC";
 
     @Nullable
@@ -44,7 +44,7 @@ public class EasyNpcTokenMakerFactory extends TokenMakerFactory {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Set<String> keySet() {
         return Collections.singleton(SYNTAX_STYLE_EASY_NPC);

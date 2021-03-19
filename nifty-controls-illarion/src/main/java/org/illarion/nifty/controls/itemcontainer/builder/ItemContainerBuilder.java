@@ -16,11 +16,11 @@
 package org.illarion.nifty.controls.itemcontainer.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 public class ItemContainerBuilder extends ControlBuilder {
-    public ItemContainerBuilder(@Nonnull String id, @Nonnull String title) {
+    public ItemContainerBuilder(@NotNull String id, @NotNull String title) {
         super(id, "itemcontainer");
 
         set("title", title);
@@ -28,7 +28,7 @@ public class ItemContainerBuilder extends ControlBuilder {
         hideOnClose(false);
     }
 
-    public void slotBackground(@Nonnull String image) {
+    public void slotBackground(@NotNull String image) {
         set("slotBackground", image);
     }
 

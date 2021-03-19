@@ -20,9 +20,8 @@ import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,18 +33,17 @@ import java.util.List;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @author Nop
  */
-@Immutable
 public final class TileUpdate {
     /**
      * List of count values for the items on this tile.
      */
-    @Nonnull
+    @NotNull
     private final List<ItemCount> itemCount;
 
     /**
      * List of Item IDs on this tile.
      */
-    @Nonnull
+    @NotNull
     private final List<ItemId> itemId;
 
     /**
@@ -56,7 +54,7 @@ public final class TileUpdate {
     /**
      * Location of the tile.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate tileLocation;
 
     /**
@@ -77,7 +75,7 @@ public final class TileUpdate {
     /**
      * Constructor for this new tile update.
      */
-    public TileUpdate(@Nonnull ServerCoordinate loc, @Nonnull NetCommReader reader) throws IOException {
+    public TileUpdate(@NotNull ServerCoordinate loc, @NotNull NetCommReader reader) throws IOException {
         tileLocation = loc;
 
         // read tile attributes
@@ -106,7 +104,7 @@ public final class TileUpdate {
      *
      * @return the list of item counts
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public List<ItemCount> getItemCount() {
         return Collections.unmodifiableList(itemCount);
@@ -117,7 +115,7 @@ public final class TileUpdate {
      *
      * @return the list of item ids
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public List<ItemId> getItemId() {
         return Collections.unmodifiableList(itemId);
@@ -138,7 +136,7 @@ public final class TileUpdate {
      *
      * @return the location of the tile.
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public ServerCoordinate getLocation() {
         return tileLocation;

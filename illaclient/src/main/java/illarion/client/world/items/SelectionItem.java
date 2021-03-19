@@ -16,9 +16,9 @@
 package illarion.client.world.items;
 
 import illarion.common.types.ItemId;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This item is the entry of a selection dialog that contains a item reference along with a name.
@@ -40,10 +40,10 @@ public class SelectionItem {
     /**
      * The name of the selection item.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
-    protected SelectionItem(@Nonnull SelectionItem org) {
+    protected SelectionItem(@NotNull SelectionItem org) {
         index = org.index;
         id = org.id;
         name = org.name;
@@ -56,7 +56,7 @@ public class SelectionItem {
      * @param itemId the item ID of this item
      * @param itemName the item name of this item
      */
-    public SelectionItem(int itemIndex, @Nullable ItemId itemId, @Nonnull String itemName) {
+    public SelectionItem(int itemIndex, @Nullable ItemId itemId, @NotNull String itemName) {
         index = itemIndex;
         id = itemId;
         name = itemName;
@@ -77,7 +77,7 @@ public class SelectionItem {
      *
      * @return the name of the item
      */
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }

@@ -16,9 +16,9 @@
 package illarion.common.config.entries;
 
 import illarion.common.config.Config;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is a configuration entry that is used to a simple text entry in the
@@ -63,7 +63,7 @@ public final class TextEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 
@@ -72,7 +72,7 @@ public final class TextEntry implements ConfigEntry {
      *
      * @param newValue the new configuration value
      */
-    public void setValue(@Nonnull String newValue) {
+    public void setValue(@NotNull String newValue) {
         cfg.set(configEntry, newValue);
     }
 }

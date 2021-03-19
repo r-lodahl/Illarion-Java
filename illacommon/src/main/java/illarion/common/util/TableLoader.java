@@ -15,13 +15,14 @@
  */
 package illarion.common.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -44,19 +45,19 @@ public class TableLoader {
     /**
      * The error and debug logger of the client.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(TableLoader.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The delimiter that is used at this table.
      */
-    @Nonnull
+    @NotNull
     private final String delimiter;
 
     /**
      * The tokes of the last line that was read encoded as strings.
      */
-    @Nonnull
+    @NotNull
     private final ArrayList<String> tokens;
 
     /**
@@ -71,7 +72,7 @@ public class TableLoader {
      * @param callback the call back class that is allowed to parse the values
      * this table loader reads
      */
-    public <T extends TableLoader> TableLoader(@Nonnull File table, @Nonnull TableLoaderSink<T> callback) {
+    public <T extends TableLoader> TableLoader(@NotNull File table, @NotNull TableLoaderSink<T> callback) {
         this(table, callback, ",");
     }
 
@@ -86,7 +87,7 @@ public class TableLoader {
      * @param tableDelimiter the delimiter of the table, so the table columns are separated by this string
      */
     public <T extends TableLoader> TableLoader(
-            @Nonnull File table, @Nonnull TableLoaderSink<T> callback, @Nonnull String tableDelimiter) {
+            @NotNull File table, @NotNull TableLoaderSink<T> callback, @NotNull String tableDelimiter) {
         this(tableDelimiter);
 
         // ignore missing tables
@@ -98,16 +99,16 @@ public class TableLoader {
         try {
             is = new FileInputStream(table);
             loadTable(is, false, callback);
-        } catch (@Nonnull FileNotFoundException e) {
+        } catch (@NotNull FileNotFoundException e) {
             // it's ok, just ignore it
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             LOGGER.error("Unable to read data file {}", table.getPath(), e);
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
-            } catch (@Nonnull IOException e) {
+            } catch (@NotNull IOException e) {
                 LOGGER.error("Unable to close data file {}", table.getPath(), e);
             }
         }
@@ -126,14 +127,14 @@ public class TableLoader {
      * @param tableDelimiter the delimiter of the table, so the table columns are separated by this string
      */
     public <T extends TableLoader> TableLoader(
-            @Nonnull InputStream resource,
+            @NotNull InputStream resource,
             boolean ndsc,
-            @Nonnull TableLoaderSink<T> callback,
-            @Nonnull String tableDelimiter) {
+            @NotNull TableLoaderSink<T> callback,
+            @NotNull String tableDelimiter) {
         this(tableDelimiter);
         try {
             loadTable(resource, ndsc, callback);
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             LOGGER.error("Error reading the resource stream.", e);
             throw new NoResourceException("Error reading resource stream.");
         }
@@ -152,10 +153,10 @@ public class TableLoader {
      * @param tableDelimiter the delimiter of the table, so the table columns are separated by this string
      */
     public <T extends TableLoader> TableLoader(
-            @Nonnull String table,
+            @NotNull String table,
             boolean ndsc,
-            @Nonnull TableLoaderSink<T> callback,
-            @Nonnull String tableDelimiter) {
+            @NotNull TableLoaderSink<T> callback,
+            @NotNull String tableDelimiter) {
         this(tableDelimiter);
 
         if (crypto == null) {
@@ -171,16 +172,16 @@ public class TableLoader {
             // load data
             InputStream decryptedStream = crypto.getDecryptedStream(rsc);
             loadTable(decryptedStream, ndsc, callback);
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             LOGGER.error("Error reading table {}", table, e);
             throw new NoResourceException("Error reading table " + table, e);
-        } catch (@Nonnull CryptoException e) {
+        } catch (@NotNull CryptoException e) {
             LOGGER.error("Error decrypting table {}", table, e);
             throw new NoResourceException("Error reading table " + table, e);
         } finally {
             try {
                 rsc.close();
-            } catch (@Nonnull IOException ignored) {
+            } catch (@NotNull IOException ignored) {
             }
         }
     }
@@ -200,7 +201,7 @@ public class TableLoader {
      * @param callback the call back class that is allowed to parse the values
      * this table loader reads
      */
-    public <T extends TableLoader> TableLoader(@Nonnull String table, @Nonnull TableLoaderSink<T> callback) {
+    public <T extends TableLoader> TableLoader(@NotNull String table, @NotNull TableLoaderSink<T> callback) {
         this(table, true, callback, ",");
     }
 
@@ -210,7 +211,7 @@ public class TableLoader {
      *
      * @param newDelimiter the delimiter used by this table loader
      */
-    private TableLoader(@Nonnull String newDelimiter) {
+    private TableLoader(@NotNull String newDelimiter) {
         tokens = new ArrayList<>();
         delimiter = newDelimiter;
     }
@@ -234,7 +235,7 @@ public class TableLoader {
      * @param index the index of the token that shall be read
      * @return the token as string or the string {@code &lt;missing&gt;}
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String get(int index) {
         if (index < tokens.size()) {
@@ -283,7 +284,7 @@ public class TableLoader {
      * @param index the index of the token that shall be read
      * @return the token as string or the string {@code &lt;missing&gt;}
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getString(int index) {
         return get(index);
@@ -306,8 +307,8 @@ public class TableLoader {
      */
     @SuppressWarnings("unchecked")
     private <T extends TableLoader> void loadTable(
-            @Nonnull InputStream rsc, boolean ndsc, @Nonnull TableLoaderSink<T> callback) throws IOException {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(rsc, "UTF-8"))) {
+            @NotNull InputStream rsc, boolean ndsc, @NotNull TableLoaderSink<T> callback) throws IOException {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(rsc, StandardCharsets.UTF_8))) {
             String line;
             int lineCount = 0;
 
@@ -343,7 +344,7 @@ public class TableLoader {
      * @param ndsc true for ndsc tables. For ndsc tables the first two tokens
      * are ignored
      */
-    private void parseTokens(@Nonnull String line, boolean ndsc) {
+    private void parseTokens(@NotNull String line, boolean ndsc) {
         int pos = 0;
         // skip table id and color
         if (ndsc) {

@@ -16,8 +16,8 @@
 package illarion.client.world.movement;
 
 import illarion.common.types.Direction;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This kind of movement handler uses keyboard input like event triggering to walk.
@@ -30,12 +30,12 @@ public interface KeyboardMovementHandler extends MovementHandler {
      *
      * @param direction the direction
      */
-    void startMovingTowards(@Nonnull Direction direction);
+    void startMovingTowards(@NotNull Direction direction);
 
     /**
      * Stop moving towards a direction.
      *
      * @param direction the direction
      */
-    void stopMovingTowards(@Nonnull Direction direction);
+    void stopMovingTowards(@NotNull Direction direction);
 }

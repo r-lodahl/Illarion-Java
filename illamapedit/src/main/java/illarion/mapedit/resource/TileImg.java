@@ -16,8 +16,8 @@
 package illarion.mapedit.resource;
 
 import illarion.common.graphics.TileInfo;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
@@ -30,7 +30,7 @@ public class TileImg {
     private final int frameCount;
     private final int animationSpeed;
     private final TileInfo info;
-    @Nonnull
+    @NotNull
     private final Image[] img;
     private final String description;
 
@@ -40,7 +40,7 @@ public class TileImg {
             int frameCount,
             int animationSpeed,
             TileInfo info,
-            @Nonnull Image[] img,
+            @NotNull Image[] img,
             String description) {
         this.id = id;
         this.name = name;
@@ -72,7 +72,7 @@ public class TileImg {
         return info;
     }
 
-    @Nonnull
+    @NotNull
     public Image[] getImg() {
         return img;
     }

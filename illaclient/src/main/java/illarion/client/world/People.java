@@ -21,16 +21,14 @@ import illarion.client.net.client.RequestAppearanceCmd;
 import illarion.common.config.ConfigChangedEvent;
 import illarion.common.types.CharacterId;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -40,37 +38,35 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @author Nop
  */
-@ThreadSafe
 public final class People {
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(People.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This is the format string that is displayed in the {@link #toString()} function.
      */
-    @Nonnull
+    @NotNull
     private static final String TO_STRING_TEXT = "People Manager - %d$1 characters in storage";
 
     /**
      * The list of visible characters.
      */
-    @Nonnull
-    @GuardedBy("charsLock")
+    @NotNull
     private final Map<CharacterId, Char> chars;
 
     /**
      * The lock that is used to secure the chars table properly.
      */
-    @Nonnull
+    @NotNull
     private final ReentrantReadWriteLock charsLock;
 
     /**
      * A list of characters that are going to be removed.
      */
-    @Nonnull
+    @NotNull
     private final Queue<Char> removalList;
 
     private int permanentAvatarTagState;
@@ -88,7 +84,7 @@ public final class People {
     }
 
     @EventTopicSubscriber(topic = "showAvatarTagPermanently")
-    public void onQuestMarkerSettingsChanged(@Nonnull String topic, @Nonnull ConfigChangedEvent event) {
+    public void onQuestMarkerSettingsChanged(@NotNull String topic, @NotNull ConfigChangedEvent event) {
         if ("showAvatarTagPermanently".equals(topic)) {
             permanentAvatarTagState = event.getConfig().getInteger(topic);
         }
@@ -118,8 +114,8 @@ public final class People {
      * @param id the ID of the character
      * @return the character that was requested
      */
-    @Nonnull
-    public Char accessCharacter(@Nonnull CharacterId id) {
+    @NotNull
+    public Char accessCharacter(@NotNull CharacterId id) {
         if (World.getPlayer().isPlayer(id)) {
             return World.getPlayer().getCharacter();
         }
@@ -161,7 +157,7 @@ public final class People {
      *
      * @param chara the character that shall be added
      */
-    private void addCharacter(@Nonnull Char chara) {
+    private void addCharacter(@NotNull Char chara) {
         if (chara.getCharId() == null) {
             throw new IllegalArgumentException("Adding character without ID is illegal.");
         }
@@ -183,7 +179,7 @@ public final class People {
      *
      * @param removeChar the character that is going to be removed
      */
-    public void addCharacterToRemoveList(@Nonnull Char removeChar) {
+    public void addCharacterToRemoveList(@NotNull Char removeChar) {
         if (removeChar.getCharId() == null) {
             throw new IllegalArgumentException("Removing character without ID is illegal.");
         }
@@ -242,7 +238,7 @@ public final class People {
     public void clipCharacters() {
         charsLock.writeLock().lock();
         try {
-            @Nonnull Player player = World.getPlayer();
+            @NotNull Player player = World.getPlayer();
             for (Char character : chars.values()) {
                 ServerCoordinate charLocation = character.getLocation();
                 if ((charLocation != null) && !player.isOnScreen(charLocation, 0)) {
@@ -261,8 +257,8 @@ public final class People {
      * @param id the ID of the character to be created
      * @return the created character
      */
-    @Nonnull
-    private Char createNewCharacter(@Nonnull CharacterId id) {
+    @NotNull
+    private Char createNewCharacter(@NotNull CharacterId id) {
         log.debug("Creating new character: {}", id);
         Char chara = new Char();
         chara.setCharId(id);
@@ -302,7 +298,7 @@ public final class People {
      *
      * @return a new list containing all known characters
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public List<Char> getAllCharacters() {
         charsLock.readLock().lock();
@@ -320,7 +316,7 @@ public final class People {
      * @return the character or {@code null} if not found
      */
     @Nullable
-    public Char getCharacterAt(@Nonnull ServerCoordinate coordinate) {
+    public Char getCharacterAt(@NotNull ServerCoordinate coordinate) {
         Char playerChar = World.getPlayer().getCharacter();
         if (coordinate.equals(playerChar.getLocation())) {
             return playerChar;
@@ -346,7 +342,7 @@ public final class People {
      *
      * @param id the ID of the character that shall be removed
      */
-    public void removeCharacter(@Nonnull CharacterId id) {
+    public void removeCharacter(@NotNull CharacterId id) {
         if (World.getPlayer().isPlayer(id)) {
             throw new IllegalArgumentException("Removing the player character from the people list is not legal.");
         }
@@ -371,7 +367,7 @@ public final class People {
      * Get the string representation of this instance.
      */
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         charsLock.readLock().lock();
         try {

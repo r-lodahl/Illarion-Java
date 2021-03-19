@@ -21,20 +21,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class ApplicationView extends AnchorPane implements SceneUpdater {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ApplicationView.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    ApplicationView(@Nonnull GuiModel model) throws IOException {
+    ApplicationView(@NotNull GuiModel model) throws IOException {
         Parent root = Util.loadFXML("applicationFrame.fxml", model, Util.loadResourceBundle("applicationFrame"));
 
         root.getStyleClass().add("application");
@@ -43,8 +43,8 @@ class ApplicationView extends AnchorPane implements SceneUpdater {
         maximizeOnAnchorPane(root);
     }
 
-    @Nonnull
-    private Node lookupRequiredNode(@Nonnull String selector) {
+    @NotNull
+    private Node lookupRequiredNode(@NotNull String selector) {
         Node node = lookup(selector);
         if (node == null) {
             throw new IllegalArgumentException("Selector did not mark a existing node.");
@@ -52,17 +52,17 @@ class ApplicationView extends AnchorPane implements SceneUpdater {
         return node;
     }
 
-    @Nonnull
+    @NotNull
     private Pane getContentPane() {
         return (Pane) lookupRequiredNode("#content");
     }
 
-    @Nonnull
+    @NotNull
     private Pane getFooterPane() {
         return (Pane) lookupRequiredNode("#footer");
     }
 
-    final void setContent(@Nonnull Node content, @Nonnull Node footer) {
+    final void setContent(@NotNull Node content, @NotNull Node footer) {
         getContentPane().getChildren().add(content);
         getFooterPane().getChildren().add(footer);
 
@@ -70,7 +70,7 @@ class ApplicationView extends AnchorPane implements SceneUpdater {
         maximizeOnAnchorPane(footer);
     }
 
-    private static void maximizeOnAnchorPane(@Nonnull Node node) {
+    private static void maximizeOnAnchorPane(@NotNull Node node) {
         setRightAnchor(node, 0.0);
         setLeftAnchor(node, 0.0);
         setTopAnchor(node, 0.0);
@@ -78,7 +78,7 @@ class ApplicationView extends AnchorPane implements SceneUpdater {
     }
 
     @Override
-    public void updateScene(@Nonnull Scene scene) {
+    public void updateScene(@NotNull Scene scene) {
         String stylesheet = Util.getCssReference("applicationFrame");
         if (stylesheet != null) {
             scene.getStylesheets().add(stylesheet);

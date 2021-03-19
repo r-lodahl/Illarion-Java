@@ -21,11 +21,11 @@ import illarion.client.world.items.ContainerSlot;
 import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class holds the interactive representation of a inventory slot.
@@ -51,14 +51,14 @@ public final class InteractiveContainerSlot implements Draggable, DropTarget {
      * Drag a inventory item to a character. Does nothing currently.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveChar targetChar, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveChar targetChar, @NotNull ItemCount count) {
         // nothing
     }
 
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(InteractiveContainerSlot.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Drag the item in this inventory slot to another inventory slot.
@@ -66,7 +66,7 @@ public final class InteractiveContainerSlot implements Draggable, DropTarget {
      * @param targetSlot the slot to drag the item to
      */
     @Override
-    public void dragTo(@Nonnull InteractiveInventorySlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveInventorySlot targetSlot, @NotNull ItemCount count) {
         if (!isValidItem()) {
             LOGGER.error("Dragging of illegal item detected.");
             return;
@@ -100,12 +100,12 @@ public final class InteractiveContainerSlot implements Draggable, DropTarget {
      * @param targetTile the target location on the map
      */
     @Override
-    public void dragTo(@Nonnull InteractiveMapTile targetTile, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveMapTile targetTile, @NotNull ItemCount count) {
         World.getNet().sendCommand(new DragScMapCmd(getContainerId(), getSlotId(), targetTile.getLocation(), count));
     }
 
     @Override
-    public void dragTo(@Nonnull InteractiveContainerSlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveContainerSlot targetSlot, @NotNull ItemCount count) {
         if (!isValidItem()) {
             LOGGER.error("Dragging of illegal item detected.");
             return;
@@ -131,7 +131,7 @@ public final class InteractiveContainerSlot implements Draggable, DropTarget {
         return parentSlot.getLocation();
     }
 
-    public boolean acceptItem(@Nonnull ItemId itemId) {
+    public boolean acceptItem(@NotNull ItemId itemId) {
         return !isValidItem() || itemId.equals(getItemId());
     }
 

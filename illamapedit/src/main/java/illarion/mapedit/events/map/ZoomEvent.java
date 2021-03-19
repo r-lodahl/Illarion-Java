@@ -16,8 +16,8 @@
 package illarion.mapedit.events.map;
 
 import illarion.mapedit.util.Vector2i;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 /**
  * @author Tim

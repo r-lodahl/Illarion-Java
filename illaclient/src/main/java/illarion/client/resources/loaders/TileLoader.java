@@ -20,13 +20,13 @@ import illarion.client.resources.data.TileTemplate;
 import illarion.common.graphics.TileInfo;
 import illarion.common.util.TableLoaderSink;
 import illarion.common.util.TableLoaderTiles;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Sprite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the tile definitions from the resource table that was created using the configuration
@@ -40,13 +40,13 @@ public final class TileLoader extends AbstractResourceLoader<TileTemplate>
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(TileLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The assets of the game engine that are required to load the data needed for the tiles.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -54,14 +54,14 @@ public final class TileLoader extends AbstractResourceLoader<TileTemplate>
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public TileLoader(@Nonnull Assets assets) {
+    public TileLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
     /**
      * Trigger the loading sequence for this loader.
      */
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<TileTemplate> call() {
         if (!hasTargetFactory()) {
@@ -85,7 +85,7 @@ public final class TileLoader extends AbstractResourceLoader<TileTemplate>
      * Handle a single line of the resource table.
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderTiles loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderTiles loader) {
         int id = loader.getTileId();
         int mode = loader.getTileMode();
         String name = loader.getResourceName();
@@ -120,7 +120,7 @@ public final class TileLoader extends AbstractResourceLoader<TileTemplate>
         try {
             TileTemplate template = new TileTemplate(id, tileSprite, frames, speed, info);
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             log.error("Failed adding tile to internal factory. ID: {} - Filename: {}", id, name);
         }
 

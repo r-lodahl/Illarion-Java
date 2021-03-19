@@ -17,14 +17,14 @@ package illarion.mapedit.resource.loaders;
 
 import illarion.mapedit.Lang;
 import illarion.mapedit.resource.Resource;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -32,7 +32,7 @@ import java.util.HashMap;
  */
 public final class ItemNameLoader implements Resource {
     private static final String ITEM_NAME_URL = "http://illarion.org/data/itemnames.php";
-    @Nonnull
+    @NotNull
     private static final ItemNameLoader INSTANCE = new ItemNameLoader();
 
     private final HashMap<Integer, String> itemNames;
@@ -49,7 +49,7 @@ public final class ItemNameLoader implements Resource {
     public void load() throws IOException {
         URL url = new URL(ITEM_NAME_URL);
         try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(),
-                Charset.forName("UTF-8")))) {
+                StandardCharsets.UTF_8))) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 String[] entry = inputLine.trim().split(",");
@@ -76,7 +76,7 @@ public final class ItemNameLoader implements Resource {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Item names";

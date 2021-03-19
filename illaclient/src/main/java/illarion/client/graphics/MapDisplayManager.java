@@ -15,14 +15,12 @@
  */
 package illarion.client.graphics;
 
-import illarion.client.IllaClient;
 import illarion.client.input.CurrentMouseLocationEvent;
 import illarion.client.world.World;
 import illarion.client.world.characters.CharacterAttribute;
 import illarion.common.memory.MemoryPools;
 import illarion.common.types.DisplayCoordinate;
 import org.illarion.engine.BackendBinding;
-import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
@@ -31,11 +29,10 @@ import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.effects.FogEffect;
 import org.illarion.engine.graphic.effects.GrayScaleEffect;
-import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The map display manager stores and manages all objects displayed on the map. It takes care for rendering the objects
@@ -49,12 +46,12 @@ public final class MapDisplayManager implements AnimatedMove {
      * Offset of the tiles due the perspective of the map view.
      */
     public static final int TILE_PERSPECTIVE_OFFSET = 3;
-    @Nonnull
+    @NotNull
     private final FadingCorridor corridor;
     /**
      * The scene the game is displayed in.
      */
-    @Nonnull
+    @NotNull
     private final Scene gameScene;
     private boolean active;
     @Nullable
@@ -71,10 +68,10 @@ public final class MapDisplayManager implements AnimatedMove {
     /**
      * The backend's window reference.
      */
-    @Nonnull
+    @NotNull
     private final Window window;
 
-    public MapDisplayManager(@Nonnull Assets assets, @Nonnull Window window) {
+    public MapDisplayManager(@NotNull Assets assets, @NotNull Window window) {
         this.window = window;
 
         active = false;
@@ -97,7 +94,7 @@ public final class MapDisplayManager implements AnimatedMove {
      *
      * @return the game scene
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Scene getGameScene() {
         return gameScene;
@@ -239,7 +236,7 @@ public final class MapDisplayManager implements AnimatedMove {
      *
      * @param location the location on the map the view is focused on
      */
-    public void setLocation(@Nonnull DisplayCoordinate location) {
+    public void setLocation(@NotNull DisplayCoordinate location) {
         origin = location;
     }
 
@@ -258,7 +255,7 @@ public final class MapDisplayManager implements AnimatedMove {
      * Animation implementation. Does the same as {@link #setLocation}
      */
     @Override
-    public void setPosition(@Nonnull DisplayCoordinate position) {
+    public void setPosition(@NotNull DisplayCoordinate position) {
         setLocation(position);
     }
 }

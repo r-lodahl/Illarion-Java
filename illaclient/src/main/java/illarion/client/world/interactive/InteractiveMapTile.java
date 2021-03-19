@@ -24,11 +24,11 @@ import illarion.client.world.items.ContainerSlot;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the interactive representation of a tile on the map.
@@ -53,7 +53,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
      *
      * @param tile the instance that shall be copied
      */
-    public InteractiveMapTile(@Nonnull InteractiveMapTile tile) {
+    public InteractiveMapTile(@NotNull InteractiveMapTile tile) {
         parentTile = tile.parentTile;
     }
 
@@ -80,13 +80,13 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
     /**
      * The logging instance that takes care for the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(InteractiveMapTile.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Drag something from a map tile to
      */
     @Override
-    public void dragTo(@Nonnull InteractiveChar targetChar, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveChar targetChar, @NotNull ItemCount count) {
         if (!canDrag()) {
             LOGGER.error("Finished dragging of tile that can't be dragged.");
             return;
@@ -101,7 +101,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
     }
 
     @Override
-    public void dragTo(@Nonnull InteractiveInventorySlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveInventorySlot targetSlot, @NotNull ItemCount count) {
         if (!canDrag()) {
             LOGGER.error("Finished dragging of tile that can't be dragged.");
             return;
@@ -123,7 +123,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
      * @param targetTile the tile to drag this tile to
      */
     @Override
-    public void dragTo(@Nonnull InteractiveMapTile targetTile, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveMapTile targetTile, @NotNull ItemCount count) {
         if (!canDrag()) {
             return;
         }
@@ -136,7 +136,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
     }
 
     @Override
-    public void dragTo(@Nonnull InteractiveContainerSlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveContainerSlot targetSlot, @NotNull ItemCount count) {
         if (!canDrag()) {
             return;
         }
@@ -173,7 +173,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
     /**
      * Request a look at on this tile.
      */
-    public void lookAt(@Nonnull Item lookAtItem) {
+    public void lookAt(@NotNull Item lookAtItem) {
         int index = parentTile.getItemIndex(lookAtItem);
         if (index == -1) {
             return;
@@ -186,7 +186,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
      *
      * @return the location of this tile
      */
-    @Nonnull
+    @NotNull
     public ServerCoordinate getLocation() {
         return parentTile.getCoordinates();
     }
@@ -198,7 +198,7 @@ public class InteractiveMapTile implements Draggable, DropTarget, Usable {
      */
     @Override
     public boolean isInUseRange() {
-        @Nonnull ServerCoordinate playerLocation = World.getPlayer().getMovementHandler().getServerLocation();
+        @NotNull ServerCoordinate playerLocation = World.getPlayer().getMovementHandler().getServerLocation();
         if (playerLocation.getZ() == getLocation().getZ()) {
             return playerLocation.getStepDistance(getLocation()) <= getUseRange();
         }

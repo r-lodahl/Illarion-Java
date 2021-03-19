@@ -17,8 +17,8 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the implementation of a texture that stores a libGDX texture.
@@ -29,10 +29,10 @@ class GdxTexture implements Texture {
     /**
      * The internal texture that is wrapped by this engine texture.
      */
-    @Nonnull
+    @NotNull
     private final TextureRegion backingTexture;
 
-    GdxTexture(@Nonnull TextureRegion backingTexture) {
+    GdxTexture(@NotNull TextureRegion backingTexture) {
         this.backingTexture = backingTexture;
     }
 
@@ -41,7 +41,7 @@ class GdxTexture implements Texture {
         // nothing to do
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Texture getSubTexture(int x, int y, int width, int height) {
         return new GdxTexture(new TextureRegion(backingTexture, x, y, width, height));
@@ -57,7 +57,7 @@ class GdxTexture implements Texture {
         return backingTexture.getRegionWidth();
     }
 
-    @Nonnull
+    @NotNull
     public TextureRegion getTextureRegion() {
         return backingTexture;
     }

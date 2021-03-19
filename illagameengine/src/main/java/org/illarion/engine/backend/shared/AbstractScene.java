@@ -16,17 +16,17 @@
 package org.illarion.engine.backend.shared;
 
 import illarion.common.memory.MemoryPools;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.SceneElement;
 import org.illarion.engine.graphic.SceneEvent;
 import org.illarion.engine.graphic.effects.SceneEffect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -40,24 +40,24 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     /**
      * The logger of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractScene.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * This list of elements in the scene. This list is kept sorted.
      */
-    @Nonnull
+    @NotNull
     private final List<SceneElement> sceneElements;
 
     /**
      * This is the queue of events that are published during the updates.
      */
-    @Nonnull
+    @NotNull
     private final Queue<SceneEvent> eventQueue;
 
     /**
      * The list of effects applied to this scene.
      */
-    @Nonnull
+    @NotNull
     private final List<T> sceneEffects;
 
     /**
@@ -77,7 +77,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     }
 
     @Nullable
-    private static <T> T getFromArray(@Nonnull T[] array, int index) {
+    private static <T> T getFromArray(@NotNull T[] array, int index) {
         if (index >= array.length) {
             return null;
         }
@@ -85,12 +85,12 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     }
 
     @Override
-    public int compare(@Nonnull SceneElement o1, @Nonnull SceneElement o2) {
+    public int compare(@NotNull SceneElement o1, @NotNull SceneElement o2) {
         return Integer.compare(o2.getOrder(), o1.getOrder());
     }
 
     @Override
-    public final void addElement(@Nonnull SceneElement element) {
+    public final void addElement(@NotNull SceneElement element) {
         synchronized (sceneElements) {
             int insertIndex = Collections.binarySearch(sceneElements, element, this);
             if (insertIndex < 0) {
@@ -102,7 +102,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     }
 
     @Override
-    public final void updateElementLocation(@Nonnull SceneElement element) {
+    public final void updateElementLocation(@NotNull SceneElement element) {
         synchronized (sceneElements) {
             // If element is not found, insertIndex = (where the element should be added * -1) - 1
             int insertIndex = Collections.binarySearch(sceneElements, element, this);
@@ -119,7 +119,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     }
 
     @Override
-    public final void removeElement(@Nonnull SceneElement element) {
+    public final void removeElement(@NotNull SceneElement element) {
         synchronized (sceneElements) {
             sceneElements.remove(element);
         }
@@ -171,7 +171,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
      *
      * @param graphics the graphics instance that is used to render the game
      */
-    protected final void renderScene(@Nonnull Graphics graphics) {
+    protected final void renderScene(@NotNull Graphics graphics) {
         SceneElement[] sceneElementArray = workingArray;
         if (sceneElementArray == null) {
             return;
@@ -185,28 +185,28 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
     }
 
     @Override
-    public final void publishEvent(@Nonnull SceneEvent event) {
+    public final void publishEvent(@NotNull SceneEvent event) {
         eventQueue.offer(event);
     }
 
     @Override
-    public void addEffect(@Nonnull SceneEffect effect) {
+    public void addEffect(@NotNull SceneEffect effect) {
         try {
             @SuppressWarnings("unchecked") T sceneEffect = (T) effect;
             if (!sceneEffects.contains(sceneEffect)) {
                 sceneEffects.add(sceneEffect);
             }
-        } catch (@Nonnull ClassCastException e) {
+        } catch (@NotNull ClassCastException e) {
             // illegal type
         }
     }
 
     @Override
-    public void removeEffect(@Nonnull SceneEffect effect) {
+    public void removeEffect(@NotNull SceneEffect effect) {
         try {
             @SuppressWarnings("unchecked") T sceneEffect = (T) effect;
             sceneEffects.remove(sceneEffect);
-        } catch (@Nonnull ClassCastException e) {
+        } catch (@NotNull ClassCastException e) {
             // illegal type
         }
     }
@@ -227,7 +227,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
      * @param index the index of the effect
      * @return the scene effect
      */
-    @Nonnull
+    @NotNull
     protected final T getEffect(int index) {
         return Objects.requireNonNull(sceneEffects.get(index));
     }

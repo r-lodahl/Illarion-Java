@@ -19,8 +19,8 @@ import illarion.easynpc.data.PlayerLanguage;
 import illarion.easynpc.parsed.talk.TalkCondition;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -57,7 +57,7 @@ public final class ConditionLanguage implements TalkCondition {
     /**
      * Get the LUA module needed for this condition.
      */
-    @Nonnull
+    @NotNull
     @Override
     public String getLuaModule() {
         return LUA_MODULE;
@@ -67,7 +67,7 @@ public final class ConditionLanguage implements TalkCondition {
      * Write the LUA code needed for this language condition.
      */
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires) throws IOException {
         target.write(String.format(LUA_CODE, requires.getStorage(LUA_MODULE), lang.name()));
     }
 }

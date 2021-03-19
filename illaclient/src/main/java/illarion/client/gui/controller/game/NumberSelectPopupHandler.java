@@ -26,11 +26,11 @@ import de.lessvoid.nifty.input.NiftyStandardInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import illarion.client.world.World;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
 /**
@@ -61,8 +61,8 @@ public final class NumberSelectPopupHandler implements ScreenController {
     /**
      * The logging instance for this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(NumberSelectPopupHandler.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The parent instance of Nifty-GUI.
@@ -97,7 +97,7 @@ public final class NumberSelectPopupHandler implements ScreenController {
     private int minNumber;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         parentNifty = nifty;
         parentScreen = screen;
     }
@@ -115,7 +115,7 @@ public final class NumberSelectPopupHandler implements ScreenController {
      * @param callback the callback that is called in case the user interacts with the popup
      */
     public void requestNewPopup(
-            int minValue, int maxValue, @Nonnull Callback callback) {
+            int minValue, int maxValue, @NotNull Callback callback) {
         World.getUpdateTaskManager().addTask((delta) -> internalCreateNewPopup(minValue, maxValue, callback));
     }
 
@@ -127,7 +127,7 @@ public final class NumberSelectPopupHandler implements ScreenController {
      * @param callback the callback that is called in case the user interacts with the popup
      */
     private void internalCreateNewPopup(
-            int minValue, int maxValue, @Nonnull Callback callback) {
+            int minValue, int maxValue, @NotNull Callback callback) {
         cancelActivePopup();
 
         activePopup = parentNifty.createPopup("numberSelect");
@@ -143,10 +143,10 @@ public final class NumberSelectPopupHandler implements ScreenController {
         textField.enableInputFilter(new InputFilter(textField, maxValue, minValue));
 
         textField.setFormat(new TextFieldDisplayFormat() {
-            @Nonnull
+            @NotNull
             @Override
             public CharSequence getDisplaySequence(
-                    @Nonnull CharSequence original, int start, int end) {
+                    @NotNull CharSequence original, int start, int end) {
                 if (original.length() == 0) {
                     return Integer.toString(minValue);
                 }
@@ -331,19 +331,19 @@ public final class NumberSelectPopupHandler implements ScreenController {
     }
 
     private static class InputFilter implements TextFieldInputFilter {
-        @Nonnull
+        @NotNull
         private final TextField textField;
         private final int maxValue;
         private final int minValue;
 
-        public InputFilter(@Nonnull TextField textField, int maxValue, int minValue) {
+        public InputFilter(@NotNull TextField textField, int maxValue, int minValue) {
             this.textField = textField;
             this.maxValue = maxValue;
             this.minValue = minValue;
         }
 
         @Override
-        public boolean acceptInput(int index, @Nonnull CharSequence newChars) {
+        public boolean acceptInput(int index, @NotNull CharSequence newChars) {
             try (IntStream newCharStream = newChars.chars()) {
                 if (!newCharStream.allMatch(Character::isDigit)) {
                     return false;
@@ -369,7 +369,7 @@ public final class NumberSelectPopupHandler implements ScreenController {
             return isValidNumber(buffer);
         }
 
-        private boolean isValidNumber(@Nonnull CharSequence sequence) {
+        private boolean isValidNumber(@NotNull CharSequence sequence) {
             String text = sequence.toString();
             int value = Integer.parseInt(text);
             return !((value > maxValue) || (value < minValue));

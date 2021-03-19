@@ -17,9 +17,9 @@ package illarion.common.config.entries;
 
 import illarion.common.config.Config;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -41,13 +41,13 @@ public final class DirectoryEntry implements ConfigEntry {
     /**
      * The key in the configuration that is handled by this configuration.
      */
-    @Nonnull
+    @NotNull
     private final String configEntry;
 
     /**
      * The directory that is displayed by default.
      */
-    @Nonnull
+    @NotNull
     private final String dir;
 
     /**
@@ -57,7 +57,7 @@ public final class DirectoryEntry implements ConfigEntry {
      * @param defaultDir the default directory that is opened in case no file is
      * selected
      */
-    public DirectoryEntry(@Nonnull String entry, @Nullable String defaultDir) {
+    public DirectoryEntry(@NotNull String entry, @Nullable String defaultDir) {
         configEntry = entry;
         dir = Objects.requireNonNull((defaultDir == null) ? System.getProperty("user.home") : defaultDir);
     }
@@ -67,7 +67,7 @@ public final class DirectoryEntry implements ConfigEntry {
      *
      * @return the directory displayed by default
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getDefaultDir() {
         return dir;
@@ -94,7 +94,7 @@ public final class DirectoryEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 
@@ -103,7 +103,7 @@ public final class DirectoryEntry implements ConfigEntry {
      *
      * @param newValue the new configuration value
      */
-    public void setValue(@Nonnull Path newValue) {
+    public void setValue(@NotNull Path newValue) {
         if (cfg == null) {
             throw new IllegalStateException("There is no reference to the configuration system set.");
         }

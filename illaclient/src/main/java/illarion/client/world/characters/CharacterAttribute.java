@@ -15,7 +15,8 @@
  */
 package illarion.client.world.characters;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This enumerator contains the attributes of a character the client is able to monitor.
@@ -44,7 +45,7 @@ public enum CharacterAttribute {
     /**
      * The name for the attribute that is used by the server.
      */
-    @Nonnull
+    @NotNull
     private final String serverName;
 
     /**
@@ -52,7 +53,7 @@ public enum CharacterAttribute {
      *
      * @param serverName the name used by the server to refer to this attribute
      */
-    CharacterAttribute(@Nonnull String serverName) {
+    CharacterAttribute(@NotNull String serverName) {
         this.serverName = serverName;
     }
 
@@ -61,7 +62,7 @@ public enum CharacterAttribute {
      *
      * @return the name used by the server to refer to this attribute
      */
-    @Nonnull
+    @NotNull
     public String getServerName() {
         return serverName;
     }

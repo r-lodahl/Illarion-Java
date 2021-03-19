@@ -18,9 +18,9 @@ package illarion.client.gui;
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.ImmutableColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interface is used to control the mini map.
@@ -37,15 +37,15 @@ public interface MiniMapGui {
          *
          * @param coordinate the location this pointer is supposed to point to
          */
-        void setTarget(@Nonnull ServerCoordinate coordinate);
+        void setTarget(@NotNull ServerCoordinate coordinate);
 
         /**
          * The color that is supposed to be applied to the pointers.
          */
-        @Nonnull
+        @NotNull
         Color POINTER_COLOR = new ImmutableColor(255, 166, 102, 255);
 
-        @Nonnull
+        @NotNull
         Color ACTIVEPOINTER_COLOR = new ImmutableColor(255, 0, 0, 255);
 
         /**
@@ -61,7 +61,7 @@ public interface MiniMapGui {
      *
      * @return the new pointer
      */
-    @Nonnull
+    @NotNull
     Pointer createTargetPointer();
 
     /**
@@ -69,7 +69,7 @@ public interface MiniMapGui {
      *
      * @return the quest start pointer
      */
-    @Nonnull
+    @NotNull
     Pointer createStartPointer(boolean available);
 
     /**
@@ -84,7 +84,7 @@ public interface MiniMapGui {
      *
      * @param pointer the pointer to be added
      */
-    void addPointer(@Nonnull Pointer pointer);
+    void addPointer(@NotNull Pointer pointer);
 
     /**
      * Allows to toggle between showing and hiding minimap

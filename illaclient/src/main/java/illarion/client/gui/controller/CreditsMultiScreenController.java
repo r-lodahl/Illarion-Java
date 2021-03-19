@@ -28,9 +28,9 @@ import illarion.client.util.Lang;
 import illarion.common.data.Credits;
 import illarion.common.data.CreditsList;
 import illarion.common.data.CreditsPerson;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -48,7 +48,7 @@ public final class CreditsMultiScreenController implements ScreenController, Key
     private Element namesPanel;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -63,7 +63,7 @@ public final class CreditsMultiScreenController implements ScreenController, Key
         showNextEntry(creditsIterator);
     }
 
-    private void showNextEntry(@Nonnull Iterator<CreditsList> iterator) {
+    private void showNextEntry(@NotNull Iterator<CreditsList> iterator) {
         if (!iterator.hasNext()) {
             gotoNextScreen();
             return;
@@ -103,7 +103,7 @@ public final class CreditsMultiScreenController implements ScreenController, Key
     }
 
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         if (inputEvent == NiftyStandardInputEvent.Escape) {
             nifty.gotoScreen("login");
             return true;

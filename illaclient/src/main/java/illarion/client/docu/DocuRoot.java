@@ -16,8 +16,8 @@
 package illarion.client.docu;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,9 +26,9 @@ import java.util.List;
  * @author Fredrik K
  */
 public final class DocuRoot implements Iterable<DocuEntry> {
-    @Nonnull
+    @NotNull
     private static final DocuRoot INSTANCE = new DocuRoot();
-    @Nonnull
+    @NotNull
     private final List<DocuEntry> types;
 
     private DocuRoot() {
@@ -40,7 +40,7 @@ public final class DocuRoot implements Iterable<DocuEntry> {
         types.add(createInChatDocu());
     }
 
-    @Nonnull
+    @NotNull
     private static DocuEntry createMouseControlDocu() {
         DocuNode docu = new DocuNode("mouse");
         docu.addChild("clickLeft");
@@ -53,7 +53,7 @@ public final class DocuRoot implements Iterable<DocuEntry> {
         return docu;
     }
 
-    @Nonnull
+    @NotNull
     private static DocuEntry createKeyboardControlDocu() {
         DocuNode docu = new DocuNode("keys");
         docu.addChild("return");
@@ -65,7 +65,7 @@ public final class DocuRoot implements Iterable<DocuEntry> {
         return docu;
     }
 
-    @Nonnull
+    @NotNull
     private static DocuEntry createNoChatDocu() {
         DocuNode docu = new DocuNode("noChat");
         docu.addChild("space");
@@ -86,7 +86,7 @@ public final class DocuRoot implements Iterable<DocuEntry> {
         return docu;
     }
 
-    @Nonnull
+    @NotNull
     private static DocuEntry createInChatDocu() {
         DocuNode docu = new DocuNode("inChat");
         docu.addChild("iCommand");
@@ -103,13 +103,13 @@ public final class DocuRoot implements Iterable<DocuEntry> {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static DocuRoot getInstance() {
         return INSTANCE;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<DocuEntry> iterator() {
         return types.iterator();

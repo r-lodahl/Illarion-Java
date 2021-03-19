@@ -18,9 +18,9 @@ package illarion.mapedit.tools.panel.cellrenderer;
 import illarion.mapedit.data.MapItem;
 import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.resource.loaders.ItemLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,9 +31,9 @@ public class MapItemCellRenderer extends JPanel implements ListCellRenderer<MapI
     private static final Color COLOR_SELECTED = new Color(-6100481);
     private static final Color COLOR_UNSELECTED = new Color(-1246977);
 
-    @Nonnull
+    @NotNull
     private final JLabel itemId;
-    @Nonnull
+    @NotNull
     private final JLabel name;
 
     public MapItemCellRenderer() {
@@ -46,7 +46,7 @@ public class MapItemCellRenderer extends JPanel implements ListCellRenderer<MapI
         add(name);
     }
 
-    private static void adjustColors(@Nullable Color bg, @Nonnull Component... components) {
+    private static void adjustColors(@Nullable Color bg, @NotNull Component... components) {
         for (Component component : components) {
             if (bg != null) {
                 component.setBackground(bg);
@@ -54,7 +54,7 @@ public class MapItemCellRenderer extends JPanel implements ListCellRenderer<MapI
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Component getListCellRendererComponent(
             JList<? extends MapItem> list,

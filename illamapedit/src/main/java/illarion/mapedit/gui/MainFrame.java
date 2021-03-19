@@ -39,13 +39,13 @@ import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXStatusBar;
 import org.jdesktop.swingx.JXStatusBar.Constraint;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -61,9 +61,9 @@ public class MainFrame extends JRibbonFrame {
     private static final Dimension WINDOW_SIZE = new Dimension(1000, 700);
     private static MainFrame instance;
 
-    @Nonnull
+    @NotNull
     private final MapPanel mapPanel;
-    @Nonnull
+    @NotNull
     private final ToolSettingsPanel settingsPanel;
     private final OpenMapPanel filePanel;
 
@@ -109,7 +109,7 @@ public class MainFrame extends JRibbonFrame {
         JXLabel worldCoordinates = new JXLabel();
         EventBus.subscribeStrongly(MapPositionEvent.class, new EventSubscriber<MapPositionEvent>() {
             @Override
-            public void onEvent(@Nonnull MapPositionEvent event) {
+            public void onEvent(@NotNull MapPositionEvent event) {
                 mapCoordinates.setText(Lang.getMsg("gui.mainframe.status.mapCoord") + ": " + event.getMapX() +
                                                ',' + event.getMapY());
                 worldCoordinates.setText(Lang.getMsg("gui.mainframe.status.worldCoord") + ": " + event.getWorldX() +
@@ -135,12 +135,12 @@ public class MainFrame extends JRibbonFrame {
         MapEditorConfig.getInstance().setWindowSize(getSize());
     }
 
-    @Nonnull
+    @NotNull
     public RendererManager getRendererManager() {
         return mapPanel.getRenderManager();
     }
 
-    @Nonnull
+    @NotNull
     private static Dimension getSavedDimension() {
         Dimension windowSize = MapEditorConfig.getInstance().getWindowSize();
         if ((windowSize.getHeight() == 0) || (windowSize.getWidth() == 0)) {
@@ -149,13 +149,13 @@ public class MainFrame extends JRibbonFrame {
         return windowSize;
     }
 
-    @Nonnull
+    @NotNull
     public static JCommandToggleButton getToggleButton(
             String text, String icon, int key, String action) {
         return getToggleButton(text, icon, key, action, false);
     }
 
-    @Nonnull
+    @NotNull
     public static JCommandToggleButton getToggleButton(
             String text, String icon, int key, String action, boolean shift) {
         JCommandToggleButton commandButton = new JCommandToggleButton(Lang.getMsg(text),
@@ -166,7 +166,7 @@ public class MainFrame extends JRibbonFrame {
     }
 
     private static void setAction(
-            @Nonnull AbstractCommandButton commandButton,
+            @NotNull AbstractCommandButton commandButton,
             int key,
             String action,
             boolean shift) {
@@ -181,13 +181,13 @@ public class MainFrame extends JRibbonFrame {
         commandButton.getActionMap().put(action, new BandClickAction(commandButton));
     }
 
-    @Nonnull
+    @NotNull
     public static JCommandButton getCommandButton(
             String text, String icon, int key, String action) {
         return getCommandButton(text, icon, key, action, false);
     }
 
-    @Nonnull
+    @NotNull
     public static JCommandButton getCommandButton(
             String text, String icon, int key, String action, boolean shift) {
         JCommandButton commandButton = new JCommandButton(Lang.getMsg(text), ImageLoader.getResizableIcon(icon));
@@ -197,7 +197,7 @@ public class MainFrame extends JRibbonFrame {
     }
 
     @org.bushe.swing.event.annotation.EventSubscriber
-    public void onMapLoadError(@Nonnull MapLoadErrorEvent e) {
+    public void onMapLoadError(@NotNull MapLoadErrorEvent e) {
         showMessageDialog(e.getMessage());
     }
 
@@ -207,7 +207,7 @@ public class MainFrame extends JRibbonFrame {
     }
 
     @EventTopicSubscriber(topic = MapEditorConfig.USED_LANGUAGE)
-    public void onConfigLanguageChanged(String topic, @Nonnull ConfigChangedEvent event) {
+    public void onConfigLanguageChanged(String topic, @NotNull ConfigChangedEvent event) {
         JOptionPane optionPane = new JOptionPane(Lang.getMsg("gui.LocaleChanged"),
                                                        JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = optionPane.createDialog(getInstance(), Lang.getMsg("gui.info"));
@@ -216,7 +216,7 @@ public class MainFrame extends JRibbonFrame {
     }
 
     @EventTopicSubscriber(topic = MapEditorConfig.USE_WINDOW_DECO)
-    public void onConfigWindowDecoChanged(String topic, @Nonnull ConfigChangedEvent event) {
+    public void onConfigWindowDecoChanged(String topic, @NotNull ConfigChangedEvent event) {
         JOptionPane optionPane = new JOptionPane(Lang.getMsg("gui.LocaleChanged"),
                                                        JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = optionPane.createDialog(getInstance(), Lang.getMsg("gui.info"));

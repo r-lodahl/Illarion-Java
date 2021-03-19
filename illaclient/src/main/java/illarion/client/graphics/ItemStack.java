@@ -19,34 +19,34 @@ import illarion.client.input.AbstractMouseLocationEvent;
 import illarion.client.world.World;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.SceneEvent;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ItemStack implements DisplayItem, List<Item> {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ItemStack.class);
-    @Nonnull
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
     private final List<Item> items;
-    @Nonnull
+    @NotNull
     private final Rectangle interactiveRectangle;
-    @Nonnull
+    @NotNull
     private final DisplayCoordinate stackLocation;
-    @Nonnull
+    @NotNull
     private final ReadWriteLock lock;
     private boolean shown;
     private boolean rectangleDirty;
 
-    public ItemStack(@Nonnull DisplayCoordinate location) {
+    public ItemStack(@NotNull DisplayCoordinate location) {
         shown = false;
         items = new ArrayList<>();
         rectangleDirty = false;
@@ -57,7 +57,7 @@ public class ItemStack implements DisplayItem, List<Item> {
         lock = new ReentrantReadWriteLock();
     }
 
-    @Nonnull
+    @NotNull
     public ReadWriteLock getLock() {
         return lock;
     }
@@ -125,7 +125,7 @@ public class ItemStack implements DisplayItem, List<Item> {
         }
     }
 
-    @Nonnull
+    @NotNull
     public Item getTopItem() {
         lock.readLock().lock();
         try {
@@ -161,7 +161,7 @@ public class ItemStack implements DisplayItem, List<Item> {
         }
     }
 
-    private void postProcessItemInsert(int index, @Nonnull Item newItem) {
+    private void postProcessItemInsert(int index, @NotNull Item newItem) {
         int elevation = (index > 0) ? getElevationForIndex(index - 1) : 0;
         setScreenPos(newItem, elevation);
         if (newItem.getTemplate().getItemInfo().getLevel() != 0) {
@@ -181,7 +181,7 @@ public class ItemStack implements DisplayItem, List<Item> {
         newItem.show(this);
     }
 
-    private void postProcessItemRemove(@Nonnull Item removedItem) {
+    private void postProcessItemRemove(@NotNull Item removedItem) {
         if (items.isEmpty()) {
             hide();
         } else {
@@ -199,7 +199,7 @@ public class ItemStack implements DisplayItem, List<Item> {
         removedItem.hide();
     }
 
-    private void setScreenPos(@Nonnull Item item, int elevation) {
+    private void setScreenPos(@NotNull Item item, int elevation) {
         if (elevation == 0) {
             item.setScreenPos(stackLocation);
         } else {
@@ -213,7 +213,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public void render(@Nonnull Graphics graphics) {
+    public void render(@NotNull Graphics graphics) {
         lock.readLock().lock();
         try {
             for (Item item : items) {
@@ -242,7 +242,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @NotNull SceneEvent event) {
         if (interactiveRectangle.isEmpty()) {
             return false;
         }
@@ -287,13 +287,13 @@ public class ItemStack implements DisplayItem, List<Item> {
         return items.contains(o);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<Item> iterator() {
         return items.iterator();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Object[] toArray() {
         lock.readLock().lock();
@@ -305,9 +305,9 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @SuppressWarnings("SuspiciousToArrayCall")
-    @Nonnull
+    @NotNull
     @Override
-    public <T> T[] toArray(@Nonnull T[] a) {
+    public <T> T[] toArray(@NotNull T[] a) {
         lock.readLock().lock();
         try {
             return items.toArray(a);
@@ -317,7 +317,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean add(@Nonnull Item e) {
+    public boolean add(@NotNull Item e) {
         lock.writeLock().lock();
         try {
             if (items.add(e)) {
@@ -331,7 +331,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean remove(@Nonnull Object o) {
+    public boolean remove(@NotNull Object o) {
         lock.writeLock().lock();
         try {
             if (items.remove(o)) {
@@ -345,7 +345,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean containsAll(@Nonnull Collection<?> c) {
+    public boolean containsAll(@NotNull Collection<?> c) {
         lock.readLock().lock();
         try {
             return items.containsAll(c);
@@ -355,7 +355,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean addAll(@Nonnull Collection<? extends Item> c) {
+    public boolean addAll(@NotNull Collection<? extends Item> c) {
         boolean result = false;
         lock.writeLock().lock();
         try {
@@ -371,7 +371,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean addAll(int index, @Nonnull Collection<? extends Item> c) {
+    public boolean addAll(int index, @NotNull Collection<? extends Item> c) {
         int indexCounter = index;
         lock.writeLock().lock();
         try {
@@ -386,7 +386,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean removeAll(@Nonnull Collection<?> c) {
+    public boolean removeAll(@NotNull Collection<?> c) {
         boolean result = false;
         lock.writeLock().lock();
         try {
@@ -402,7 +402,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public boolean retainAll(@Nonnull Collection<?> c) {
+    public boolean retainAll(@NotNull Collection<?> c) {
         throw new UnsupportedOperationException();
     }
 
@@ -419,7 +419,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Item get(int index) {
         lock.readLock().lock();
         try {
@@ -431,7 +431,7 @@ public class ItemStack implements DisplayItem, List<Item> {
 
     @Nullable
     @Override
-    public Item set(int index, @Nonnull Item element) {
+    public Item set(int index, @NotNull Item element) {
         Item oldItem;
         lock.writeLock().lock();
         try {
@@ -447,7 +447,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    public void add(int index, @Nonnull Item element) {
+    public void add(int index, @NotNull Item element) {
         lock.writeLock().lock();
         try {
             items.add(index, element);
@@ -458,7 +458,7 @@ public class ItemStack implements DisplayItem, List<Item> {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Item remove(int index) {
         Item removedItem;
         lock.writeLock().lock();
@@ -492,19 +492,19 @@ public class ItemStack implements DisplayItem, List<Item> {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ListIterator<Item> listIterator() {
         return items.listIterator();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ListIterator<Item> listIterator(int index) {
         return items.listIterator(index);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Item> subList(int fromIndex, int toIndex) {
         lock.readLock().lock();

@@ -18,8 +18,8 @@ package illarion.client.resources;
 import illarion.client.resources.data.ItemTemplate;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The Item factory loads creates and stores all instances of the item class
@@ -32,7 +32,7 @@ public final class ItemFactory extends AbstractTemplateFactory<ItemTemplate> {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final ItemFactory INSTANCE = new ItemFactory();
 
     /**
@@ -45,7 +45,7 @@ public final class ItemFactory extends AbstractTemplateFactory<ItemTemplate> {
      *
      * @return the singleton instance of this factory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static ItemFactory getInstance() {
         return INSTANCE;
@@ -58,9 +58,9 @@ public final class ItemFactory extends AbstractTemplateFactory<ItemTemplate> {
         super(DEFAULT_ITEM_ID);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    public ItemTemplate getTemplate(@Nonnull ItemId id) {
+    public ItemTemplate getTemplate(@NotNull ItemId id) {
         return getTemplate(id.getValue());
     }
 }

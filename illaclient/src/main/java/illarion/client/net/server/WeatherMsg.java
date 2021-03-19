@@ -21,8 +21,8 @@ import illarion.client.world.Weather;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -74,7 +74,7 @@ public final class WeatherMsg implements ServerReply {
     private byte wind;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         clouds = reader.readUByte();
         fog = reader.readUByte();
         wind = reader.readByte();
@@ -85,7 +85,7 @@ public final class WeatherMsg implements ServerReply {
         temperature = reader.readByte();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         Weather weather = World.getWeather();
@@ -97,7 +97,7 @@ public final class WeatherMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

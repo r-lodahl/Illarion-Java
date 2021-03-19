@@ -19,9 +19,9 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.illarion.engine.backend.shared.AbstractFontManager;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -33,13 +33,13 @@ class GdxFontManager extends AbstractFontManager {
     /**
      * The file system handler of libGDX.
      */
-    @Nonnull
+    @NotNull
     private final Files files;
 
     /**
      * The texture manager used to receive the textures that contain the glyphs.
      */
-    @Nonnull
+    @NotNull
     private final GdxTextureManager textureManager;
 
     /**
@@ -48,14 +48,14 @@ class GdxFontManager extends AbstractFontManager {
      * @param files the file system handler of libGDX that should be used to load the font data
      * @param textureManager the texture manager that supplies the texture data
      */
-    GdxFontManager(@Nonnull Files files, @Nonnull GdxTextureManager textureManager) {
+    GdxFontManager(@NotNull Files files, @NotNull GdxTextureManager textureManager) {
         this.files = files;
         this.textureManager = textureManager;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    protected Font buildFont(@Nonnull String fntRef, @Nonnull String imageRoot, @Nullable Font outlineFont)
+    protected Font buildFont(@NotNull String fntRef, @NotNull String imageRoot, @Nullable Font outlineFont)
             throws IOException {
         String imageName = getImageName(fntRef);
         GdxTexture imageTexture = (GdxTexture) textureManager.getTexture(imageRoot, imageName);

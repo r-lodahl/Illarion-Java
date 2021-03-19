@@ -16,17 +16,14 @@
 package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.controls.Window;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This interface is used to interact with a select dialog that is displayed inside the GUI.
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@NotThreadSafe
 public interface DialogSelect extends Window {
     /**
      * Get the amount of entries on the list.
@@ -55,5 +52,5 @@ public interface DialogSelect extends Window {
      *
      * @param entry the item to add
      */
-    void addItem(@Nonnull SelectListEntry entry);
+    void addItem(@NotNull SelectListEntry entry);
 }

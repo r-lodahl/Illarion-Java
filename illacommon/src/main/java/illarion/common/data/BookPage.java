@@ -16,14 +16,14 @@
 package illarion.common.data;
 
 import illarion.common.data.BookPageEntry.Align;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,12 +34,12 @@ import java.util.List;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class BookPage implements Iterable<BookPageEntry> {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(BookPage.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * The list of entries on this page.
      */
-    @Nonnull
+    @NotNull
     private final List<BookPageEntry> entries;
 
     /**
@@ -55,7 +55,7 @@ public final class BookPage implements Iterable<BookPageEntry> {
      * @param source the XML node that supplies the data
      */
     @SuppressWarnings({"OverlyComplexMethod", "OverlyLongMethod"})
-    public BookPage(@Nonnull Node source) {
+    public BookPage(@NotNull Node source) {
         this();
         NodeList children = source.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -106,7 +106,7 @@ public final class BookPage implements Iterable<BookPageEntry> {
      * @param node the node
      * @return the value of the node or a empty string
      */
-    @Nonnull
+    @NotNull
     private static String getNodeValue(@Nullable Node node) {
         if (node == null) {
             return "";
@@ -122,7 +122,7 @@ public final class BookPage implements Iterable<BookPageEntry> {
         return Boolean.parseBoolean(getNodeValue(node));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<BookPageEntry> iterator() {
         return entries.iterator();

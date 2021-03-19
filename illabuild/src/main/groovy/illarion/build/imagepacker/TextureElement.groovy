@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.build.imagepacker;
+package illarion.build.imagepacker
 
 /**
  * This interface defined in general elements that located on a texture along with all required information about them.
@@ -24,29 +24,29 @@ abstract class TextureElement {
     /**
      * The height of the texture element
      */
-    def int height
+    int height
 
     /**
      * The width of the texture element
      */
-    def int width
+    int width
 
     /**
      * The X coordinate of the origin of this texture element.
      */
-    def int x
+    int x
 
     /**
      * The Y coordinate of the origin of this texture element.
      */
-    def int y
+    int y
 
     TextureElement() {}
 
     TextureElement(final int x, final int y, final int height, final int width) {
-        this.x = x;
-        this.y = y;
-        this.height = height;
-        this.width = width;
+        this.x = x
+        this.y = y
+        this.height = height
+        this.width = width
     }
 }

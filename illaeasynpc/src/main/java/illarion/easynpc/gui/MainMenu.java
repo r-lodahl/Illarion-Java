@@ -18,20 +18,21 @@ package illarion.easynpc.gui;
 import illarion.common.config.ConfigDialog;
 import illarion.common.config.gui.ConfigDialogSwing;
 import illarion.easynpc.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 /**
@@ -44,7 +45,7 @@ final class MainMenu extends RibbonApplicationMenu {
     /**
      * Constructor of the main menu that loads up the menu.
      */
-    public MainMenu(@Nonnull MainFrame frame) {
+    public MainMenu(@NotNull MainFrame frame) {
 
         RibbonApplicationMenuEntryPrimary newScriptEntry = new RibbonApplicationMenuEntryPrimary(
                 Utils.getResizableIconFromResource("filenew.png"), Lang.getMsg(getClass(), "newScriptButton"),
@@ -73,7 +74,7 @@ final class MainMenu extends RibbonApplicationMenu {
             workingEntries[entryIndex] = new RibbonApplicationMenuEntrySecondary(
                     Utils.getResizableIconFromResource("source.png"), openFile.getFileName().toString(),
                     new ActionListener() {
-                        @Nonnull
+                        @NotNull
                         private final Path fileToOpen = openFile;
 
                         @Override
@@ -149,7 +150,7 @@ final class MainMenu extends RibbonApplicationMenu {
     }
 
     @Nullable
-    private static String loadTemplate(@Nonnull String templateName) {
+    private static String loadTemplate(@NotNull String templateName) {
         String templateFileName = templateName + ".npc";
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         try {
@@ -159,7 +160,7 @@ final class MainMenu extends RibbonApplicationMenu {
             }
             StringBuilder sb = new StringBuilder();
             try (BufferedReader stream = new BufferedReader(
-                    new InputStreamReader(templateURL.openStream(), "ISO-8859-1"))) {
+                    new InputStreamReader(templateURL.openStream(), StandardCharsets.ISO_8859_1))) {
                 String line = stream.readLine();
                 while (line != null) {
                     sb.append(line);
@@ -170,7 +171,7 @@ final class MainMenu extends RibbonApplicationMenu {
                 }
             }
             return sb.toString();
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             return null;
         }
     }

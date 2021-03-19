@@ -16,9 +16,8 @@
 package illarion.common.data;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,18 +27,17 @@ import java.util.List;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
 public final class SkillGroup {
     /**
      * The english name of the skill.
      */
-    @Nonnull
+    @NotNull
     private final String nameEnglish;
 
     /**
      * The german name of the skill.
      */
-    @Nonnull
+    @NotNull
     private final String nameGerman;
 
     /**
@@ -50,7 +48,7 @@ public final class SkillGroup {
     /**
      * The list of skills that belong to this group.
      */
-    @Nonnull
+    @NotNull
     private final List<Skill> skills;
 
     /**
@@ -59,7 +57,7 @@ public final class SkillGroup {
      * @param german the german name of the group
      * @param english the english name of the group
      */
-    public SkillGroup(int id, @Nonnull String german, @Nonnull String english) {
+    public SkillGroup(int id, @NotNull String german, @NotNull String english) {
         groupId = id;
         nameEnglish = english;
         nameGerman = german;
@@ -72,7 +70,7 @@ public final class SkillGroup {
      *
      * @param skill the skill that is supposed to be added to the group
      */
-    void addSkill(@Nonnull Skill skill) {
+    void addSkill(@NotNull Skill skill) {
         skills.add(skill);
     }
 
@@ -81,7 +79,7 @@ public final class SkillGroup {
      *
      * @return the english name
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameEnglish() {
         return nameEnglish;
@@ -92,7 +90,7 @@ public final class SkillGroup {
      *
      * @return the german name
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameGerman() {
         return nameGerman;
@@ -103,13 +101,13 @@ public final class SkillGroup {
      *
      * @return the list of skills that is part of this group
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public List<Skill> getSkills() {
         return Collections.unmodifiableList(skills);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

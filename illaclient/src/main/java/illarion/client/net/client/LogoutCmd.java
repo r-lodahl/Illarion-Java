@@ -17,18 +17,13 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This client command is used to inform the server that the player is leaving the game.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class LogoutCmd extends AbstractCommand {
     /**
      * The default constructor of the logout command.
@@ -38,10 +33,10 @@ public final class LogoutCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(null);

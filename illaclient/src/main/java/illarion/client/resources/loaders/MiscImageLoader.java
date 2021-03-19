@@ -22,8 +22,8 @@ import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.assets.TextureManager;
 import org.illarion.engine.graphic.Sprite;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the misc images required in the graphics.
@@ -34,13 +34,13 @@ public final class MiscImageLoader extends AbstractResourceLoader<MiscImageTempl
     /**
      * The path inside the resources where the GUI images are stored.
      */
-    @Nonnull
+    @NotNull
     private static final String GUI_PATH = "gui/";
 
     /**
      * The assets of the game engine that are required to load the data needed for the misc images.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -48,14 +48,14 @@ public final class MiscImageLoader extends AbstractResourceLoader<MiscImageTempl
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public MiscImageLoader(@Nonnull Assets assets) {
+    public MiscImageLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
     /**
      * Trigger the loading sequence for this loader.
      */
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<MiscImageTemplate> call() {
         if (!hasTargetFactory()) {

@@ -25,13 +25,13 @@ import illarion.client.world.items.Inventory;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
 import illarion.common.types.ItemId;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -42,8 +42,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_APPEARANCE)
 public final class AppearanceMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AppearanceMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Conversation value for the scale value received from the server and the value the client actually uses.
@@ -52,7 +52,7 @@ public final class AppearanceMsg implements ServerReply {
     /**
      * The slots of the inventory that is required to display the paperdolling of this character.
      */
-    @Nonnull
+    @NotNull
     private final ItemId[] itemSlots;
     /**
      * Appearance of the character. This value contains the race and the gender
@@ -116,7 +116,7 @@ public final class AppearanceMsg implements ServerReply {
     }
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         charId = new CharacterId(reader);
         name = reader.readString();
         customName = reader.readString();
@@ -137,7 +137,7 @@ public final class AppearanceMsg implements ServerReply {
         deadFlag = reader.readUByte() == 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((skinColor == null) || (hairColor == null)) {
@@ -185,7 +185,7 @@ public final class AppearanceMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

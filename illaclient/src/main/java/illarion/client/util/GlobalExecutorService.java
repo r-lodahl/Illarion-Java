@@ -15,7 +15,8 @@
  */
 package illarion.client.util;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,7 +36,7 @@ public final class GlobalExecutorService {
      *
      * @return the service instance
      */
-    @Nonnull
+    @NotNull
     public static ExecutorService getService() {
         return SERVICE;
     }

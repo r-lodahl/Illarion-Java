@@ -36,6 +36,8 @@ import illarion.client.world.movement.TargetTurnHandler;
 import illarion.common.gui.AbstractMultiActionHelper;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
@@ -44,11 +46,9 @@ import org.illarion.engine.graphic.SceneEvent;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Class for the avatar of a characters. The avatar is the visual representation of a character on a map. All
@@ -58,23 +58,23 @@ import javax.annotation.Nullable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class Avatar extends AbstractEntity<AvatarTemplate> implements Resource {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Avatar.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * The minimal alpha value of a avatar that is needed to show the name tag above the avatar graphic.
      */
     private static final int HIDE_NAME_ALPHA = 127;
-    @Nonnull
+    @NotNull
     private static final Color COLOR_UNHARMED = new ImmutableColor(0, 255, 0);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_SLIGHTLY_HARMED = new ImmutableColor(127, 255, 0);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_HARMED = new ImmutableColor(255, 255, 0);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_BADLY_HARMED = new ImmutableColor(255, 127, 0);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_NEAR_DEATH = new ImmutableColor(255, 0, 0);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_DEAD = new ImmutableColor(173, 173, 173);
     /**
      * The frame animation that handles the animation of this avatar.
@@ -84,25 +84,25 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     /**
      * The render system for the clothes of this avatar.
      */
-    @Nonnull
+    @NotNull
     private final transient AvatarClothRenderer clothRender;
     /**
      * The mark that is displayed in case the character is the target of a attack.
      */
-    @Nonnull
+    @NotNull
     private final AvatarMarker attackMark;
-    @Nonnull
+    @NotNull
     private final AvatarMarker attackAvailableMark;
     /**
      * The text tag is the small text box shown above the avatar that contains
      * the name of the avatar.
      */
-    @Nonnull
+    @NotNull
     private final AvatarTextTag avatarTextTag;
     /**
      * The character that created this avatar.
      */
-    @Nonnull
+    @NotNull
     private final Char parentChar;
     @Nullable
     private final AbstractMultiActionHelper delayedWalkingHandler;
@@ -125,11 +125,11 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * The target light of this avatar. In case the light is set to be animated
      * the color this avatar is rendered with will approach this target light.
      */
-    @Nonnull
+    @NotNull
     private Color targetLight;
     private int showHighlight;
 
-    private Avatar(@Nonnull AvatarTemplate template, @Nonnull Char parentChar) {
+    private Avatar(@NotNull AvatarTemplate template, @NotNull Char parentChar) {
         super(template);
         attackMark = new AvatarMarker(MiscImageFactory.ATTACK_MARKER, this);
         attackAvailableMark = new AvatarMarker(MiscImageFactory.ATTACK_MARKER, this);
@@ -176,11 +176,11 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @return a instance of the needed avatar type
      */
     @Nullable
-    public static Avatar create(int avatarID, @Nonnull Char parent) {
+    public static Avatar create(int avatarID, @NotNull Char parent) {
         try {
             AvatarTemplate template = CharacterFactory.getInstance().getTemplate(avatarID);
             return new Avatar(template, parent);
-        } catch (@Nonnull Exception ex) {
+        } catch (@NotNull Exception ex) {
             log.error("Requesting new Avatar with ID {} for {} failed.", avatarID, parent);
         }
         return null;
@@ -269,7 +269,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @param light the light the avatar is enlighten with
      */
     @Override
-    public void setLight(@Nonnull Color light) {
+    public void setLight(@NotNull Color light) {
         super.setLight(light);
         clothRender.setLight(light);
         attackMark.setLight(light);
@@ -304,7 +304,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * in case the light values are different. It also draws the name above the avatar in case it needs to be shown.
      */
     @Override
-    public void render(@Nonnull Graphics graphics) {
+    public void render(@NotNull Graphics graphics) {
         if (performRendering()) {
             if (attackMarkerVisible) {
                 attackMark.render(graphics);
@@ -381,7 +381,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     }
 
     @Override
-    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @NotNull SceneEvent event) {
         if (event instanceof ClickOnMapEvent) {
             return isEventProcessed(binding, delta, (ClickOnMapEvent) event);
         }
@@ -431,7 +431,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     }
 
     @Override
-    public void setScreenPos(@Nonnull DisplayCoordinate coordinate) {
+    public void setScreenPos(@NotNull DisplayCoordinate coordinate) {
         super.setScreenPos(coordinate);
         clothRender.setScreenPos(coordinate);
         attackMark.setScreenPos(coordinate);
@@ -444,7 +444,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @param group the group of the object that shall get a different color
      * @param color the new color that shall be used to color the graphic itself
      */
-    public void changeClothColor(@Nonnull AvatarClothGroup group, Color color) {
+    public void changeClothColor(@NotNull AvatarClothGroup group, Color color) {
         clothRender.changeBaseColor(group, color);
     }
 
@@ -456,7 +456,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @return {@code true} in case the event was handled
      */
     @SuppressWarnings("UnusedParameters")
-    private boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull ClickOnMapEvent event) {
+    private boolean isEventProcessed(BackendBinding binding, int delta, @NotNull ClickOnMapEvent event) {
         if (World.getPlayer().isPlayer(parentChar.getCharId())) {
             return false;
         }
@@ -516,7 +516,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @return {@code true} in case the event was handled
      */
     @SuppressWarnings("UnusedParameters")
-    private boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull DoubleClickOnMapEvent event) {
+    private boolean isEventProcessed(BackendBinding binding, int delta, @NotNull DoubleClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
@@ -570,7 +570,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @param event the mouse event
      * @return {@code true} in case the mouse is on the interactive area of the avatar or on its tag
      */
-    private boolean isMouseInInteractiveOrOnTag(@Nonnull AbstractMouseLocationEvent event) {
+    private boolean isMouseInInteractiveOrOnTag(@NotNull AbstractMouseLocationEvent event) {
         int mouseXonDisplay = event.getX() + Camera.getInstance().getViewportOffsetX();
         int mouseYonDisplay = event.getY() + Camera.getInstance().getViewportOffsetY();
         if (renderName && avatarTextTag.getDisplayRect().isInside(mouseXonDisplay, mouseYonDisplay)) {
@@ -594,7 +594,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      *
      * @param group the group that shall be cleaned
      */
-    public void removeClothItem(@Nonnull AvatarClothGroup group) {
+    public void removeClothItem(@NotNull AvatarClothGroup group) {
         clothRender.setCloth(group, null);
     }
 
@@ -605,7 +605,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @param group the group of the item, so the location of the item, where it shall be displayed
      * @param itemID the ID of the item that shall be displayed
      */
-    public void setClothItem(@Nonnull AvatarClothGroup group, int itemID) {
+    public void setClothItem(@NotNull AvatarClothGroup group, int itemID) {
         clothRender.setCloth(group, getTemplate().getClothes().getCloth(group, itemID, this));
     }
 
@@ -616,7 +616,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      *
      * @param light the target light color for this avatar
      */
-    public void setLightTarget(@Nonnull Color light) {
+    public void setLightTarget(@NotNull Color light) {
         targetLight = light;
         clothRender.setLight(light);
         attackMark.setLight(light);
@@ -630,7 +630,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      *
      * @param charName the name that is displayed above the character graphic
      */
-    public void setName(@Nonnull String charName) {
+    public void setName(@NotNull String charName) {
         if (charName.isEmpty()) {
             avatarTextTag.setCharacterName("unknown");
         } else {
@@ -645,7 +645,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
      * @param color the color that is used for the font of the the text that is
      * shown above the character and shows the name of the character
      */
-    public void setNameColor(@Nonnull  Color color) {
+    public void setNameColor(@NotNull  Color color) {
         avatarTextTag.setCharNameColor(color);
     }
 
@@ -673,7 +673,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return "Avatar of " + parentChar;
     }

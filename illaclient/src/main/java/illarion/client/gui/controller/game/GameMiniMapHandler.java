@@ -30,9 +30,9 @@ import de.lessvoid.nifty.tools.SizeValue;
 import illarion.client.gui.MiniMapGui;
 import illarion.client.world.World;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -63,25 +63,25 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     /**
      * The buffer that stores the currently not used instances of the mini map arrows.
      */
-    @Nonnull
+    @NotNull
     private final Queue<MiniMapArrowPointer> arrowPointerBuffer;
 
     /**
      * The buffer of currently unused start pointers.
      */
-    @Nonnull
+    @NotNull
     private final Queue<MiniMapStartPointer> startPointerBuffer;
 
     /**
      * The list of pointers that are currently active and need to be updated.
      */
-    @Nonnull
+    @NotNull
     private final List<MiniMapArrowPointer> activeArrowPointers;
 
     /**
      * The list of start pointers that are currently active and need to be updated.
      */
-    @Nonnull
+    @NotNull
     private final List<MiniMapStartPointer> activeStartPointers;
 
     /**
@@ -96,7 +96,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -104,12 +104,12 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Pointer createTargetPointer() {
         return createTargetPointer(true);
     }
 
-    @Nonnull
+    @NotNull
     public Pointer createTargetPointer(boolean isCurrentQuest) {
         if (arrowPointerBuffer.isEmpty()) {
             ImageBuilder builder = new ImageBuilder();
@@ -129,7 +129,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Pointer createStartPointer(boolean available) {
         MiniMapStartPointer pointer;
         if (startPointerBuffer.isEmpty()) {
@@ -183,7 +183,7 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
     }
 
     @Override
-    public void addPointer(@Nonnull Pointer pointer) {
+    public void addPointer(@NotNull Pointer pointer) {
         World.getUpdateTaskManager().addTaskForLater((delta) -> {
             if (pointer instanceof MiniMapArrowPointer) {
                 MiniMapArrowPointer arrowPointer = (MiniMapArrowPointer) pointer;
@@ -260,10 +260,10 @@ public final class GameMiniMapHandler implements MiniMapGui, ScreenController, U
         if (World.getPlayer().isLocationSet()) {
             ServerCoordinate playerLocation = World.getPlayer().getLocation();
 
-            for (@Nonnull MiniMapArrowPointer pointer : activeArrowPointers) {
+            for (@NotNull MiniMapArrowPointer pointer : activeArrowPointers) {
                 pointer.update(delta, playerLocation);
             }
-            for (@Nonnull MiniMapStartPointer pointer : activeStartPointers) {
+            for (@NotNull MiniMapStartPointer pointer : activeStartPointers) {
                 pointer.update(playerLocation);
             }
         }

@@ -21,28 +21,28 @@ import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.RequestTrace;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class FutureArtifactRequest implements Callable<ArtifactResult> {
-    @Nonnull
+    @NotNull
     private final ProgressMonitor progressMonitor;
-    @Nonnull
+    @NotNull
     private final ArtifactRequest request;
-    @Nonnull
+    @NotNull
     private final RepositorySystemSession session;
-    @Nonnull
+    @NotNull
     private final RepositorySystem system;
 
     public FutureArtifactRequest(
-            @Nonnull RepositorySystem system,
-            @Nonnull RepositorySystemSession session,
-            @Nonnull ArtifactRequest request,
-            @Nonnull ArtifactRequestTracer requestTracer) {
+            @NotNull RepositorySystem system,
+            @NotNull RepositorySystemSession session,
+            @NotNull ArtifactRequest request,
+            @NotNull ArtifactRequestTracer requestTracer) {
         this.request = request;
         this.system = system;
         this.session = session;
@@ -51,7 +51,7 @@ class FutureArtifactRequest implements Callable<ArtifactResult> {
         request.setTrace(new RequestTrace(new ArtifactTraceData(requestTracer, progressMonitor)));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ArtifactResult call() throws Exception {
         progressMonitor.setProgress(0.f);
@@ -60,12 +60,12 @@ class FutureArtifactRequest implements Callable<ArtifactResult> {
         return result;
     }
 
-    @Nonnull
+    @NotNull
     public ProgressMonitor getProgressMonitor() {
         return progressMonitor;
     }
 
-    @Nonnull
+    @NotNull
     public ArtifactRequest getRequest() {
         return request;
     }

@@ -20,9 +20,9 @@ import illarion.easynpc.EasyNpcScript.Line;
 import illarion.easynpc.data.*;
 import illarion.easynpc.parsed.ParsedData;
 import illarion.easynpc.writer.LuaWritable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.*;
@@ -135,8 +135,8 @@ public final class ParsedNpc implements Iterable<ParsedData> {
         defaultLanguage = null;
     }
 
-    @Nonnull
-    public static String convertToModuleName(@Nonnull CharSequence string) {
+    @NotNull
+    public static String convertToModuleName(@NotNull CharSequence string) {
         return Normalizer.normalize(string, Form.NFC).replaceAll("[^\\p{ASCII}]", "").replace(' ', '_');
     }
 
@@ -160,7 +160,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
      * @param message the message describing the error
      */
     @Deprecated
-    public void addError(@Nonnull Line line, String message) {
+    public void addError(@NotNull Line line, String message) {
         addError(line.getLineNumber(), message);
     }
 
@@ -242,7 +242,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
      *
      * @return a array of the author names
      */
-    @Nonnull
+    @NotNull
     public Collection<String> getAuthors() {
         if (authors == null) {
             return Collections.emptyList();
@@ -476,7 +476,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
      *
      * @return the array of languages this NPC is able to speak
      */
-    @Nonnull
+    @NotNull
     public CharacterLanguage[] getLanguages() {
         if (languages == null) {
             languages = new ArrayList<>();
@@ -528,12 +528,12 @@ public final class ParsedNpc implements Iterable<ParsedData> {
      *
      * @return the correct lua script file
      */
-    @Nonnull
+    @NotNull
     public String getLuaFilename() {
         return getModuleName() + ".lua";
     }
 
-    @Nonnull
+    @NotNull
     public String getModuleName() {
         if (moduleName == null) {
             return convertToModuleName(getNpcName()).toLowerCase();
@@ -607,7 +607,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
      *
      * @param newNpcPos the new position of this NPC
      */
-    public void setNpcPos(@Nonnull ServerCoordinate newNpcPos) {
+    public void setNpcPos(@NotNull ServerCoordinate newNpcPos) {
         npcPos = newNpcPos;
     }
 
@@ -682,7 +682,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
         lookAtDe = msg;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<ParsedData> iterator() {
         return npcData.iterator();
@@ -724,7 +724,7 @@ public final class ParsedNpc implements Iterable<ParsedData> {
          * Compare method used to sort the errors.
          */
         @Override
-        public int compareTo(@Nonnull Error o) {
+        public int compareTo(@NotNull Error o) {
             int lineNrCompare = Integer.compare(lineNumber, o.lineNumber);
             if (lineNrCompare == 0) {
                 return Integer.compare(characterNumber, o.characterNumber);

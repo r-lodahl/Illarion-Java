@@ -17,11 +17,10 @@ package illarion.compile;
 
 import illarion.compile.impl.Compile;
 import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -42,8 +41,8 @@ import java.util.concurrent.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class Compiler {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(Compiler.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     private static Map<CompilerType, Path> storagePaths;
 
     private Compiler() {
@@ -53,9 +52,6 @@ public final class Compiler {
         ByteArrayOutputStream stdOutBuffer = new ByteArrayOutputStream();
         PrintStream orgStdOut = System.out;
         System.setOut(new PrintStream(stdOutBuffer, true, Charset.defaultCharset().toString()));
-
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
 
         Options options = new Options();
 
@@ -113,7 +109,7 @@ public final class Compiler {
         }
     }
 
-    private static void processFileMode(@Nonnull CommandLine cmd) throws IOException {
+    private static void processFileMode(@NotNull CommandLine cmd) throws IOException {
         storagePaths = new EnumMap<>(CompilerType.class);
         String npcPath = cmd.getOptionValue('n');
         if (npcPath != null) {
@@ -182,7 +178,7 @@ public final class Compiler {
         System.exit(returnCode);
     }
 
-    private static void processStdIn(@Nonnull CommandLine cmd) throws IOException {
+    private static void processStdIn(@NotNull CommandLine cmd) throws IOException {
         String dataType = cmd.getOptionValue('t');
 
         CompilerType usedType = null;
@@ -206,7 +202,7 @@ public final class Compiler {
     }
 
     private static Future<Integer> processPath(
-            @Nonnull ExecutorService executor, @Nonnull Path path) throws IOException {
+            @NotNull ExecutorService executor, @NotNull Path path) throws IOException {
         if (Files.isDirectory(path)) {
             return new CompletedFuture<>(0);
         }
@@ -279,7 +275,7 @@ public final class Compiler {
         }
 
         @Override
-        public T get(long timeout, @Nonnull TimeUnit unit)
+        public T get(long timeout, @NotNull TimeUnit unit)
                 throws InterruptedException, ExecutionException, TimeoutException {
             return result;
         }

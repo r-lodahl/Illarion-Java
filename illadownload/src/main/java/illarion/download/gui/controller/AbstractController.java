@@ -16,9 +16,9 @@
 package illarion.download.gui.controller;
 
 import illarion.download.gui.model.GuiModel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the abstract implementation for a controller. It implements the storage for the model reference.
@@ -36,11 +36,11 @@ public abstract class AbstractController implements Controller {
     }
 
     @Override
-    public void setModel(@Nonnull GuiModel model) {
+    public void setModel(@NotNull GuiModel model) {
         this.model = model;
     }
 
-    @Nonnull
+    @NotNull
     GuiModel getModel() {
         if (model == null) {
             throw new IllegalStateException("GUIModel was not set yet.");

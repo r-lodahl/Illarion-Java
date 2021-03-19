@@ -24,9 +24,9 @@ import illarion.common.util.FastMath;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the movement handler that takes care for the follow mouse movement system. As long as this is engaged moves
@@ -42,7 +42,7 @@ class FollowMouseMovementHandler extends AbstractMovementHandler implements Mous
      */
     private static final double MOUSE_ANGLE = StrictMath.cos(Math.PI / Direction.values().length);
 
-    @Nonnull
+    @NotNull
     private final Input input;
 
     /**
@@ -60,7 +60,7 @@ class FollowMouseMovementHandler extends AbstractMovementHandler implements Mous
     @Nullable
     private Direction walkTowardsDir;
 
-    FollowMouseMovementHandler(@Nonnull Movement movement, @Nonnull Input input) {
+    FollowMouseMovementHandler(@NotNull Movement movement, @NotNull Input input) {
         super(movement);
         this.input = input;
         lastMouseX = -1;
@@ -71,7 +71,7 @@ class FollowMouseMovementHandler extends AbstractMovementHandler implements Mous
 
     @Nullable
     @Override
-    public StepData getNextStep(@Nonnull ServerCoordinate currentLocation) {
+    public StepData getNextStep(@NotNull ServerCoordinate currentLocation) {
         calculateMove();
         if (walkTowardsDir == null) {
             return null;
@@ -121,7 +121,7 @@ class FollowMouseMovementHandler extends AbstractMovementHandler implements Mous
         }
     }
 
-    @Nonnull
+    @NotNull
     private CharMovementMode getWalkTowardsMode(int distance) {
         if (input.isAnyKeyDown(Key.LeftShift, Key.RightShift)) {
             return CharMovementMode.None;
@@ -143,7 +143,7 @@ class FollowMouseMovementHandler extends AbstractMovementHandler implements Mous
         return CharMovementMode.Walk;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Follow mouse movement handler";

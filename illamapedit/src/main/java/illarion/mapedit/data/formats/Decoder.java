@@ -17,8 +17,8 @@ package illarion.mapedit.data.formats;
 
 import illarion.mapedit.crash.exceptions.FormatCorruptedException;
 import illarion.mapedit.data.Map;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 /**
  * @author Tim

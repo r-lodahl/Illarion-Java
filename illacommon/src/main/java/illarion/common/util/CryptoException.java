@@ -15,7 +15,8 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This exception is thrown in case the crypto class runs into any problem.
@@ -28,15 +29,15 @@ public class CryptoException extends Exception {
         super();
     }
 
-    public CryptoException(@Nonnull final String message) {
+    public CryptoException(@NotNull final String message) {
         super(message);
     }
 
-    public CryptoException(@Nonnull final String message, @Nonnull final Throwable cause) {
+    public CryptoException(@NotNull final String message, @NotNull final Throwable cause) {
         super(message, cause);
     }
 
-    public CryptoException(@Nonnull final Throwable cause) {
+    public CryptoException(@NotNull final Throwable cause) {
         super(cause);
     }
 }

@@ -16,8 +16,8 @@
 package illarion.client.graphics;
 
 import org.illarion.engine.graphic.Color;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of a color value that approaches another value.
@@ -28,13 +28,13 @@ public class AnimatedColor {
     /**
      * The color that is the target of the animation.
      */
-    @Nonnull
+    @NotNull
     private final Color targetColor;
 
     /**
      * The current color value.
      */
-    @Nonnull
+    @NotNull
     private final Color currentColor;
 
     /**
@@ -43,7 +43,7 @@ public class AnimatedColor {
      * @param targetColor the target color. This instance is stored and its possible to alter it cause the class
      *                    approach another color. This class will never alter this instance of the color by itself.
      */
-    public AnimatedColor(@Nonnull Color targetColor) {
+    public AnimatedColor(@NotNull Color targetColor) {
         this.targetColor = targetColor;
         currentColor = new Color(targetColor);
     }
@@ -64,12 +64,12 @@ public class AnimatedColor {
         AnimationUtility.approach(currentColor, targetColor, delta);
     }
 
-    @Nonnull
+    @NotNull
     public Color getCurrentColor() {
         return currentColor;
     }
 
-    @Nonnull
+    @NotNull
     public Color getTargetColor() {
         return targetColor;
     }

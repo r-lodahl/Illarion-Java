@@ -20,8 +20,8 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The controller for the screen that is seen during logout.
@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
  */
 public final class LogoutScreenController implements ScreenController, KeyInputHandler {
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class LogoutScreenController implements ScreenController, KeyInputH
     }
 
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         return false;
     }
 }

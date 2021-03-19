@@ -18,24 +18,19 @@ package illarion.client.resources.data;
 import illarion.client.graphics.AbstractEntity;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This template in general stores the data required to create any class that inherits {@link AbstractEntity}.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class AbstractEntityTemplate implements ResourceTemplate {
     /**
      * The sprite that is used to render the entity using this template.
      */
-    @Nonnull
+    @NotNull
     private final Sprite sprite;
 
     /**
@@ -63,14 +58,14 @@ public class AbstractEntityTemplate implements ResourceTemplate {
      * @param shadowOffset the offset of the shadow
      */
     protected AbstractEntityTemplate(
-            int id, @Nonnull Sprite sprite, @Nullable Color defaultColor, int shadowOffset) {
+            int id, @NotNull Sprite sprite, @Nullable Color defaultColor, int shadowOffset) {
         this.sprite = sprite;
         this.defaultColor = defaultColor;
         this.id = id;
         this.shadowOffset = shadowOffset;
     }
 
-    @Nonnull
+    @NotNull
     public Sprite getSprite() {
         return sprite;
     }

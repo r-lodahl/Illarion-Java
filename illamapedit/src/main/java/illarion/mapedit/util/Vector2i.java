@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.util;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Tim
@@ -34,7 +35,7 @@ public class Vector2i {
         this.y = y;
     }
 
-    public Vector2i(@Nonnull Vector2i v) {
+    public Vector2i(@NotNull Vector2i v) {
         x = v.x;
         y = v.y;
     }
@@ -61,17 +62,17 @@ public class Vector2i {
         this.y = y;
     }
 
-    private void set(@Nonnull Vector2i v) {
+    private void set(@NotNull Vector2i v) {
         x = v.x;
         y = v.y;
     }
 
-    private void add(@Nonnull Vector2i v) {
+    private void add(@NotNull Vector2i v) {
         x += v.x;
         y += v.y;
     }
 
-    private void sub(@Nonnull Vector2i v) {
+    private void sub(@NotNull Vector2i v) {
         x += v.x;
         y += v.y;
     }
@@ -86,7 +87,7 @@ public class Vector2i {
         y /= i;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return String.format("( x: %d | y:%d )", x, y);

@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic.effects;
 
 import org.illarion.engine.graphic.Color;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines the highlighting effect.
@@ -33,5 +33,5 @@ public interface HighlightEffect extends TextureEffect {
      *
      * @param color the color to apply
      */
-    void setHighlightColor(@Nonnull Color color);
+    void setHighlightColor(@NotNull Color color);
 }

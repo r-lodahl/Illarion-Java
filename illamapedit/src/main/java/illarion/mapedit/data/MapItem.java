@@ -15,8 +15,9 @@
  */
 package illarion.mapedit.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class MapItem {
      *
      * @param old the old instance.
      */
-    public MapItem(@Nonnull MapItem old) {
+    public MapItem(@NotNull MapItem old) {
         this(old.itemId, old.itemData, old.qualityDurability);
     }
 
@@ -201,7 +202,7 @@ public class MapItem {
      *
      * @return the serialized String
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -215,8 +216,8 @@ public class MapItem {
         return builder.toString();
     }
 
-    @Nonnull
-    public static String join(@Nonnull Iterable<String> itemData, String joinWith) {
+    @NotNull
+    public static String join(@NotNull Iterable<String> itemData, String joinWith) {
         StringBuilder retVal = new StringBuilder();
         boolean firstRun = true;
         for (String s : itemData) {

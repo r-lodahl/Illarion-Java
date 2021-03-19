@@ -17,8 +17,8 @@ package illarion.client.resources;
 
 import illarion.client.resources.data.TileTemplate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The tile factory loads and stores all graphical representations of the tiles
@@ -31,7 +31,7 @@ public final class TileFactory extends AbstractTemplateFactory<TileTemplate> {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final TileFactory INSTANCE = new TileFactory();
 
     /**
@@ -44,7 +44,7 @@ public final class TileFactory extends AbstractTemplateFactory<TileTemplate> {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static TileFactory getInstance() {
         return INSTANCE;

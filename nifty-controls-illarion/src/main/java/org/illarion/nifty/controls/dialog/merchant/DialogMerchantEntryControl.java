@@ -21,12 +21,12 @@ import de.lessvoid.nifty.controls.Parameters;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.screen.Screen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.nifty.controls.MerchantListEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This control is used to monitor the different entries of the merchant dialog.
@@ -35,8 +35,8 @@ import javax.annotation.Nullable;
  */
 @Deprecated
 public final class DialogMerchantEntryControl extends AbstractController {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(DialogMerchantEntryControl.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     @Nullable
     private MerchantListEntry listEntry;
     @Nullable
@@ -45,7 +45,7 @@ public final class DialogMerchantEntryControl extends AbstractController {
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         bind(element);
         selectable = Boolean.parseBoolean(parameter.get("selectable"));
         merchantControl = getParent(element, 12).getNiftyControl(DialogMerchantControl.class);
@@ -64,7 +64,7 @@ public final class DialogMerchantEntryControl extends AbstractController {
     }
 
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         return false;
     }
 

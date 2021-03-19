@@ -16,10 +16,10 @@
 package illarion.easynpc;
 
 import illarion.common.util.MessageSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -39,7 +39,7 @@ public final class Lang implements MessageSource {
     /**
      * The logger instance that handles the log output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Lang.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The file name of the message bundles the client loads for the language.
@@ -71,7 +71,7 @@ public final class Lang implements MessageSource {
      *
      * @return the instance of the class
      */
-    @Nonnull
+    @NotNull
     public static MessageSource getInstance() {
         return INSTANCE;
     }
@@ -84,8 +84,8 @@ public final class Lang implements MessageSource {
      * @return the localized message or the key with surrounding < > in case the
      * key was not found in the storage
      */
-    @Nonnull
-    public static String getMsg(@Nonnull Class<?> clazz, String key) {
+    @NotNull
+    public static String getMsg(@NotNull Class<?> clazz, String key) {
         return getMsg(clazz.getName() + '.' + key);
     }
 
@@ -96,7 +96,7 @@ public final class Lang implements MessageSource {
      * @return the localized message or the key with surrounding &lt; &gt; in
      * case the key was not found in the storage
      */
-    public static String getMsg(@Nonnull String key) {
+    public static String getMsg(@NotNull String key) {
         return INSTANCE.getMessage(key);
     }
 
@@ -116,12 +116,12 @@ public final class Lang implements MessageSource {
      * @return the localized message or the key with surrounding &lt; &gt; in
      * case the key was not found in the storage
      */
-    @Nonnull
+    @NotNull
     @Override
-    public String getMessage(@Nonnull String key) {
+    public String getMessage(@NotNull String key) {
         try {
             return messages.getString(key);
-        } catch (@Nonnull MissingResourceException e) {
+        } catch (@NotNull MissingResourceException e) {
             LOGGER.warn("Failed searching translated version of: {}", key);
             return '<' + key + '>';
         }
@@ -133,10 +133,10 @@ public final class Lang implements MessageSource {
      * @param key the key that shall be checked
      * @return true in case a message was found
      */
-    public boolean hasMsg(@Nonnull String key) {
+    public boolean hasMsg(@NotNull String key) {
         try {
             messages.getString(key);
-        } catch (@Nonnull MissingResourceException e) {
+        } catch (@NotNull MissingResourceException e) {
             return false;
         }
         return true;

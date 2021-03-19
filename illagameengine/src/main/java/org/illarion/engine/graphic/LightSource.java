@@ -17,9 +17,9 @@ package org.illarion.engine.graphic;
 
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
@@ -47,7 +47,7 @@ public final class LightSource {
     /**
      * The color of the light itself.
      */
-    @Nonnull
+    @NotNull
     private final Color color;
 
     /**
@@ -61,7 +61,7 @@ public final class LightSource {
      * The intensity array stores the calculated light intensity values. These result from the pre-calculated light
      * rays along with the situation on the map such as objects that block out the light.
      */
-    @Nonnull
+    @NotNull
     private final double[][] intensity;
 
     /**
@@ -72,7 +72,7 @@ public final class LightSource {
     /**
      * The location of the light source on the map.
      */
-    @Nonnull
+    @NotNull
     private ServerCoordinate location;
 
     /**
@@ -90,7 +90,7 @@ public final class LightSource {
      */
     private final int size;
 
-    @Nonnull
+    @NotNull
     private final Lock calculationLock;
 
     /**
@@ -101,7 +101,7 @@ public final class LightSource {
      * @param encoding the encoding of the light, this contains the color, the
      * brightness, the size and the inversion flag
      */
-    public LightSource(@Nonnull ServerCoordinate location, int encoding) {
+    public LightSource(@NotNull ServerCoordinate location, int encoding) {
         encodedValue = encoding;
         int newSize = (encoding / 10000) % 10;
         rays = LightRays.getRays(newSize);
@@ -182,12 +182,12 @@ public final class LightSource {
      * @return the location of the light source
      */
     @Contract(pure = true)
-    @Nonnull
+    @NotNull
     public ServerCoordinate getLocation() {
         return location;
     }
 
-    void setLocation(@Nonnull ServerCoordinate newLocation) {
+    void setLocation(@NotNull ServerCoordinate newLocation) {
         if (!location.equals(newLocation)) {
             location = newLocation;
             refresh();
@@ -220,7 +220,7 @@ public final class LightSource {
      *
      * @param changeLoc the location the change occurred on.
      */
-    public void notifyChange(@Nonnull ServerCoordinate changeLoc) {
+    public void notifyChange(@NotNull ServerCoordinate changeLoc) {
         if (location.getZ() != changeLoc.getZ()) {
             return;
         }
@@ -284,7 +284,7 @@ public final class LightSource {
      *
      * @param newMapSource the map that contains the light source
      */
-    void setMapSource(@Nonnull LightingMap newMapSource) {
+    void setMapSource(@NotNull LightingMap newMapSource) {
         if ((mapSource == null) || !Objects.equals(mapSource, newMapSource)) {
             mapSource = newMapSource;
             dirty = true;
@@ -323,14 +323,14 @@ public final class LightSource {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "LightSource (" + location + ", " + color + ",  brightness: " + bright + ", size: " + size +
                 ", dirty: " + dirty + ')';
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     Lock getCalculationLock() {
         return calculationLock;

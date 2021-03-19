@@ -15,13 +15,8 @@
  */
 package illarion.easynpc.gui;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 import illarion.common.bug.CrashReporter;
 import illarion.common.bug.ReportDialogFactorySwing;
-import illarion.common.util.AppIdent;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.easynpc.EasyNpcScript;
@@ -29,7 +24,11 @@ import illarion.easynpc.Lang;
 import illarion.easynpc.Parser;
 import illarion.easynpc.crash.AWTCrashHandler;
 import illarion.easynpc.gui.syntax.EasyNpcTokenMakerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
@@ -37,12 +36,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,7 +44,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -71,7 +64,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The serialization UID of this main frame.
@@ -81,20 +74,20 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
     /**
      * The area where the error messages are displayed.
      */
-    @Nonnull
+    @NotNull
     private final ErrorPane errorArea;
 
     /**
      * The main splitted panel. In the upper part the editor is displayed, the
      * lower part shows the error list.
      */
-    @Nonnull
+    @NotNull
     private final JSplitPane mainPanel;
 
     /**
      * The Tab Pane the editors are displayed in.
      */
-    @Nonnull
+    @NotNull
     private final JTabbedPane tabbedEditorArea;
 
     /**
@@ -103,7 +96,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
     @Nullable
     private DocuBrowser docuBrowser;
 
-    @Nonnull
+    @NotNull
     private final UndoMonitor undoMonitor;
 
     /**
@@ -181,7 +174,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
                 // nothing
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public Object getValue(String key) {
                 return "displayHelpWindow";
@@ -218,7 +211,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
         BaseTabCloseListener editorTabListener = new VetoableTabCloseListener() {
             @Override
             public void tabClosed(
-                    @Nonnull JTabbedPane pane, @Nonnull Component component) {
+                    @NotNull JTabbedPane pane, @NotNull Component component) {
                 ((Editor) component).cleanup();
                 if (pane.getTabCount() == 0) {
                     addNewScript();
@@ -274,7 +267,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
                     EasyNpcScript easyScript = new EasyNpcScript(Paths.get(file));
                     addNewScript().loadScript(easyScript);
                     setCurrentTabTitle(easyScript.getSourceScriptFile().getFileName().toString());
-                } catch (@Nonnull IOException e1) {
+                } catch (@NotNull IOException e1) {
                     LOGGER.warn("Originally opened file: {} could not be opened.", file);
                 }
             }
@@ -327,7 +320,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
         SwingUtilities.invokeLater(() -> {
             try {
                 SubstanceLookAndFeel.setSkin(Config.getInstance().getLookAndFeel());
-            } catch (@Nonnull Exception e) {
+            } catch (@NotNull Exception e) {
                 SubstanceLookAndFeel.setSkin(Config.DEFAULT_LOOK_AND_FEEL);
             }
 
@@ -341,9 +334,6 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      */
     @SuppressWarnings("Duplicates")
     private static void initLogging() throws IOException {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
-
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         if (!Files.isDirectory(userDir)) {
             if (Files.exists(userDir)) {
@@ -352,19 +342,6 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
             Files.createDirectories(userDir);
         }
         System.setProperty("log_dir", userDir.toAbsolutePath().toString());
-
-        //Reload:
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ContextInitializer ci = new ContextInitializer(lc);
-        try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL resource = cl.getResource("logback-to-file.xml");
-            if (resource != null) {
-                ci.configureByResource(resource);
-            }
-        } catch (JoranException ignored) {
-        }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
 
         //noinspection UseOfSystemOutOrSystemErr
         System.out.println("Startup done.");
@@ -388,7 +365,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      *
      * @return the currently activated script editor
      */
-    @Nonnull
+    @NotNull
     public Editor getCurrentScriptEditor() {
         return getScriptEditor(tabbedEditorArea.getSelectedIndex());
     }
@@ -407,7 +384,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      *
      * @return the area the errors are displayed in
      */
-    @Nonnull
+    @NotNull
     public ErrorPane getErrorArea() {
         return errorArea;
     }
@@ -435,7 +412,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      *
      * @return the editor that was now just created
      */
-    @Nonnull
+    @NotNull
     Editor addNewScript() {
         return addNewScript(null);
     }
@@ -445,7 +422,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      *
      * @return the editor that was now just created
      */
-    @Nonnull
+    @NotNull
     Editor addNewScript(@Nullable String templateText) {
         Editor editor = new Editor(this, undoMonitor);
         editor.putClientProperty(SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY, Boolean.TRUE);
@@ -529,7 +506,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
      * @param index the tab index
      * @return the editor attached to this tab index
      */
-    @Nonnull
+    @NotNull
     Editor getScriptEditor(int index) {
         return (Editor) tabbedEditorArea.getComponentAt(index);
     }

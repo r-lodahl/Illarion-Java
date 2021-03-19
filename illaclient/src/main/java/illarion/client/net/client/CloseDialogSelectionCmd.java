@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: This command returns the selection made in a selection dialog to the server
@@ -27,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class CloseDialogSelectionCmd extends AbstractCommand {
     /**
      * The ID that was send by the server to initiate text input.
@@ -60,7 +57,7 @@ public final class CloseDialogSelectionCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeInt(dialogID);
         if (success) {
             writer.writeUByte((byte) 0xFF);
@@ -70,7 +67,7 @@ public final class CloseDialogSelectionCmd extends AbstractCommand {
         writer.writeUByte(selectedIndex);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Dialog ID: " + dialogID + " - Index: " + selectedIndex + " successful: " + success);

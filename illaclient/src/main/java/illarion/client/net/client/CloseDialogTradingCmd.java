@@ -15,15 +15,13 @@
  */
 package illarion.client.net.client;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to inform the server that a trading dialog was closed.
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@Immutable
 public final class CloseDialogTradingCmd extends AbstractTradeItemCmd {
     /**
      * The sub command ID for this command.
@@ -39,7 +37,7 @@ public final class CloseDialogTradingCmd extends AbstractTradeItemCmd {
         super(dialogId, SUB_CMD_ID);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(super.toString());

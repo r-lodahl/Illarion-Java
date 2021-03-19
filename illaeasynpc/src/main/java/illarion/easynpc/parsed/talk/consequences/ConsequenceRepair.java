@@ -18,8 +18,8 @@ package illarion.easynpc.parsed.talk.consequences;
 import illarion.easynpc.parsed.talk.TalkConsequence;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -27,14 +27,14 @@ import java.io.Writer;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class ConsequenceRepair implements TalkConsequence {
-    @Nonnull
+    @NotNull
     @Override
     public String getLuaModule() {
         return BASE_LUA_MODULE + "repair";
     }
 
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires) throws IOException {
         target.write("talkEntry:addConsequence(" + requires.getStorage(getLuaModule()) + "())");
         target.write(LuaWriter.NL);
     }

@@ -19,7 +19,8 @@ import illarion.client.resources.SongFactory;
 import illarion.client.resources.SoundFactory;
 import illarion.common.util.ProgressMonitor;
 import org.illarion.engine.assets.Assets;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -32,25 +33,25 @@ class SoundLoadingTask implements LoadingTask {
     /**
      * The progress monitor used to keep track of the loading progress.
      */
-    @Nonnull
+    @NotNull
     private final ProgressMonitor monitor;
 
     /**
      * The game engine instance used to load the sounds.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
      * The list of songs that need to be loaded.
      */
-    @Nonnull
+    @NotNull
     private final Queue<String> songsToLoad;
 
     /**
      * The list of sounds that need to be loaded.
      */
-    @Nonnull
+    @NotNull
     private final Queue<String> soundsToLoad;
 
     /**
@@ -63,7 +64,7 @@ class SoundLoadingTask implements LoadingTask {
      */
     private int remaining;
 
-    SoundLoadingTask(@Nonnull Assets assets) {
+    SoundLoadingTask(@NotNull Assets assets) {
         this.assets = assets;
         monitor = new ProgressMonitor(3.f);
 
@@ -90,7 +91,7 @@ class SoundLoadingTask implements LoadingTask {
         return songsToLoad.isEmpty() && soundsToLoad.isEmpty();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ProgressMonitor getProgressMonitor() {
         return monitor;

@@ -19,9 +19,9 @@ import illarion.easyquest.Lang;
 import illarion.easyquest.quest.Condition;
 import illarion.easyquest.quest.TriggerTemplate;
 import illarion.easyquest.quest.TriggerTemplates;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -33,17 +33,17 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class TriggerDialog extends JDialog {
 
-    @Nonnull
+    @NotNull
     private final JTextField name;
-    @Nonnull
+    @NotNull
     private final JComboBox<TriggerTemplate> trigger;
-    @Nonnull
+    @NotNull
     private final Box conditionPanels;
-    @Nonnull
+    @NotNull
     private final JButton okay;
-    @Nonnull
+    @NotNull
     private final JButton cancel;
-    @Nonnull
+    @NotNull
     private final JPanel main;
 
     public TriggerDialog(Frame owner) {
@@ -142,7 +142,7 @@ public class TriggerDialog extends JDialog {
         trigger.setSelectedItem(TriggerTemplates.getInstance().getTemplate(type));
     }
 
-    @Nonnull
+    @NotNull
     public Object[] getParameters() {
         int count = main.getComponentCount() - 1;
         Object[] parameters = new Object[count];
@@ -169,7 +169,7 @@ public class TriggerDialog extends JDialog {
         }
     }
 
-    @Nonnull
+    @NotNull
     public Condition[] getConditions() {
         int count = (conditionPanels.getComponentCount() + 1) / 2;
         List<Condition> conditions = new ArrayList<>();

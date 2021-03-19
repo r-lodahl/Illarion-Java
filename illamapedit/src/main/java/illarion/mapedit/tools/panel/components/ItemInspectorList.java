@@ -25,10 +25,10 @@ import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.tools.ToolManager;
 import illarion.mapedit.tools.panel.cellrenderer.MapItemCellRenderer;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
@@ -37,17 +37,17 @@ import java.util.Collection;
  * @author Fredrik K
  */
 public class ItemInspectorList extends JPanel {
-    @Nonnull
+    @NotNull
     private final AnnotationLabel annotation;
-    @Nonnull
+    @NotNull
     private final JScrollPane scroll;
     @Nullable
     private JList<MapItem> dataList;
-    @Nonnull
+    @NotNull
     private final JButton removeItemButton;
-    @Nonnull
+    @NotNull
     private final JButton itemUpButton;
-    @Nonnull
+    @NotNull
     private final JButton itemDownButton;
 
     public ItemInspectorList() {
@@ -117,7 +117,7 @@ public class ItemInspectorList extends JPanel {
      *
      * @return the selected MapItem
      */
-    @Nonnull
+    @NotNull
     public MapItem getSelectedItem() {
         return dataList.getSelectedValue();
     }
@@ -137,7 +137,7 @@ public class ItemInspectorList extends JPanel {
         }
     }
 
-    public void setAnnotation(@Nonnull String text) {
+    public void setAnnotation(@NotNull String text) {
         annotation.setAnnotation(text);
     }
 
@@ -146,7 +146,7 @@ public class ItemInspectorList extends JPanel {
      *
      * @param itemList A collection of items to show
      */
-    public void setDataList(@Nonnull Collection<MapItem> itemList) {
+    public void setDataList(@NotNull Collection<MapItem> itemList) {
         dataList = new JList<>(itemList.toArray(new MapItem[itemList.size()]));
         dataList.setCellRenderer(new MapItemCellRenderer());
         dataList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

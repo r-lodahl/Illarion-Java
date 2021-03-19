@@ -19,9 +19,9 @@ import illarion.mapedit.Lang;
 import illarion.mapedit.data.Map;
 import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.util.SwingLocation;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -41,10 +41,10 @@ public class GridRenderer extends AbstractMapRenderer {
 
     @Override
     public void renderMap(
-            @Nonnull Map map,
+            @NotNull Map map,
             Rectangle viewport,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         int width = map.getWidth();
         int height = map.getHeight();
         int z = map.getZ() - level;

@@ -17,16 +17,11 @@ package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.NiftyEvent;
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
-
 /**
  * This event is fired in case a item container is closed.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @SuppressWarnings("EmptyClass")
-@ThreadSafe
-@Immutable
 public final class ItemContainerCloseEvent implements NiftyEvent {
 }

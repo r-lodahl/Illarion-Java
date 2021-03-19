@@ -16,8 +16,8 @@
 package illarion.client.loading;
 
 import illarion.common.util.ProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines a task that need to be loaded.
@@ -42,6 +42,6 @@ interface LoadingTask {
      *
      * @return the progress monitor for this task
      */
-    @Nonnull
+    @NotNull
     ProgressMonitor getProgressMonitor();
 }

@@ -15,7 +15,8 @@
  */
 package illarion.common.graphics;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class contains the constants for all character animations that are
@@ -28,7 +29,7 @@ public final class CharAnimations {
     /**
      * The array of the names of the animations.
      */
-    @Nonnull
+    @NotNull
     public static final String[] ANIMATION_NAMES;
 
     /**

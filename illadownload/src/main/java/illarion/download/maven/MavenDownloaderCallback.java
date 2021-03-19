@@ -16,9 +16,9 @@
 package illarion.download.maven;
 
 import illarion.common.util.ProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 
@@ -59,19 +59,19 @@ public interface MavenDownloaderCallback {
      * @param detail a detailed text for the current state
      */
     void reportNewState(
-            @Nonnull State state, @Nullable ProgressMonitor progress, boolean offline, @Nullable String detail);
+            @NotNull State state, @Nullable ProgressMonitor progress, boolean offline, @Nullable String detail);
 
     /**
      * Report that the resolving is done.
      *
      * @param classpath the resolved classpath, this may be {@code null} in case the resolving failed
      */
-    void resolvingDone(@Nonnull Collection<File> classpath);
+    void resolvingDone(@NotNull Collection<File> classpath);
 
     /**
      * Report that the resolving has failed and forward the exception that was caused in response.
      *
      * @param ex the resolving exception
      */
-    void resolvingFailed(@Nonnull Exception ex);
+    void resolvingFailed(@NotNull Exception ex);
 }

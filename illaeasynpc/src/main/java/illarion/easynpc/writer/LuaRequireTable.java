@@ -15,7 +15,8 @@
  */
 package illarion.easynpc.writer;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
@@ -28,14 +29,14 @@ import java.util.Map.Entry;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class LuaRequireTable {
-    @Nonnull
+    @NotNull
     private final Map<String, String> requireStorage;
 
     public LuaRequireTable() {
         requireStorage = new HashMap<>();
     }
 
-    public void registerDependency(@Nonnull String dependency) {
+    public void registerDependency(@NotNull String dependency) {
         if (!requireStorage.containsKey(dependency)) {
             String storage;
             if (dependency.startsWith("npc.base.")) {
@@ -46,13 +47,13 @@ public class LuaRequireTable {
             String usedStorage = storage;
             int cnt = 0;
             while (requireStorage.containsValue(usedStorage)) {
-                usedStorage = storage + Integer.toString(cnt++);
+                usedStorage = storage + cnt++;
             }
             requireStorage.put(dependency, usedStorage);
         }
     }
 
-    public void writeDependencies(@Nonnull Writer writer) throws IOException {
+    public void writeDependencies(@NotNull Writer writer) throws IOException {
         for (Entry<String, String> entry : requireStorage.entrySet()) {
             writer.write("local ");
             writer.write(entry.getValue());
@@ -63,8 +64,8 @@ public class LuaRequireTable {
         }
     }
 
-    @Nonnull
-    public String getStorage(@Nonnull String dependency) {
+    @NotNull
+    public String getStorage(@NotNull String dependency) {
         if (requireStorage.containsKey(dependency)) {
             return requireStorage.get(dependency);
         }

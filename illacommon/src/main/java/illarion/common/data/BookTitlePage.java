@@ -16,11 +16,11 @@
 package illarion.common.data;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.regex.Pattern;
 
 /**
@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class BookTitlePage {
-    @Nonnull
+    @NotNull
     private static final Pattern WHITE_SPACES_PATTERN = Pattern.compile("\\s+");
     /**
      * The title that is displayed on this title page.
      */
-    @Nonnull
+    @NotNull
     private final String title;
 
     /**
@@ -48,7 +48,7 @@ public final class BookTitlePage {
      *
      * @param source the node that supplies the data
      */
-    public BookTitlePage(@Nonnull Node source) {
+    public BookTitlePage(@NotNull Node source) {
         String title = null;
         String author = null;
 
@@ -78,7 +78,7 @@ public final class BookTitlePage {
      * @param node the node
      * @return the value of the node or a empty string
      */
-    @Nonnull
+    @NotNull
     private static String getNodeValue(@Nullable Node node) {
         if (node == null) {
             return "";
@@ -95,7 +95,7 @@ public final class BookTitlePage {
      *
      * @return the book title
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getTitle() {
         return title;

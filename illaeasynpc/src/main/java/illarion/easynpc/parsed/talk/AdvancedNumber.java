@@ -15,8 +15,9 @@
  */
 package illarion.easynpc.parsed.talk;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class is used to store a advanced number value that is possibly used by
@@ -55,7 +56,7 @@ public final class AdvancedNumber {
     /**
      * The type of this number.
      */
-    @Nonnull
+    @NotNull
     private final AdvancedNumberType type;
 
     /**

@@ -23,9 +23,9 @@ import de.lessvoid.nifty.loaderv2.types.ControlType;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.screen.Screen;
 import org.illarion.nifty.controls.DialogMessage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The control creator for the message dialog.
@@ -51,7 +51,7 @@ public class CreateDialogMessageControl extends ControlAttributes {
      *
      * @param id the ID of the new control
      */
-    public CreateDialogMessageControl(@Nonnull String id) {
+    public CreateDialogMessageControl(@NotNull String id) {
         setId(id);
         setName(NAME);
     }
@@ -66,9 +66,9 @@ public class CreateDialogMessageControl extends ControlAttributes {
      */
     @Nullable
     public DialogMessage create(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element parent) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element parent) {
         return nifty.addControl(screen, parent, getStandardControl()).getNiftyControl(DialogMessage.class);
     }
 
@@ -77,7 +77,7 @@ public class CreateDialogMessageControl extends ControlAttributes {
      *
      * @return the element type of the dialog
      */
-    @Nonnull
+    @NotNull
     @Override
     public ElementType createType() {
         return new ControlType(getAttributes());

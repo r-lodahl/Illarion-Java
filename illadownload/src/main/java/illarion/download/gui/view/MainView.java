@@ -17,15 +17,15 @@ package illarion.download.gui.view;
 
 import illarion.download.gui.model.GuiModel;
 import javafx.scene.Node;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class MainView extends ApplicationView {
-    public MainView(@Nonnull GuiModel model) throws IOException {
+    public MainView(@NotNull GuiModel model) throws IOException {
         super(model);
 
         Node viewContents = Util.loadFXML("mainView.fxml", model, Util.loadResourceBundle("mainView"));

@@ -24,17 +24,17 @@ import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.tools.panel.DataPanel;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
  * @author Fredrik K
  */
 public class DataTool extends AbstractTool {
-    @Nonnull
+    @NotNull
     protected DataPanel panel;
 
     public DataTool() {
@@ -44,7 +44,7 @@ public class DataTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         MapTile tile = map.getTileAt(x, y);
 
         if (tile != null) {
@@ -65,7 +65,7 @@ public class DataTool extends AbstractTool {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public JPanel getSettingsPanel() {
         return panel;
@@ -91,12 +91,12 @@ public class DataTool extends AbstractTool {
     }
 
     @EventSubscriber
-    public void onItemDataAnnotation(@Nonnull TileAnnotationEvent e) {
+    public void onItemDataAnnotation(@NotNull TileAnnotationEvent e) {
         panel.setAnnotation(e.getText());
     }
 
     @EventSubscriber
-    public void onSelectTool(@Nonnull ToolSelectedEvent e) {
+    public void onSelectTool(@NotNull ToolSelectedEvent e) {
         if (equals(e.getTool())) {
             MapTile tile = getManager().getActiveTile();
             if (tile == null) {

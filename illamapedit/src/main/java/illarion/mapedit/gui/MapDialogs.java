@@ -17,8 +17,8 @@ package illarion.mapedit.gui;
 
 import illarion.mapedit.Lang;
 import illarion.mapedit.data.Map;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;

@@ -18,13 +18,13 @@ package illarion.mapedit.gui.util;
 import illarion.mapedit.data.MapIO;
 import illarion.mapedit.events.menu.MapOpenEvent;
 import illarion.mapedit.resource.loaders.ImageLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.SwingWorker.StateValue;
 import javax.swing.tree.*;
@@ -43,12 +43,12 @@ import java.util.Arrays;
  * @author Fredrik K
  */
 public class FileTree extends JTree {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileTree.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final Color SELECTED_COLOR = new Color(115, 164, 209);
 
     private class FileTreeMouseAdapter extends MouseAdapter {
         @Override
-        public void mousePressed(@Nonnull MouseEvent e) {
+        public void mousePressed(@NotNull MouseEvent e) {
             int selRow = getClosestRowForLocation(e.getX(), e.getY());
             if (selRow == -1) {
                 return;
@@ -119,12 +119,12 @@ public class FileTree extends JTree {
         addMouseListener(new FileTreeMouseAdapter());
     }
 
-    public static boolean isMapFile(@Nonnull File node) {
+    public static boolean isMapFile(@NotNull File node) {
         return node.isDirectory() || node.getName().endsWith(MapIO.EXT_TILE);
     }
 
     @Nullable
-    private static MutableTreeNode scan(@Nonnull Path node) {
+    private static MutableTreeNode scan(@NotNull Path node) {
         if (Files.isDirectory(node)) {
             return getDirectoryTreeNode(node);
         }
@@ -142,7 +142,7 @@ public class FileTree extends JTree {
     };
 
     @Nullable
-    private static MutableTreeNode getDirectoryTreeNode(@Nonnull Path node) {
+    private static MutableTreeNode getDirectoryTreeNode(@NotNull Path node) {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(node, MAP_FILE_FILTER)) {
             String dirName = node.getFileName().toString();
             DefaultMutableTreeNode ret = new DefaultMutableTreeNode(dirName);
@@ -163,7 +163,7 @@ public class FileTree extends JTree {
         return null;
     }
 
-    private static void sortFiles(@Nonnull File... files) {
+    private static void sortFiles(@NotNull File... files) {
         Arrays.sort(files, (o1, o2) -> {
             if (o1.isDirectory() ^ o2.isDirectory()) {
                 if (o1.isDirectory()) {
@@ -180,7 +180,7 @@ public class FileTree extends JTree {
     @Nullable
     private SwingWorker<MutableTreeNode, Object> currentWorker;
 
-    public void setDirectory(@Nonnull Path file) {
+    public void setDirectory(@NotNull Path file) {
         if (Files.isDirectory(file)) {
             SwingWorker<MutableTreeNode, Object> localCurrentWorker = currentWorker;
             if (localCurrentWorker != null && localCurrentWorker.getState() != StateValue.DONE) {
@@ -208,7 +208,7 @@ public class FileTree extends JTree {
     }
 
     @Override
-    protected void paintComponent(@Nonnull Graphics g) {
+    protected void paintComponent(@NotNull Graphics g) {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
 

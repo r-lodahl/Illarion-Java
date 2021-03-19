@@ -17,8 +17,8 @@ package illarion.common.util;
 
 import illarion.common.graphics.TileInfo;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of the table loader that targets the tile table file.
@@ -85,7 +85,7 @@ public final class TableLoaderTiles extends TableLoader {
      */
     private static final int TB_SPEED = 4;
 
-    public TableLoaderTiles(@Nonnull TableLoaderSink<TableLoaderTiles> callback) {
+    public TableLoaderTiles(@NotNull TableLoaderSink<TableLoaderTiles> callback) {
         super("Tiles", callback);
     }
 
@@ -125,7 +125,7 @@ public final class TableLoaderTiles extends TableLoader {
      *
      * @return the english tile name
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameEnglish() {
         return getString(TB_COMMENT);
@@ -136,7 +136,7 @@ public final class TableLoaderTiles extends TableLoader {
      *
      * @return the german tile name
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameGerman() {
         return getString(TB_COMMENT);
@@ -148,7 +148,7 @@ public final class TableLoaderTiles extends TableLoader {
      *
      * @return the resource name of this tile
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getResourceName() {
         return getString(TB_NAME);

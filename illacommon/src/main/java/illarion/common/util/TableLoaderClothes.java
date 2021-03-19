@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of the table loader that targets the clothes table file.
@@ -65,7 +65,7 @@ public final class TableLoaderClothes extends TableLoader {
      */
     private static final int TB_REF_ITEM_ID = 6;
 
-    public TableLoaderClothes(@Nonnull TableLoaderSink<TableLoaderClothes> callback) {
+    public TableLoaderClothes(@NotNull TableLoaderSink<TableLoaderClothes> callback) {
         super("Cloth", callback);
     }
 
@@ -115,7 +115,7 @@ public final class TableLoaderClothes extends TableLoader {
      *
      * @return the resource name of this effect
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getResourceName() {
         return getString(TB_NAME);

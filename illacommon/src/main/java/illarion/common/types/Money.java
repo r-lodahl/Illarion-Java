@@ -16,19 +16,14 @@
 package illarion.common.types;
 
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class contains the game money. It can be used to split the components of the money (copper, silver, gold).
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@ThreadSafe
-@Immutable
 public final class Money implements Comparable<Money> {
     /**
      * The conversation factor from copper to silver coins.
@@ -144,11 +139,11 @@ public final class Money implements Comparable<Money> {
 
     @Override
     @Contract(pure = true)
-    public int compareTo(@Nonnull Money o) {
+    public int compareTo(@NotNull Money o) {
         return Long.compare(copperCoins, o.copperCoins);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

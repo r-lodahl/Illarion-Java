@@ -22,9 +22,9 @@ import illarion.mapedit.gui.MapEditorConfig;
 import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.util.SwingLocation;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -47,7 +47,7 @@ public class SelectedTileRenderer extends AbstractMapRenderer {
 
     @Override
     public void renderMap(
-            @Nonnull Map map, Rectangle viewport, int level, @Nonnull Graphics2D g) {
+            @NotNull Map map, Rectangle viewport, int level, @NotNull Graphics2D g) {
         int width = map.getWidth();
         int height = map.getHeight();
         int z = map.getZ() - level;
@@ -109,7 +109,7 @@ public class SelectedTileRenderer extends AbstractMapRenderer {
     }
 
     private void drawLine(
-            int fromX, int fromY, int toX, int toY, int z, @Nonnull Graphics2D g) {
+            int fromX, int fromY, int toX, int toY, int z, @NotNull Graphics2D g) {
         g.drawLine(SwingLocation.displayCoordinateX(fromX, fromY, z), SwingLocation.displayCoordinateY(fromX, fromY, z),
                    SwingLocation.displayCoordinateX(toX, toY, z), SwingLocation.displayCoordinateY(toX, toY, z));
     }
@@ -135,7 +135,7 @@ public class SelectedTileRenderer extends AbstractMapRenderer {
     }
 
     @EventTopicSubscriber(topic = MapEditorConfig.SHOW_MAP_POSITION)
-    public void onConfigChanged(@Nonnull String topic, ConfigChangedEvent event) {
+    public void onConfigChanged(@NotNull String topic, ConfigChangedEvent event) {
         if (topic.equals(MapEditorConfig.SHOW_MAP_POSITION)) {
             showPosition = MapEditorConfig.getInstance().isShowPosition();
         }

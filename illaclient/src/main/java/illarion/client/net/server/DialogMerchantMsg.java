@@ -24,8 +24,8 @@ import illarion.common.net.NetCommReader;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public final class DialogMerchantMsg implements ServerReply {
     private List<MerchantItem> items;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         title = reader.readString();
         items = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public final class DialogMerchantMsg implements ServerReply {
         dialogId = reader.readInt();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((title == null) || (items == null)) {
@@ -99,7 +99,7 @@ public final class DialogMerchantMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

@@ -26,9 +26,9 @@ import illarion.client.world.World;
 import illarion.client.world.characters.CharacterAttribute;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.illarion.nifty.controls.Progress;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This handler takes care for showing the hit points, mana points and food points of the character on the screen.
@@ -85,7 +85,7 @@ public final class CharStatusHandler implements PlayerStatusGui, ScreenControlle
     private int currentManaPoints;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         hitPointBar = screen.findNiftyControl("healthBar", Progress.class);
         manaPointBar = screen.findNiftyControl("manaBar", Progress.class);
         foodPointBar = screen.findNiftyControl("foodBar", Progress.class);
@@ -124,7 +124,7 @@ public final class CharStatusHandler implements PlayerStatusGui, ScreenControlle
     }
 
     @Override
-    public void setAttribute(@Nonnull CharacterAttribute attribute, int value) {
+    public void setAttribute(@NotNull CharacterAttribute attribute, int value) {
         switch (attribute) {
             case HitPoints:
                 hitPoints = value;

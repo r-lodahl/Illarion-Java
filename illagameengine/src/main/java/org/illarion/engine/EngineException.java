@@ -15,7 +15,8 @@
  */
 package org.illarion.engine;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the exception thrown in case something goes wrong inside the engine.
@@ -26,15 +27,15 @@ public class EngineException extends Exception {
     public EngineException() {
     }
 
-    public EngineException(@Nonnull String message) {
+    public EngineException(@NotNull String message) {
         super(message);
     }
 
-    public EngineException(@Nonnull String message, @Nonnull Throwable cause) {
+    public EngineException(@NotNull String message, @NotNull Throwable cause) {
         super(message, cause);
     }
 
-    public EngineException(@Nonnull Throwable cause) {
+    public EngineException(@NotNull Throwable cause) {
         super(cause);
     }
 }

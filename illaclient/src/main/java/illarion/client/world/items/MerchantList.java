@@ -22,9 +22,9 @@ import illarion.client.world.World;
 import illarion.client.world.items.MerchantItem.MerchantItemType;
 import illarion.common.types.ItemCount;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -38,7 +38,7 @@ public final class MerchantList {
     /**
      * This is the list of items the merchant is trading.
      */
-    @Nonnull
+    @NotNull
     private final List<MerchantItem> itemList;
 
     /**
@@ -61,7 +61,7 @@ public final class MerchantList {
      *
      * @param item the item to add to the list
      */
-    public void addItem(@Nonnull MerchantItem item) {
+    public void addItem(@NotNull MerchantItem item) {
         itemList.add(item);
     }
 
@@ -72,7 +72,7 @@ public final class MerchantList {
      * @return the merchant item at this entry
      * @throws ArrayIndexOutOfBoundsException in case the index is too large or too small
      */
-    @Nonnull
+    @NotNull
     public MerchantItem getItem(int index) {
         MerchantItem item = itemList.get(index);
         if (item == null) {
@@ -82,7 +82,7 @@ public final class MerchantList {
     }
 
     @Nullable
-    public MerchantItem getItem(@Nonnull MerchantItemType type, int index) {
+    public MerchantItem getItem(@NotNull MerchantItemType type, int index) {
         for (MerchantItem item : itemList) {
             if ((item != null) && (item.getType() == type) && (item.getIndex() == index)) {
                 return item;
@@ -124,7 +124,7 @@ public final class MerchantList {
      *
      * @param item the index of the item to buy
      */
-    public void buyItem(@Nonnull MerchantItem item) {
+    public void buyItem(@NotNull MerchantItem item) {
         buyItem(item, item.getBundleSize());
     }
 
@@ -133,7 +133,7 @@ public final class MerchantList {
      *
      * @param item the index of the item to buy
      */
-    public void buyItem(@Nonnull MerchantItem item, @Nonnull ItemCount count) {
+    public void buyItem(@NotNull MerchantItem item, @NotNull ItemCount count) {
         if (!itemList.contains(item)) {
             throw new IllegalArgumentException("This item is not part of this merchant list");
         }
@@ -155,7 +155,7 @@ public final class MerchantList {
      * @param index the index of the item to buy
      * @param count the amount of items to buy
      */
-    public void buyItem(int index, @Nonnull ItemCount count) {
+    public void buyItem(int index, @NotNull ItemCount count) {
         World.getNet().sendCommand(new BuyTradingItem(listId, index, count));
     }
 }

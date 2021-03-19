@@ -16,12 +16,12 @@
 package illarion.client.graphics;
 
 import illarion.common.graphics.CharAnimations;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +36,8 @@ public final class AvatarInfo {
     /**
      * The instance of the logger for this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AvatarInfo.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The buffer of constructs of this class that is generated during the creation process and stores all AvatarInfo
@@ -50,7 +50,7 @@ public final class AvatarInfo {
     /**
      * The list of animations known to this avatar. All animation index values marked with true need to be playable.
      */
-    @Nonnull
+    @NotNull
     private final boolean[] animations;
 
     /**
@@ -91,7 +91,7 @@ public final class AvatarInfo {
      * default visibility.
      * @return the newly created instance of AvatarInfo or a already created one from the cache
      */
-    @Nonnull
+    @NotNull
     public static AvatarInfo getInstance(int appearance, int visibilityMod) {
         if (buffer != null) {
             AvatarInfo result = buffer.get(appearance);

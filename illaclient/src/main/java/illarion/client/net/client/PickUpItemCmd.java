@@ -18,9 +18,7 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to tell the server that a item on a specified location on the map is picked up and added
@@ -28,12 +26,11 @@ import javax.annotation.concurrent.Immutable;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class PickUpItemCmd extends AbstractCommand {
     /**
      * The location on the map where the item is fetched from.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate pickUpLocation;
 
     /**
@@ -41,18 +38,18 @@ public final class PickUpItemCmd extends AbstractCommand {
      *
      * @param location the location the item is taken from
      */
-    public PickUpItemCmd(@Nonnull ServerCoordinate location) {
+    public PickUpItemCmd(@NotNull ServerCoordinate location) {
         super(CommandList.CMD_PICK_UP);
 
         pickUpLocation = location;
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         pickUpLocation.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(pickUpLocation.toString());

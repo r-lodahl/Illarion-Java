@@ -17,11 +17,11 @@ package illarion.easynpc.gui;
 
 import illarion.easynpc.Lang;
 import org.bushe.swing.event.EventBusAction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -38,23 +38,23 @@ public final class UndoMonitor implements UndoableEditListener, ChangeListener {
     /**
      * The button used for the redo operation.
      */
-    @Nonnull
+    @NotNull
     private final JCommandButton redoButton;
 
     /**
      * The button used for the undo operation.
      */
-    @Nonnull
+    @NotNull
     private final JCommandButton undoButton;
 
-    @Nonnull
+    @NotNull
     private final MainFrame frame;
 
     /**
      * The private constructor that prepares all values for this monitor to work
      * properly.
      */
-    UndoMonitor(@Nonnull MainFrame frame) {
+    UndoMonitor(@NotNull MainFrame frame) {
         this.frame = frame;
 
         undoButton = new JCommandButton(Utils.getResizableIconFromResource("undo.png"));
@@ -77,7 +77,7 @@ public final class UndoMonitor implements UndoableEditListener, ChangeListener {
      *
      * @return The redo button
      */
-    @Nonnull
+    @NotNull
     public JCommandButton getRedoButton() {
         return redoButton;
     }
@@ -87,7 +87,7 @@ public final class UndoMonitor implements UndoableEditListener, ChangeListener {
      *
      * @return The undo button
      */
-    @Nonnull
+    @NotNull
     public JCommandButton getUndoButton() {
         return undoButton;
     }
@@ -97,14 +97,10 @@ public final class UndoMonitor implements UndoableEditListener, ChangeListener {
      * case its needed to update the state to the new undo manager.
      */
     @Override
-    public void stateChanged(@Nonnull ChangeEvent e) {
+    public void stateChanged(@NotNull ChangeEvent e) {
         JTabbedPane pane = (JTabbedPane) e.getSource();
         Editor editor = (Editor) pane.getSelectedComponent();
-        if (editor != null) {
-            updateUndoRedo(editor);
-        } else {
-            updateUndoRedo(null);
-        }
+        updateUndoRedo(editor);
     }
 
     /**

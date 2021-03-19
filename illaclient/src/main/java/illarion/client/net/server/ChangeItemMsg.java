@@ -23,12 +23,12 @@ import illarion.common.net.NetCommReader;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -39,8 +39,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_CHANGE_ITEM)
 public final class ChangeItemMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ChangeItemMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The new count value of the item.
@@ -72,7 +72,7 @@ public final class ChangeItemMsg implements ServerReply {
     private int newTileMovePoints;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         location = new ServerCoordinate(reader);
         oldItem = new ItemId(reader);
         newItem = new ItemId(reader);
@@ -80,7 +80,7 @@ public final class ChangeItemMsg implements ServerReply {
         newTileMovePoints = reader.readUByte();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((location == null) || (oldItem == null) || (newItem == null) || (count == null)) {
@@ -101,7 +101,7 @@ public final class ChangeItemMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

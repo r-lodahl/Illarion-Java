@@ -29,9 +29,9 @@ import illarion.client.gui.BookGui;
 import illarion.client.resources.BookFactory;
 import illarion.client.util.Lang;
 import illarion.common.data.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class is used to manage the displaying of the books.
@@ -59,7 +59,7 @@ public final class BookHandler implements BookGui, ScreenController, UpdatableHa
     private Screen screen;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -82,8 +82,8 @@ public final class BookHandler implements BookGui, ScreenController, UpdatableHa
     public void onEndScreen() {
         nifty.unsubscribeAnnotations(this);
 
-        IllaClient.getConfig().set("bookDisplayPosX", Integer.toString(bookDisplay.getElement().getX()) + "px");
-        IllaClient.getConfig().set("bookDisplayPosY", Integer.toString(bookDisplay.getElement().getY()) + "px");
+        IllaClient.getConfig().set("bookDisplayPosX", bookDisplay.getElement().getX() + "px");
+        IllaClient.getConfig().set("bookDisplayPosY", bookDisplay.getElement().getY() + "px");
     }
 
     @Override

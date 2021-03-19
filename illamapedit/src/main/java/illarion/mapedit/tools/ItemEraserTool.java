@@ -23,10 +23,10 @@ import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.HistoryAction;
 import illarion.mapedit.history.ItemPlacedAction;
 import illarion.mapedit.tools.panel.ItemEraserPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.List;
  * @author Fredrik K
  */
 public class ItemEraserTool extends AbstractTool {
-    @Nonnull
+    @NotNull
     private final ItemEraserPanel panel;
 
     public ItemEraserTool() {
@@ -44,7 +44,7 @@ public class ItemEraserTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         HistoryAction newAction = removeItem(x, y, map);
         if (newAction != null) {
             getHistory().addEntry(newAction);
@@ -52,7 +52,7 @@ public class ItemEraserTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, @Nonnull GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, @NotNull GroupAction action) {
         HistoryAction newAction = removeItem(x, y, map);
         if (newAction != null) {
             action.addAction(newAction);
@@ -60,7 +60,7 @@ public class ItemEraserTool extends AbstractTool {
     }
 
     @Nullable
-    private HistoryAction removeItem(int x, int y, @Nonnull Map map) {
+    private HistoryAction removeItem(int x, int y, @NotNull Map map) {
         if (!map.contains(x, y)) {
             return null;
         }
@@ -86,17 +86,17 @@ public class ItemEraserTool extends AbstractTool {
             int x,
             int y,
             Map map,
-            @Nonnull List<MapItem> items) {
+            @NotNull List<MapItem> items) {
         MapItem item = items.remove(items.size() - 1);
         return new ItemPlacedAction(x, y, item, null, map);
     }
 
-    @Nonnull
+    @NotNull
     private static HistoryAction clearItems(
             int x,
             int y,
-            @Nonnull Map map,
-            @Nonnull Collection<MapItem> items) {
+            @NotNull Map map,
+            @NotNull Collection<MapItem> items) {
         GroupAction action = new GroupAction();
         for (MapItem item : items) {
             action.addAction(new ItemPlacedAction(x, y, item, null, map));

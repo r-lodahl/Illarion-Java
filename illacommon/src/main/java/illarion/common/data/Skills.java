@@ -15,10 +15,9 @@
  */
 package illarion.common.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,13 +28,11 @@ import java.util.Map;
  *
  * @author Martin Karing &lt;nitram@illarion.org%gt;
  */
-@ThreadSafe
-@Immutable
 public final class Skills {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final Skills INSTANCE = new Skills();
 
     /**
@@ -43,7 +40,7 @@ public final class Skills {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static Skills getInstance() {
         return INSTANCE;
     }
@@ -51,7 +48,7 @@ public final class Skills {
     /**
      * The map of skills that are known to this class.
      */
-    @Nonnull
+    @NotNull
     private final Map<Integer, Skill> skillMap;
 
     /**
@@ -67,7 +64,7 @@ public final class Skills {
      *
      * @param skill the skill to add
      */
-    void addSkill(@Nonnull Skill skill) {
+    void addSkill(@NotNull Skill skill) {
         skillMap.put(skill.getId(), skill);
     }
 
@@ -89,7 +86,7 @@ public final class Skills {
      * @return the matched skill
      */
     @Nullable
-    public Skill getSkill(@Nonnull String name) {
+    public Skill getSkill(@NotNull String name) {
         String cleanName = name.trim().toLowerCase();
 
         for (Skill skill : skillMap.values()) {
@@ -106,7 +103,7 @@ public final class Skills {
      *
      * @return the list of all skills known to this class
      */
-    @Nonnull
+    @NotNull
     public Collection<Skill> getSkills() {
         return Collections.unmodifiableCollection(skillMap.values());
     }

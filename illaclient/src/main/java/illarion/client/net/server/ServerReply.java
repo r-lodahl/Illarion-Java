@@ -16,8 +16,8 @@
 package illarion.client.net.server;
 
 import illarion.common.net.NetCommReader;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -32,13 +32,13 @@ public interface ServerReply {
      * @param reader the reader from the network interface
      * @throws IOException throw in case reading fails for some reason
      */
-    void decode(@Nonnull NetCommReader reader) throws IOException;
+    void decode(@NotNull NetCommReader reader) throws IOException;
 
     /**
      * Execute the task.
      *
      * @return the result of the execution
      */
-    @Nonnull
+    @NotNull
     ServerReplyResult execute();
 }

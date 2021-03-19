@@ -22,8 +22,8 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.tools.SizeValue;
 import org.illarion.nifty.controls.SelectListEntry;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This converter is used to display the select items in the GUI.
@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
  */
 public final class SelectItemViewConverter implements ListBoxViewConverter<SelectListEntry> {
     @Override
-    public void display(@Nonnull Element listBoxItem, @Nonnull SelectListEntry item) {
+    public void display(@NotNull Element listBoxItem, @NotNull SelectListEntry item) {
         Element itemImage = listBoxItem.findElementById("#imageDisplay");
         Element itemImageContainer = itemImage.getParent();
         NiftyImage itemPicture = item.getItemImage();
@@ -77,7 +77,7 @@ public final class SelectItemViewConverter implements ListBoxViewConverter<Selec
     }
 
     @Override
-    public int getWidth(@Nonnull Element element, @Nonnull SelectListEntry item) {
+    public int getWidth(@NotNull Element element, @NotNull SelectListEntry item) {
         return element.getWidth();
     }
 }

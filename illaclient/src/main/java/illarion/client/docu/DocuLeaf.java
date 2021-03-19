@@ -17,8 +17,8 @@ package illarion.client.docu;
 
 import illarion.client.util.Lang;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -26,45 +26,45 @@ import java.util.Iterator;
  * @author Fredrik K
  */
 public final class DocuLeaf implements DocuEntry {
-    @Nonnull
+    @NotNull
     private final String docuDesc;
-    @Nonnull
+    @NotNull
     private final String docuTitle;
 
-    public DocuLeaf(@Nonnull String type, @Nonnull String name) {
+    public DocuLeaf(@NotNull String type, @NotNull String name) {
         docuTitle = String.format("docu.%s.%s.title", type, name);
         docuDesc = String.format("docu.%s.%s.description", type, name);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(value = "_->fail", pure = true)
     public DocuEntry getChild(int index) {
         throw new IllegalArgumentException("There are no childs to request.");
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public int getChildCount() {
         return 0;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String getDescription() {
         return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuDesc);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String getTitle() {
         return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuTitle);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public Iterator<DocuEntry> iterator() {

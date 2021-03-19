@@ -16,8 +16,8 @@
 package org.illarion.engine.backend.gdx;
 
 import org.illarion.engine.backend.shared.AbstractSprite;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The sprite implementation of libGDX.
@@ -36,7 +36,7 @@ class GdxSprite extends AbstractSprite<GdxTexture> {
      * @param mirror the mirrored flag
      */
     protected GdxSprite(
-            @Nonnull GdxTexture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror) {
+            @NotNull GdxTexture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror) {
         super(textures, offsetX, offsetY, centerX, centerY, mirror);
     }
 }

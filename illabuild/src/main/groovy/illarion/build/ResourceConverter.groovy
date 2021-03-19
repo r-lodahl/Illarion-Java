@@ -18,7 +18,6 @@ package illarion.build
 import groovy.xml.MarkupBuilder
 import illarion.build.imagepacker.ImagePacker
 import illarion.common.data.Book
-import illarion.common.data.BookLanguage
 import illarion.common.util.Crypto
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
@@ -40,7 +39,7 @@ import javax.xml.validation.SchemaFactory
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-public class ResourceConverter extends DefaultTask {
+class ResourceConverter extends DefaultTask {
     /**
      * The file names of the book files that were found but not handled yet.
      */
@@ -51,7 +50,7 @@ public class ResourceConverter extends DefaultTask {
      * Crypto instance used to crypt the table files.
      */
     @Nonnull
-    final def crypto = new Crypto();
+    final def crypto = new Crypto()
 
     /**
      * The file names of the misc files that were found but not handled yet.
@@ -63,33 +62,33 @@ public class ResourceConverter extends DefaultTask {
      * The file that contains the private key to use
      */
     @InputFile
-    def File privateKey;
+    File privateKey
 
     /**
      * The file names of the table files that were found but not handled yet.
      */
     @Nonnull
-    private final def tableFiles = [] as List<File>;
+    private final def tableFiles = [] as List<File>
 
     /**
      * The base name for the texture atlas files
      */
     @Input
-    def String atlasName;
+    String atlasName
 
     @InputFiles
-    def FileCollection resources;
+    FileCollection resources
 
-    def File resourceDirectory
+    File resourceDirectory
 
     @OutputDirectory
-    def File outputDirectory;
+    File outputDirectory
 
     /**
      * The file names of texture files that were found in the list and were not handled yet.
      */
     @Nonnull
-    private final def textureFiles = [] as List<File>;
+    private final def textureFiles = [] as List<File>
 
     /**
      * This is the task action that causes the converter to be executed.
@@ -110,7 +109,7 @@ public class ResourceConverter extends DefaultTask {
      */
     void analyseAndOrderFile(File file) {
         if (!file.file) {
-            return;
+            return
         }
         final def fileName = file.absolutePath
 
@@ -135,7 +134,7 @@ public class ResourceConverter extends DefaultTask {
      * @throws SAXException
      */
     @SuppressWarnings("nls")
-    def void convert(File rootDir, File targetDirectory) {
+    void convert(File rootDir, File targetDirectory) {
         delete(targetDirectory)
         targetDirectory.mkdirs()
 
@@ -157,7 +156,7 @@ public class ResourceConverter extends DefaultTask {
             return
         }
         if (file.file) {
-            file.delete();
+            file.delete()
         } else if (file.directory) {
             file.listFiles().each { delete(it) }
         }
@@ -180,7 +179,7 @@ public class ResourceConverter extends DefaultTask {
         final def docBuilderFactory = DocumentBuilderFactory.newInstance()
         final def schemaFactory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema")
         final def bookSchema = schemaFactory.newSchema(ResourceConverter.class.classLoader.getResource("book.xsd"))
-        final def validator = bookSchema.newValidator();
+        final def validator = bookSchema.newValidator()
 
         final def exceptions = new ArrayList<Throwable>()
 
@@ -204,11 +203,11 @@ public class ResourceConverter extends DefaultTask {
 
         if (!exceptions.empty) {
             if (exceptions.size() == 1) {
-                throw exceptions.get(0);
+                throw exceptions.get(0)
             } else {
                 final def ex = new Exception("Multiple errors while parsing books.")
                 exceptions.forEach({e -> ex.addSuppressed(e)})
-                throw ex;
+                throw ex
             }
         }
 
@@ -238,7 +237,7 @@ public class ResourceConverter extends DefaultTask {
     @SuppressWarnings("nls")
     private void convertMiscFiles(final File targetDirectory) {
         if (miscFiles.empty) {
-            return;
+            return
         }
 
         miscFiles.each { file ->
@@ -312,14 +311,14 @@ public class ResourceConverter extends DefaultTask {
                 break
             }
 
-            ImageIO.write(resultImage, "png", new File(targetDirectory, fileName));
+            ImageIO.write(resultImage, "png", new File(targetDirectory, fileName))
 
             atlasMarkup.atlas(file: fileName) {
                 mkp.yieldUnescaped(spriteMarkupWriter.toString())
             }
         }
 
-        def xmlWriter;
+        def xmlWriter
         try {
             xmlWriter = new BufferedWriter(new FileWriter(new File(targetDirectory, "${baseName}.xml")))
             new MarkupBuilder(xmlWriter).atlasList(atlasCount: atlasFiles) {

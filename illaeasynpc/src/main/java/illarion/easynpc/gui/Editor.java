@@ -23,9 +23,9 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -62,7 +62,7 @@ public final class Editor extends RTextScrollPane {
     /**
      * The editor pane used to display the current script.
      */
-    @Nonnull
+    @NotNull
     private final RSyntaxTextArea editor;
 
     /**
@@ -82,19 +82,19 @@ public final class Editor extends RTextScrollPane {
 
     private boolean savedSinceLastChange;
 
-    @Nonnull
+    @NotNull
     private final Timer timer;
 
-    @Nonnull
+    @NotNull
     private final MainFrame frame;
 
-    @Nonnull
+    @NotNull
     private final UndoMonitor undoMonitor;
 
     /**
      * The default constructor that prepares the editor for the display.
      */
-    Editor(@Nonnull MainFrame frame, @Nonnull UndoMonitor undoMonitor) {
+    Editor(@NotNull MainFrame frame, @NotNull UndoMonitor undoMonitor) {
         super(new RSyntaxTextArea(), true);
         this.frame = frame;
         this.undoMonitor = undoMonitor;
@@ -172,7 +172,7 @@ public final class Editor extends RTextScrollPane {
         editor.discardAllEdits();
     }
 
-    @Nonnull
+    @NotNull
     public RSyntaxTextArea getEditor() {
         return (RSyntaxTextArea) getTextArea();
     }
@@ -187,7 +187,7 @@ public final class Editor extends RTextScrollPane {
         return errorNpc;
     }
 
-    @Nonnull
+    @NotNull
     public String getFileName() {
         if (loadScriptFile == null) {
             return "New Script";
@@ -224,7 +224,7 @@ public final class Editor extends RTextScrollPane {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public JTabbedPane getParent() {
         return (JTabbedPane) super.getParent();
@@ -283,7 +283,7 @@ public final class Editor extends RTextScrollPane {
         return retText;
     }
 
-    public void setTemplateText(@Nonnull String string) {
+    public void setTemplateText(@NotNull String string) {
         editor.setText(string);
         editor.setCaretPosition(0);
         editor.discardAllEdits();
@@ -295,7 +295,7 @@ public final class Editor extends RTextScrollPane {
      *
      * @param script the script to display in this editor
      */
-    public void loadScript(@Nonnull EasyNpcScript script) {
+    public void loadScript(@NotNull EasyNpcScript script) {
         setScriptText(script);
         setLoadScriptFile(script.getSourceScriptFile());
         editor.discardAllEdits();
@@ -323,7 +323,7 @@ public final class Editor extends RTextScrollPane {
      *
      * @param text the text that shall be shown in the editor now
      */
-    void setScriptText(@Nonnull String text) {
+    void setScriptText(@NotNull String text) {
         int oldCaret = editor.getCaretPosition();
         editor.setText(text);
         if (oldCaret > -1) {
@@ -338,7 +338,7 @@ public final class Editor extends RTextScrollPane {
      *
      * @param script the script supplying the text
      */
-    void setScriptText(@Nonnull EasyNpcScript script) {
+    void setScriptText(@NotNull EasyNpcScript script) {
         StringBuilder buffer = new StringBuilder();
 
         int count = script.getEntryCount();
@@ -383,7 +383,7 @@ public final class Editor extends RTextScrollPane {
         String data;
         try {
             data = (String) transfer.getTransferData(DataFlavor.stringFlavor);
-        } catch (@Nonnull Exception e1) {
+        } catch (@NotNull Exception e1) {
             return;
         }
         StringBuilder buffer = new StringBuilder(editor.getText());
@@ -457,7 +457,7 @@ public final class Editor extends RTextScrollPane {
         if (parsedVersion == null) {
             String scriptText = getScriptText();
             Runnable worker = new SwingWorker<ParsedNpc, Void>() {
-                @Nonnull
+                @NotNull
                 @Override
                 protected ParsedNpc doInBackground() throws Exception {
                     return Parser.parse(scriptText);
@@ -476,7 +476,7 @@ public final class Editor extends RTextScrollPane {
                             errorNpc = null;
                             frame.getErrorArea().removeErrorEditor(Editor.this);
                         }
-                    } catch (@Nonnull InterruptedException | ExecutionException ignored) {
+                    } catch (@NotNull InterruptedException | ExecutionException ignored) {
                     }
                 }
             };

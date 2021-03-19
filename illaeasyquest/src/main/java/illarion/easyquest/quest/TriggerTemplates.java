@@ -16,18 +16,19 @@
 package illarion.easyquest.quest;
 
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class TriggerTemplates {
     private static final TriggerTemplates instance = new TriggerTemplates();
-    @Nonnull
+    @NotNull
     private final Map<String, TriggerTemplate> typeMap;
     private TriggerTemplate[] templates;
 
@@ -37,7 +38,7 @@ public class TriggerTemplates {
         load();
     }
 
-    @Nonnull
+    @NotNull
     public static TriggerTemplates getInstance() {
         return instance;
     }
@@ -47,7 +48,7 @@ public class TriggerTemplates {
         return loader.getResourceAsStream(name);
     }
 
-    @Nonnull
+    @NotNull
     private static List<String> loadFileList() {
         List<String> result = new ArrayList<>();
         BufferedReader bRead = null;
@@ -91,7 +92,7 @@ public class TriggerTemplates {
                 TriggerTemplate triggerTemplate = new TriggerTemplate(uniqueName);
                 try {
                     BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(getResource(fileName), "ISO-8859-1"));
+                            new InputStreamReader(getResource(fileName), StandardCharsets.ISO_8859_1));
 
                     while ((line = reader.readLine()) != null) {
                         if (isHeader && line.matches("function .*")) {
@@ -166,7 +167,7 @@ public class TriggerTemplates {
                     } else {
                         System.out.println("Syntax error in template " + fileName);
                     }
-                } catch (@Nonnull IOException e1) {
+                } catch (@NotNull IOException e1) {
                     System.out.println("Error loading template " + fileName);
                 }
             }

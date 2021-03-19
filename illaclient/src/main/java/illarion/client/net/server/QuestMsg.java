@@ -21,9 +21,9 @@ import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ServerCoordinate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +64,7 @@ public final class QuestMsg implements ServerReply {
     private List<ServerCoordinate> targetLocations;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         questId = reader.readUShort();
         title = reader.readString();
         description = reader.readString();
@@ -76,7 +76,7 @@ public final class QuestMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((title == null) || (description == null) || (targetLocations == null)) {
@@ -91,7 +91,7 @@ public final class QuestMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

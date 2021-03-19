@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Close a opened container
@@ -27,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class CloseShowcaseCmd extends AbstractCommand {
     /**
      * The ID of the container.
@@ -46,11 +43,11 @@ public final class CloseShowcaseCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(showcaseId);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Showcase: " + showcaseId);

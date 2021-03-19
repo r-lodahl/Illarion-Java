@@ -22,9 +22,9 @@ import illarion.mapedit.data.MapItem;
 import illarion.mapedit.data.MapTile;
 import illarion.mapedit.data.MapTile.MapTileFactory;
 import illarion.mapedit.data.MapWarpPoint;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -62,7 +62,7 @@ public class Version2Decoder implements Decoder {
     private final String name;
     private final Path path;
 
-    Version2Decoder(@Nonnull String name, @Nonnull Path path) {
+    Version2Decoder(@NotNull String name, @NotNull Path path) {
         this.name = name;
         this.path = path;
         map = null;
@@ -73,7 +73,7 @@ public class Version2Decoder implements Decoder {
         height = null;
     }
 
-    public void decodeItemLine(@Nonnull String line, int i) throws FormatCorruptedException {
+    public void decodeItemLine(@NotNull String line, int i) throws FormatCorruptedException {
         if (line.startsWith("# ")) {
             return;
         }
@@ -85,7 +85,7 @@ public class Version2Decoder implements Decoder {
         createNewItem(matches);
     }
 
-    @Nonnull
+    @NotNull
     private List<String> getItemMatches(String line) {
         Matcher regexMatcher = PATTERN_DATA.matcher(line);
         List<String> matches = new LinkedList<>();
@@ -98,7 +98,7 @@ public class Version2Decoder implements Decoder {
         return matches;
     }
 
-    private void createNewItem(@Nonnull List<String> matches) {
+    private void createNewItem(@NotNull List<String> matches) {
         int itemX = Integer.parseInt(matches.get(0));
         int itemY = Integer.parseInt(matches.get(1));
         int itemId = Integer.parseInt(matches.get(2));
@@ -117,7 +117,7 @@ public class Version2Decoder implements Decoder {
         }
     }
 
-    public void decodeTileLine(@Nonnull String line, int i) throws FormatCorruptedException {
+    public void decodeTileLine(@NotNull String line, int i) throws FormatCorruptedException {
         if (line.startsWith("# ")) {
             return;
         }
@@ -169,7 +169,7 @@ public class Version2Decoder implements Decoder {
         }
     }
 
-    public void decodeWarpLine(@Nonnull String line, int i) throws FormatCorruptedException {
+    public void decodeWarpLine(@NotNull String line, int i) throws FormatCorruptedException {
         if (line.startsWith("# ")) {
             return;
         }
@@ -190,7 +190,7 @@ public class Version2Decoder implements Decoder {
     }
 
     @Override
-    public void decodeLine(@Nonnull DataType type, String line, int i) throws FormatCorruptedException {
+    public void decodeLine(@NotNull DataType type, String line, int i) throws FormatCorruptedException {
         switch (type) {
             case Tiles:
                 decodeTileLine(line, i);

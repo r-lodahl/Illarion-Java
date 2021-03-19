@@ -18,9 +18,9 @@ package illarion.client.world;
 import illarion.client.graphics.MapDisplayManager;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +44,7 @@ public final class GameMapProcessor2 {
      * @param tile the tile to process
      */
     @SuppressWarnings("StaticMethodOnlyUsedInOneClass")
-    public static void processTile(@Nonnull MapTile tile) {
+    public static void processTile(@NotNull MapTile tile) {
         ServerCoordinate playerLocation = World.getPlayer().getLocation();
 
         MapTile tileAbove = getFirstTileAbove(tile.getCoordinates(), playerLocation.getZ() + 2, true);
@@ -87,7 +87,7 @@ public final class GameMapProcessor2 {
         }
     }
 
-    public static boolean isOutsideOfClipping(@Nonnull MapTile tile) {
+    public static boolean isOutsideOfClipping(@NotNull MapTile tile) {
         if (!World.getPlayer().hasValidLocation()) {
             return false;
         }
@@ -154,7 +154,7 @@ public final class GameMapProcessor2 {
 
     @Nullable
     private static MapTile getFirstTileBelow(
-            @Nonnull ServerCoordinate startLocation, int zLimit, boolean perceptiveOffset) {
+            @NotNull ServerCoordinate startLocation, int zLimit, boolean perceptiveOffset) {
         if (startLocation.getZ() <= zLimit) {
             return null;
         }
@@ -179,7 +179,7 @@ public final class GameMapProcessor2 {
 
     @Nullable
     private static MapTile getFirstTileAbove(
-            @Nonnull ServerCoordinate startLocation, int zLimit, boolean perceptiveOffset) {
+            @NotNull ServerCoordinate startLocation, int zLimit, boolean perceptiveOffset) {
         if (startLocation.getZ() >= zLimit) {
             return null;
         }
@@ -202,8 +202,8 @@ public final class GameMapProcessor2 {
         return null;
     }
 
-    @Nonnull
-    private static List<MapGroup> getSurroundingMapGroups(@Nonnull ServerCoordinate startLocation) {
+    @NotNull
+    private static List<MapGroup> getSurroundingMapGroups(@NotNull ServerCoordinate startLocation) {
         List<MapGroup> groupList = new ArrayList<>();
 
         GameMap map = World.getMap();

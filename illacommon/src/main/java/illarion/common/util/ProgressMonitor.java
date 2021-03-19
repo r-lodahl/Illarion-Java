@@ -15,8 +15,9 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public final class ProgressMonitor implements ProgressMonitorCallback {
     }
 
     @Override
-    public void updatedProgress(@Nonnull ProgressMonitor monitor) {
+    public void updatedProgress(@NotNull ProgressMonitor monitor) {
         reportProgressChange();
     }
 
@@ -115,7 +116,7 @@ public final class ProgressMonitor implements ProgressMonitorCallback {
      *
      * @param childMonitor the children that is supposed to be monitored now
      */
-    public void addChild(@Nonnull ProgressMonitor childMonitor) {
+    public void addChild(@NotNull ProgressMonitor childMonitor) {
         if (children == null) {
             children = new ArrayList<>();
         }
@@ -159,7 +160,7 @@ public final class ProgressMonitor implements ProgressMonitorCallback {
                 activeCallback = true;
                 try {
                     targetCallback.updatedProgress(this);
-                } catch (@Nonnull Exception e) {
+                } catch (@NotNull Exception e) {
                     // nothing
                 } finally {
                     activeCallback = false;
@@ -189,7 +190,7 @@ public final class ProgressMonitor implements ProgressMonitorCallback {
         }
         float totalProgress = 0.f;
         float totalWeight = 0.f;
-        for (@Nonnull ProgressMonitor childMonitor : children) {
+        for (@NotNull ProgressMonitor childMonitor : children) {
             totalProgress += childMonitor.getProgress() * childMonitor.weight;
             totalWeight += childMonitor.weight;
         }

@@ -22,9 +22,9 @@ import illarion.common.util.FastMath;
 import org.illarion.engine.assets.SoundsManager;
 import org.illarion.engine.sound.Music;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -38,13 +38,13 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
     /**
      * The singleton instance of the SongFactory.
      */
-    @Nonnull
+    @NotNull
     private static final SongFactory INSTANCE = new SongFactory();
 
     /**
      * The root path to the music track files.
      */
-    @Nonnull
+    @NotNull
     private static final String SONG_DIR = "music/";
 
     /**
@@ -52,7 +52,7 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static SongFactory getInstance() {
         return INSTANCE;
@@ -88,7 +88,7 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
      */
     @Nullable
     @Contract(pure = true)
-    public Music getSong(int id, @Nonnull SoundsManager manager) {
+    public Music getSong(int id, @NotNull SoundsManager manager) {
         if (songs != null) {
             // select a variant at random
             List<String> clipList = songs.get(id);
@@ -128,7 +128,7 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
      * Add a song to this factory.
      */
     @Override
-    public void storeResource(@Nonnull IdWrapper<String> resource) {
+    public void storeResource(@NotNull IdWrapper<String> resource) {
         if (songsBuilder == null) {
             throw new IllegalStateException("Factory was not initialized yet.");
         }
@@ -144,7 +144,7 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
      *
      * @return a newly created list that contains the list
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public ImmutableCollection<String> getSongNames() {
         if (songs == null) {
@@ -160,7 +160,7 @@ public final class SongFactory implements ResourceFactory<IdWrapper<String>> {
      * @param manager the manager used to load the track
      * @param song the name of the song to load
      */
-    public void loadSong(@Nonnull SoundsManager manager, @Nonnull String song) {
+    public void loadSong(@NotNull SoundsManager manager, @NotNull String song) {
         manager.getMusic(song);
     }
 }

@@ -18,8 +18,8 @@ package illarion.easynpc.parsed;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -36,7 +36,7 @@ public final class ParsedEmptyLine implements ParsedData {
      * Empty lines do not effect the query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to add to the query.
     }
 
@@ -46,7 +46,7 @@ public final class ParsedEmptyLine implements ParsedData {
      * @return {@code false} always because no stages are effected
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return false;
     }
 
@@ -55,7 +55,7 @@ public final class ParsedEmptyLine implements ParsedData {
      *
      * @return {@code null} always
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.emptyList();
@@ -67,7 +67,7 @@ public final class ParsedEmptyLine implements ParsedData {
      */
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         // nothing to do
     }
 }

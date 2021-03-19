@@ -16,13 +16,13 @@
 package illarion.mapedit.gui;
 
 import illarion.mapedit.events.ToolSelectedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,7 +30,7 @@ import java.awt.*;
  * @author Tim
  */
 public class ToolSettingsPanel extends JPanel {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ToolSettingsPanel.class);
+    public static final Logger LOGGER = LogManager.getLogger();
     private static final int WIDTH = 200;
     @Nullable
     private JComponent lastChild;
@@ -43,7 +43,7 @@ public class ToolSettingsPanel extends JPanel {
 
     @SuppressWarnings("unused")
     @EventSubscriber(eventClass = ToolSelectedEvent.class)
-    public void onToolSelected(@Nonnull ToolSelectedEvent e) {
+    public void onToolSelected(@NotNull ToolSelectedEvent e) {
         LOGGER.debug("Tool Selected {}", e.getTool());
         removeAll();
         lastChild = e.getTool().getSettingsPanel();

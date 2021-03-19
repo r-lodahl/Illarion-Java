@@ -15,7 +15,8 @@
  */
 package illarion.client.gui.util;
 
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Stefano Bonicatti &lt;smjert@gmail.com&gt;

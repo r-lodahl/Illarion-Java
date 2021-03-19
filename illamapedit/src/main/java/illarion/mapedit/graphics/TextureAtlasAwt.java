@@ -16,11 +16,11 @@
 package illarion.mapedit.graphics;
 
 import illarion.common.graphics.TextureAtlas;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public final class TextureAtlasAwt implements TextureAtlas<BufferedImage> {
     /**
      * The map to assign the texture names with the images of this atlas.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, BufferedImage> textures;
 
     /**
@@ -43,7 +43,7 @@ public final class TextureAtlasAwt implements TextureAtlas<BufferedImage> {
      * @param image the buffered image that contains the entire texture
      * @param textureDef the XML document that contains the locations of the sub-images on the large image
      */
-    public TextureAtlasAwt(@Nonnull BufferedImage image, @Nonnull Document textureDef) {
+    public TextureAtlasAwt(@NotNull BufferedImage image, @NotNull Document textureDef) {
         textures = new HashMap<>();
 
         NodeList list = textureDef.getElementsByTagName("sprite");

@@ -20,8 +20,8 @@ import illarion.mapedit.events.HistoryPasteCutEvent;
 import illarion.mapedit.history.CopyPasteAction;
 import illarion.mapedit.history.GroupAction;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,15 +29,15 @@ import java.util.Set;
  * @author Fredrik K
  */
 public class SelectionManager {
-    @Nonnull
+    @NotNull
     private final Set<MapPosition> selection;
 
     public SelectionManager() {
         selection = new HashSet<>();
     }
 
-    @Nonnull
-    public MapSelection copy(@Nonnull Map map) {
+    @NotNull
+    public MapSelection copy(@NotNull Map map) {
         MapSelection mapSelection = new MapSelection();
         for (MapPosition pos : selection) {
             MapTile tile = map.getTileAt(pos.getX(), pos.getY());
@@ -48,8 +48,8 @@ public class SelectionManager {
         return mapSelection;
     }
 
-    @Nonnull
-    public MapSelection cut(@Nonnull Map map) {
+    @NotNull
+    public MapSelection cut(@NotNull Map map) {
         MapSelection mapSelection = new MapSelection();
         GroupAction action = new GroupAction();
         for (MapPosition pos : selection) {
@@ -70,7 +70,7 @@ public class SelectionManager {
         return mapSelection;
     }
 
-    @Nonnull
+    @NotNull
     public Set<MapPosition> getSelection() {
         return selection;
     }
@@ -81,9 +81,7 @@ public class SelectionManager {
 
     public void deselect(int x, int y) {
         MapPosition pos = new MapPosition(x, y);
-        if (selection.contains(pos)) {
-            selection.remove(pos);
-        }
+        selection.remove(pos);
     }
 
     public boolean isSelected(int x, int y) {

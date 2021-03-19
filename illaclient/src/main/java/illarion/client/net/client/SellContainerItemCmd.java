@@ -17,16 +17,13 @@ package illarion.client.net.client;
 
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to sell a item from a container to a trader.
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@Immutable
 public final class SellContainerItemCmd extends AbstractTradeItemCmd {
     /**
      * The sub command ID for this command.
@@ -46,7 +43,7 @@ public final class SellContainerItemCmd extends AbstractTradeItemCmd {
     /**
      * The amount of items to be sold.
      */
-    @Nonnull
+    @NotNull
     private final ItemCount amount;
 
     /**
@@ -57,7 +54,7 @@ public final class SellContainerItemCmd extends AbstractTradeItemCmd {
      * @param slot the slot in the container to sell the item from
      * @param count the amount of items to be sold
      */
-    public SellContainerItemCmd(int dialogId, int container, int slot, @Nonnull ItemCount count) {
+    public SellContainerItemCmd(int dialogId, int container, int slot, @NotNull ItemCount count) {
         super(dialogId, SUB_CMD_ID);
 
         this.container = (short) (container + 1);
@@ -66,14 +63,14 @@ public final class SellContainerItemCmd extends AbstractTradeItemCmd {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         super.encode(writer);
         writer.writeUByte(container);
         writer.writeUShort(slot);
         amount.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(super.toString() + " Item: " + container + '/' + slot + ' ' + amount);

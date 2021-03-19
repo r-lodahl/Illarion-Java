@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Open a container within another container shown in a container ({@link
@@ -28,7 +26,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class OpenInContainerCmd extends AbstractCommand {
     /**
      * The showcase the container is located in and also the showcase that will show up the opened container.
@@ -53,12 +50,12 @@ public final class OpenInContainerCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(containerId);
         writer.writeUByte(slot);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Container:" + containerId + " Slot: " + slot);

@@ -18,8 +18,8 @@ package illarion.mapedit.tools.panel.components;
 import illarion.mapedit.resource.Song;
 import illarion.mapedit.resource.loaders.SongLoader;
 import illarion.mapedit.tools.panel.components.models.SongTableModel;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 
 /**
@@ -27,9 +27,9 @@ import javax.swing.*;
  */
 public class SongTable extends JScrollPane {
 
-    @Nonnull
+    @NotNull
     private final JTable songTable;
-    @Nonnull
+    @NotNull
     private final SongTableModel songTableModel;
 
     /**

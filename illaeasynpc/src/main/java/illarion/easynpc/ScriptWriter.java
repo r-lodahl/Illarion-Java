@@ -16,8 +16,8 @@
 package illarion.easynpc;
 
 import illarion.easynpc.writer.LuaWriter;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Writer;
 

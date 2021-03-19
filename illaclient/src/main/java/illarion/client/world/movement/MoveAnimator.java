@@ -26,14 +26,14 @@ import illarion.common.graphics.Layer;
 import illarion.common.types.Direction;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -45,18 +45,18 @@ import java.util.Queue;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class MoveAnimator implements AnimatedMove {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MoveAnimator.class);
-    @Nonnull
-    private static final Marker marker = MarkerFactory.getMarker("Movement");
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
+    private static final Marker marker = MarkerManager.getMarker("Movement");
 
-    @Nonnull
+    @NotNull
     private final Movement movement;
 
-    @Nonnull
+    @NotNull
     private final MoveAnimation moveAnimation;
 
-    @Nonnull
+    @NotNull
     private final Queue<MoveAnimatorTask> taskQueue = new LinkedList<>();
 
     private boolean animationInProgress;
@@ -73,16 +73,16 @@ class MoveAnimator implements AnimatedMove {
     @Nullable
     private MovingTask confirmedMoveTask;
 
-    public MoveAnimator(@Nonnull Movement movement, @Nonnull MoveAnimation moveAnimation) {
+    public MoveAnimator(@NotNull Movement movement, @NotNull MoveAnimation moveAnimation) {
         this.movement = movement;
         this.moveAnimation = moveAnimation;
     }
 
-    private void scheduleMove(@Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+    private void scheduleMove(@NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         scheduleTask(new MovingTask(this, mode, target, duration));
     }
 
-    private void scheduleTask(@Nonnull MoveAnimatorTask task) {
+    private void scheduleTask(@NotNull MoveAnimatorTask task) {
         taskQueue.offer(task);
         if (!animationInProgress) {
             World.getUpdateTaskManager().addTaskForLater((delta) -> {
@@ -93,7 +93,7 @@ class MoveAnimator implements AnimatedMove {
         }
     }
 
-    void scheduleEarlyMove(@Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+    void scheduleEarlyMove(@NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         if (uncomfirmedMoveTask != null) {
             log.warn(marker, "Scheduling another early move is not possible as there is already one set.");
         } else {
@@ -112,7 +112,7 @@ class MoveAnimator implements AnimatedMove {
      *
      * @param allowedTarget allowed target location
      */
-    void cancelMove(@Nonnull ServerCoordinate allowedTarget) {
+    void cancelMove(@NotNull ServerCoordinate allowedTarget) {
         Player parentPlayer = movement.getPlayer();
 
         MovingTask task = uncomfirmedMoveTask;
@@ -155,7 +155,7 @@ class MoveAnimator implements AnimatedMove {
      * @param target the target of the move
      * @param duration the duration of the move
      */
-    void confirmMove(@Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+    void confirmMove(@NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         MovingTask task = uncomfirmedMoveTask;
         if (task == null) {
             log.debug(marker, "No unconfirmed move found. Schedule the move.");
@@ -207,7 +207,7 @@ class MoveAnimator implements AnimatedMove {
         }
     }
 
-    void scheduleTurn(@Nonnull Direction direction) {
+    void scheduleTurn(@NotNull Direction direction) {
         if (lastRequestedTurn != direction) {
             lastRequestedTurn = direction;
             scheduleTask(new TurningTask(this, direction));
@@ -221,13 +221,13 @@ class MoveAnimator implements AnimatedMove {
         lastRequestedTurn = null;
     }
 
-    void executeTurn(@Nonnull Direction direction) {
+    void executeTurn(@NotNull Direction direction) {
         log.debug("Executing turn to {} now.", direction);
         movement.getPlayer().getCharacter().setDirection(direction);
         executeNext();
     }
 
-    void executeMove(@Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+    void executeMove(@NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         log.debug("Executing move (Mode: {}) to {} (Duration: {}ms) now.", mode, target, duration);
         Player parentPlayer = movement.getPlayer();
         Char playerCharacter = parentPlayer.getCharacter();
@@ -249,8 +249,8 @@ class MoveAnimator implements AnimatedMove {
         parentPlayer.updateLocation(target);
     }
 
-    @Nonnull
-    private DisplayCoordinate getDisplayCoordinateAt(@Nonnull ServerCoordinate coordinate) {
+    @NotNull
+    private DisplayCoordinate getDisplayCoordinateAt(@NotNull ServerCoordinate coordinate) {
         int elevation = World.getMap().getElevationAt(coordinate);
         int x = coordinate.toDisplayX();
         int y = coordinate.toDisplayY() - elevation;
@@ -307,7 +307,7 @@ class MoveAnimator implements AnimatedMove {
     }
 
     @Override
-    public void setPosition(@Nonnull DisplayCoordinate position) {
+    public void setPosition(@NotNull DisplayCoordinate position) {
         if (isReportingRequired()) {
             int remaining = moveAnimation.timeRemaining();
             if (remaining < 20) {

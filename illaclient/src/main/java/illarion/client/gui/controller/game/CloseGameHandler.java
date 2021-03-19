@@ -25,9 +25,9 @@ import illarion.client.IllaClient;
 import illarion.client.gui.CloseGameGui;
 import illarion.client.world.World;
 import org.bushe.swing.event.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This handler takes action in case the user requests the application to quit. It will display a dialog and once it is
@@ -59,7 +59,7 @@ public final class CloseGameHandler
     private boolean dialogActive;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         parentNifty = nifty;
         parentScreen = screen;
 
@@ -104,7 +104,7 @@ public final class CloseGameHandler
         showClosingDialog();
     }
 
-    public void subscribeButtonClick(@Nonnull String id) {
+    public void subscribeButtonClick(@NotNull String id) {
         if ((popup == null) || (parentNifty == null) || (parentScreen == null)) {
             return;
         }
@@ -127,7 +127,7 @@ public final class CloseGameHandler
      * @param data  (unused)
      */
     @Override
-    public void onEvent(@Nonnull String topic, ButtonClickedEvent data) {
+    public void onEvent(@NotNull String topic, ButtonClickedEvent data) {
         if (topic.endsWith("#closeExitButton")) {
             //IllaClient.ensureExit();
         } else if (topic.endsWith("#closeLogoutButton")) {

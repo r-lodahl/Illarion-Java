@@ -15,10 +15,8 @@
  */
 package illarion.client.world;
 
-import illarion.client.Login;
 import illarion.client.gui.DialogType;
 import illarion.client.net.client.RequestAppearanceCmd;
-import illarion.client.util.ChatLog;
 import illarion.client.world.items.*;
 import illarion.client.world.movement.Movement;
 import illarion.common.graphics.Layer;
@@ -27,16 +25,13 @@ import illarion.common.types.ServerCoordinate;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.FastMath;
-import org.illarion.engine.Engine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,13 +39,6 @@ import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * Main Class for the player controlled character.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- * @author Nop
- */
-@ThreadSafe
 public final class Player {
     /**
      * Maximal value for the volume of the sound.
@@ -59,13 +47,13 @@ public final class Player {
     /**
      * The key in the configuration for the sound on/off flag.
      */
-    @Nonnull
+    @NotNull
     public static final String CFG_SOUND_ON = "soundOn"; //$NON-NLS-1$
 
     /**
      * The key in the configuration for the sound volume value.
      */
-    @Nonnull
+    @NotNull
     public static final String CFG_SOUND_VOL = "soundVolume"; //$NON-NLS-1$
 
     /**
@@ -81,52 +69,47 @@ public final class Player {
     /**
      * The instance of the logger used by this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(Player.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The graphical representation of the character.
      */
-    @Nonnull
+    @NotNull
     private final Char character;
 
     /**
      * The inventory of the player.
      */
-    @Nonnull
+    @NotNull
     private final Inventory inventory;
     /**
      * The player movement handler that takes care that the player character is walking around.
      */
-    @Nonnull
+    @NotNull
     private final Movement movementHandler;
     /**
      * The path to the folder of character specific stuff, like the map or the names table.
      */
-    @Nonnull
+    @NotNull
     private final Path path;
     /**
      * The instance of the combat handler that maintains the attack targets of this player.
      */
-    @Nonnull
+    @NotNull
     private final CombatHandler combatHandler;
     /**
      * This map contains the containers that are known for the player.
      */
-    @Nonnull
-    @GuardedBy("containerLock")
+    @NotNull
     private final Map<Integer, ItemContainer> containers;
     /**
      * This lock is used to synchronize the access on the containers.
      */
-    @Nonnull
+    @NotNull
     private final ReadWriteLock containerLock;
-    /**
-     * The chat log instance that takes care for logging the text that is spoken in the game.
-     */
-    @Nonnull
-    private final ChatLog chatLog;
-    @Nonnull
+
+    @NotNull
     private final CarryLoad carryLoad;
     /**
      * The current location of the server map for the player.
@@ -151,7 +134,7 @@ public final class Player {
     /**
      * Constructor for the player that receives the character name from the login data automatically.
      */
-    public Player(@Nonnull Input input) {
+    public Player(@NotNull Input input) {
         this(input, "Login.INSTANCE.getLoginCharacter()");
     }
 
@@ -160,10 +143,9 @@ public final class Player {
      *
      * @param charName the character name of the player playing this game
      */
-    public Player(@Nonnull Input input, @Nonnull String charName) {
+    public Player(@NotNull Input input, @NotNull String charName) {
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         path = userDir.resolve(charName);
-        chatLog = new ChatLog(path);
         carryLoad = new CarryLoad();
 
         character = new Char();
@@ -186,7 +168,7 @@ public final class Player {
         containerLock = new ReentrantReadWriteLock();
     }
 
-    public void openMerchantDialog(int dialogId, @Nonnull String title, @Nonnull Collection<MerchantItem> items) {
+    public void openMerchantDialog(int dialogId, @NotNull String title, @NotNull Collection<MerchantItem> items) {
         MerchantList list = new MerchantList(dialogId);
         items.forEach(list::addItem);
 
@@ -204,7 +186,7 @@ public final class Player {
         }
     }
 
-    public void closeDialog(int dialogId, @Nonnull Collection<DialogType> dialogTypes) {
+    public void closeDialog(int dialogId, @NotNull Collection<DialogType> dialogTypes) {
         if ((merchantDialog != null) && dialogTypes.contains(DialogType.Merchant)) {
             if (dialogId == merchantDialog.getId()) {
                 MerchantList oldList = merchantDialog;
@@ -222,8 +204,8 @@ public final class Player {
         }
     }
 
-    @Nonnull
-    public ItemContainer getOrCreateContainer(int id, @Nonnull String title, @Nonnull String description,
+    @NotNull
+    public ItemContainer getOrCreateContainer(int id, @NotNull String title, @NotNull String description,
                                               int slotCount) {
         if (hasContainer(id)) {
             ItemContainer container = getContainer(id);
@@ -280,9 +262,7 @@ public final class Player {
      */
     public void removeContainer(int id) {
         synchronized (containers) {
-            if (containers.containsKey(id)) {
-                containers.remove(id);
-            }
+            containers.remove(id);
         }
         World.getGameGui().getContainerGui().closeContainer(id);
     }
@@ -295,8 +275,8 @@ public final class Player {
      * @return the new item container
      * @throws IllegalArgumentException in case there is already a container with the same ID
      */
-    @Nonnull
-    public ItemContainer createNewContainer(int id, @Nonnull String title, @Nonnull String description, int slotCount) {
+    @NotNull
+    public ItemContainer createNewContainer(int id, @NotNull String title, @NotNull String description, int slotCount) {
         containerLock.writeLock().lock();
         try {
             if (containers.containsKey(id)) {
@@ -315,21 +295,10 @@ public final class Player {
      *
      * @return The character of the player
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Char getCharacter() {
         return character;
-    }
-
-    /**
-     * Get the chat log that is active for this player.
-     *
-     * @return the chat log of this player
-     */
-    @Nonnull
-    @Contract(pure = true)
-    public ChatLog getChatLog() {
-        return chatLog;
     }
 
     /**
@@ -337,7 +306,7 @@ public final class Player {
      *
      * @return the player inventory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Inventory getInventory() {
         return inventory;
@@ -348,7 +317,7 @@ public final class Player {
      *
      * @return The current location of the character
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public ServerCoordinate getLocation() {
         if (playerLocation == null) {
@@ -364,7 +333,7 @@ public final class Player {
      *
      * @param newLoc new location of the character on the map
      */
-    public void setLocation(@Nonnull ServerCoordinate newLoc) {
+    public void setLocation(@NotNull ServerCoordinate newLoc) {
         validLocation = true;
         if (Objects.equals(playerLocation, newLoc)) {
             return;
@@ -409,7 +378,7 @@ public final class Player {
      *
      * @param newLoc the new location of the player
      */
-    public void updateLocation(@Nonnull ServerCoordinate newLoc) {
+    public void updateLocation(@NotNull ServerCoordinate newLoc) {
         if (Objects.equals(playerLocation, newLoc)) {
             return;
         }
@@ -428,7 +397,7 @@ public final class Player {
      *
      * @return the combat handler of this player
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public CombatHandler getCombatHandler() {
         return combatHandler;
@@ -439,7 +408,7 @@ public final class Player {
      *
      * @return the movement handler
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Movement getMovementHandler() {
         return movementHandler;
@@ -450,7 +419,7 @@ public final class Player {
      *
      * @return The path to the player directory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Path getPath() {
         return path;
@@ -484,7 +453,7 @@ public final class Player {
      *
      * @param newPlayerId the new ID of the player
      */
-    public void setPlayerId(@Nonnull CharacterId newPlayerId) {
+    public void setPlayerId(@NotNull CharacterId newPlayerId) {
         playerId = newPlayerId;
         character.setCharId(playerId);
 
@@ -498,7 +467,7 @@ public final class Player {
      * @return true if the location is at the same level as the player
      */
     @Contract(pure = true)
-    boolean isBaseLevel(@Nonnull ServerCoordinate checkLoc) {
+    boolean isBaseLevel(@NotNull ServerCoordinate checkLoc) {
         return (playerLocation != null) && (playerLocation.getZ() == checkLoc.getZ());
     }
 
@@ -509,7 +478,7 @@ public final class Player {
      * @return the visibility of the character in percent
      */
     @Contract(pure = true)
-    public float canSee(@Nonnull Char chara) {
+    public float canSee(@NotNull Char chara) {
         if (isPlayer(chara.getCharId())) {
             return Char.VISIBILITY_MAX;
         }
@@ -586,7 +555,7 @@ public final class Player {
      * @return true if the position is within the clipping distance and the tolerance
      */
     @Contract(pure = true)
-    public boolean isOnScreen(@Nonnull ServerCoordinate testLoc, int tolerance) {
+    public boolean isOnScreen(@NotNull ServerCoordinate testLoc, int tolerance) {
         if (playerLocation == null) {
             throw new IllegalStateException("The player location is not yet set.");
         }
@@ -609,7 +578,7 @@ public final class Player {
         movementHandler.shutdown();
     }
 
-    @Nonnull
+    @NotNull
     public CarryLoad getCarryLoad() {
         return carryLoad;
     }

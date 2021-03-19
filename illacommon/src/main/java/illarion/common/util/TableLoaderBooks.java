@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This implementation of the table loader is used to load the books table.
@@ -41,7 +41,7 @@ public class TableLoaderBooks extends TableLoader {
      * @param callback the callback sink that receives the data
      * @param <T> the type of the table loader used
      */
-    public <T extends TableLoader> TableLoaderBooks(@Nonnull TableLoaderSink<T> callback) {
+    public <T extends TableLoader> TableLoaderBooks(@NotNull TableLoaderSink<T> callback) {
         super("Books", callback);
     }
 
@@ -60,7 +60,7 @@ public class TableLoaderBooks extends TableLoader {
      *
      * @return the book file
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getBookFile() {
         return getString(TB_NAME);

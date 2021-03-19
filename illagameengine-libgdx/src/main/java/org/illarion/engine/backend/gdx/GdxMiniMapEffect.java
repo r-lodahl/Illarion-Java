@@ -21,8 +21,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.effects.MiniMapEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -31,7 +31,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
     /**
      * The pixel shader that is required for this effect.
      */
-    @Nonnull
+    @NotNull
     private final ShaderProgram shader;
 
     /**
@@ -49,7 +49,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
      */
     private int centerY;
 
-    @Nonnull
+    @NotNull
     private final WorldMap worldMap;
 
     /**
@@ -58,7 +58,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
      * @param files the file system handler used to load the effect data
      * @param worldMap the world map that is displayed
      */
-    GdxMiniMapEffect(@Nonnull Files files, @Nonnull WorldMap worldMap) {
+    GdxMiniMapEffect(@NotNull Files files, @NotNull WorldMap worldMap) {
         //noinspection SpellCheckingInspection
         shader = new ShaderProgram(files.internal("org/illarion/engine/backend/gdx/shaders/generic.vert"),
                                    files.internal("org/illarion/engine/backend/gdx/shaders/minimap.frag"));
@@ -66,7 +66,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
     }
 
     @Override
-    public void activateEffect(@Nonnull SpriteBatch batch) {
+    public void activateEffect(@NotNull SpriteBatch batch) {
         float miniMapCenterX = (float) centerX / WorldMap.WORLD_MAP_WIDTH;
         float miniMapCenterY = (float) centerY / WorldMap.WORLD_MAP_HEIGHT;
 
@@ -77,7 +77,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
     }
 
     @Override
-    public void disableEffect(@Nonnull SpriteBatch batch) {
+    public void disableEffect(@NotNull SpriteBatch batch) {
         batch.setShader(null);
     }
 
@@ -90,7 +90,7 @@ class GdxMiniMapEffect implements MiniMapEffect, GdxTextureEffect {
     }
 
     @Override
-    public void setCenter(@Nonnull ServerCoordinate location) {
+    public void setCenter(@NotNull ServerCoordinate location) {
         centerX = location.getX() - worldMap.getMapOrigin().getX();
         centerY = location.getY() - worldMap.getMapOrigin().getY();
     }

@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator contains a list of valid locations for a item. At this
@@ -53,7 +53,7 @@ public enum ItemPositions {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (ItemPositions position : ItemPositions.values()) {
             map.put(position.name(), Token.VARIABLE);
         }

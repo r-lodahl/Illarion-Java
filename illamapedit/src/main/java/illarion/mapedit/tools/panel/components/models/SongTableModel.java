@@ -16,13 +16,13 @@
 package illarion.mapedit.tools.panel.components.models;
 
 import illarion.mapedit.resource.Song;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.table.AbstractTableModel;
 
 public class SongTableModel extends AbstractTableModel {
-    @Nonnull
+    @NotNull
     private final String[] columnNames = {"ID", "File"};
 
     private final Song[] songs;

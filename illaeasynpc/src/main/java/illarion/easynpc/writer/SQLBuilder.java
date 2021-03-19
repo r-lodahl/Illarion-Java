@@ -180,10 +180,10 @@ public final class SQLBuilder {
             npcScriptReal = '\'' + npcScriptReal + '\'';
         }
         return String
-                .format(queryFormat, Integer.toString(npcType), Integer.toString(npcPosX), Integer.toString(npcPosY),
-                        Integer.toString(npcPosZ), Integer.toString(npcFaceTo), npcName, npcScriptReal,
-                        Integer.toString(npcSex), Integer.toString(npcHair), Integer.toString(npcBeard),
-                        Integer.toString(npcHairRed), Integer.toString(npcHairGreen), Integer.toString(npcHairBlue),
-                        Integer.toString(npcSkinRed), Integer.toString(npcSkinGreen), Integer.toString(npcSkinBlue));
+                .format(queryFormat, npcType, npcPosX, npcPosY,
+                        npcPosZ, npcFaceTo, npcName, npcScriptReal,
+                        npcSex, npcHair, npcBeard,
+                        npcHairRed, npcHairGreen, npcHairBlue,
+                        npcSkinRed, npcSkinGreen, npcSkinBlue);
     }
 }

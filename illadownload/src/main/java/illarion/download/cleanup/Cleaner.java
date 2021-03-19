@@ -16,11 +16,11 @@
 package illarion.download.cleanup;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.Files;
@@ -41,8 +41,8 @@ public class Cleaner {
     /**
      * The logger that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Cleaner.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     public void clean() {
         ExecutorService executorService = Executors.newFixedThreadPool(2,
@@ -58,8 +58,8 @@ public class Cleaner {
         executorService.shutdown();
     }
 
-    @Nonnull
-    static Collection<Path> enlistRecursively(@Nonnull Path rootDir,
+    @NotNull
+    static Collection<Path> enlistRecursively(@NotNull Path rootDir,
                                               @Nullable Filter<Path> filter) throws IOException {
         if (Files.isDirectory(rootDir)) {
             RemoveDataFileVisitor visitor = new RemoveDataFileVisitor(filter);
@@ -69,9 +69,9 @@ public class Cleaner {
         return Collections.emptyList();
     }
 
-    static void printFileList(@Nonnull Collection<Path> files) throws IOException {
+    static void printFileList(@NotNull Collection<Path> files) throws IOException {
         long size = 0L;
-        for (@Nonnull Path file : files) {
+        for (@NotNull Path file : files) {
             size += Files.size(file);
             log.debug(file.toAbsolutePath().toString());
         }

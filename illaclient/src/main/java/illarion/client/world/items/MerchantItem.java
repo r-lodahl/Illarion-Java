@@ -19,8 +19,8 @@ import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Money;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is able to store a single item that is sold by a NPC merchant.
@@ -56,31 +56,31 @@ public class MerchantItem {
     /**
      * The ID of the item.
      */
-    @Nonnull
+    @NotNull
     private final ItemId itemId;
 
     /**
      * The name that is supposed to be displayed along with the item.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
      * The price of the item in copper coins.
      */
-    @Nonnull
+    @NotNull
     private final Money price;
 
     /**
      * The type of this item.
      */
-    @Nonnull
+    @NotNull
     private final MerchantItemType type;
 
     /**
      * The amount of items sold at once.
      */
-    @Nonnull
+    @NotNull
     private final ItemCount bundleSize;
 
     /**
@@ -122,7 +122,7 @@ public class MerchantItem {
      *
      * @param org the original item to be copied
      */
-    public MerchantItem(@Nonnull MerchantItem org) {
+    public MerchantItem(@NotNull MerchantItem org) {
         index = org.index;
         type = org.type;
         itemId = org.itemId;
@@ -145,7 +145,7 @@ public class MerchantItem {
      *
      * @return the item ID
      */
-    @Nonnull
+    @NotNull
     public ItemId getItemId() {
         return itemId;
     }
@@ -155,7 +155,7 @@ public class MerchantItem {
      *
      * @return the name of the item
      */
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
@@ -165,7 +165,7 @@ public class MerchantItem {
      *
      * @return the price of the item
      */
-    @Nonnull
+    @NotNull
     public Money getPrice() {
         return price;
     }
@@ -175,7 +175,7 @@ public class MerchantItem {
      *
      * @return the type of the item
      */
-    @Nonnull
+    @NotNull
     public MerchantItemType getType() {
         return type;
     }
@@ -185,7 +185,7 @@ public class MerchantItem {
      *
      * @return the bundle size of this item
      */
-    @Nonnull
+    @NotNull
     public ItemCount getBundleSize() {
         return bundleSize;
     }
@@ -198,11 +198,9 @@ public class MerchantItem {
         }
         if (obj instanceof MerchantItem) {
             MerchantItem item = (MerchantItem) obj;
-            if ((item.getIndex() == getIndex()) && (item.getBundleSize() == item.getBundleSize()) &&
+            return (item.getIndex() == getIndex()) && (item.getBundleSize() == item.getBundleSize()) &&
                     (item.getItemId() == getItemId()) && item.getPrice().equals(getPrice()) &&
-                    (item.getType() == item.getType())) {
-                return true;
-            }
+                    (item.getType() == item.getType());
         }
         return false;
     }
@@ -213,7 +211,7 @@ public class MerchantItem {
         return getItemId().hashCode();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Merchant Item ID(" + itemId + ") " + name + " at index: " + index;

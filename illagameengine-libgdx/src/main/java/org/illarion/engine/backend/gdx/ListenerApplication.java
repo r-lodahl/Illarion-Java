@@ -17,10 +17,11 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.Subscribe;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.*;
 import org.illarion.engine.backend.gdx.ui.GdxUserInterface;
 import org.illarion.engine.event.GameExitEnforcedEvent;
@@ -28,22 +29,20 @@ import org.illarion.engine.event.GameExitRequestedEvent;
 import org.illarion.engine.event.WindowResizedEvent;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Font;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the listener application that forwards the application events of libGDX to the {@link GameStateManager} that
  * is defined by this game engine.
  */
 class ListenerApplication extends ApplicationAdapter {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ListenerApplication.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This is the game listener of the engine that has to receive the information regarding the game.
      */
-    @Nonnull
+    @NotNull
     private final GameStateManager stateManager;
     private final Diagnostics diagnostics;
 
@@ -58,7 +57,7 @@ class ListenerApplication extends ApplicationAdapter {
      *
      * @param stateManager the listener of the game engine
      */
-    ListenerApplication(@Nonnull GameStateManager stateManager, Diagnostics diagnostics) {
+    ListenerApplication(@NotNull GameStateManager stateManager, Diagnostics diagnostics) {
         this.stateManager = stateManager;
         this.diagnostics = diagnostics;
     }

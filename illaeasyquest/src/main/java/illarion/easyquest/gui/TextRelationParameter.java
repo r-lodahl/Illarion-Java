@@ -15,7 +15,8 @@
  */
 package illarion.easyquest.gui;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")

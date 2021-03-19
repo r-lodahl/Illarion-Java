@@ -20,10 +20,10 @@ import illarion.common.util.TableLoader;
 import illarion.common.util.TableLoaderSink;
 import illarion.mapedit.resource.Resource;
 import illarion.mapedit.resource.Song;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @author Fredrik K
  */
 public class SongLoader implements TableLoaderSink<TableLoader>, Resource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SongLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The index in the table record of the sound id.
      */
@@ -56,14 +56,14 @@ public class SongLoader implements TableLoaderSink<TableLoader>, Resource {
         new TableLoader("Songs", this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Songs";
     }
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoader loader) {
+    public boolean processRecord(int line, @NotNull TableLoader loader) {
         int clipID = loader.getInt(TB_ID);
         String filename = loader.getString(TB_NAME);
         Song song = new Song(clipID, filename);
@@ -76,7 +76,7 @@ public class SongLoader implements TableLoaderSink<TableLoader>, Resource {
      *
      * @return
      */
-    @Nonnull
+    @NotNull
     public static SongLoader getInstance() {
         return INSTANCE;
     }

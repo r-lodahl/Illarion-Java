@@ -16,15 +16,15 @@
 package org.illarion.nifty.controls.inventoryslot.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 public class InventorySlotBuilder extends ControlBuilder {
-    public InventorySlotBuilder(@Nonnull String id) {
+    public InventorySlotBuilder(@NotNull String id) {
         super(id, "inventoryslot");
     }
 
-    public void background(@Nonnull String image) {
+    public void background(@NotNull String image) {
         set("background", image);
     }
 }

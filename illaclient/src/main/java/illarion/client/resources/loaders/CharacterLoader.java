@@ -21,15 +21,15 @@ import illarion.client.resources.data.AvatarTemplate;
 import illarion.common.types.Direction;
 import illarion.common.util.TableLoaderCharacters;
 import illarion.common.util.TableLoaderSink;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the character definitions from the resource table that was created using the
@@ -43,13 +43,13 @@ public final class CharacterLoader extends AbstractResourceLoader<AvatarTemplate
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(CharacterLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The assets of the game engine that are required to load the data needed for the characters.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -57,11 +57,11 @@ public final class CharacterLoader extends AbstractResourceLoader<AvatarTemplate
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public CharacterLoader(@Nonnull Assets assets) {
+    public CharacterLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<AvatarTemplate> call() {
         if (!hasTargetFactory()) {
@@ -87,7 +87,7 @@ public final class CharacterLoader extends AbstractResourceLoader<AvatarTemplate
     private static final String CHAR_PATH = "chars/";
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderCharacters loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderCharacters loader) {
         int avatarId = loader.getAvatarId();
         String name = loader.getResourceName();
         int frames = loader.getFrameCount();
@@ -124,7 +124,7 @@ public final class CharacterLoader extends AbstractResourceLoader<AvatarTemplate
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             log.error("Failed adding avatar to internal factory. ID: {} - Filename: {}", avatarId, name);
         }
 

@@ -15,8 +15,9 @@
  */
 package illarion.download.launcher;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -35,7 +36,7 @@ abstract class AbstractJavaExecutableIterable implements Iterable<Path> {
         /**
          * The original data source.
          */
-        @Nonnull
+        @NotNull
         private final AbstractJavaExecutableIterable source;
 
         /**
@@ -48,7 +49,7 @@ abstract class AbstractJavaExecutableIterable implements Iterable<Path> {
          *
          * @param source the data source of this iterator
          */
-        AbstractJavaExecutableIterator(@Nonnull AbstractJavaExecutableIterable source) {
+        AbstractJavaExecutableIterator(@NotNull AbstractJavaExecutableIterable source) {
             this.source = source;
         }
 
@@ -58,7 +59,7 @@ abstract class AbstractJavaExecutableIterable implements Iterable<Path> {
         }
 
         @Override
-        @Nonnull
+        @NotNull
         public Path next() {
             Path result = source.getPath(++currentIndex);
             if (result == null) {

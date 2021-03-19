@@ -17,9 +17,9 @@ package org.illarion.engine.backend.shared;
 
 import org.illarion.engine.MouseCursor;
 import org.illarion.engine.assets.CursorManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public abstract class AbstractCursorManager implements CursorManager {
     /**
      * This map stores the cursors that were already load.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, MouseCursor> loadedCursors;
 
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractCursorManager implements CursorManager {
 
     @Nullable
     @Override
-    public final MouseCursor getCursor(@Nonnull String ref, int hotspotX, int hotspotY) {
+    public final MouseCursor getCursor(@NotNull String ref, int hotspotX, int hotspotY) {
         @Nullable MouseCursor bufferedCursor = loadedCursors.get(ref);
         if (bufferedCursor == null) {
             @Nullable MouseCursor newCursor = loadCursor(ref, hotspotX, hotspotY);
@@ -66,5 +66,5 @@ public abstract class AbstractCursorManager implements CursorManager {
      * @return the newly load cursor
      */
     @Nullable
-    protected abstract MouseCursor loadCursor(@Nonnull String ref, int hotSpotX, int hotSpotY);
+    protected abstract MouseCursor loadCursor(@NotNull String ref, int hotSpotX, int hotSpotY);
 }

@@ -16,8 +16,8 @@
 package illarion.mapedit.tools.panel.cellrenderer;
 
 import illarion.mapedit.resource.ItemImg;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -50,11 +50,11 @@ public class ItemTreeCellRenderer extends JPanel implements TreeCellRenderer {
         return size;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Component getTreeCellRendererComponent(
             JTree tree,
-            @Nonnull Object val,
+            @NotNull Object val,
             boolean isSelected,
             boolean expanded,
             boolean leaf,
@@ -80,7 +80,7 @@ public class ItemTreeCellRenderer extends JPanel implements TreeCellRenderer {
     }
 
     @Override
-    protected void paintComponent(@Nonnull Graphics g) {
+    protected void paintComponent(@NotNull Graphics g) {
         int w = image.getWidth(null);
         int h = image.getHeight(null);
         Dimension size = getPreferredSize();

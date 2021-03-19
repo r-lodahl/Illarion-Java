@@ -16,8 +16,8 @@
 package org.illarion.nifty.controls.dialog.input.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The builder of a character view window..
@@ -30,7 +30,7 @@ public class DialogCharacterBuilder extends ControlBuilder {
      * @param id the nifty-gui ID of the dialog
      * @param title the title of the dialog
      */
-    public DialogCharacterBuilder(@Nonnull String id, @Nonnull String title) {
+    public DialogCharacterBuilder(@NotNull String id, @NotNull String title) {
         super(id, CreateDialogCharacterControl.NAME);
         set("title", title);
         set("closeable", "false");
@@ -45,7 +45,7 @@ public class DialogCharacterBuilder extends ControlBuilder {
      *
      * @param text the text displayed in the left button of this dialog
      */
-    public void buttonLeft(@Nonnull String text) {
+    public void buttonLeft(@NotNull String text) {
         set("buttonLeft", text);
     }
 
@@ -54,7 +54,7 @@ public class DialogCharacterBuilder extends ControlBuilder {
      *
      * @param text the text displayed in the right button of this dialog
      */
-    public void buttonRight(@Nonnull String text) {
+    public void buttonRight(@NotNull String text) {
         set("buttonRight", text);
     }
 
@@ -81,7 +81,7 @@ public class DialogCharacterBuilder extends ControlBuilder {
      *
      * @param text the description text
      */
-    public void description(@Nonnull String text) {
+    public void description(@NotNull String text) {
         set("description", text);
     }
 
@@ -90,11 +90,11 @@ public class DialogCharacterBuilder extends ControlBuilder {
      *
      * @param text the lookAt text
      */
-    public void lookAt(@Nonnull String text) {
+    public void lookAt(@NotNull String text) {
         set("lookAt", text);
     }
 
-    public void initalText(@Nonnull String text) {
+    public void initalText(@NotNull String text) {
         set("initialText", text);
     }
 }

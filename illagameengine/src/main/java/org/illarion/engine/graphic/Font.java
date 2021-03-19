@@ -17,8 +17,8 @@ package org.illarion.engine.graphic;
 
 import org.illarion.engine.Disposable;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -39,7 +39,7 @@ public interface Font extends Disposable {
      * @return the width of the line needed to place the text in
      */
     @Contract(pure = true)
-    int getWidth(@Nonnull CharSequence text);
+    int getWidth(@NotNull CharSequence text);
 
     /**
      * Get the advance value between two characters.

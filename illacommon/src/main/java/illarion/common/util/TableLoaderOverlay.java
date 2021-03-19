@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Tim
@@ -30,7 +30,7 @@ public class TableLoaderOverlay extends TableLoader {
 
     public static final int TB_LAYER = 3;
 
-    public <T extends TableLoader> TableLoaderOverlay(@Nonnull TableLoaderSink<T> callback) {
+    public <T extends TableLoader> TableLoaderOverlay(@NotNull TableLoaderSink<T> callback) {
         super("Overlays", callback);
     }
 
@@ -39,7 +39,7 @@ public class TableLoaderOverlay extends TableLoader {
         return getInt(TB_TILE_ID);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getOverlayFile() {
         return getString(TB_OVERLAY_FILE);

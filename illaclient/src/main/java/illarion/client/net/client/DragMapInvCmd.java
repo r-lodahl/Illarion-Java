@@ -19,9 +19,7 @@ import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Dragging a item from a map position to a inventory slot ({@link CommandList#CMD_DRAG_MAP_INV}).
@@ -29,12 +27,11 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class DragMapInvCmd extends AbstractDragCommand {
     /**
      * The location the item that is moved by this command is located at.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate srcLoc;
 
     /**
@@ -49,7 +46,7 @@ public final class DragMapInvCmd extends AbstractDragCommand {
      * @param destination the destination slot in the inventory
      * @param count the amount of items to move
      */
-    public DragMapInvCmd(@Nonnull ServerCoordinate source, int destination, @Nonnull ItemCount count) {
+    public DragMapInvCmd(@NotNull ServerCoordinate source, int destination, @NotNull ItemCount count) {
         super(CommandList.CMD_DRAG_MAP_INV, count);
 
         srcLoc = source;
@@ -57,13 +54,13 @@ public final class DragMapInvCmd extends AbstractDragCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         srcLoc.encode(writer);
         writer.writeUByte(dstPos);
         getCount().encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Source: " + srcLoc + " Destination: " + dstPos + ' ' + getCount());

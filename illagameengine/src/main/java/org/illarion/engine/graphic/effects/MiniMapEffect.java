@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic.effects;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This effect is used to render the mini map properly.
@@ -30,7 +30,7 @@ public interface MiniMapEffect extends TextureEffect {
      *
      * @param location the center location, this should be the location where the player is located.
      */
-    void setCenter(@Nonnull ServerCoordinate location);
+    void setCenter(@NotNull ServerCoordinate location);
 
     /**
      * Set the radius of the rendered texture.

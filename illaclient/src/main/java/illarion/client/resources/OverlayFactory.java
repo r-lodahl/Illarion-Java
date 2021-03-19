@@ -17,8 +17,8 @@ package illarion.client.resources;
 
 import illarion.client.resources.data.OverlayTemplate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The overlay factory loads and stores all graphical representations of the
@@ -31,7 +31,7 @@ public final class OverlayFactory extends AbstractTemplateFactory<OverlayTemplat
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final OverlayFactory INSTANCE = new OverlayFactory();
 
     /**
@@ -39,7 +39,7 @@ public final class OverlayFactory extends AbstractTemplateFactory<OverlayTemplat
      *
      * @return the singleton instance of this factory.
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static OverlayFactory getInstance() {
         return INSTANCE;

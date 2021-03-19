@@ -20,11 +20,9 @@ import illarion.common.graphics.MapConstants;
 import illarion.common.net.NetCommReader;
 import illarion.common.net.NetCommWriter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 
 /**
@@ -32,8 +30,6 @@ import java.io.IOException;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 @SuppressWarnings("InstanceVariableNamingConvention")
 public final class ServerCoordinate {
     /**
@@ -51,15 +47,15 @@ public final class ServerCoordinate {
         this.z = z;
     }
 
-    public ServerCoordinate(@Nonnull ServerCoordinate org, @Nonnull Direction dir) {
+    public ServerCoordinate(@NotNull ServerCoordinate org, @NotNull Direction dir) {
         this(org, dir.getDirectionVectorX(), dir.getDirectionVectorY(), 0);
     }
 
-    public ServerCoordinate(@Nonnull ServerCoordinate org, int dX, int dY, int dZ) {
+    public ServerCoordinate(@NotNull ServerCoordinate org, int dX, int dY, int dZ) {
         this(org.x + dX, org.y + dY, org.z + dZ);
     }
 
-    public ServerCoordinate(@Nonnull NetCommReader reader) throws IOException {
+    public ServerCoordinate(@NotNull NetCommReader reader) throws IOException {
         x = reader.readShort();
         y = reader.readShort();
         z = reader.readShort();
@@ -80,7 +76,7 @@ public final class ServerCoordinate {
         return z;
     }
 
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeShort((short) x);
         writer.writeShort((short) y);
         writer.writeShort((short) z);
@@ -88,13 +84,13 @@ public final class ServerCoordinate {
 
     @Nullable
     @Contract(pure = true)
-    public Direction getDirection(@Nonnull ServerCoordinate target) {
+    public Direction getDirection(@NotNull ServerCoordinate target) {
         return getDirection(this, target);
     }
 
     @Nullable
     @Contract(pure = true)
-    public static Direction getDirection(@Nonnull ServerCoordinate origin, @Nonnull ServerCoordinate target) {
+    public static Direction getDirection(@NotNull ServerCoordinate origin, @NotNull ServerCoordinate target) {
         int dX = origin.getX() - target.getX();
         int dY = origin.getY() - target.getY();
 
@@ -127,12 +123,12 @@ public final class ServerCoordinate {
     }
 
     @Contract(pure = true)
-    public int getStepDistance(@Nonnull ServerCoordinate target) {
+    public int getStepDistance(@NotNull ServerCoordinate target) {
         return getStepDistance(this, target);
     }
 
     @Contract(pure = true)
-    public static int getStepDistance(@Nonnull ServerCoordinate origin, @Nonnull ServerCoordinate target) {
+    public static int getStepDistance(@NotNull ServerCoordinate origin, @NotNull ServerCoordinate target) {
         int dX = Math.abs(origin.getX() - target.getX());
         int dY = Math.abs(origin.getY() - target.getY());
 
@@ -140,12 +136,12 @@ public final class ServerCoordinate {
     }
 
     @Contract(pure = true)
-    public double getDistance(@Nonnull ServerCoordinate target) {
+    public double getDistance(@NotNull ServerCoordinate target) {
         return getDistance(this, target);
     }
 
     @Contract(pure = true)
-    public static double getDistance(@Nonnull ServerCoordinate origin, @Nonnull ServerCoordinate target) {
+    public static double getDistance(@NotNull ServerCoordinate origin, @NotNull ServerCoordinate target) {
         int dX = origin.getX() - target.getX();
         int dY = origin.getY() - target.getY();
 
@@ -153,31 +149,31 @@ public final class ServerCoordinate {
     }
 
     @Contract(pure = true)
-    public boolean isNeighbour(@Nonnull ServerCoordinate otherCoordinate) {
+    public boolean isNeighbour(@NotNull ServerCoordinate otherCoordinate) {
         return (z == otherCoordinate.z) && (Math.abs(x - otherCoordinate.x) <= 1) && (Math.abs(y - otherCoordinate.y) <= 1);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public MapCoordinate toMapCoordinate() {
         return toMapCoordinate(x, y);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static MapCoordinate toMapCoordinate(int x, int y) {
         return new MapCoordinate(toMapColumn(x, y), toMapRow(x, y));
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    public DisplayCoordinate toDisplayCoordinate(@Nonnull Layer layer) {
+    public DisplayCoordinate toDisplayCoordinate(@NotNull Layer layer) {
         return toDisplayCoordinate(x, y, z, layer);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    public static DisplayCoordinate toDisplayCoordinate(int x, int y, int z, @Nonnull Layer layer) {
+    public static DisplayCoordinate toDisplayCoordinate(int x, int y, int z, @NotNull Layer layer) {
         return new DisplayCoordinate(toDisplayX(x, y), toDisplayY(x, y, z), toDisplayLayer(x, y, z, layer));
     }
 
@@ -202,12 +198,12 @@ public final class ServerCoordinate {
     }
 
     @Contract(pure = true)
-    public int toDisplayLayer(@Nonnull Layer layer) {
+    public int toDisplayLayer(@NotNull Layer layer) {
         return toDisplayLayer(x, y, z, layer);
     }
 
     @Contract(pure = true)
-    public static int toDisplayLayer(int scX, int scY, int scZ, @Nonnull Layer layer) {
+    public static int toDisplayLayer(int scX, int scY, int scZ, @NotNull Layer layer) {
         return ((scX - scY - (scZ * DisplayCoordinate.LEVEL_DISTANCE)) * DisplayCoordinate.ROW_DISTANCE) -
                 layer.getLayerOffset();
     }
@@ -251,7 +247,7 @@ public final class ServerCoordinate {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "Server Coordinate (" + x + ", " + y + ", " + z + ')';

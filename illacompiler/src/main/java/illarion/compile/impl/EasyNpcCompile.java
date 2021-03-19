@@ -18,10 +18,10 @@ package illarion.compile.impl;
 import illarion.easynpc.ParsedNpc;
 import illarion.easynpc.Parser;
 import illarion.easynpc.ScriptWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,10 +33,10 @@ import static illarion.easynpc.EasyNpcScript.DEFAULT_CHARSET;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class EasyNpcCompile extends AbstractCompile {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EasyNpcCompile.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public int compileFile(@Nonnull Path file) {
+    public int compileFile(@NotNull Path file) {
         Objects.requireNonNull(file);
         Path targetDir = Objects.requireNonNull(getTargetDir());
         try {
@@ -75,7 +75,7 @@ public class EasyNpcCompile extends AbstractCompile {
     }
 
     @Override
-    public int compileStream(@Nonnull InputStream in, @Nonnull OutputStream out) {
+    public int compileStream(@NotNull InputStream in, @NotNull OutputStream out) {
         try {
             ensureTargetDir();
             ParsedNpc npc = Parser.parse(new InputStreamReader(in, DEFAULT_CHARSET));

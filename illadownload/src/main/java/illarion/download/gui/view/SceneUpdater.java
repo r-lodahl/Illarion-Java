@@ -16,8 +16,8 @@
 package illarion.download.gui.view;
 
 import javafx.scene.Scene;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * In case a view class implements this interface the main handler will give the class a chance to update the scene
@@ -32,5 +32,5 @@ public interface SceneUpdater {
      *
      * @param scene the scene to be updated
      */
-    void updateScene(@Nonnull Scene scene);
+    void updateScene(@NotNull Scene scene);
 }

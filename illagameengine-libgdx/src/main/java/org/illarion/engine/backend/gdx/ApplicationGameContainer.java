@@ -23,8 +23,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.illarion.engine.Diagnostics;
 import org.illarion.engine.GameContainer;
 import org.illarion.engine.GameStateManager;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -35,7 +35,7 @@ public class ApplicationGameContainer implements GameContainer {
     /**
      * The configuration used to create the application.
      */
-    @Nonnull
+    @NotNull
     private final Lwjgl3ApplicationConfiguration config;
 
     /**
@@ -86,12 +86,12 @@ public class ApplicationGameContainer implements GameContainer {
     }
 
     @Override
-    public void setTitle(@Nonnull String title) {
+    public void setTitle(@NotNull String title) {
         config.setTitle(title);
     }
 
     @Override
-    public void setIcons(@Nonnull String... icons) {
+    public void setIcons(@NotNull String... icons) {
         config.setWindowIcon(FileType.Internal, icons);
     }
 }

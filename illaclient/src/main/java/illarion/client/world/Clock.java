@@ -17,15 +17,12 @@ package illarion.client.world;
 
 import org.jetbrains.annotations.Contract;
 
-import javax.annotation.concurrent.ThreadSafe;
-
 /**
  * This class is the implementation of the time in Illarion.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @SuppressWarnings("ClassNamingConvention")
-@ThreadSafe
 public final class Clock {
     /**
      * The day that was set during the last synchronization.

@@ -14,7 +14,9 @@
  * GNU General Public License for more details.
  */
 package illarion.mapedit.resource;
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public final class ResourceManager {
     /**
      * The list of resources.
      */
-    @Nonnull
+    @NotNull
     private final List<Resource> res;
     /**
      * The actual loading index.
@@ -62,7 +64,7 @@ public final class ResourceManager {
      *
      * @return
      */
-    @Nonnull
+    @NotNull
     public static ResourceManager getInstance() {
         return INSTANCE;
     }
@@ -101,7 +103,7 @@ public final class ResourceManager {
      *
      * @return
      */
-    @Nonnull
+    @NotNull
     public String getNextDescription() {
         return res.get(index).getDescription();
     }
@@ -111,7 +113,7 @@ public final class ResourceManager {
      *
      * @return
      */
-    @Nonnull
+    @NotNull
     public String getPrevDescription() {
         if (index <= 0) {
             return "";

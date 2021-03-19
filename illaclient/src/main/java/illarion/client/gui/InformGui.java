@@ -15,7 +15,8 @@
  */
 package illarion.client.gui;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface is used to access the inform GUI controller. Using it the inform messages are displayed on the
@@ -29,7 +30,7 @@ public interface InformGui {
      *
      * @param message the message
      */
-    void showBroadcastInform(@Nonnull String message);
+    void showBroadcastInform(@NotNull String message);
 
     /**
      * Show a script inform message on the screen.
@@ -37,19 +38,19 @@ public interface InformGui {
      * @param priority the priority of the message
      * @param message the message
      */
-    void showScriptInform(int priority, @Nonnull String message);
+    void showScriptInform(int priority, @NotNull String message);
 
     /**
      * Show a server inform message on the screen.
      *
      * @param message the message
      */
-    void showServerInform(@Nonnull String message);
+    void showServerInform(@NotNull String message);
 
     /**
      * Show a text-to inform message on the screen.
      *
      * @param message the message
      */
-    void showTextToInform(@Nonnull String message);
+    void showTextToInform(@NotNull String message);
 }

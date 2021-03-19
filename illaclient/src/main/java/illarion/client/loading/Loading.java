@@ -16,20 +16,16 @@
 package illarion.client.loading;
 
 import illarion.common.util.ProgressMonitor;
-import org.illarion.engine.BackendBinding;
-import org.illarion.engine.Engine;
 import org.illarion.engine.assets.Assets;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class is used to enlist the required loading tasks and perform the loading operations itself.
  */
-@NotThreadSafe
 public final class Loading {
     /**
      * This variable is set to true in case the elements got enlisted already and this class must not do anything
@@ -46,7 +42,7 @@ public final class Loading {
     /**
      * This is the list of loading tasks that need to be handled.
      */
-    @Nonnull
+    @NotNull
     private final List<LoadingTask> tasks;
 
     /**
@@ -61,7 +57,7 @@ public final class Loading {
      *
      * @param assets the game engine
      */
-    public void enlistMissingComponents(@Nonnull Assets assets) {
+    public void enlistMissingComponents(@NotNull Assets assets) {
         progressMonitor = new ProgressMonitor();
         if (!loadingDone) {
             addToTaskList(new TextureLoadingTask(assets.getTextureManager()));
@@ -100,7 +96,7 @@ public final class Loading {
      *
      * @param task the task to add
      */
-    private void addToTaskList(@Nonnull LoadingTask task) {
+    private void addToTaskList(@NotNull LoadingTask task) {
         tasks.add(task);
 
         assert progressMonitor != null;

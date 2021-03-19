@@ -38,12 +38,12 @@ final class Sprite extends TextureElement {
     private PNGDecoder decoder
 
     @Nullable
-    private InputStream decoderStream;
+    private InputStream decoderStream
 
     /**
      * The name of the sprite
      */
-    final def String name
+    final String name
 
     /**
      * The file this sprite was load from.
@@ -54,7 +54,7 @@ final class Sprite extends TextureElement {
     /**
      * The used logging instance.
      */
-    private final Logger logger;
+    private final Logger logger
 
     /**
      * Create a sprite based on a file
@@ -63,8 +63,8 @@ final class Sprite extends TextureElement {
      * @throws IOException
      * @throws FileNotFoundException
      */
-    public Sprite(@Nonnull final File fileEntry, final Logger logger) throws IOException {
-        this.logger = logger;
+    Sprite(@Nonnull final File fileEntry, final Logger logger) throws IOException {
+        this.logger = logger
         file = fileEntry
         name = stripFileExtension(fileEntry.absolutePath)
 
@@ -91,8 +91,8 @@ final class Sprite extends TextureElement {
             decoder = new PNGDecoder(decoderStream)
         } catch (ignored) {
             decoderStream?.close()
-            decoderStream = null;
-            decoder = null;
+            decoderStream = null
+            decoder = null
         }
 
         if (decoder == null) {
@@ -131,7 +131,7 @@ final class Sprite extends TextureElement {
      * @param yp The y position of the sprite
      * @return True if the sprite contains the point
      */
-    public boolean contains(final int xp, final int yp) {
+    boolean contains(final int xp, final int yp) {
         if (xp < x) {
             return false
         }
@@ -160,7 +160,7 @@ final class Sprite extends TextureElement {
      * @return The image of this sprite
      */
     @Nullable
-    public ByteBuffer getImage() {
+    ByteBuffer getImage() {
         if (imageData != null) {
             return imageData
         }
@@ -186,21 +186,21 @@ final class Sprite extends TextureElement {
      *
      * @return the amount of pixels of this image
      */
-    public long getPixelCount() {
+    long getPixelCount() {
         return height * width
     }
 
     /**
      * The type of the image that was generated.
      */
-    private def int type = -1
+    private int type = -1
 
     /**
      * Get the type of the image.
      *
      * @return the ID of the image type
      */
-    public int getType() {
+    int getType() {
         if (type == -1) {
             type = detectImageType()
         }
@@ -234,7 +234,7 @@ final class Sprite extends TextureElement {
     /**
      * Clear all data stored in this sprite.
      */
-    public void releaseData() {
+    void releaseData() {
         imageData = null
         decoderStream?.close()
         decoderStream = null
@@ -247,7 +247,7 @@ final class Sprite extends TextureElement {
      * @param posX The x position of the sprite
      * @param posY The y position of the sprite
      */
-    public void setPosition(final int posX, final int posY) {
+    void setPosition(final int posX, final int posY) {
         x = posX
         y = posY
     }

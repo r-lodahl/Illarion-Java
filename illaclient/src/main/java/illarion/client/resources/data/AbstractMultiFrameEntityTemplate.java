@@ -18,11 +18,8 @@ package illarion.client.resources.data;
 import illarion.client.graphics.AbstractEntity;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This template in general stores the data required to create any class that inherits
@@ -30,8 +27,6 @@ import javax.annotation.concurrent.ThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class AbstractMultiFrameEntityTemplate extends AbstractEntityTemplate {
     /**
      * The frame displayed by this entity in case no animation is going on.
@@ -55,7 +50,7 @@ public class AbstractMultiFrameEntityTemplate extends AbstractEntityTemplate {
      */
     protected AbstractMultiFrameEntityTemplate(
             int id,
-            @Nonnull Sprite sprite,
+            @NotNull Sprite sprite,
             int frames,
             int stillFrame,
             @Nullable Color defaultColor,

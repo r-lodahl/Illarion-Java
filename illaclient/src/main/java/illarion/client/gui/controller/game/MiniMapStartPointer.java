@@ -24,9 +24,9 @@ import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.nifty.IgeRenderImage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the implementation of a mini map pointer that marks the starting location of a quest.
@@ -35,7 +35,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
     /**
      * The sprite that contains the point, that is displayed on the map.
      */
-    @Nonnull
+    @NotNull
     private final Sprite pointSprite;
 
     /**
@@ -47,7 +47,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
     /**
      * The Nifty-GUI element this pointer is assigned to.
      */
-    @Nonnull
+    @NotNull
     private final Element parentElement;
 
     /**
@@ -68,7 +68,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
     /**
      * Create a new arrow pointer.
      */
-    MiniMapStartPointer(@Nonnull Element parentElement) {
+    MiniMapStartPointer(@NotNull Element parentElement) {
         pointSprite = MiscImageFactory.getInstance().getTemplate(MiscImageFactory.MINI_MAP_EXCLAMATION).getSprite();
         this.parentElement = parentElement;
     }
@@ -90,12 +90,12 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
+            @NotNull Color color,
             float imageScale) {
         renderImage(g, x, y, width, height, 0, 0, pointSprite.getWidth(), pointSprite.getHeight(), color, imageScale,
                     pointSprite.getWidth() / 2, pointSprite.getHeight() / 2);
@@ -103,7 +103,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int w,
@@ -112,7 +112,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY) {
@@ -163,7 +163,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
      *
      * @param playerLocation the current location of the player
      */
-    void update(@Nonnull ServerCoordinate playerLocation) {
+    void update(@NotNull ServerCoordinate playerLocation) {
         if (targetLocation == null) {
             throw new IllegalStateException("The target location of the pointer is not set. Updating it is illegal.");
         }
@@ -172,7 +172,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
     }
 
     @Override
-    public void setTarget(@Nonnull ServerCoordinate coordinate) {
+    public void setTarget(@NotNull ServerCoordinate coordinate) {
         targetLocation = coordinate;
     }
 
@@ -181,7 +181,7 @@ final class MiniMapStartPointer implements IgeRenderImage, Pointer {
      *
      * @return the parent element
      */
-    @Nonnull
+    @NotNull
     public Element getParentElement() {
         return parentElement;
     }

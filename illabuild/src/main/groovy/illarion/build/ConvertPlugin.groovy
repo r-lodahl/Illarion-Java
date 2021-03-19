@@ -90,7 +90,7 @@ class ConvertPlugin implements Plugin<Project> {
         jar.dependsOn("convertResources")
         jar.from(convention.outputDirectory)
         jar.metaInf.from(new Callable() {
-            public Object call() throws Exception {
+            Object call() throws Exception {
                 return convention.metaInf
             }
         })
@@ -100,7 +100,7 @@ class ConvertPlugin implements Plugin<Project> {
 
         compileConfiguration.artifacts.add(jarArtifact)
         project.extensions.getByType(DefaultArtifactPublicationSet).addCandidate(jarArtifact)
-        project.artifacts.add(COMPILE_CONFIGURATION_NAME, jar);
+        project.artifacts.add(COMPILE_CONFIGURATION_NAME, jar)
     }
 
     static void configureConfigurations(Project project) {

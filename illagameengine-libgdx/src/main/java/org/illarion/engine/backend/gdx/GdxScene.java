@@ -24,10 +24,8 @@ import org.illarion.engine.BackendBinding;
 import org.illarion.engine.Window;
 import org.illarion.engine.backend.shared.AbstractScene;
 import org.illarion.engine.graphic.Graphics;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.naming.Binding;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the scene implementation for libGDX.
@@ -55,27 +53,27 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
     /**
      * The camera that is used to render the scene.
      */
-    @Nonnull
+    @NotNull
     private final OrthographicCamera camera;
 
     /**
      * The window reference to the backend.
      */
-    @Nonnull
+    @NotNull
     private final Window window;
 
     /**
      * Create a new render scene for libGDX.
      *
      */
-    GdxScene(@Nonnull Window window) {
+    GdxScene(@NotNull Window window) {
         this.window = window;
         camera = new OrthographicCamera();
         camera.setToOrtho(true);
     }
 
     @Override
-    public void update(@Nonnull BackendBinding binding, int delta) {
+    public void update(@NotNull BackendBinding binding, int delta) {
         updateScene(binding, delta);
 
         int effectCount = getEffectCount();
@@ -88,7 +86,7 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
     }
 
     @Override
-    public void render(@Nonnull Graphics graphics, int offsetX, int offsetY) {
+    public void render(@NotNull Graphics graphics, int offsetX, int offsetY) {
         if (!(graphics instanceof GdxGraphics)) {
             throw new IllegalArgumentException("Illegal graphics implementation.");
         }
@@ -145,7 +143,7 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
      * @param height the height the image is supposed to have
      * @return the image that can be used now
      */
-    @Nonnull
+    @NotNull
     private FrameBuffer getNextFrameBuffer(int width, int height) {
         if (lastFrameBuffer == 1) {
             processImage0 = validateFrameBuffer(width, height, processImage0);
@@ -165,7 +163,7 @@ class GdxScene extends AbstractScene<GdxSceneEffect> {
      * @param original the original image, if this is {@code null} a new image will be created
      * @return the image fitting the requirements
      */
-    @Nonnull
+    @NotNull
     private static FrameBuffer validateFrameBuffer(
             int width, int height, @Nullable FrameBuffer original) {
         if (original == null) {

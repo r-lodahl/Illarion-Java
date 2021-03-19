@@ -17,16 +17,13 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to inform the server that a message dialog was closed.
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@Immutable
 public final class CloseDialogMessageCmd extends AbstractCommand {
     /**
      * The ID of the dialog to close. This ID is send by the server once the dialog is opened.
@@ -45,11 +42,11 @@ public final class CloseDialogMessageCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeInt(dialogId);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Dialog ID: " + dialogId);

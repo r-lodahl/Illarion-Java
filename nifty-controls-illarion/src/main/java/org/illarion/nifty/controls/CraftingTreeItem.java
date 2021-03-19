@@ -15,21 +15,19 @@
  */
 package org.illarion.nifty.controls;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the parent interface for all crafting elements displayed in the tree.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public interface CraftingTreeItem {
     /**
      * Get the text displayed in the tree.
      *
      * @return the text to display in the tree
      */
-    @Nonnull
+    @NotNull
     String getTreeLabel();
 }

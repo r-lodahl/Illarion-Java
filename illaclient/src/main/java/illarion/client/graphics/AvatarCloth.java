@@ -17,9 +17,7 @@ package illarion.client.graphics;
 
 import illarion.client.resources.Resource;
 import illarion.client.resources.data.AvatarClothTemplate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A avatar cloth definition stores all data about a cloth that are needed to know. It also allows to render a cloth
@@ -27,12 +25,11 @@ import javax.annotation.concurrent.NotThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class AvatarCloth extends AbstractEntity<AvatarClothTemplate> implements Resource {
     /**
      * The avatar that is the parent to this cloth instance.
      */
-    @Nonnull
+    @NotNull
     private final Avatar parent;
 
     /**
@@ -41,7 +38,7 @@ public final class AvatarCloth extends AbstractEntity<AvatarClothTemplate> imple
      * @param template the template this new cloth instance is build from
      * @param parentAvatar the parent avatar this cloth belong to
      */
-    public AvatarCloth(@Nonnull AvatarClothTemplate template, @Nonnull Avatar parentAvatar) {
+    public AvatarCloth(@NotNull AvatarClothTemplate template, @NotNull Avatar parentAvatar) {
         super(template);
         parent = parentAvatar;
     }
@@ -67,7 +64,7 @@ public final class AvatarCloth extends AbstractEntity<AvatarClothTemplate> imple
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return getTemplate() + " of " + parent;
     }

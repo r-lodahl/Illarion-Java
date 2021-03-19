@@ -22,10 +22,10 @@ import illarion.mapedit.data.MapTile.MapTileFactory;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.TileIDChangedAction;
 import illarion.mapedit.tools.panel.TileEraserPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -33,7 +33,7 @@ import javax.swing.*;
  * @author Fredrik K
  */
 public class TileEraserTool extends AbstractTool {
-    @Nonnull
+    @NotNull
     private final TileEraserPanel panel;
 
     public TileEraserTool() {
@@ -41,7 +41,7 @@ public class TileEraserTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         TileIDChangedAction newAction = eraseTile(x, y, map);
         if (newAction != null) {
             getHistory().addEntry(newAction);
@@ -49,7 +49,7 @@ public class TileEraserTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, @Nonnull GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, @NotNull GroupAction action) {
         TileIDChangedAction newAction = eraseTile(x, y, map);
         if (newAction != null) {
             action.addAction(newAction);
@@ -57,7 +57,7 @@ public class TileEraserTool extends AbstractTool {
     }
 
     @Nullable
-    private static TileIDChangedAction eraseTile(int x, int y, @Nonnull Map map) {
+    private static TileIDChangedAction eraseTile(int x, int y, @NotNull Map map) {
         MapTile oldTile = map.getTileAt(x, y);
         if (oldTile == null) {
             return null;

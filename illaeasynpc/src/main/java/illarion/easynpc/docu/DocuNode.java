@@ -16,9 +16,9 @@
 package illarion.easynpc.docu;
 
 import illarion.easynpc.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +26,15 @@ import java.util.List;
  * @author Fredrik K
  */
 public class DocuNode implements DocuEntry {
-    @Nonnull
+    @NotNull
     private final String docuTitle;
-    @Nonnull
+    @NotNull
     private final String docuDesc;
     private String docuEx;
     private String docuSyntax;
-    @Nonnull
+    @NotNull
     private final List<DocuEntry> children;
-    @Nonnull
+    @NotNull
     private final String npcType;
 
     /**
@@ -42,11 +42,11 @@ public class DocuNode implements DocuEntry {
      *
      * @param type The type
      */
-    public DocuNode(@Nonnull String type) {
+    public DocuNode(@NotNull String type) {
         this(type, false);
     }
 
-    public DocuNode(@Nonnull String type, boolean example) {
+    public DocuNode(@NotNull String type, boolean example) {
         children = new ArrayList<>();
         npcType = type;
         docuTitle = String.format("illarion.easynpc.parser.%s.Docu.title", npcType);
@@ -57,7 +57,7 @@ public class DocuNode implements DocuEntry {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public DocuEntry getChild(int index) {
         if ((index >= 0) && (index < children.size())) {

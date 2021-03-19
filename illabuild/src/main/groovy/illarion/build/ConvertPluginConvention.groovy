@@ -27,11 +27,11 @@ import org.gradle.util.ConfigureUtil
 class ConvertPluginConvention {
     private ProjectInternal project
 
-    def String atlasNameExtension
-    def File privateKey
-    def File resourceDirectory
-    def FileTree resources
-    final def File outputDirectory
+    String atlasNameExtension
+    File privateKey
+    File resourceDirectory
+    FileTree resources
+    final File outputDirectory
 
     List metaInf
 
@@ -41,13 +41,13 @@ class ConvertPluginConvention {
         this.project = project
         manifest = manifest()
         metaInf = []
-        resourceDirectory = new File(project.projectDir, "src/main/resources");
+        resourceDirectory = new File(project.projectDir, "src/main/resources")
         resources = project.fileTree(dir: resourceDirectory)
         outputDirectory = new File(project.buildDir, "resources")
     }
 
-    public def setResourceDirectory(File dir) {
-        resourceDirectory = dir;
+    def setResourceDirectory(File dir) {
+        resourceDirectory = dir
         resources = project.fileTree(dir: resourceDirectory)
     }
 
@@ -58,8 +58,8 @@ class ConvertPluginConvention {
     /**
      * Creates a new instance of a {@link Manifest}.
      */
-    public Manifest manifest() {
-        return manifest(null);
+    Manifest manifest() {
+        return manifest(null)
     }
 
     /**
@@ -68,7 +68,7 @@ class ConvertPluginConvention {
      *
      * @param closure The closure to use to configure the manifest.
      */
-    public Manifest manifest(Closure closure) {
-        return ConfigureUtil.configure(closure, new DefaultManifest(project.fileResolver));
+    Manifest manifest(Closure closure) {
+        return ConfigureUtil.configure(closure, new DefaultManifest(project.fileResolver))
     }
 }

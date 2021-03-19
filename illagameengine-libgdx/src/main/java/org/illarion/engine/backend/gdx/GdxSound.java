@@ -16,8 +16,8 @@
 package org.illarion.engine.backend.gdx;
 
 import org.illarion.engine.sound.Sound;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the wrapper class for a libGDX sound so it can be used properly by the game engine.
@@ -28,10 +28,10 @@ class GdxSound implements Sound {
     /**
      * The sound instance that is wrapped by this class.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.audio.Sound wrappedSound;
 
-    @Nonnull
+    @NotNull
     private final String ref;
 
     /**
@@ -39,7 +39,7 @@ class GdxSound implements Sound {
      *
      * @param wrappedSound the sound that is wrapped
      */
-    GdxSound(@Nonnull String ref, @Nonnull com.badlogic.gdx.audio.Sound wrappedSound) {
+    GdxSound(@NotNull String ref, @NotNull com.badlogic.gdx.audio.Sound wrappedSound) {
         this.ref = ref;
         this.wrappedSound = wrappedSound;
     }
@@ -54,12 +54,12 @@ class GdxSound implements Sound {
      *
      * @return the internal sound
      */
-    @Nonnull
+    @NotNull
     public com.badlogic.gdx.audio.Sound getWrappedSound() {
         return wrappedSound;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "GDX Sound: " + ref;

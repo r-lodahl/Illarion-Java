@@ -20,6 +20,8 @@ import illarion.client.Login;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
@@ -28,8 +30,6 @@ import org.illarion.engine.sound.Sounds;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.UserInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -40,7 +40,7 @@ public final class LoginScreenController {
     /**
      * This is the logging instance for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginScreenController.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private final UserInterface gui;
     private final Sounds sounds;
@@ -168,7 +168,7 @@ public final class LoginScreenController {
     }
 
     @NiftyEventSubscriber(id = "server")
-    public void onServerChanged(@Nonnull String topic, @Nonnull DropDownSelectionChangedEvent<String> data) {
+    public void onServerChanged(@NotNull String topic, @NotNull DropDownSelectionChangedEvent<String> data) {
         Login.getInstance().applyServerByKey(server.getSelectedIndex());
         restoreLoginData();
     }

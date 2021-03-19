@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreditView extends Table {
-    private Skin skin;
-    private List<VerticalGroup> creditSequence;
+    private final Skin skin;
+    private final List<VerticalGroup> creditSequence;
     private int currentlyShownCredit;
 
     private final static float TIME_PER_CREDIT = 1f;

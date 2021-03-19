@@ -17,9 +17,9 @@ package illarion.easynpc.gui;
 
 import illarion.easynpc.Lang;
 import illarion.easynpc.ParsedNpc;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
@@ -140,7 +140,7 @@ final class ErrorPane extends JPanel {
                             return error.getMessage();
                         }
                         if (columnIndex == 2) {
-                            return "line " + Integer.toString(error.getLine());
+                            return "line " + error.getLine();
                         }
                     }
                     errorCount += localErrors;
@@ -164,19 +164,19 @@ final class ErrorPane extends JPanel {
      */
     private static final long serialVersionUID = 1L;
 
-    @Nonnull
+    @NotNull
     private final JTable errorList;
     private final String errorMessage = Lang.getMsg(ErrorPane.class, "errors");
-    @Nonnull
+    @NotNull
     private final JLabel summery;
 
-    @Nonnull
+    @NotNull
     private final ErrorPaneTableModel tableModel;
 
     public ErrorPane() {
         super(new BorderLayout(5, 0));
 
-        summery = new JLabel(String.format(errorMessage, Integer.toString(20)));
+        summery = new JLabel(String.format(errorMessage, 20));
         tableModel = new ErrorPaneTableModel();
         errorList = new JTable(tableModel);
 

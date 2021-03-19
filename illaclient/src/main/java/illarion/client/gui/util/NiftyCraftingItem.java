@@ -23,8 +23,8 @@ import illarion.client.world.items.CraftingItem;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import org.illarion.nifty.controls.CraftingItemEntry;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,12 +34,12 @@ import javax.annotation.Nonnull;
  * To change this template use File | Settings | File Templates.
  */
 public class NiftyCraftingItem extends CraftingItem implements CraftingItemEntry {
-    @Nonnull
+    @NotNull
     private final NiftyImage craftImage;
-    @Nonnull
+    @NotNull
     private final NiftyImage[] ingredientImages;
 
-    public NiftyCraftingItem(@Nonnull Nifty nifty, @Nonnull CraftingItem org) {
+    public NiftyCraftingItem(@NotNull Nifty nifty, @NotNull CraftingItem org) {
         super(org);
 
         craftImage = new NiftyImage(nifty.getRenderEngine(), new TextureRenderImage(
@@ -62,25 +62,25 @@ public class NiftyCraftingItem extends CraftingItem implements CraftingItemEntry
         return (float) getBuildTime() / 10.f;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public NiftyImage getImage() {
         return craftImage;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ItemCount getIngredientAmount(int index) {
         return getIngredient(index).getCount();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public NiftyImage getIngredientImage(int index) {
         return ingredientImages[index];
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ItemId getIngredientItemId(int index) {
         return getIngredient(index).getItemId();
@@ -91,7 +91,7 @@ public class NiftyCraftingItem extends CraftingItem implements CraftingItemEntry
      *
      * @return the text to display in the tree
      */
-    @Nonnull
+    @NotNull
     @Override
     public String getTreeLabel() {
         return getName();

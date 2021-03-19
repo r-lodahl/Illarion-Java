@@ -18,29 +18,26 @@ package illarion.client.loading;
 import illarion.client.resources.*;
 import illarion.client.resources.loaders.*;
 import illarion.common.util.ProgressMonitor;
-import org.illarion.engine.Engine;
 import org.illarion.engine.assets.Assets;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class is used to allow the loading sequence of the client to load the resource tables.
  */
-@NotThreadSafe
 final class ResourceTableLoading implements LoadingTask {
     /**
      * The progress monitor that tracks the loading activity of this task.
      */
-    @Nonnull
+    @NotNull
     private final ProgressMonitor progressMonitor;
 
     /**
      * The list of tasks that need to be finished during the resource table loading.
      */
-    @Nonnull
+    @NotNull
     private final List<AbstractResourceLoader<? extends Resource>> taskList;
 
     /**
@@ -48,7 +45,7 @@ final class ResourceTableLoading implements LoadingTask {
      *
      * @param assets the engine of the game
      */
-    ResourceTableLoading(@Nonnull Assets assets) {
+    ResourceTableLoading(@NotNull Assets assets) {
         taskList = new ArrayList<>();
         progressMonitor = new ProgressMonitor();
 
@@ -70,7 +67,7 @@ final class ResourceTableLoading implements LoadingTask {
      * @param <T> the resource type that is load in this case
      */
     private <T extends Resource> void addTask(
-            @Nonnull AbstractResourceLoader<T> loader, @Nonnull ResourceFactory<T> factory) {
+            @NotNull AbstractResourceLoader<T> loader, @NotNull ResourceFactory<T> factory) {
         loader.setTarget(factory);
         progressMonitor.addChild(loader.getProgressMonitor());
         taskList.add(loader);
@@ -99,7 +96,7 @@ final class ResourceTableLoading implements LoadingTask {
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ProgressMonitor getProgressMonitor() {
         return progressMonitor;

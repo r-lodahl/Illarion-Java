@@ -15,8 +15,9 @@
  */
 package illarion.client.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -30,7 +31,7 @@ public final class UpdateTaskManager {
     /**
      * The task queue.
      */
-    @Nonnull
+    @NotNull
     private final Queue<UpdateTask> taskQueue;
 
     /**
@@ -84,7 +85,7 @@ public final class UpdateTaskManager {
      *
      * @param task the task to execute
      */
-    public void addTask(@Nonnull UpdateTask task) {
+    public void addTask(@NotNull UpdateTask task) {
         if (isInUpdateCall && Objects.equals(currentThread, Thread.currentThread())) {
             task.onUpdateGame(currentDelta);
         } else {
@@ -97,7 +98,7 @@ public final class UpdateTaskManager {
      *
      * @param task the task to execute
      */
-    public void addTaskForLater(@Nonnull UpdateTask task) {
+    public void addTaskForLater(@NotNull UpdateTask task) {
         taskQueue.offer(task);
     }
 }

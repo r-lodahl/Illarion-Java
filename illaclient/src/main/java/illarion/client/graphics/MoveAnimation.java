@@ -16,18 +16,18 @@
 package illarion.client.graphics;
 
 import illarion.common.types.DisplayCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Created: 23.08.2005 23:42:22
  */
 public class MoveAnimation extends AbstractAnimation<AnimatedMove> {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MoveAnimation.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     @Nullable
     private DisplayCoordinate start;
     @Nullable
@@ -96,7 +96,7 @@ public class MoveAnimation extends AbstractAnimation<AnimatedMove> {
      * @param target the target location of the move
      * @param duration the duration of the move
      */
-    public void start(@Nonnull DisplayCoordinate start, @Nonnull DisplayCoordinate target, int duration) {
+    public void start(@NotNull DisplayCoordinate start, @NotNull DisplayCoordinate target, int duration) {
         this.start = start;
         this.target = target;
 
@@ -104,7 +104,7 @@ public class MoveAnimation extends AbstractAnimation<AnimatedMove> {
         restart();
     }
 
-    private void setPosition(@Nonnull DisplayCoordinate currentPos) {
+    private void setPosition(@NotNull DisplayCoordinate currentPos) {
         int targetCnt = getTargetCount();
         for (int i = 0; i < targetCnt; i++) {
             AnimatedMove animation = getAnimationTarget(i);

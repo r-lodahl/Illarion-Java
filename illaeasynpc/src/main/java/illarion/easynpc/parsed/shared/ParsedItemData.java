@@ -15,7 +15,8 @@
  */
 package illarion.easynpc.parsed.shared;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +30,7 @@ public final class ParsedItemData {
     /**
      * The data values.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, String> dataValues;
 
     /**
@@ -37,7 +38,7 @@ public final class ParsedItemData {
      *
      * @param values the data values
      */
-    public ParsedItemData(@Nonnull Map<String, String> values) {
+    public ParsedItemData(@NotNull Map<String, String> values) {
         dataValues = new HashMap<>(values);
     }
 
@@ -55,7 +56,7 @@ public final class ParsedItemData {
      *
      * @return the data values for easyNPC
      */
-    @Nonnull
+    @NotNull
     public String getEasyNPC() {
         if (!hasValues()) {
             return "";
@@ -74,7 +75,7 @@ public final class ParsedItemData {
      *
      * @return the data values for the lua script
      */
-    @Nonnull
+    @NotNull
     public String getLua() {
         if (!hasValues()) {
             return "nil";

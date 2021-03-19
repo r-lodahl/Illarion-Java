@@ -22,9 +22,9 @@ import illarion.mapedit.resource.Overlay;
 import illarion.mapedit.resource.Resource;
 import illarion.mapedit.resource.loaders.TextureLoaderAwt.AwtTexture;
 import org.illarion.engine.assets.TextureManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ public class OverlayLoader implements TableLoaderSink<TableLoaderOverlay>, Resou
 
     private final TIntObjectHashMap<Overlay> overlays = new TIntObjectHashMap<>();
 
-    @Nonnull
+    @NotNull
     public static OverlayLoader getInstance() {
         return INSTANCE;
     }
@@ -49,14 +49,14 @@ public class OverlayLoader implements TableLoaderSink<TableLoaderOverlay>, Resou
         new TableLoaderOverlay(this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Overlays";
     }
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderOverlay loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderOverlay loader) {
         Image[] imgs = new Image[SHAPE_COUNT];
 
         TextureManager manager = TextureLoaderAwt.getInstance();

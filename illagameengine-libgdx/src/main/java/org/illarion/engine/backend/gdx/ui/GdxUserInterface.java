@@ -1,16 +1,16 @@
 package org.illarion.engine.backend.gdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.backend.gdx.ui.login.GdxLoginController;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 import org.illarion.engine.ui.UserInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GdxUserInterface implements UserInterface {
-    private static final Logger log = LoggerFactory.getLogger(GdxUserInterface.class);
+    private static final Logger log = LogManager.getLogger();
 
     private final Skin skin;
 

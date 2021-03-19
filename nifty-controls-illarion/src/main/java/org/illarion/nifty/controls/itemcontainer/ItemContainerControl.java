@@ -28,9 +28,9 @@ import org.illarion.nifty.controls.InventorySlot;
 import org.illarion.nifty.controls.ItemContainer;
 import org.illarion.nifty.controls.ItemContainerCloseEvent;
 import org.illarion.nifty.controls.inventoryslot.builder.InventorySlotBuilder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the control class for the item containers. It takes care for the proper initialization of the container.
@@ -55,7 +55,7 @@ public class ItemContainerControl extends WindowControl implements ItemContainer
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
 
         niftyInstance = nifty;
@@ -133,7 +133,7 @@ public class ItemContainerControl extends WindowControl implements ItemContainer
      * @param slotBackground the background image of the slot
      * @return the builder of the inventory slot
      */
-    @Nonnull
+    @NotNull
     private static ControlBuilder buildSlot(
             String prefix, int index, int height, int width, @Nullable String slotBackground) {
         InventorySlotBuilder builder = new InventorySlotBuilder(prefix + "#slot" + index);
@@ -148,7 +148,7 @@ public class ItemContainerControl extends WindowControl implements ItemContainer
     }
 
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         return true;
     }
 
@@ -157,7 +157,7 @@ public class ItemContainerControl extends WindowControl implements ItemContainer
         return slots.length;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public InventorySlot getSlot(int index) {
         return slots[index];

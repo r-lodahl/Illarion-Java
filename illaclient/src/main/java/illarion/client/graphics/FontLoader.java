@@ -18,9 +18,9 @@ package illarion.client.graphics;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.FontManager;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -32,22 +32,22 @@ public final class FontLoader {
     /**
      * The font that is supposed to be used for chat bubbles.
      */
-    @Nonnull
+    @NotNull
     public static final String BUBBLE_FONT = "bubbleFont";
     /**
      * The font that is supposed to be used as the out line of the font for chat bubbles.
      */
-    @Nonnull
+    @NotNull
     public static final String BUBBLE_FONT_OUTLINE = "bubbleFontOutline";
     /**
      * The key for the menu font.
      */
-    @Nonnull
+    @NotNull
     public static final String MENU_FONT = "menuFont";
     /**
      * The key for the caption font.
      */
-    @Nonnull
+    @NotNull
     public static final String CAPTION_FONT = "captionFont";
     /**
      * The key for the small font.
@@ -56,24 +56,24 @@ public final class FontLoader {
     /**
      * The key for the text font.
      */
-    @Nonnull
+    @NotNull
     public static final String TEXT_FONT = "textFont";
     /**
      * The key for the chat font.
      */
-    @Nonnull
+    @NotNull
     public static final String CHAT_FONT = "chatFont";
     /**
      * The key for the console font.
      */
-    @Nonnull
+    @NotNull
     public static final String CONSOLE_FONT = "consoleFont";
     /**
      * Singleton instance of the FontLoader.
      */
-    @Nonnull
+    @NotNull
     private static final FontLoader INSTANCE = new FontLoader();
-    @Nonnull
+    @NotNull
     private static final String FONT_IMAGE_DIR = "gui/";
     /**
      * The font manager that is used to load the fonts.
@@ -92,7 +92,7 @@ public final class FontLoader {
      *
      * @return the instance of the singleton
      */
-    @Nonnull
+    @NotNull
     public static FontLoader getInstance() {
         return INSTANCE;
     }
@@ -104,8 +104,8 @@ public final class FontLoader {
      * @param cfgName the name of the font, this has to be load before hand
      * @return the font itself
      */
-    @Nonnull
-    public Font getFont(@Nonnull String cfgName) {
+    @NotNull
+    public Font getFont(@NotNull String cfgName) {
         if (fontManager == null) {
             throw new IllegalStateException("Fonts not loaded yet");
         }
@@ -119,7 +119,7 @@ public final class FontLoader {
     /**
      * This function loads all fonts that where yet not loaded.
      */
-    public void prepareAllFonts(@Nonnull Assets assets) throws IOException {
+    public void prepareAllFonts(@NotNull Assets assets) throws IOException {
         fontManager = assets.getFontManager();
         Font outline = fontManager.createFont(BUBBLE_FONT_OUTLINE, "gui/bubbleFontOutline.fnt", FONT_IMAGE_DIR);
         fontManager.createFont(BUBBLE_FONT, "gui/bubbleFont.fnt", FONT_IMAGE_DIR, outline);

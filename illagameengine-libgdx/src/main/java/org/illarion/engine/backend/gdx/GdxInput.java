@@ -19,14 +19,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.backend.shared.AbstractForwardingInput;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.InputListener;
 import org.illarion.engine.input.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -37,8 +38,8 @@ import java.util.Queue;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxInput extends AbstractForwardingInput implements InputProcessor {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(GdxInput.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This is the ID of the pointer that is the only one used.
@@ -58,12 +59,12 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     /**
      * The events received since the last polling.
      */
-    @Nonnull
+    @NotNull
     private final Queue<Runnable> events;
     /**
      * The libGDX input system that provides the updates.
      */
-    @Nonnull
+    @NotNull
     private final Input gdxInput;
     /**
      * The input listener that receives the input data when the polling function is called.
@@ -122,8 +123,8 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
      *
      * @param gdxInput the input provider of libGDX that is supposed to be used
      */
-    GdxInput(@Nonnull Input gdxInput) {
-        @Nonnull Toolkit awtDefaultToolkit = Toolkit.getDefaultToolkit();
+    GdxInput(@NotNull Input gdxInput) {
+        @NotNull Toolkit awtDefaultToolkit = Toolkit.getDefaultToolkit();
         @Nullable Object doubleClick = awtDefaultToolkit.getDesktopProperty("awt.multiClickInterval");
         if (doubleClick instanceof Number) {
             doubleClickDelay = ((Number) doubleClick).longValue();
@@ -162,7 +163,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
      * @param button the button
      * @return the libGDX button code or {@code -1} in case the mapping failed
      */
-    private static int getGdxButton(@Nonnull Button button) {
+    private static int getGdxButton(@NotNull Button button) {
         switch (button) {
             case Left:
                 return Buttons.LEFT;
@@ -336,7 +337,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
      * @return the libGDX key code or {@link Keys#UNKNOWN} in case the mapping fails
      */
     @SuppressWarnings("SwitchStatementWithTooManyBranches")
-    private static int getGdxKey(@Nonnull Key key) {
+    private static int getGdxKey(@NotNull Key key) {
         switch (key) {
             case A:
                 return Keys.A;
@@ -589,7 +590,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
         lastDragRelevantX = x;
         lastDragRelevantY = y;
 
-        for (@Nonnull Button button : Button.values()) {
+        for (@NotNull Button button : Button.values()) {
             if (isButtonDown(button)) {
                 events.offer(() -> {
                     assert inputListener != null;
@@ -618,7 +619,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
         return true;
     }
 
-    private void addKeyToAltKeyCode(@Nonnull Key key) {
+    private void addKeyToAltKeyCode(@NotNull Key key) {
         int newNumber;
         switch (key) {
             case NumPad0:
@@ -659,7 +660,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
         altKeyCode += newNumber;
     }
 
-    private boolean isNumPadNumber(@Nonnull Key key) {
+    private boolean isNumPadNumber(@NotNull Key key) {
         return (key == Key.NumPad0) || (key == Key.NumPad1) || (key == Key.NumPad2) || (key == Key.NumPad3) ||
                 (key == Key.NumPad4) || (key == Key.NumPad5) || (key == Key.NumPad6) || (key == Key.NumPad7) ||
                 (key == Key.NumPad8) || (key == Key.NumPad9);
@@ -672,7 +673,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
      * @param y the y coordinate where the click happened
      * @param button the button that was clicked
      */
-    private void publishClick(int x, int y, @Nonnull Button button) {
+    private void publishClick(int x, int y, @NotNull Button button) {
         if ((clickTimeout == 0) || (clickButton != button) || (System.currentTimeMillis() > clickTimeout)) {
             clickButton = button;
             clickTimeout = System.currentTimeMillis() + doubleClickDelay;
@@ -699,12 +700,12 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     }
 
     @Override
-    public void setListener(@Nonnull InputListener listener) {
+    public void setListener(@NotNull InputListener listener) {
         inputListener = listener;
     }
 
     @Override
-    public boolean isButtonDown(@Nonnull Button button) {
+    public boolean isButtonDown(@NotNull Button button) {
         int buttonCode = getGdxButton(button);
         if (buttonCode == -1) {
             return false;
@@ -713,7 +714,7 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     }
 
     @Override
-    public boolean isKeyDown(@Nonnull Key key) {
+    public boolean isKeyDown(@NotNull Key key) {
         return gdxInput.isKeyPressed(getGdxKey(key));
     }
 
@@ -723,8 +724,8 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     }
 
     @Override
-    public boolean isAnyButtonDown(@Nonnull Button... buttons) {
-        for (@Nonnull Button button : buttons) {
+    public boolean isAnyButtonDown(@NotNull Button... buttons) {
+        for (@NotNull Button button : buttons) {
             if (isButtonDown(button)) {
                 return true;
             }
@@ -738,8 +739,8 @@ class GdxInput extends AbstractForwardingInput implements InputProcessor {
     }
 
     @Override
-    public boolean isAnyKeyDown(@Nonnull Key... keys) {
-        for (@Nonnull Key key : keys) {
+    public boolean isAnyKeyDown(@NotNull Key... keys) {
+        for (@NotNull Key key : keys) {
             if (isKeyDown(key)) {
                 return true;
             }

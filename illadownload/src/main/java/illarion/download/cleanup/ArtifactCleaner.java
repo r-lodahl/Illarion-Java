@@ -17,10 +17,10 @@ package illarion.download.cleanup;
 
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,9 +37,9 @@ class ArtifactCleaner implements Callable<Void> {
     /**
      * The logger that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ArtifactCleaner.class);
-    @Nonnull
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
     private final Comparator<Path> versionComparator = new VersionComparator();
 
     @Override
@@ -61,7 +61,7 @@ class ArtifactCleaner implements Callable<Void> {
      *
      * @return the files that should be removed
      */
-    @Nonnull
+    @NotNull
     private Collection<Path> getRemovalTargets() throws IOException {
         DirectoryManager dm = DirectoryManager.getInstance();
 
@@ -77,21 +77,21 @@ class ArtifactCleaner implements Callable<Void> {
         return Collections.unmodifiableCollection(resultList);
     }
 
-    @Nonnull
-    private static Collection<Path> getArtifactDirectories(@Nonnull Path rootDir) throws IOException {
+    @NotNull
+    private static Collection<Path> getArtifactDirectories(@NotNull Path rootDir) throws IOException {
         ArtifactDirectoryVisitor visitor = new ArtifactDirectoryVisitor();
         Files.walkFileTree(rootDir, visitor);
         return visitor.getArtifactDirectories();
     }
 
-    private static boolean isArtifactDirectory(@Nonnull Path dir) throws IOException {
+    private static boolean isArtifactDirectory(@NotNull Path dir) throws IOException {
         //noinspection ConstantConditions
         return Files.list(dir).filter(Files::isRegularFile).allMatch(path ->
                 path.getFileName().toString().endsWith(".jar"));
     }
 
-    @Nonnull
-    private Collection<Path> getArtifactRemovalTargets(@Nonnull Path artifactDirectory) throws IOException {
+    @NotNull
+    private Collection<Path> getArtifactRemovalTargets(@NotNull Path artifactDirectory) throws IOException {
         List<Path> releaseVersions = new LinkedList<>();
         List<Path> snapshotVersions = new LinkedList<>();
 
@@ -131,8 +131,8 @@ class ArtifactCleaner implements Callable<Void> {
         return result;
     }
 
-    @Nonnull
-    private static Collection<Path> getOldSnapshots(@Nonnull Path snapshotDir) throws IOException {
+    @NotNull
+    private static Collection<Path> getOldSnapshots(@NotNull Path snapshotDir) throws IOException {
         List<Path> snapshotJars = Files.list(snapshotDir)
                 .filter(Files::isRegularFile)
                 .filter(path -> {

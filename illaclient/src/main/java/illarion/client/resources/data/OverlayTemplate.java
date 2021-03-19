@@ -16,18 +16,13 @@
 package illarion.client.resources.data;
 
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This template contains the required data to display a tile overlay on the screen.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class OverlayTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The constructor of this class.
@@ -35,7 +30,7 @@ public class OverlayTemplate extends AbstractAnimatedEntityTemplate {
      * @param id the identification number of the entity
      * @param sprite the sprite used to render the entity
      */
-    public OverlayTemplate(int id, @Nonnull Sprite sprite) {
+    public OverlayTemplate(int id, @NotNull Sprite sprite) {
         super(id, sprite, 1, 0, 0, null, 0);
     }
 }

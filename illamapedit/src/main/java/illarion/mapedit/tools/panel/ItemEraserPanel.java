@@ -16,8 +16,8 @@
 package illarion.mapedit.tools.panel;
 
 import illarion.mapedit.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,11 +25,11 @@ import java.awt.*;
  * @author Fredrik K
  */
 public class ItemEraserPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final JCheckBox clearCheckBox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillSelectedCheckbox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillAreaCheckbox;
 
     public ItemEraserPanel() {

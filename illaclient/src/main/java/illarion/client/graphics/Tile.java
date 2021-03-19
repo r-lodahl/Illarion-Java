@@ -33,6 +33,8 @@ import illarion.common.graphics.TileInfo;
 import illarion.common.types.Direction;
 import illarion.common.types.Rectangle;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.Color;
@@ -42,11 +44,9 @@ import org.illarion.engine.graphic.effects.TextureEffect;
 import org.illarion.engine.graphic.effects.TileLightEffect;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 
@@ -61,22 +61,22 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     /**
      * The instance of the logging class for this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Tile.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    @Nonnull
+    @NotNull
     private static final EnumSet<Direction> TOP_COLOR_DIRECTIONS =
             EnumSet.of(Direction.North, Direction.NorthEast, Direction.East);
 
-    @Nonnull
+    @NotNull
     private static final EnumSet<Direction> LEFT_COLOR_DIRECTIONS =
             EnumSet.of(Direction.North, Direction.NorthWest, Direction.West);
 
-    @Nonnull
+    @NotNull
     private static final EnumSet<Direction> BOTTOM_COLOR_DIRECTIONS =
             EnumSet.of(Direction.West, Direction.SouthWest, Direction.South);
 
-    @Nonnull
+    @NotNull
     private static final EnumSet<Direction> RIGHT_COLOR_DIRECTIONS =
             EnumSet.of(Direction.East, Direction.SouthEast, Direction.South);
     
@@ -88,7 +88,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     /**
      * The parent map tile reference.
      */
-    @Nonnull
+    @NotNull
     private final MapTile parentTile;
     /**
      * The template of the overlay that is rendered on top of the tile or {@code null} in case just the plain tile is
@@ -111,11 +111,11 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     @Nullable
     private Color bottomColor;
 
-    public Tile(int tileId, @Nonnull MapTile parentTile) {
+    public Tile(int tileId, @NotNull MapTile parentTile) {
         this(TileFactory.getInstance().getTemplate(TileInfo.getBaseID(tileId)), tileId, parentTile);
     }
 
-    public Tile(@Nonnull TileTemplate template, int tileId, @Nonnull MapTile parentTile) {
+    public Tile(@NotNull TileTemplate template, int tileId, @NotNull MapTile parentTile) {
         super(template);
 
         if (template.getAnimationSpeed() > 0) {
@@ -143,8 +143,8 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     }
 
     @Override
-    protected void renderSprite(@Nonnull Graphics g, int x, int y, @Nonnull Color light,
-                                @Nonnull TextureEffect... effects) {
+    protected void renderSprite(@NotNull Graphics g, int x, int y, @NotNull Color light,
+                                @NotNull TextureEffect... effects) {
         Color centerLight = parentTile.getLight();
         if ((topColor != null) && (leftColor != null) && (rightColor != null) && (bottomColor != null)) {
             g.drawTileSprite(getTemplate().getSprite(), x, y, topColor, bottomColor, leftColor, rightColor, centerLight,
@@ -169,7 +169,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
      * @param graphics the graphics object that is used to render the tile.
      */
     @Override
-    public void render(@Nonnull Graphics graphics) {
+    public void render(@NotNull Graphics graphics) {
         if (performRendering()) {
             MapTile obstructingTile = parentTile.getObstructingTile();
             if ((obstructingTile != null) && obstructingTile.isOpaque()) {
@@ -212,7 +212,7 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
     }
 
     @Override
-    public boolean isEventProcessed(@Nonnull BackendBinding binding, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(@NotNull BackendBinding binding, int delta, @NotNull SceneEvent event) {
         if (event instanceof PointOnMapEvent) {
             if (!isVisible()) {
                 return false;
@@ -330,13 +330,13 @@ public class Tile extends AbstractEntity<TileTemplate> implements Resource {
      * color value is used.
      */
     @Override
-    @Nonnull
+    @NotNull
     protected Color getParentLight() {
         return parentTile.getLight();
     }
 
-    @Nonnull
-    private Color getCornerColor(@Nullable Color storage, @Nonnull Collection<Direction> sourceDirections) {
+    @NotNull
+    private Color getCornerColor(@Nullable Color storage, @NotNull Collection<Direction> sourceDirections) {
         Color usedStorage = storage;
         if (usedStorage == null) {
             usedStorage = new Color(Color.BLACK);

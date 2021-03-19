@@ -34,8 +34,8 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -45,14 +45,14 @@ import java.util.Set;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class KeyMapper {
-    @Nonnull
+    @NotNull
     private final Input input;
 
-    @Nonnull
+    @NotNull
     private final Set<Key> keyPressed;
     private boolean useWasdWalking;
 
-    public KeyMapper(@Nonnull Input input) {
+    public KeyMapper(@NotNull Input input) {
         this.input = input;
         keyPressed = EnumSet.noneOf(Key.class);
 
@@ -75,7 +75,7 @@ public final class KeyMapper {
         }
     }
 
-    private static void startMovingTowards(@Nonnull Direction direction, boolean firstPressed) {
+    private static void startMovingTowards(@NotNull Direction direction, boolean firstPressed) {
         if (World.getPlayer().isLocationSet()) {
             KeyboardMovementHandler handler = World.getPlayer().getMovementHandler().getKeyboardHandler();
             handler.startMovingTowards(direction);
@@ -111,13 +111,13 @@ public final class KeyMapper {
     }
 
     @EventTopicSubscriber(topic = "wasdWalk")
-    public void onWasdSettingsChanged(@Nonnull String configKey, @Nonnull ConfigChangedEvent event) {
+    public void onWasdSettingsChanged(@NotNull String configKey, @NotNull ConfigChangedEvent event) {
         if ("wasdWalk".equals(configKey)) {
             applyWasdWalkSettings();
         }
     }
 
-    public void handleKeyReleasedInput(@Nonnull Key key) {
+    public void handleKeyReleasedInput(@NotNull Key key) {
         keyPressed.remove(key);
         KeyboardMovementHandler handler = World.getPlayer().getMovementHandler().getKeyboardHandler();
         switch (key) {
@@ -183,7 +183,7 @@ public final class KeyMapper {
         }
     }
 
-    public void handleKeyPressedInput(@Nonnull Key key) {
+    public void handleKeyPressedInput(@NotNull Key key) {
         boolean firstPressed = keyPressed.add(key);
         switch (key) {
             case B:

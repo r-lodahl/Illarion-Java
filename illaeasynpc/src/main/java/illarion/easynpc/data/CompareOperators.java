@@ -15,7 +15,8 @@
  */
 package illarion.easynpc.data;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This enumerator contains a list of all possible compare operators that are
@@ -34,7 +35,7 @@ public enum CompareOperators {
     /**
      * The lua representation for this comparator.
      */
-    @Nonnull
+    @NotNull
     private final String luaComp;
 
     /**
@@ -42,7 +43,7 @@ public enum CompareOperators {
      *
      * @param lua the LUA representation of this operator
      */
-    CompareOperators(@Nonnull String lua) {
+    CompareOperators(@NotNull String lua) {
         luaComp = lua;
     }
 
@@ -51,7 +52,7 @@ public enum CompareOperators {
      *
      * @return the LUA representation
      */
-    @Nonnull
+    @NotNull
     public String getLuaComp() {
         return luaComp;
     }

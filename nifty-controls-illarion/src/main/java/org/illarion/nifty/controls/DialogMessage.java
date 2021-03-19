@@ -16,28 +16,25 @@
 package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.controls.Window;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the common interface for a dialog message that provides all required functions for the control of a dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public interface DialogMessage extends Window {
     /**
      * Set the text that is supposed to be displayed in the dialog message.
      *
      * @param text the text to be displayed
      */
-    void setText(@Nonnull String text);
+    void setText(@NotNull String text);
 
     /**
      * Set the text that is supposed to be displayed in the dialog.
      *
      * @param button the button to display
      */
-    void setButton(@Nonnull String button);
+    void setButton(@NotNull String button);
 }

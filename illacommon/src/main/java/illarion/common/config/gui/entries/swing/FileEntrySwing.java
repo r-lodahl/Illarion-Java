@@ -19,9 +19,9 @@ import illarion.common.config.entries.ConfigEntry;
 import illarion.common.config.entries.FileEntry;
 import illarion.common.config.gui.entries.SavableEntry;
 import illarion.common.util.MessageSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -87,7 +87,7 @@ public final class FileEntrySwing extends JPanel implements SavableEntry {
              * regular expressions. Also it allows the directories to be shown.
              */
             @Override
-            public boolean accept(@Nonnull File f) {
+            public boolean accept(@NotNull File f) {
                 if (f.isDirectory()) {
                     return true;
                 }
@@ -179,13 +179,13 @@ public final class FileEntrySwing extends JPanel implements SavableEntry {
     /**
      * The text entry used to initialize this instance.
      */
-    @Nonnull
+    @NotNull
     private final FileEntry entry;
 
     /**
      * The area that displays the selected folder.
      */
-    @Nonnull
+    @NotNull
     private final JTextField input;
 
     /**
@@ -197,7 +197,7 @@ public final class FileEntrySwing extends JPanel implements SavableEntry {
      * @param msgs the message source that is used to fetch the texts displayed
      * in this entry
      */
-    public FileEntrySwing(@Nonnull ConfigEntry usedEntry, @Nonnull MessageSource msgs) {
+    public FileEntrySwing(@NotNull ConfigEntry usedEntry, @NotNull MessageSource msgs) {
         super(new BorderLayout(10, 0));
         if (!isUsableEntry(usedEntry)) {
             throw new IllegalArgumentException("ConfigEntry type illegal.");
@@ -242,7 +242,7 @@ public final class FileEntrySwing extends JPanel implements SavableEntry {
      *
      * @param newValue the new value that is set from now on
      */
-    void setCurrentValue(@Nonnull Path newValue) {
+    void setCurrentValue(@NotNull Path newValue) {
         if (Files.isRegularFile(newValue)) {
             currentValue = newValue;
             input.setText(newValue.toAbsolutePath().toString());

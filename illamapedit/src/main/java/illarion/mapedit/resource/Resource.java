@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.resource;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 /**
@@ -34,6 +35,6 @@ public interface Resource {
      *
      * @return a the description
      */
-    @Nonnull
+    @NotNull
     String getDescription();
 }

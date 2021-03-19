@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic.effects;
 
 import org.illarion.engine.graphic.Color;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This effect is used to render the light on a texture.
@@ -30,61 +30,61 @@ public interface TileLightEffect extends TextureEffect {
      *
      * @param color the color of the tile
      */
-    void setTopLeftColor(@Nonnull Color color);
+    void setTopLeftColor(@NotNull Color color);
 
     /**
      * Set the color of the tile top right of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setTopRightColor(@Nonnull Color color);
+    void setTopRightColor(@NotNull Color color);
 
     /**
      * Set the color of the tile bottom left of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setBottomLeftColor(@Nonnull Color color);
+    void setBottomLeftColor(@NotNull Color color);
 
     /**
      * Set the color of the tile bottom right of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setBottomRightColor(@Nonnull Color color);
+    void setBottomRightColor(@NotNull Color color);
 
     /**
      * Set the color of the tile top of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setTopColor(@Nonnull Color color);
+    void setTopColor(@NotNull Color color);
 
     /**
      * Set the color of the tile bottom of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setBottomColor(@Nonnull Color color);
+    void setBottomColor(@NotNull Color color);
 
     /**
      * Set the color of the tile left of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setLeftColor(@Nonnull Color color);
+    void setLeftColor(@NotNull Color color);
 
     /**
      * Set the color of the tile right of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setRightColor(@Nonnull Color color);
+    void setRightColor(@NotNull Color color);
 
     /**
      * Set the color in the center of the rendered tile.
      *
      * @param color the color of the tile
      */
-    void setCenterColor(@Nonnull Color color);
+    void setCenterColor(@NotNull Color color);
 }

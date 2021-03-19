@@ -16,9 +16,9 @@
 package illarion.easyquest.gui;
 
 import illarion.easyquest.quest.TemplateParameter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,7 +27,7 @@ public class ParameterPanel extends JPanel {
     @Nullable
     private final Component comp;
 
-    public ParameterPanel(@Nonnull TemplateParameter parameter) {
+    public ParameterPanel(@NotNull TemplateParameter parameter) {
         JLabel description = new JLabel(parameter.getDescription() + ':');
         String type = parameter.getType();
         switch (type) {

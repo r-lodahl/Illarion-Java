@@ -17,10 +17,13 @@ package illarion.client.graphics;
 
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
-import org.illarion.engine.graphic.*;
+import org.illarion.engine.graphic.Color;
+import org.illarion.engine.graphic.Font;
+import org.illarion.engine.graphic.Graphics;
+import org.illarion.engine.graphic.ImmutableColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the characterName tag that is in special displayed above avatars.
@@ -31,7 +34,7 @@ public final class AvatarTextTag {
     /**
      * The color of the background pane that is displayed behind the characterName.
      */
-    @Nonnull
+    @NotNull
     private static final Color BACK_COLOR = new Color(0.f, 0.f, 0.f, 0.58f);
 
     /**
@@ -41,9 +44,9 @@ public final class AvatarTextTag {
     /**
      * The font used to draw the text tag.
      */
-    @Nonnull
+    @NotNull
     private final Font font;
-    @Nonnull
+    @NotNull
     private final Rectangle displayRect = new Rectangle();
     /**
      * The color implementation that is used to render the characterName.
@@ -120,7 +123,7 @@ public final class AvatarTextTag {
      *
      * @param coordinate the coordinate of the location on the screen
      */
-    public void setDisplayLocation(@Nonnull DisplayCoordinate coordinate) {
+    public void setDisplayLocation(@NotNull DisplayCoordinate coordinate) {
         displayCoordinate = coordinate;
     }
 
@@ -129,7 +132,7 @@ public final class AvatarTextTag {
      *
      * @param newColor the color that is used to render the characterName tag.
      */
-    public void setCharNameColor(@Nonnull Color newColor) {
+    public void setCharNameColor(@NotNull Color newColor) {
         if (newColor instanceof ImmutableColor) {
             charNameColor = newColor;
         } else if ((charNameColor == null) || charNameColor.equals(newColor)) {
@@ -142,7 +145,7 @@ public final class AvatarTextTag {
      *
      * @param newColor the color that is used to render the characterName tag.
      */
-    public void setHealthStateColor(@Nonnull Color newColor) {
+    public void setHealthStateColor(@NotNull Color newColor) {
         if (newColor instanceof ImmutableColor) {
             healthStateColor = newColor;
         } else if ((healthStateColor == null) || healthStateColor.equals(newColor)) {
@@ -168,7 +171,7 @@ public final class AvatarTextTag {
      *
      * @param newText the new name of the character that is displayed from now on
      */
-    public void setCharacterName(@Nonnull String newText) {
+    public void setCharacterName(@NotNull String newText) {
         if (newText.equals(charName)) {
             return;
         }
@@ -235,7 +238,7 @@ public final class AvatarTextTag {
                         displayCoordinate.getY() - avatarHeight - getHeight() - 5, width, height);
     }
 
-    public boolean render(@Nonnull Graphics g) {
+    public boolean render(@NotNull Graphics g) {
         if ((charName == null) && (healthState == null)) {
             return true;
         }
@@ -259,7 +262,7 @@ public final class AvatarTextTag {
         return true;
     }
 
-    @Nonnull
+    @NotNull
     public Rectangle getDisplayRect() {
         return displayRect;
     }

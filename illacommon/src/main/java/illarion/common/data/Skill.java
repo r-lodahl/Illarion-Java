@@ -15,34 +15,30 @@
  */
 package illarion.common.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class defines a single skill.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class Skill {
     /**
      * The name of the skill.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
      * The name of the skill in english.
      */
-    @Nonnull
+    @NotNull
     private final String nameEnglish;
 
     /**
      * The name of the skill in german.
      */
-    @Nonnull
+    @NotNull
     private final String nameGerman;
 
     /**
@@ -53,7 +49,7 @@ public final class Skill {
     /**
      * The group this skill belongs to.
      */
-    @Nonnull
+    @NotNull
     private final SkillGroup group;
 
     /**
@@ -67,10 +63,10 @@ public final class Skill {
      */
     Skill(
             int skillId,
-            @Nonnull String skillName,
-            @Nonnull String german,
-            @Nonnull String english,
-            @Nonnull SkillGroup skillGroup) {
+            @NotNull String skillName,
+            @NotNull String german,
+            @NotNull String english,
+            @NotNull SkillGroup skillGroup) {
         id = skillId;
         name = skillName;
         nameEnglish = english;
@@ -93,7 +89,7 @@ public final class Skill {
      *
      * @return the group this skill belong to
      */
-    @Nonnull
+    @NotNull
     public SkillGroup getGroup() {
         return group;
     }
@@ -103,7 +99,7 @@ public final class Skill {
      *
      * @return the name of the skills
      */
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
@@ -113,7 +109,7 @@ public final class Skill {
      *
      * @return the german name of the skill
      */
-    @Nonnull
+    @NotNull
     public String getNameGerman() {
         return nameGerman;
     }
@@ -123,14 +119,14 @@ public final class Skill {
      *
      * @return the english name of the skill
      */
-    @Nonnull
+    @NotNull
     public String getNameEnglish() {
         return nameEnglish;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
-        return "Skill " + Integer.toString(id) + ": " + nameEnglish;
+        return "Skill " + id + ": " + nameEnglish;
     }
 }

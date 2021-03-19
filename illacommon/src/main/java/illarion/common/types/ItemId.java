@@ -18,11 +18,9 @@ package illarion.common.types;
 import illarion.common.net.NetCommReader;
 import illarion.common.net.NetCommWriter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 
 /**
@@ -30,8 +28,6 @@ import java.io.IOException;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class ItemId implements Comparable<ItemId> {
     /**
      * The maximal value that is valid for the item ID.
@@ -68,7 +64,7 @@ public final class ItemId implements Comparable<ItemId> {
      * @param reader the reader
      * @throws IOException in case the reading operation fails for some reason
      */
-    public ItemId(@Nonnull NetCommReader reader) throws IOException {
+    public ItemId(@NotNull NetCommReader reader) throws IOException {
         value = reader.readUShort();
     }
 
@@ -96,11 +92,11 @@ public final class ItemId implements Comparable<ItemId> {
         return value;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {
-        return "Item ID: " + Integer.toString(value);
+        return "Item ID: " + value;
     }
 
     /**
@@ -108,7 +104,7 @@ public final class ItemId implements Comparable<ItemId> {
      *
      * @param writer the writer that receives the value
      */
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUShort(value);
     }
 
@@ -132,7 +128,7 @@ public final class ItemId implements Comparable<ItemId> {
      */
     @Contract(value = "null,null -> true; !null,null -> false; null,!null -> false", pure = true)
     public static boolean equals(@Nullable ItemId id1, @Nullable ItemId id2) {
-        return ((id1 == null) && (id2 == null)) || ((id1 != null) && id1.equals(id2));
+        return id1 == null ? id2 == null : id1.equals(id2);
     }
 
     /**
@@ -147,7 +143,7 @@ public final class ItemId implements Comparable<ItemId> {
 
     @Override
     @Contract(pure = true)
-    public int compareTo(@Nonnull ItemId o) {
+    public int compareTo(@NotNull ItemId o) {
         if (value == o.value) {
             return 0;
         }

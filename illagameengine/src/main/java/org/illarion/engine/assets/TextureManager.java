@@ -17,10 +17,8 @@ package org.illarion.engine.assets;
 
 import illarion.common.util.ProgressMonitor;
 import org.illarion.engine.graphic.Texture;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This interface provides access to the textures loaded by the backend. The references to those textures are used to
@@ -28,14 +26,13 @@ import javax.annotation.concurrent.NotThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public interface TextureManager {
     /**
      * Add a directory that provides texture data.
      *
      * @param directory the directory providing the texture data
      */
-    void addTextureDirectory(@Nonnull String directory);
+    void addTextureDirectory(@NotNull String directory);
 
     /**
      * Get a specified texture.
@@ -45,7 +42,7 @@ public interface TextureManager {
      * @return the loaded texture or {@code null} in case the texture requested does not exist
      */
     @Nullable
-    Texture getTexture(@Nonnull String directory, @Nonnull String name);
+    Texture getTexture(@NotNull String directory, @NotNull String name);
 
     /**
      * Get a specified texture.
@@ -54,7 +51,7 @@ public interface TextureManager {
      * @return the loaded texture or {@code null} in case the texture requested does not exist
      */
     @Nullable
-    Texture getTexture(@Nonnull String name);
+    Texture getTexture(@NotNull String name);
 
     /**
      * Calling this function starts the automatic loading of all texture atlas files in all the texture directories
@@ -69,7 +66,7 @@ public interface TextureManager {
      *
      * @return the progress monitor
      */
-    @Nonnull
+    @NotNull
     ProgressMonitor getProgress();
 
     /**

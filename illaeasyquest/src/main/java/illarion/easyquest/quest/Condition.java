@@ -15,28 +15,29 @@
  */
 package illarion.easyquest.quest;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public class Condition implements Serializable {
-    @Nonnull
+    @NotNull
     private final String type;
-    @Nonnull
+    @NotNull
     private final Object[] parameters;
 
-    public Condition(@Nonnull String type, @Nonnull Object... parameters) {
+    public Condition(@NotNull String type, @NotNull Object... parameters) {
         this.type = type;
         this.parameters = Arrays.copyOf(parameters, parameters.length);
     }
 
-    @Nonnull
+    @NotNull
     public String getType() {
         return type;
     }
 
-    @Nonnull
+    @NotNull
     public Object[] getParameters() {
         return parameters;
     }

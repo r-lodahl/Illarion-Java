@@ -31,12 +31,12 @@ import illarion.client.gui.InformGui;
 import illarion.client.util.UpdateTask;
 import illarion.client.world.MapDimensions;
 import illarion.client.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Font;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -53,19 +53,19 @@ public final class InformHandler implements InformGui, ScreenController {
         /**
          * The element builder that is executed to create the inform message.
          */
-        @Nonnull
+        @NotNull
         private final ElementBuilder builder;
 
         /**
          * The element that will be parent to the elements created by the builder.
          */
-        @Nonnull
+        @NotNull
         private final Element parent;
 
         /**
          * The element that needs to get a new layout once the inform is displayed.
          */
-        @Nonnull
+        @NotNull
         private final Element layoutParent;
 
         /**
@@ -83,9 +83,9 @@ public final class InformHandler implements InformGui, ScreenController {
          * @param layoutParent the element that needs to get a new layout once the inform is displayed
          * @param prepareAction the action executed directly before the task is build
          */
-        InformBuildTask(@Nonnull ElementBuilder informBuilder,
-                        @Nonnull Element parentElement,
-                        @Nonnull Element layoutParent,
+        InformBuildTask(@NotNull ElementBuilder informBuilder,
+                        @NotNull Element parentElement,
+                        @NotNull Element layoutParent,
                         @Nullable Runnable prepareAction) {
             builder = informBuilder;
             parent = parentElement;
@@ -167,8 +167,8 @@ public final class InformHandler implements InformGui, ScreenController {
     /**
      * The logger that is used for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(InformHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The instance of the Nifty-GUI this handler is bound to.
@@ -204,7 +204,7 @@ public final class InformHandler implements InformGui, ScreenController {
     private Element scriptParentPanel;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         parentNifty = nifty;
         parentScreen = screen;
 
@@ -226,7 +226,7 @@ public final class InformHandler implements InformGui, ScreenController {
     }
 
     @Override
-    public void showBroadcastInform(@Nonnull String message) {
+    public void showBroadcastInform(@NotNull String message) {
         if (broadcastParentPanel == null) {
             log.warn("Received server inform before the GUI became ready.");
             return;
@@ -251,9 +251,9 @@ public final class InformHandler implements InformGui, ScreenController {
      * @param parent the parent element that stores the inform message
      * @param layoutParent the element that needs to get its layout recalculated
      */
-    public void showInform(@Nonnull ElementBuilder informBuilder,
-                           @Nonnull Element parent,
-                           @Nonnull Element layoutParent) {
+    public void showInform(@NotNull ElementBuilder informBuilder,
+                           @NotNull Element parent,
+                           @NotNull Element layoutParent) {
         showInform(informBuilder, parent, layoutParent, null);
     }
 
@@ -265,9 +265,9 @@ public final class InformHandler implements InformGui, ScreenController {
      * @param layoutParent  the element that needs to get its layout recalculated
      * @param prepareAction the action executed right before the element is build
      */
-    public void showInform(@Nonnull ElementBuilder informBuilder,
-                           @Nonnull Element parent,
-                           @Nonnull Element layoutParent,
+    public void showInform(@NotNull ElementBuilder informBuilder,
+                           @NotNull Element parent,
+                           @NotNull Element layoutParent,
                            @Nullable Runnable prepareAction) {
         World.getUpdateTaskManager().addTask(new InformBuildTask(informBuilder, parent, layoutParent, prepareAction));
     }
@@ -279,7 +279,7 @@ public final class InformHandler implements InformGui, ScreenController {
      * @param message the message
      */
     @Override
-    public void showScriptInform(int priority, @Nonnull String message) {
+    public void showScriptInform(int priority, @NotNull String message) {
         if (scriptParentPanel == null) {
             log.warn("Received script inform before the GUI became ready. Priority: {} Message: {}", priority, message);
             return;
@@ -335,7 +335,7 @@ public final class InformHandler implements InformGui, ScreenController {
         showInform(panelBuilder, scriptParentPanel, scriptParentPanel.getParent());
     }
 
-    private static int getScriptInformDisplayTime(@Nonnull CharSequence text, int priority) {
+    private static int getScriptInformDisplayTime(@NotNull CharSequence text, int priority) {
         if (priority == 0) {
             return 5000;// + (text.length() * 50);
         }
@@ -343,7 +343,7 @@ public final class InformHandler implements InformGui, ScreenController {
     }
 
     @Override
-    public void showServerInform(@Nonnull String message) {
+    public void showServerInform(@NotNull String message) {
         if (serverParentPanel == null) {
             log.warn("Received server inform before the GUI became ready.");
             return;
@@ -378,7 +378,7 @@ public final class InformHandler implements InformGui, ScreenController {
     }
 
     @Override
-    public void showTextToInform(@Nonnull String message) {
+    public void showTextToInform(@NotNull String message) {
         if (textToParentPanel == null) {
             log.warn("Received server inform before the GUI became ready.");
             return;

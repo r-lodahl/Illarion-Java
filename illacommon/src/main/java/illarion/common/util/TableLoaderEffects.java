@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of the table loader that targets the effects table file.
@@ -60,7 +60,7 @@ public final class TableLoaderEffects extends TableLoader {
      */
     private static final int TB_SPEED = 5;
 
-    public TableLoaderEffects(@Nonnull TableLoaderSink<TableLoaderEffects> callback) {
+    public TableLoaderEffects(@NotNull TableLoaderSink<TableLoaderEffects> callback) {
         super("Effects", callback);
     }
 
@@ -130,7 +130,7 @@ public final class TableLoaderEffects extends TableLoader {
      *
      * @return the resource name of this effect
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getResourceName() {
         return getString(TB_NAME);

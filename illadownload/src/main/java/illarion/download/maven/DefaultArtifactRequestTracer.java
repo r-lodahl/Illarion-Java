@@ -16,8 +16,8 @@
 package illarion.download.maven;
 
 import illarion.common.util.ProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -29,22 +29,22 @@ import static illarion.download.maven.MavenDownloaderCallback.State.ResolvingArt
  */
 class DefaultArtifactRequestTracer implements ArtifactRequestTracer {
     private final boolean offline;
-    @Nonnull
+    @NotNull
     private final MavenDownloaderCallback callback;
-    @Nonnull
+    @NotNull
     private final ProgressMonitor progressMonitor;
-    @Nonnull
+    @NotNull
     private final AtomicLong totalTransferred;
-    @Nonnull
+    @NotNull
     private final AtomicLong recordedTotal;
-    @Nonnull
+    @NotNull
     private final Map<String, Long> transferPerArtifact;
-    @Nonnull
+    @NotNull
     private final Map<String, Boolean> recordedTotalForArtifact;
 
     public DefaultArtifactRequestTracer(boolean offline,
-                                        @Nonnull MavenDownloaderCallback callback,
-                                        @Nonnull ProgressMonitor progressMonitor) {
+                                        @NotNull MavenDownloaderCallback callback,
+                                        @NotNull ProgressMonitor progressMonitor) {
         this.offline = offline;
         this.callback = callback;
         this.progressMonitor = progressMonitor;
@@ -55,7 +55,7 @@ class DefaultArtifactRequestTracer implements ArtifactRequestTracer {
     }
 
     @Override
-    public void trace(@Nonnull ProgressMonitor monitor, @Nonnull String artifact, long totalSize, long transferred) {
+    public void trace(@NotNull ProgressMonitor monitor, @NotNull String artifact, long totalSize, long transferred) {
         Boolean totalRecorded = null;
         if (totalSize >= 0) {
             monitor.setProgress(transferred / (float) totalSize);
@@ -77,7 +77,7 @@ class DefaultArtifactRequestTracer implements ArtifactRequestTracer {
         callback.reportNewState(ResolvingArtifacts, progressMonitor, offline, text);
     }
 
-    @Nonnull
+    @NotNull
     private static String humanReadableByteCount(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) {

@@ -18,8 +18,8 @@ package illarion.easynpc.parsed;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -47,16 +47,16 @@ public final class ParsedWalkingRadius implements ParsedData {
      * No effect on the SQL query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to add to the query.
     }
 
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return false;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.emptyList();
@@ -64,7 +64,7 @@ public final class ParsedWalkingRadius implements ParsedData {
 
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         // not implemented yet.
     }
 }

@@ -17,9 +17,9 @@ package illarion.mapedit.tools.panel.components;
 
 import illarion.mapedit.Lang;
 import illarion.mapedit.data.MapItem;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
@@ -29,9 +29,9 @@ import java.text.NumberFormat;
  * @author Fredrik K
  */
 public class ItemDataFields extends JPanel {
-    @Nonnull
+    @NotNull
     private final JFormattedTextField durabilityField;
-    @Nonnull
+    @NotNull
     private final JFormattedTextField qualityField;
     @Nullable
     private MapItem item;
@@ -88,7 +88,7 @@ public class ItemDataFields extends JPanel {
         add(durabilityField);
     }
 
-    public void setData(@Nonnull MapItem item) {
+    public void setData(@NotNull MapItem item) {
         this.item = item;
         durabilityField.setValue(item.getDurability());
         qualityField.setValue(item.getQuality());

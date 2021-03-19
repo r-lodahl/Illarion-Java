@@ -16,8 +16,8 @@
 package illarion.client.net.client;
 
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This command is used to trigger the look at at a merchant dialog.
@@ -70,13 +70,13 @@ public class LookAtMerchantItemCmd extends AbstractTradeItemCmd {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         super.encode(writer);
         writer.writeUByte(listId);
         writer.writeUByte(slotId);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(super.toString() + " Look at list: " + listId + ", Look at index: " + slotId);

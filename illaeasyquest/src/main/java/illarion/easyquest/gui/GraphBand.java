@@ -16,6 +16,7 @@
 package illarion.easyquest.gui;
 
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.CommandToggleButtonGroup;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
@@ -26,7 +27,6 @@ import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mid
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mirror;
 import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -38,11 +38,11 @@ final class GraphBand extends JRibbonBand {
      */
     private static final long serialVersionUID = 1L;
 
-    @Nonnull
+    @NotNull
     private final JCommandButton propertiesButton;
-    @Nonnull
+    @NotNull
     private final JCommandToggleButton nodeButton;
-    @Nonnull
+    @NotNull
     private final JCommandToggleButton transitionButton;
 
     /**

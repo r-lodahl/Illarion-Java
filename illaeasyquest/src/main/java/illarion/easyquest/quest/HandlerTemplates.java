@@ -16,18 +16,19 @@
 package illarion.easyquest.quest;
 
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class HandlerTemplates {
     private static final HandlerTemplates INSTANCE = new HandlerTemplates();
-    @Nonnull
+    @NotNull
     private final Map<String, HandlerTemplate> typeMap;
     /**
      * Internal storage for the templates.
@@ -44,7 +45,7 @@ public class HandlerTemplates {
         load();
     }
 
-    @Nonnull
+    @NotNull
     public static HandlerTemplates getInstance() {
         return INSTANCE;
     }
@@ -54,7 +55,7 @@ public class HandlerTemplates {
         return loader.getResourceAsStream(name);
     }
 
-    @Nonnull
+    @NotNull
     private static List<String> loadFileList() {
         List<String> result = new ArrayList<>();
         BufferedReader bRead = null;
@@ -96,7 +97,7 @@ public class HandlerTemplates {
                 HandlerTemplate handlerTemplate = new HandlerTemplate(uniqueName);
                 try {
                     BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(getResource(fileName), "ISO-8859-1"));
+                            new InputStreamReader(getResource(fileName), StandardCharsets.ISO_8859_1));
 
                     while ((line = reader.readLine()) != null) {
 
@@ -127,7 +128,7 @@ public class HandlerTemplates {
                     } else {
                         System.out.println("Syntax error in template " + fileName);
                     }
-                } catch (@Nonnull IOException e1) {
+                } catch (@NotNull IOException e1) {
                     System.out.println("Error loading template " + fileName);
                 }
             }

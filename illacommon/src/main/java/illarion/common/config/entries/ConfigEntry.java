@@ -16,8 +16,8 @@
 package illarion.common.config.entries;
 
 import illarion.common.config.Config;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface describes how a configuration entry is supposed work like in
@@ -34,5 +34,5 @@ public interface ConfigEntry {
      * @param config the configuration that is supposed to be handled by this
      * configuration entry
      */
-    void setConfig(@Nonnull Config config);
+    void setConfig(@NotNull Config config);
 }

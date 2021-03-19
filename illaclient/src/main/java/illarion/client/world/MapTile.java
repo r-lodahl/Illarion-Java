@@ -23,16 +23,14 @@ import illarion.common.types.Direction;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.LightSource;
 import org.illarion.engine.graphic.Sprite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
@@ -47,7 +45,6 @@ import java.util.concurrent.locks.Lock;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class MapTile {
     /**
      * Default Tile ID for no tile at this position.
@@ -57,43 +54,42 @@ public final class MapTile {
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapTile.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * List of items on the tile.
      */
-    @Nonnull
-    @GuardedBy("itemsLock")
+    @NotNull
     private final ItemStack items;
     /**
      * The color value supplied by the light tracer.
      */
-    @Nonnull
+    @NotNull
     private final Color tracerColor;
     /**
      * The calculated light in the center of the tile.
      */
-    @Nonnull
+    @NotNull
     private final Color targetCenterColor;
     /**
      * The storage of the color values.
      */
-    @Nonnull
+    @NotNull
     private final Map<Direction, AnimatedColor> colors;
     /**
      * The color on this tile.
      */
-    @Nonnull
+    @NotNull
     private final AnimatedColor localColor;
     /**
      * The coordinates where this tile is located.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate tileCoordinate;
     /**
      * The temporary light instance that is used for the calculations before its applied to the actual light.
      */
-    @Nonnull
+    @NotNull
     private final Color tmpLight = new Color(Color.WHITE);
     /**
      * This value contains the value the quest marker is elevated by.
@@ -161,7 +157,7 @@ public final class MapTile {
      *
      * @param coordinate the coordinates of this tile
      */
-    public MapTile(@Nonnull ServerCoordinate coordinate) {
+    public MapTile(@NotNull ServerCoordinate coordinate) {
         tileCoordinate = coordinate;
         tileId = ID_NONE;
         tile = null;
@@ -196,7 +192,7 @@ public final class MapTile {
         return obstructingTile;
     }
 
-    public void setObstructingTile(@Nonnull MapTile tile) {
+    public void setObstructingTile(@NotNull MapTile tile) {
         obstructingTileRef = new WeakReference<>(tile);
     }
 
@@ -205,22 +201,22 @@ public final class MapTile {
         return group;
     }
 
-    public void setMapGroup(@Nonnull MapGroup group) {
+    public void setMapGroup(@NotNull MapGroup group) {
         this.group = group;
     }
 
-    @Nonnull
+    @NotNull
     public Color getLight() {
         return localColor.getCurrentColor();
     }
 
-    @Nonnull
+    @NotNull
     public Color getTargetLight() {
         return localColor.getTargetColor();
     }
 
     @Nullable
-    public Color getLight(@Nonnull Direction direction) {
+    public Color getLight(@NotNull Direction direction) {
         @Nullable AnimatedColor color = colors.get(direction);
         return (color == null) ? null : color.getCurrentColor();
     }
@@ -237,7 +233,7 @@ public final class MapTile {
         localColor.update(delta);
     }
 
-    void linkColors(@Nonnull MapTile otherTile, @Nonnull Direction direction) {
+    void linkColors(@NotNull MapTile otherTile, @NotNull Direction direction) {
         Direction reverseDirection = Direction.getReverse(direction);
         otherTile.colors.put(reverseDirection, localColor);
         colors.put(direction, otherTile.localColor);
@@ -261,7 +257,7 @@ public final class MapTile {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     public Item getItem(int index) {
         return items.get(index);
     }
@@ -287,7 +283,7 @@ public final class MapTile {
      * @return the generated string
      */
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return "MapTile " + tileCoordinate + " tile=" + tileId + " items=" + items.size();
     }
@@ -300,7 +296,7 @@ public final class MapTile {
      * @param count the new count value of the item in top position
      */
     public void changeTopItem(
-            @Nonnull ItemId oldItemId, @Nonnull ItemId itemId, @Nonnull ItemCount count) {
+            @NotNull ItemId oldItemId, @NotNull ItemId itemId, @NotNull ItemCount count) {
         if (removedTile) {
             LOGGER.warn("Changing top item of removed tile requested.");
             return;
@@ -360,7 +356,7 @@ public final class MapTile {
      * @param itemId the ID of the item that is created
      * @param count the count value of the item that is created
      */
-    public void addItem(@Nonnull ItemId itemId, @Nonnull ItemCount count) {
+    public void addItem(@NotNull ItemId itemId, @NotNull ItemCount count) {
         if (removedTile) {
             LOGGER.warn("Trying to add a item to a removed tile.");
             return;
@@ -382,7 +378,7 @@ public final class MapTile {
      * @param itemId The new item ID of the item
      * @param itemCount The new count value of this item
      */
-    private boolean setItem(int index, @Nonnull ItemId itemId, @Nonnull ItemCount itemCount) {
+    private boolean setItem(int index, @NotNull ItemId itemId, @NotNull ItemCount itemCount) {
         // look for present item in map tile
         boolean changedSomething = false;
         items.getLock().writeLock().lock();
@@ -506,7 +502,7 @@ public final class MapTile {
      *
      * @param color the light that shall be added
      */
-    public void addLight(@Nonnull Color color) {
+    public void addLight(@NotNull Color color) {
         if (removedTile) {
             LOGGER.warn("Adding light to a removed tile.");
             return;
@@ -600,7 +596,7 @@ public final class MapTile {
      *
      * @return the interactive tile referring to this map tile
      */
-    @Nonnull
+    @NotNull
     public InteractiveMapTile getInteractive() {
         if (removedTile) {
             LOGGER.warn("Request a interactive reference to a removed tile.");
@@ -665,7 +661,7 @@ public final class MapTile {
      *
      * @return the coordinates of the tile
      */
-    @Nonnull
+    @NotNull
     public ServerCoordinate getCoordinates() {
         return tileCoordinate;
     }
@@ -736,7 +732,7 @@ public final class MapTile {
         tmpLight.setColor(Color.BLACK);
     }
 
-    public void applyAmbientLight(@Nonnull Color ambientLight) {
+    public void applyAmbientLight(@NotNull Color ambientLight) {
         targetCenterColor.setColor(tracerColor);
         targetCenterColor.add(ambientLight);
         targetCenterColor.clamp();
@@ -761,7 +757,7 @@ public final class MapTile {
      *
      * @param update the update data the server send
      */
-    public boolean update(@Nonnull TileUpdate update) {
+    public boolean update(@NotNull TileUpdate update) {
         if (removedTile) {
             LOGGER.error("Process update of a removed tile.");
             return false;
@@ -853,7 +849,7 @@ public final class MapTile {
      * @param itemId the list of item ids for the items on this tile
      * @param itemCount the list of count values for the items on this tile
      */
-    private boolean updateItemList(int number, @Nonnull List<ItemId> itemId, @Nonnull List<ItemCount> itemCount) {
+    private boolean updateItemList(int number, @NotNull List<ItemId> itemId, @NotNull List<ItemCount> itemCount) {
         boolean changedSomething = false;
         Lock lock = items.getLock().writeLock();
         lock.lock();
@@ -926,7 +922,7 @@ public final class MapTile {
      * @param itemCount List of count values for all items
      */
     public void updateItems(
-            int itemNumber, @Nonnull List<ItemId> itemId, @Nonnull List<ItemCount> itemCount) {
+            int itemNumber, @NotNull List<ItemId> itemId, @NotNull List<ItemCount> itemCount) {
         if (removedTile) {
             LOGGER.error("Update items of a removed tile requested.");
             return;
@@ -938,7 +934,7 @@ public final class MapTile {
         return (group != null) && group.isHidden();
     }
 
-    public int getItemIndex(@Nonnull Item lookAtItem) {
+    public int getItemIndex(@NotNull Item lookAtItem) {
         return items.indexOf(lookAtItem);
     }
 }

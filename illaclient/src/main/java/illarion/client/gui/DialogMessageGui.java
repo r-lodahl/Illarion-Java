@@ -15,7 +15,8 @@
  */
 package illarion.client.gui;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines the access to the GUI used to display message dialogs.
@@ -30,5 +31,5 @@ public interface DialogMessageGui {
      * @param title the title of the message dialog
      * @param message the message that is displayed in the dialog
      */
-    void showMessageDialog(int dialogId, @Nonnull String title, @Nonnull String message);
+    void showMessageDialog(int dialogId, @NotNull String title, @NotNull String message);
 }

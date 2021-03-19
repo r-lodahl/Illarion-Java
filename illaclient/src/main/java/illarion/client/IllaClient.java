@@ -37,24 +37,26 @@ import illarion.common.util.Crypto;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.TableLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.EventBus;
 import org.illarion.engine.GameContainer;
 import org.illarion.engine.backend.gdx.ApplicationGameContainer;
 import org.illarion.engine.event.GameExitEnforcedEvent;
 import org.illarion.engine.event.WindowResizedEvent;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*; //TODO: Remove swing and awt
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Locale;
 import java.util.Locale.Category;
+import java.util.Objects;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Main Class of the Illarion Client, this loads up the whole game and runs the main loop of the Illarion Client.
@@ -63,25 +65,25 @@ public final class IllaClient {
     /**
      * The identification of this application.
      */
-    @Nonnull
+    @NotNull
     public static final AppIdent APPLICATION = new AppIdent("Illarion"); //$NON-NLS-1$
-    @Nonnull
+    @NotNull
     public static final String CFG_FULLSCREEN = "fullscreen";
-    @Nonnull
+    @NotNull
     public static final String CFG_WIDTH = "windowWidth";
-    @Nonnull
+    @NotNull
     public static final String CFG_HEIGHT = "windowHeight";
     /**
      * The default server the client connects too. The client will always connect to this server.
      */
-    @Nonnull
+    @NotNull
     public static final Servers DEFAULT_SERVER;
 
     /**
      * The error and debug logger of the client.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(IllaClient.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     static {
         String server = System.getProperty("illarion.server", "realserver");
@@ -103,12 +105,12 @@ public final class IllaClient {
     /**
      * Stores the server the client shall connect to.
      */
-    @Nonnull
+    @NotNull
     private Servers usedServer = DEFAULT_SERVER;
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final IllaClient INSTANCE = new IllaClient();
     /**
      * The default empty constructor used to create the singleton instance of this class.
@@ -121,7 +123,7 @@ public final class IllaClient {
      *
      * @param message the error message that shall be displayed.
      */
-    public static void exitWithError(@Nonnull String message) {
+    public static void exitWithError(@NotNull String message) {
         World.cleanEnvironment();
 
         LOGGER.info("Client terminated on user request.");
@@ -245,7 +247,7 @@ public final class IllaClient {
             //MacOSx notice: in case AWT cannot be completely removed from the game (error messages etc)
             //it is needed to initialize AWT once (by calling getDefaultToolkit) before initGLFW
             gameContainer.startGame(new StateManager(), new Diagnostics(true));
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             LOGGER.error("Exception while launching game.", e);
             exit();
         }
@@ -265,19 +267,6 @@ public final class IllaClient {
         }
         System.setProperty("log_dir", userDir.toAbsolutePath().toString());
 
-        //Reload:
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ContextInitializer ci = new ContextInitializer(lc);
-        try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL resource = cl.getResource("logback-to-file.xml");
-            if (resource != null) {
-                ci.configureByResource(resource);
-            }
-        } catch (JoranException ignored) {
-        }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
-
         Thread.setDefaultUncaughtExceptionHandler(DefaultCrashHandler.getInstance());
 
         //noinspection UseOfSystemOutOrSystemErr
@@ -292,7 +281,7 @@ public final class IllaClient {
      *
      * @return the configuration handler
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static Config getConfig() {
         return Objects.requireNonNull(INSTANCE.config, "Config is not ready yet");
@@ -305,8 +294,8 @@ public final class IllaClient {
      * @param name the name of the file that shall be append to the folder
      * @return the full path to a file
      */
-    @Nonnull
-    public static Path getFile(@Nonnull String name) {
+    @NotNull
+    public static Path getFile(@NotNull String name) {
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         return userDir.resolve(name);
     }
@@ -317,7 +306,7 @@ public final class IllaClient {
     public void quitGame() {
         try {
             World.getNet().sendCommand(new LogoutCmd());
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             // the NET was not launched up yet. This does not really matter.
         }
     }
@@ -327,7 +316,7 @@ public final class IllaClient {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static IllaClient getInstance() {
         return INSTANCE;
     }
@@ -355,7 +344,7 @@ public final class IllaClient {
      *
      * @param message the message that shall be displayed
      */
-    public static void sendDisconnectEvent(@Nonnull String message, boolean tryToReconnect) {
+    public static void sendDisconnectEvent(@NotNull String message, boolean tryToReconnect) {
         LOGGER.warn("Disconnect received: {}", message);
         EventBus.INSTANCE.post(new ConnectionLostEvent(message, tryToReconnect));
     }
@@ -374,7 +363,7 @@ public final class IllaClient {
      *
      * @return the selected server
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Servers getUsedServer() {
         return usedServer;
@@ -385,7 +374,7 @@ public final class IllaClient {
      *
      * @param server the server that is used to connect with
      */
-    public void setUsedServer(@Nonnull Servers server) {
+    public void setUsedServer(@NotNull Servers server) {
         usedServer = server;
     }
 
@@ -429,7 +418,7 @@ public final class IllaClient {
                     cfg.set("windowHeight", res.getHeight());
                     cfg.set("windowWidth", res.getWidth());
                 }
-            } catch (@Nonnull EngineException | IllegalArgumentException e) {
+            } catch (@NotNull EngineException | IllegalArgumentException e) {
                 LOGGER.error("Failed to apply graphic mode: {}", resolutionString);
             }
         }*/

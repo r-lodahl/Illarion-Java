@@ -21,26 +21,25 @@ import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import illarion.client.util.translation.TranslationDirection;
 import illarion.client.util.translation.TranslationProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class MyMemoryProvider implements TranslationProvider {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MyMemoryProvider.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Nullable
     private final URL serviceUrl;
@@ -60,17 +59,17 @@ public class MyMemoryProvider implements TranslationProvider {
 
     @Nullable
     @Override
-    public String getTranslation(@Nonnull String original, @Nonnull TranslationDirection direction) {
+    public String getTranslation(@NotNull String original, @NotNull TranslationDirection direction) {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append(serviceUrl).append('?');
         try {
-            queryBuilder.append("q=").append(URLEncoder.encode(original, "UTF-8"));
+            queryBuilder.append("q=").append(URLEncoder.encode(original, StandardCharsets.UTF_8));
             queryBuilder.append('&').append("langpair=").append(getLangPair(direction));
             queryBuilder.append('&').append("of=json");
-            queryBuilder.append('&').append("de=").append(URLEncoder.encode("webmaster@illarion.org", "UTF-8"));
+            queryBuilder.append('&').append("de=").append(URLEncoder.encode("webmaster@illarion.org", StandardCharsets.UTF_8));
 
             URL queryUrl = new URL(queryBuilder.toString());
-            try (JsonReader rd = new JsonReader(new InputStreamReader(queryUrl.openStream(), Charset.forName("UTF-8")))) {
+            try (JsonReader rd = new JsonReader(new InputStreamReader(queryUrl.openStream(), StandardCharsets.UTF_8))) {
                 Gson gson = new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd HH:mm:ss")
                         .create();
@@ -84,8 +83,6 @@ public class MyMemoryProvider implements TranslationProvider {
             } catch (JsonParseException e) {
                 log.error("Unexpected error while decoding json", e);
             }
-        } catch (UnsupportedEncodingException e) {
-            log.error("Error while encoding the text for transfer to the MyMemory provider.", e);
         } catch (MalformedURLException e) {
             log.error("Generated URL for the query to MyMemory appears to have a invalid format.", e);
         }
@@ -97,9 +94,9 @@ public class MyMemoryProvider implements TranslationProvider {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    private static String getLangPair(@Nonnull TranslationDirection direction) {
+    private static String getLangPair(@NotNull TranslationDirection direction) {
         switch (direction) {
             case GermanToEnglish:
                 return "de|en";

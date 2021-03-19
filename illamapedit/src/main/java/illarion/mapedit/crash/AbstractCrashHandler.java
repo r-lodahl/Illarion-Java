@@ -19,10 +19,10 @@ import illarion.common.bug.CrashData;
 import illarion.common.bug.CrashReporter;
 import illarion.mapedit.Lang;
 import illarion.mapedit.MapEditor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
@@ -37,7 +37,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrashHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The time since the last crash in milliseconds that need to have passed to
@@ -66,7 +66,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      * @param e the error message it crashed with
      */
     @Override
-    public final void uncaughtException(@Nonnull Thread t, @Nonnull Throwable e) {
+    public final void uncaughtException(@NotNull Thread t, @NotNull Throwable e) {
         LOGGER.error("Fetched uncaught exception: {}", getCrashMessage(), e);
         if (currentlyCrashing) {
             return;
@@ -102,7 +102,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      *
      * @return the error message for this problem
      */
-    @Nonnull
+    @NotNull
     protected abstract String getCrashMessage();
 
     /**
@@ -118,7 +118,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      * @param t the thread that crashed
      * @param e the reason of the crash
      */
-    private void reportError(@Nonnull Thread t, @Nonnull Throwable e) {
+    private void reportError(@NotNull Thread t, @NotNull Throwable e) {
         CrashReporter.getInstance()
                 .reportCrash(new CrashData(MapEditor.APPLICATION, "Mapeditor", getCrashMessage(), t, e));
     }

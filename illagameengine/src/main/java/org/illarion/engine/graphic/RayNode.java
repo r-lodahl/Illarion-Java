@@ -15,10 +15,11 @@
  */
 package org.illarion.engine.graphic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,13 +33,13 @@ final class RayNode {
     /**
      * The error and debug logger of the client.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(RayNode.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The list of children this node has.
      */
-    @Nonnull
+    @NotNull
     private final Collection<RayNode> children;
 
     /**
@@ -102,7 +103,7 @@ final class RayNode {
      * @param index the current position on the ray
      * @param size real length of the ray
      */
-    void addRay(@Nonnull int[] xPath, @Nonnull int[] yPath, int len, int index, double size) {
+    void addRay(@NotNull int[] xPath, @NotNull int[] yPath, int len, int index, double size) {
         if (index < 0) {
             throw new IllegalArgumentException("The index has to be positive.");
         }
@@ -154,7 +155,7 @@ final class RayNode {
      * @param globalIntensity global intensity modificator that reduces the default intensity of the light by the
      * glowing intensity of the light in order to make the light generally weaker
      */
-    public void apply(@Nonnull LightSource shadowMap, float globalIntensity) {
+    public void apply(@NotNull LightSource shadowMap, float globalIntensity) {
         int blocked = shadowMap.setIntensity(posX, posY, globalIntensity * intensity);
         float newIntensity = globalIntensity;
         // never block light source itself, remove when blocking is variable
@@ -183,7 +184,7 @@ final class RayNode {
      *
      * @return the string representation of this ray node
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

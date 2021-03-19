@@ -16,9 +16,9 @@
 package illarion.common.gui;
 
 import illarion.common.util.PoolThreadFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -33,7 +33,7 @@ public abstract class AbstractMultiActionHelper {
     /**
      * The executor service that takes care for handling the multi action events.
      */
-    @Nonnull
+    @NotNull
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1,
             new PoolThreadFactory("MultiActionHelper", true));
 
@@ -57,7 +57,7 @@ public abstract class AbstractMultiActionHelper {
     /**
      * The time unit for the timeout.
      */
-    @Nonnull
+    @NotNull
     private final TimeUnit timeoutUnits;
 
     /**
@@ -92,7 +92,7 @@ public abstract class AbstractMultiActionHelper {
      * @param unit    the unit of the timeout
      * @param limit   the amount of clicks allowed at the maximum
      */
-    protected AbstractMultiActionHelper(long timeout, @Nonnull TimeUnit unit, int limit) {
+    protected AbstractMultiActionHelper(long timeout, @NotNull TimeUnit unit, int limit) {
         this.timeout = timeout;
         timeoutUnits = unit;
         countLimit = limit;

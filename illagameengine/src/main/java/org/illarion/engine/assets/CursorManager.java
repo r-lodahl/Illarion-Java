@@ -16,9 +16,9 @@
 package org.illarion.engine.assets;
 
 import org.illarion.engine.MouseCursor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interfaces defines the mouse cursor manager. Its able to load and store the mouse cursors.
@@ -37,5 +37,5 @@ public interface CursorManager {
      * @return the mouse cursor or {@code null} in case loading the required mouse cursor is not possible
      */
     @Nullable
-    MouseCursor getCursor(@Nonnull String ref, int hotspotX, int hotspotY);
+    MouseCursor getCursor(@NotNull String ref, int hotspotX, int hotspotY);
 }

@@ -28,9 +28,9 @@ import de.lessvoid.nifty.tools.SizeValue;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.illarion.nifty.controls.DialogMessage;
 import org.illarion.nifty.controls.DialogMessageConfirmedEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the main control class for message dialogs.
@@ -74,7 +74,7 @@ public class DialogMessageControl extends WindowControl
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         niftyInstance = nifty;
         currentScreen = screen;
@@ -107,14 +107,14 @@ public class DialogMessageControl extends WindowControl
     }
 
     @Override
-    public void setText(@Nonnull String text) {
+    public void setText(@NotNull String text) {
         Label label = getContent().findNiftyControl("#text", Label.class);
         label.getElement().getRenderer(TextRenderer.class).setLineWrapping(true);
         label.setText(text);
     }
 
     @Override
-    public void setButton(@Nonnull String text) {
+    public void setButton(@NotNull String text) {
         Button button = getContent().findNiftyControl("#button", Button.class);
         button.setText(text);
         niftyInstance.subscribe(currentScreen, button.getId(), ButtonClickedEvent.class, this);

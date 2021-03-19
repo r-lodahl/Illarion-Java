@@ -16,13 +16,13 @@
 package illarion.client.util;
 
 import illarion.client.gui.events.TooltipsRemovedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.EventSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.Objects;
@@ -34,13 +34,13 @@ import java.util.Objects;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class LookAtTracker implements EventSubscriber<TooltipsRemovedEvent> {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LookAtTracker.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final LookAtTracker INSTANCE = new LookAtTracker();
 
     /**
@@ -73,7 +73,7 @@ public final class LookAtTracker implements EventSubscriber<TooltipsRemovedEvent
      * @param testObject the object to test
      * @return {@code true} in case this object is the same object last set with {@link #setLookAtObject(Object)}
      */
-    public static boolean isLookAtObject(@Nonnull Object testObject) {
+    public static boolean isLookAtObject(@NotNull Object testObject) {
         Reference<Object> reference = INSTANCE.lookAtObject;
         if ((reference != null) && Objects.equals(reference.get(), testObject)) {
             log.debug("Test for look at object {} successful.", testObject);
@@ -85,7 +85,7 @@ public final class LookAtTracker implements EventSubscriber<TooltipsRemovedEvent
     }
 
     @Override
-    public void onEvent(@Nonnull TooltipsRemovedEvent event) {
+    public void onEvent(@NotNull TooltipsRemovedEvent event) {
         setLookAtObject(null);
     }
 }

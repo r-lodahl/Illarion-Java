@@ -1,9 +1,9 @@
 package illarion.common.bug;
 
 import biz.futureware.mantis.rpc.soap.client.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.rpc.ServiceException;
 import java.math.BigInteger;
 import java.rmi.RemoteException;
@@ -16,18 +16,18 @@ import java.util.Collection;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class MantisConnector {
-    @Nonnull
+    @NotNull
     private static final String USERNAME = "Java Reporting System";
-    @Nonnull
+    @NotNull
     private static final String PASSWORD = "dA23MvKT1KDm4k0bQmMS";
 
-    @Nonnull
+    @NotNull
     static final String STANDARD_FILTER = "Automatic Error Reports";
 
-    @Nonnull
+    @NotNull
     private static final String SOAP_CONNECTOR = "https://illarion.org/mantis/api/soap/mantisconnect.php";
 
-    @Nonnull
+    @NotNull
     private final MantisConnectPortType connectPortType;
 
     MantisConnector() throws ServiceException {
@@ -36,13 +36,13 @@ class MantisConnector {
         connectPortType = locator.getMantisConnectPort();
     }
 
-    @Nonnull
+    @NotNull
     Collection<ProjectData> getProjects() throws RemoteException {
         return Arrays.asList(connectPortType.mc_projects_get_user_accessible(USERNAME, PASSWORD));
     }
 
     @Nullable
-    ProjectData getProject(@Nonnull String projectName) throws RemoteException {
+    ProjectData getProject(@NotNull String projectName) throws RemoteException {
         Collection<ProjectData> projects = getProjects();
 
         for (ProjectData project : projects) {
@@ -53,18 +53,18 @@ class MantisConnector {
         return null;
     }
 
-    @Nonnull
-    Collection<FilterData> getFilters(@Nonnull ProjectData project) throws RemoteException {
+    @NotNull
+    Collection<FilterData> getFilters(@NotNull ProjectData project) throws RemoteException {
         return Arrays.asList(connectPortType.mc_filter_get(USERNAME, PASSWORD, project.getId()));
     }
 
     @Nullable
-    FilterData getFilter(@Nonnull ProjectData project) throws RemoteException {
+    FilterData getFilter(@NotNull ProjectData project) throws RemoteException {
         return getFilter(project, STANDARD_FILTER);
     }
 
     @Nullable
-    FilterData getFilter(@Nonnull ProjectData project, @Nonnull String filterName) throws RemoteException {
+    FilterData getFilter(@NotNull ProjectData project, @NotNull String filterName) throws RemoteException {
         Collection<FilterData> filters = getFilters(project);
 
         for (FilterData filter : filters) {
@@ -75,15 +75,15 @@ class MantisConnector {
         return null;
     }
 
-    @Nonnull
-    Collection<IssueHeaderData> getIssueHeaders(@Nonnull ProjectData project) throws RemoteException {
+    @NotNull
+    Collection<IssueHeaderData> getIssueHeaders(@NotNull ProjectData project) throws RemoteException {
         return Arrays.asList(
                 connectPortType.mc_project_get_issue_headers(USERNAME, PASSWORD, project.getId(),
                         BigInteger.ZERO, BigInteger.valueOf(-1)));
     }
 
-    @Nonnull
-    Collection<IssueHeaderData> getIssueHeaders(@Nonnull ProjectData project,
+    @NotNull
+    Collection<IssueHeaderData> getIssueHeaders(@NotNull ProjectData project,
                                                 @Nullable FilterData filter) throws RemoteException {
         if (filter == null) {
             return getIssueHeaders(project);
@@ -93,22 +93,22 @@ class MantisConnector {
                         BigInteger.ZERO, BigInteger.valueOf(-1)));
     }
 
-    @Nonnull
-    IssueData getIssue(@Nonnull IssueHeaderData headerData) throws RemoteException {
+    @NotNull
+    IssueData getIssue(@NotNull IssueHeaderData headerData) throws RemoteException {
         return connectPortType.mc_issue_get(USERNAME, PASSWORD, headerData.getId());
     }
 
-    void addNote(@Nonnull IssueData issue, @Nonnull String noteText) throws RemoteException {
+    void addNote(@NotNull IssueData issue, @NotNull String noteText) throws RemoteException {
         IssueNoteData note = new IssueNoteData();
         note.setText(noteText);
         addNote(issue, note);
     }
 
-    void addNote(@Nonnull IssueData issue, @Nonnull IssueNoteData note) throws RemoteException {
+    void addNote(@NotNull IssueData issue, @NotNull IssueNoteData note) throws RemoteException {
         connectPortType.mc_issue_note_add(USERNAME, PASSWORD, issue.getId(), note);
     }
 
-    BigInteger addIssue(@Nonnull ProjectData project, @Nonnull IssueData issue) throws RemoteException {
+    BigInteger addIssue(@NotNull ProjectData project, @NotNull IssueData issue) throws RemoteException {
         issue.setProject(new ObjectRef(project.getId(), project.getName()));
 
         BigInteger id = connectPortType.mc_issue_add(USERNAME, PASSWORD, issue);
@@ -116,7 +116,7 @@ class MantisConnector {
         return id;
     }
 
-    void addRelation(@Nonnull IssueData issue1, @Nonnull IssueData issue2) throws RemoteException {
+    void addRelation(@NotNull IssueData issue1, @NotNull IssueData issue2) throws RemoteException {
         RelationshipData relation = new RelationshipData();
         relation.setTarget_id(issue2.getId());
         relation.setType(new ObjectRef(BigInteger.valueOf(1L), null));

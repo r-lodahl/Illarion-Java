@@ -17,15 +17,15 @@ package org.illarion.engine.backend.shared;
 
 import illarion.common.util.PoolThreadFactory;
 import illarion.common.util.ProgressMonitor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.TextureManager;
 import org.illarion.engine.graphic.Texture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -38,36 +38,36 @@ import java.util.concurrent.Executors;
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
 public abstract class AbstractTextureManager<T> implements TextureManager {
-    private static final Logger log = LoggerFactory.getLogger(AbstractTextureManager.class);
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * These are the progress monitors for each directory.
      */
-    @Nonnull
+    @NotNull
     private final List<ProgressMonitor> directoryMonitors;
 
     /**
      * The list of known root directories. This list is used to locate
      */
-    @Nonnull
+    @NotNull
     private final List<String> rootDirectories;
 
     /**
      * This stores the values if a directory is done loading or currently loading.
      */
-    @Nonnull
+    @NotNull
     private final List<Boolean> directoriesLoaded;
 
     /**
      * The textures that are known to this manager.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, Texture> textures;
 
     /**
      * This is the progress monitor that can be used to keep track of the texture atlas loading.
      */
-    @Nonnull
+    @NotNull
     private final ProgressMonitor progressMonitor;
 
     /**
@@ -162,26 +162,26 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
         } while ((System.currentTimeMillis() - startTime) < 100);
     }
 
-    void addLoadingTask(@Nonnull TextureAtlasTask task) {
+    void addLoadingTask(@NotNull TextureAtlasTask task) {
         if (loadingTasks != null) {
             loadingTasks.add(task);
         }
     }
 
-    void addUpdateTask(@Nonnull Runnable task) {
+    void addUpdateTask(@NotNull Runnable task) {
         if (updateTasks != null) {
             updateTasks.add(task);
         }
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public ProgressMonitor getProgress() {
         return progressMonitor;
     }
 
-    @Nonnull
-    private static String cleanTextureName(@Nonnull String name) {
+    @NotNull
+    private static String cleanTextureName(@NotNull String name) {
         if (name.endsWith(".png")) {
             return name.substring(0, name.length() - 4);
         }
@@ -195,8 +195,8 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
      * @param name the name of the new path element
      * @return the full path, properly merged
      */
-    @Nonnull
-    private static String mergePath(@Nonnull String directory, @Nonnull String name) {
+    @NotNull
+    private static String mergePath(@NotNull String directory, @NotNull String name) {
         if (directory.endsWith("/")) {
             return directory + name;
         }
@@ -212,10 +212,10 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
      * @return the texture data
      */
     @Nullable
-    protected abstract T loadTextureData(@Nonnull String textureName);
+    protected abstract T loadTextureData(@NotNull String textureName);
 
     @Override
-    public final void addTextureDirectory(@Nonnull String directory) {
+    public final void addTextureDirectory(@NotNull String directory) {
         rootDirectories.add(directory);
         ProgressMonitor dirProgressMonitor = new ProgressMonitor();
         directoryMonitors.add(dirProgressMonitor);
@@ -230,7 +230,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
      * @return the index of the root directory or {@code -1} in case the directory could not be assigned to a root
      * directory
      */
-    private int getDirectoryIndex(@Nonnull String directory) {
+    private int getDirectoryIndex(@NotNull String directory) {
         if (directory.endsWith("/")) {
             return rootDirectories.indexOf(directory.substring(0, directory.length() - 1));
         }
@@ -243,7 +243,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
      * @param name the name of the file
      * @return the index of the directory or {@code -1} in case there is not matching directory
      */
-    protected int getFileDirectoryIndex(@Nonnull String name) {
+    protected int getFileDirectoryIndex(@NotNull String name) {
         for (int i = 0; i < rootDirectories.size(); i++) {
             if (name.startsWith(rootDirectories.get(i))) {
                 return i;
@@ -254,7 +254,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
 
     @Nullable
     @Override
-    public Texture getTexture(@Nonnull String name) {
+    public Texture getTexture(@NotNull String name) {
         int directoryIndex = getFileDirectoryIndex(name);
         if (directoryIndex >= 0) {
             return getTexture(directoryIndex, name);
@@ -263,7 +263,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
     }
 
     @Nullable
-    public Texture getTexture(int directoryIndex, @Nonnull String name) {
+    public Texture getTexture(int directoryIndex, @NotNull String name) {
         if (directoryIndex == -1) {
             return null;
         }
@@ -337,7 +337,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
 
     @Nullable
     @Override
-    public Texture getTexture(@Nonnull String directory, @Nonnull String name) {
+    public Texture getTexture(@NotNull String directory, @NotNull String name) {
         return getTexture(getDirectoryIndex(directory), mergePath(directory, name));
     }
 
@@ -360,7 +360,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
             }
         }
 
-        for (@Nonnull ProgressMonitor dirMonitor : directoryMonitors) {
+        for (@NotNull ProgressMonitor dirMonitor : directoryMonitors) {
             dirMonitor.setProgress(1.f);
         }
 
@@ -379,9 +379,9 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
      * @return the texture loaded or {@code null} in case loading is impossible
      */
     @Nullable
-    protected abstract Texture loadTexture(@Nonnull String resource, @Nonnull T preLoadData);
+    protected abstract Texture loadTexture(@NotNull String resource, @NotNull T preLoadData);
 
-    protected void addTexture(@Nonnull String textureName, @Nonnull Texture texture) {
+    protected void addTexture(@NotNull String textureName, @NotNull Texture texture) {
         textures.put(textureName, texture);
     }
 }

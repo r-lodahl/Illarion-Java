@@ -18,8 +18,8 @@ package illarion.mapedit.tools.panel.components;
 import illarion.mapedit.events.ItemInspectorSelectedEvent;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,9 +27,9 @@ import java.awt.*;
  * @author Fredrik K
  */
 public class ItemDataPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final ItemDataFields dataFields;
-    @Nonnull
+    @NotNull
     private final ItemDataTable dataTable;
 
     public ItemDataPanel() {
@@ -49,7 +49,7 @@ public class ItemDataPanel extends JPanel {
     }
 
     @EventSubscriber
-    public void onItemInspectorSelected(@Nonnull ItemInspectorSelectedEvent e) {
+    public void onItemInspectorSelected(@NotNull ItemInspectorSelectedEvent e) {
         dataTable.setDataList(e.getItem());
         dataFields.setData(e.getItem());
     }

@@ -24,9 +24,6 @@ mainClassName = 'illarion.easyquest.gui.MainFrame'
 
 dependencies {
     implementation project(':common')
-    api group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
-    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: project.ext.slf4jVersion
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logbackVersion
     implementation group: 'org.bushe', name: 'eventbus', version: '1.4'
     implementation group: 'com.github.insubstantial', name: 'substance', version: project.ext.insubstantialVersion
     implementation group: 'com.github.insubstantial', name: 'substance-flamingo', version: project.ext.insubstantialVersion

@@ -20,9 +20,7 @@ import illarion.client.world.CharMovementMode;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.CharacterId;
 import illarion.common.types.Direction;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Request a move or a push ({@link CommandList#CMD_MOVE}).
@@ -30,7 +28,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class MoveCmd extends AbstractCommand {
     /**
      * Byte flag for a simple move.
@@ -50,13 +47,13 @@ public final class MoveCmd extends AbstractCommand {
     /**
      * The character ID of the char that shall move.
      */
-    @Nonnull
+    @NotNull
     private final CharacterId charId;
 
     /**
      * The direction the character moves to.
      */
-    @Nonnull
+    @NotNull
     private final Direction direction;
 
     /**
@@ -68,7 +65,7 @@ public final class MoveCmd extends AbstractCommand {
     /**
      * Default constructor for the move command.
      */
-    public MoveCmd(@Nonnull CharacterId charId, @Nonnull CharMovementMode mode, @Nonnull Direction direction) {
+    public MoveCmd(@NotNull CharacterId charId, @NotNull CharMovementMode mode, @NotNull Direction direction) {
         super(CommandList.CMD_MOVE);
 
         this.charId = charId;
@@ -93,7 +90,7 @@ public final class MoveCmd extends AbstractCommand {
      *
      * @return the data of this command as string
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(charId + " Direction: " + direction + " Mode: " + mode);
@@ -106,7 +103,7 @@ public final class MoveCmd extends AbstractCommand {
      * communication system
      */
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         charId.encode(writer);
         direction.encode(writer);
         writer.writeByte(mode);

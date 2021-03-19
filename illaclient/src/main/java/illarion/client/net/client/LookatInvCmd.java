@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Looking at a inventory slot ({@link CommandList#CMD_LOOKAT_INV}).
@@ -27,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class LookatInvCmd extends AbstractCommand {
     /**
      * The inventory slot we are looking at.
@@ -46,7 +43,7 @@ public final class LookatInvCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(slot);
     }
 
@@ -55,7 +52,7 @@ public final class LookatInvCmd extends AbstractCommand {
      *
      * @return the data of this command as string
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Slot: " + slot);

@@ -15,22 +15,18 @@
  */
 package org.illarion.nifty.controls;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired in case the player selected a entry of the select dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class DialogSelectSelectEvent extends DialogEvent {
     /**
      * The item that was bought.
      */
-    @Nonnull
+    @NotNull
     private final SelectListEntry item;
 
     /**
@@ -45,7 +41,7 @@ public final class DialogSelectSelectEvent extends DialogEvent {
      * @param buyItem the item that was selected
      * @param buyIndex the index of the item that was selected
      */
-    public DialogSelectSelectEvent(int id, @Nonnull SelectListEntry buyItem, int buyIndex) {
+    public DialogSelectSelectEvent(int id, @NotNull SelectListEntry buyItem, int buyIndex) {
         super(id);
         item = buyItem;
         itemIndex = buyIndex;
@@ -56,7 +52,7 @@ public final class DialogSelectSelectEvent extends DialogEvent {
      *
      * @return the item that is selected
      */
-    @Nonnull
+    @NotNull
     public SelectListEntry getItem() {
         return item;
     }

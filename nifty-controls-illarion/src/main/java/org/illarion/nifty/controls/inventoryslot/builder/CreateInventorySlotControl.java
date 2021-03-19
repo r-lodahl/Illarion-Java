@@ -23,9 +23,9 @@ import de.lessvoid.nifty.loaderv2.types.ControlType;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.screen.Screen;
 import org.illarion.nifty.controls.InventorySlot;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class CreateInventorySlotControl extends ControlAttributes {
     /**
@@ -46,7 +46,7 @@ public class CreateInventorySlotControl extends ControlAttributes {
      *
      * @param id the ID of the new control
      */
-    public CreateInventorySlotControl(@Nonnull String id) {
+    public CreateInventorySlotControl(@NotNull String id) {
         setId(id);
         setName(NAME);
     }
@@ -61,7 +61,7 @@ public class CreateInventorySlotControl extends ControlAttributes {
      */
     @Nullable
     public InventorySlot create(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element parent) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element parent) {
         return nifty.addControl(screen, parent, getStandardControl()).getNiftyControl(InventorySlot.class);
     }
 
@@ -70,7 +70,7 @@ public class CreateInventorySlotControl extends ControlAttributes {
      *
      * @return the element type of the slot
      */
-    @Nonnull
+    @NotNull
     @Override
     public ElementType createType() {
         return new ControlType(getAttributes());

@@ -15,11 +15,12 @@
  */
 package illarion.download.launcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,8 +43,8 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
     /**
      * The logger instance for this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MacOsXJavaExecutableIterable.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * This is the iterator implementation that is created to walk over the possible locations for java on a Mac OS
@@ -70,7 +71,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
          *
          * @param source the data source
          */
-        public MacOsXJavaExecutableIterator(@Nonnull MacOsXJavaExecutableIterable source) {
+        public MacOsXJavaExecutableIterator(@NotNull MacOsXJavaExecutableIterable source) {
             super(source);
             this.source = source;
         }
@@ -92,7 +93,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
             return false;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public Path next() {
             if (super.hasNext()) {
@@ -164,7 +165,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
                 javaHomeDirectory = extendHomeToExecutable(resultPath);
                 return resultPath;
             }
-        } catch (@Nonnull InterruptedException | IOException e) {
+        } catch (@NotNull InterruptedException | IOException e) {
             LOGGER.error("Error fetching java home directory.", e);
         }
         return null;
@@ -179,7 +180,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
      * @return the path to the java executable or {@code null} in case the search failed
      */
     @Nullable
-    private static Path extendHomeToExecutable(@Nonnull Path home) {
+    private static Path extendHomeToExecutable(@NotNull Path home) {
         Path defaultPath = home.resolve("bin").resolve("java");
         if (Files.isExecutable(defaultPath)) {
             return defaultPath;
@@ -188,9 +189,9 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
         try {
             Path[] resultFile = new Path[1];
             Files.walkFileTree(home, new SimpleFileVisitor<Path>() {
-                @Nonnull
+                @NotNull
                 @Override
-                public FileVisitResult visitFile(@Nonnull Path file, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(@NotNull Path file, BasicFileAttributes attrs) throws IOException {
                     if ("java".equals(file.getFileName().toString())) {
                         resultFile[0] = file;
                         return FileVisitResult.TERMINATE;
@@ -211,7 +212,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
      *
      * @return the list of java installment candidates
      */
-    @Nonnull
+    @NotNull
     private static List<Path> getLibraryDirectoryCandidates() {
         Stream<Path> possiblePaths = Stream.empty();
         try {

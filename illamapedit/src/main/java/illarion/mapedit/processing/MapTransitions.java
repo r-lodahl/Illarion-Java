@@ -26,8 +26,8 @@ import illarion.mapedit.data.MapTile;
 import illarion.mapedit.data.MapTile.MapTileFactory;
 import illarion.mapedit.resource.Overlay;
 import illarion.mapedit.resource.loaders.OverlayLoader;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.EnumMap;
 import java.util.Map.Entry;
 
@@ -52,7 +52,7 @@ public final class MapTransitions {
      * Helper list that stores the references to the tiles around the checked
      * tile.
      */
-    @Nonnull
+    @NotNull
     private final java.util.Map<Direction, MapTile> checkTiles;
 
     /**
@@ -240,7 +240,7 @@ public final class MapTransitions {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static MapTransitions getInstance() {
         return INSTANCE;
     }
@@ -250,7 +250,7 @@ public final class MapTransitions {
      *
      * @param loc the location of the tile to check
      */
-    public void checkTile(@Nonnull Map map, @Nonnull ServerCoordinate loc/*, final GroupAction history*/) {
+    public void checkTile(@NotNull Map map, @NotNull ServerCoordinate loc/*, final GroupAction history*/) {
         placeTransition(map, loc/*, history*/);
     }
 
@@ -260,8 +260,8 @@ public final class MapTransitions {
      * @param loc the location to check
      */
     public void checkTileAndSurround(
-            @Nonnull Map map,
-            @Nonnull ServerCoordinate loc/*, final GroupAction history*/) {
+            @NotNull Map map,
+            @NotNull ServerCoordinate loc/*, final GroupAction history*/) {
         checkTile(map, loc);
         //noinspection ConstantConditions
         for (Direction dir : Direction.values()) {
@@ -275,7 +275,7 @@ public final class MapTransitions {
      *
      * @param map
      */
-    public void checkMap(@Nonnull Map map) {
+    public void checkMap(@NotNull Map map) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 checkTile(map, new ServerCoordinate(x, y, 0));
@@ -412,7 +412,7 @@ public final class MapTransitions {
      *
      * @param loc the location where a transition could be placed
      */
-    private void placeTransition(@Nonnull Map map, @Nonnull ServerCoordinate loc/*, final GroupAction history*/) {
+    private void placeTransition(@NotNull Map map, @NotNull ServerCoordinate loc/*, final GroupAction history*/) {
         MapTile centerTile = map.getTileAt(loc);
         if (centerTile == null) {
             return;
@@ -451,7 +451,7 @@ public final class MapTransitions {
      *
      * @param centerLoc the center location
      */
-    private void populateTiles(@Nonnull Map map, @Nonnull ServerCoordinate centerLoc) {
+    private void populateTiles(@NotNull Map map, @NotNull ServerCoordinate centerLoc) {
         //noinspection ConstantConditions
         for (Direction dir : Direction.values()) {
             MapTile tile = map.getTileAt(centerLoc.getX() + dir.getDirectionVectorX(),

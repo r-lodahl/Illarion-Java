@@ -17,9 +17,9 @@ package illarion.client.world.items;
 
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class represents a item container that is displayed currently by the character.
@@ -30,7 +30,7 @@ public final class ItemContainer {
     /**
      * This array stores the container slots and their items
      */
-    @Nonnull
+    @NotNull
     private final ContainerSlot[] slots;
 
     /**
@@ -38,10 +38,10 @@ public final class ItemContainer {
      */
     private final int containerId;
 
-    @Nonnull
+    @NotNull
     private final String description;
 
-    @Nonnull
+    @NotNull
     private final String title;
 
     /**
@@ -52,7 +52,7 @@ public final class ItemContainer {
      * @param description the description of the container
      * @param slotCount the amount of slots this container has
      */
-    public ItemContainer(int id, @Nonnull String title, @Nonnull String description, int slotCount) {
+    public ItemContainer(int id, @NotNull String title, @NotNull String description, int slotCount) {
         containerId = id;
         this.title = title;
         this.description = description;
@@ -69,7 +69,7 @@ public final class ItemContainer {
      * @return the slot that is assigned to the requested id or {@code null} in case no item is applied to this slot
      * @throws IndexOutOfBoundsException in case the {@code slotId} parameter is too small or too large
      */
-    @Nonnull
+    @NotNull
     public ContainerSlot getSlot(int slotId) {
         return slots[slotId];
     }
@@ -111,12 +111,12 @@ public final class ItemContainer {
         }
     }
 
-    @Nonnull
+    @NotNull
     public String getDescription() {
         return description;
     }
 
-    @Nonnull
+    @NotNull
     public String getTitle() {
         return title;
     }

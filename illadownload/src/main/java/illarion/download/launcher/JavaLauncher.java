@@ -17,11 +17,11 @@ package illarion.download.launcher;
 
 import illarion.common.config.Config;
 import illarion.common.util.DirectoryManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -40,8 +40,8 @@ public final class JavaLauncher {
     /**
      * This instance of the logger takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(JavaLauncher.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This text contains the error data in case the launch failed.
@@ -50,13 +50,13 @@ public final class JavaLauncher {
     private String errorData;
 
     private final boolean snapshot;
-    @Nonnull
+    @NotNull
     private final Config cfg;
 
     /**
      * Construct a new launcher and set the classpath and the class to launch.
      */
-    public JavaLauncher(@Nonnull Config cfg, boolean snapshot) {
+    public JavaLauncher(@NotNull Config cfg, boolean snapshot) {
         this.snapshot = snapshot;
         this.cfg = cfg;
     }
@@ -66,7 +66,7 @@ public final class JavaLauncher {
      *
      * @return {@code true} in case launching the application was successful
      */
-    public boolean launch(@Nonnull Collection<File> classpath, @Nonnull String startupClass) {
+    public boolean launch(@NotNull Collection<File> classpath, @NotNull String startupClass) {
         String classPathString = buildClassPathString(classpath);
 
         Iterable<Path> executablePaths;
@@ -102,7 +102,7 @@ public final class JavaLauncher {
      * @param executable the path to the executable
      * @return {@code true} in case java meets the required specifications
      */
-    private static boolean isJavaExecutableWorking(@Nonnull Path executable) {
+    private static boolean isJavaExecutableWorking(@NotNull Path executable) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(executable.toString(), "-version");
             processBuilder.redirectErrorStream(true);
@@ -143,8 +143,8 @@ public final class JavaLauncher {
      *
      * @return the string that represents the class path
      */
-    @Nonnull
-    private static String buildClassPathString(@Nonnull Collection<File> classpath) {
+    @NotNull
+    private static String buildClassPathString(@NotNull Collection<File> classpath) {
         if (classpath.isEmpty()) {
             return "";
         }
@@ -160,8 +160,8 @@ public final class JavaLauncher {
      * @param orgPath the original plain path
      * @return the escaped path
      */
-    @Nonnull
-    private static String escapePath(@Nonnull String orgPath) {
+    @NotNull
+    private static String escapePath(@NotNull String orgPath) {
         if (OSDetection.isWindows()) {
             if (orgPath.contains(" ")) {
                 return '"' + orgPath + '"';
@@ -177,7 +177,7 @@ public final class JavaLauncher {
      *
      * @param callList the call list to print
      */
-    private static void printCallList(@Nonnull Collection<String> callList) {
+    private static void printCallList(@NotNull Collection<String> callList) {
         if (log.isDebugEnabled()) {
             String prefix = "Calling: " + System.getProperty("line.separator");
             log.debug(callList.stream().collect(Collectors.joining(" ", prefix, "")));
@@ -190,7 +190,7 @@ public final class JavaLauncher {
      * @param callList launch the call list
      * @return {@code true} in case the launch was successful
      */
-    private boolean launchCallList(@Nonnull List<String> callList) {
+    private boolean launchCallList(@NotNull List<String> callList) {
         try {
             ProcessBuilder pBuilder = new ProcessBuilder(callList);
 
@@ -234,7 +234,7 @@ public final class JavaLauncher {
                     outputBuffer.append('\n');
                 }
             }
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             StringWriter sWriter = new StringWriter();
             PrintWriter writer = new PrintWriter(sWriter);
             e.printStackTrace(writer);

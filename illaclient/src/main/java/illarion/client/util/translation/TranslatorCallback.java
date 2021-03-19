@@ -15,7 +15,8 @@
  */
 package illarion.client.util.translation;
 
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This interface is used to describe a callback that is called by the translator once a translation is done.

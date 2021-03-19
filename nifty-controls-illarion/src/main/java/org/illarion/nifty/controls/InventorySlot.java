@@ -21,9 +21,9 @@ package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.render.NiftyImage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The interface to control a single slot of the inventory.
@@ -80,7 +80,7 @@ public interface InventorySlot extends NiftyControl {
      *
      * @param text the label text
      */
-    void setLabelText(@Nonnull String text);
+    void setLabelText(@NotNull String text);
 
     /**
      * Send the draggable object back to this slot.
@@ -103,5 +103,5 @@ public interface InventorySlot extends NiftyControl {
      *
      * @param level the overlay level to show
      */
-    void showMerchantOverlay(@Nonnull MerchantBuyLevel level);
+    void showMerchantOverlay(@NotNull MerchantBuyLevel level);
 }

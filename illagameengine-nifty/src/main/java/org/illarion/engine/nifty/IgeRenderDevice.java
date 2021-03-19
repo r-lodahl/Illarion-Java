@@ -28,9 +28,9 @@ import org.illarion.engine.graphic.BlendingMode;
 import org.illarion.engine.graphic.Font;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -42,35 +42,35 @@ public class IgeRenderDevice implements RenderDevice {
     /**
      * The binding to the graphics backend
      */
-    @Nonnull
+    @NotNull
     private final BackendBinding binding;
 
     /**
      * A instance of the color class for temporary use. This class is used to transfer the color values from
      * Nifty-GUI color instances to instances of the game engine.
      */
-    @Nonnull
+    @NotNull
     private final org.illarion.engine.graphic.Color tempColor1;
 
     /**
      * A instance of the color class for temporary use. This class is used to transfer the color values from
      * Nifty-GUI color instances to instances of the game engine.
      */
-    @Nonnull
+    @NotNull
     private final org.illarion.engine.graphic.Color tempColor2;
 
     /**
      * A instance of the color class for temporary use. This class is used to transfer the color values from
      * Nifty-GUI color instances to instances of the game engine.
      */
-    @Nonnull
+    @NotNull
     private final org.illarion.engine.graphic.Color tempColor3;
 
     /**
      * A instance of the color class for temporary use. This class is used to transfer the color values from
      * Nifty-GUI color instances to instances of the game engine.
      */
-    @Nonnull
+    @NotNull
     private final org.illarion.engine.graphic.Color tempColor4;
 
     /**
@@ -78,7 +78,7 @@ public class IgeRenderDevice implements RenderDevice {
      *
      * @param imageDirectory the directory the GUI is supposed to fetch its images from
      */
-    public IgeRenderDevice(@Nonnull BackendBinding binding, @Nonnull String imageDirectory) {
+    public IgeRenderDevice(@NotNull BackendBinding binding, @NotNull String imageDirectory) {
         this.binding = binding;
         tempColor1 = new org.illarion.engine.graphic.Color(org.illarion.engine.graphic.Color.WHITE);
         tempColor2 = new org.illarion.engine.graphic.Color(org.illarion.engine.graphic.Color.WHITE);
@@ -87,13 +87,13 @@ public class IgeRenderDevice implements RenderDevice {
     }
 
     @Override
-    public void setResourceLoader(@Nonnull NiftyResourceLoader niftyResourceLoader) {
+    public void setResourceLoader(@NotNull NiftyResourceLoader niftyResourceLoader) {
         // nothing to do
     }
 
     @Nullable
     @Override
-    public RenderImage createImage(@Nonnull String filename, boolean filterLinear) {
+    public RenderImage createImage(@NotNull String filename, boolean filterLinear) {
         Texture targetTexture = binding.getAssets().getTextureManager().getTexture(filename);
         if (targetTexture == null) {
             return null;
@@ -103,7 +103,7 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Nullable
     @Override
-    public RenderFont createFont(@Nonnull String filename) {
+    public RenderFont createFont(@NotNull String filename) {
         Font requestedFont = binding.getAssets().getFontManager().getFont(filename);
         if (requestedFont == null) {
             return null;
@@ -137,7 +137,7 @@ public class IgeRenderDevice implements RenderDevice {
     }
 
     @Override
-    public void setBlendMode(@Nonnull BlendMode renderMode) {
+    public void setBlendMode(@NotNull BlendMode renderMode) {
         Graphics graphics = binding.getGraphics();
         switch (renderMode) {
             case MULIPLY:
@@ -150,7 +150,7 @@ public class IgeRenderDevice implements RenderDevice {
     }
 
     @Override
-    public void renderQuad(int x, int y, int width, int height, @Nonnull Color color) {
+    public void renderQuad(int x, int y, int width, int height, @NotNull Color color) {
         transferColor(color, tempColor1);
         binding.getGraphics().drawRectangle(x, y, width, height, tempColor1);
     }
@@ -161,10 +161,10 @@ public class IgeRenderDevice implements RenderDevice {
             int y,
             int width,
             int height,
-            @Nonnull Color topLeft,
-            @Nonnull Color topRight,
-            @Nonnull Color bottomRight,
-            @Nonnull Color bottomLeft) {
+            @NotNull Color topLeft,
+            @NotNull Color topRight,
+            @NotNull Color bottomRight,
+            @NotNull Color bottomLeft) {
         transferColor(topLeft, tempColor1);
         transferColor(topRight, tempColor2);
         transferColor(bottomLeft, tempColor3);
@@ -175,7 +175,7 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public void renderImage(
-            @Nonnull RenderImage image, int x, int y, int width, int height, @Nonnull Color color, float imageScale) {
+            @NotNull RenderImage image, int x, int y, int width, int height, @NotNull Color color, float imageScale) {
         if (image instanceof IgeRenderImage) {
             transferColor(color, tempColor1);
             ((IgeRenderImage) image)
@@ -185,7 +185,7 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public void renderImage(
-            @Nonnull RenderImage image,
+            @NotNull RenderImage image,
             int x,
             int y,
             int w,
@@ -194,7 +194,7 @@ public class IgeRenderDevice implements RenderDevice {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY) {
@@ -208,11 +208,11 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Override
     public void renderFont(
-            @Nonnull RenderFont font,
-            @Nonnull String text,
+            @NotNull RenderFont font,
+            @NotNull String text,
             int x,
             int y,
-            @Nonnull Color fontColor,
+            @NotNull Color fontColor,
             float sizeX,
             float sizeY) {
         if (font instanceof IgeRenderFont) {
@@ -229,7 +229,7 @@ public class IgeRenderDevice implements RenderDevice {
      * @param target the game engine target color
      */
     private static void transferColor(
-            @Nonnull Color source, @Nonnull org.illarion.engine.graphic.Color target) {
+            @NotNull Color source, @NotNull org.illarion.engine.graphic.Color target) {
         target.setRedf(source.getRed());
         target.setGreenf(source.getGreen());
         target.setBluef(source.getBlue());
@@ -248,7 +248,7 @@ public class IgeRenderDevice implements RenderDevice {
 
     @Nullable
     @Override
-    public MouseCursor createMouseCursor(@Nonnull String filename, int hotspotX, int hotspotY)
+    public MouseCursor createMouseCursor(@NotNull String filename, int hotspotX, int hotspotY)
             throws IOException {
         CursorManager cursorManager = binding.getAssets().getCursorManager();
         org.illarion.engine.MouseCursor cursor = cursorManager.getCursor(filename, hotspotX, hotspotY);
@@ -259,7 +259,7 @@ public class IgeRenderDevice implements RenderDevice {
     }
 
     @Override
-    public void enableMouseCursor(@Nonnull MouseCursor mouseCursor) {
+    public void enableMouseCursor(@NotNull MouseCursor mouseCursor) {
         if (mouseCursor instanceof IgeMouseCursor) {
             //container.setMouseCursor(((IgeMouseCursor) mouseCursor).getCursor());
         }

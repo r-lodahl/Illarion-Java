@@ -16,9 +16,9 @@
 package illarion.common.config.entries;
 
 import illarion.common.config.Config;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is a configuration entry that is used to display a checkbox in the
@@ -36,7 +36,7 @@ public final class CheckEntry implements ConfigEntry {
     /**
      * The key in the configuration that is handled by this configuration.
      */
-    @Nonnull
+    @NotNull
     private final String configEntry;
 
     /**
@@ -44,7 +44,7 @@ public final class CheckEntry implements ConfigEntry {
      *
      * @param entry the configuration key that is handled by this text entry
      */
-    public CheckEntry(@Nonnull String entry) {
+    public CheckEntry(@NotNull String entry) {
         configEntry = entry;
     }
 
@@ -67,7 +67,7 @@ public final class CheckEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 

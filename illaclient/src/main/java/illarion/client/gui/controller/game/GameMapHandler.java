@@ -47,6 +47,8 @@ import illarion.common.config.ConfigChangedEvent;
 import illarion.common.types.ItemCount;
 import illarion.common.types.Rectangle;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
@@ -54,11 +56,9 @@ import org.illarion.engine.graphic.SceneEvent;
 import org.illarion.engine.input.ForwardingTarget;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class is used to monitor all dropping operations on the droppable area over the game map and notify the
@@ -70,13 +70,13 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     /**
      * The logging instance that handles the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameMapHandler.class);
-    @Nonnull
+    private static final Logger LOGGER = LogManager.getLogger();
+    @NotNull
     private final Input input;
     /**
      * This mouse event instance is used to initiate the dragging event.
      */
-    @Nonnull
+    @NotNull
     private final NiftyMouseInputEvent mouseEvent;
     /**
      * The handler for the number selection popup.
@@ -117,7 +117,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      * Default constructor that takes care to initialize the variables required for this class to work.
      */
     public GameMapHandler(
-            @Nonnull Input input, NumberSelectPopupHandler numberSelectPopupHandler, TooltipHandler tooltip) {
+            @NotNull Input input, NumberSelectPopupHandler numberSelectPopupHandler, TooltipHandler tooltip) {
         mouseEvent = new NiftyMouseInputEvent();
         numberSelect = numberSelectPopupHandler;
         tooltipHandler = tooltip;
@@ -131,7 +131,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      * Handle a input event that was published.
      */
     @EventSubscriber(eventClass = ClickOnMapEvent.class)
-    public void handleClickEvent(@Nonnull SceneEvent event) {
+    public void handleClickEvent(@NotNull SceneEvent event) {
         World.getMapDisplay().getGameScene().publishEvent(event);
     }
 
@@ -139,7 +139,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      * Handle a input event that was published.
      */
     @EventSubscriber(eventClass = DoubleClickOnMapEvent.class)
-    public void handleDoubleClick(@Nonnull SceneEvent event) {
+    public void handleDoubleClick(@NotNull SceneEvent event) {
         World.getMapDisplay().getGameScene().publishEvent(event);
     }
 
@@ -147,7 +147,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      * Handle a input event that was published.
      */
     @EventSubscriber(eventClass = DragOnMapEvent.class)
-    public void handleDragging(@Nonnull DragOnMapEvent data) {
+    public void handleDragging(@NotNull DragOnMapEvent data) {
         if (World.getInteractionManager().isDragging()) {
             return;
         }
@@ -164,12 +164,12 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      *
      * @param data the event data
      */
-    private void handlePrimaryKeyDrag(@Nonnull DragOnMapEvent data) {
+    private void handlePrimaryKeyDrag(@NotNull DragOnMapEvent data) {
         Movement movement = World.getPlayer().getMovementHandler();
         if (!movement.getFollowMouseHandler().isActive() && !movement.getTargetMouseMovementHandler().isActive()) {
             SceneEvent newEvent = new PrimaryKeyMapDrag(data, new PrimaryKeyMapDragCallback() {
                 @Override
-                public boolean startDraggingItemFromTile(@Nonnull PrimaryKeyMapDrag event, @Nonnull MapTile tile) {
+                public boolean startDraggingItemFromTile(@NotNull PrimaryKeyMapDrag event, @NotNull MapTile tile) {
                     return handleDragOnMap(event, tile);
                 }
 
@@ -184,7 +184,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
         }
     }
 
-    private boolean handleDragOnMap(@Nonnull PrimaryKeyMapDrag event, @Nullable MapTile mapTile) {
+    private boolean handleDragOnMap(@NotNull PrimaryKeyMapDrag event, @Nullable MapTile mapTile) {
         if (mapTile == null) {
             return false;
         }
@@ -235,7 +235,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     }
 
     @EventTopicSubscriber(topic = "followMousePathFinding")
-    private void onFollowMouseWithPathFindingCfgChanged(@Nonnull String topic, @Nonnull ConfigChangedEvent event) {
+    private void onFollowMouseWithPathFindingCfgChanged(@NotNull String topic, @NotNull ConfigChangedEvent event) {
         followMouseWithPathFinding = event.getConfig().getBoolean("followMousePathFinding");
     }
 
@@ -244,7 +244,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      *
      * @param event the event that contains the data for the move
      */
-    private void moveTowardsMouse(@Nonnull DragOnMapEvent event) {
+    private void moveTowardsMouse(@NotNull DragOnMapEvent event) {
         MouseMovementHandler handler;
         if (followMouseWithPathFinding) {
             handler = World.getPlayer().getMovementHandler().getTargetMouseMovementHandler();
@@ -260,7 +260,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     }
 
     @EventSubscriber(eventClass = MoveOnMapEvent.class)
-    public void handleMouseMove(@Nonnull SceneEvent event) {
+    public void handleMouseMove(@NotNull SceneEvent event) {
         if (World.getInteractionManager().isDragging()) {
             return;
         }
@@ -272,7 +272,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     }
 
     @EventSubscriber(eventClass = PointOnMapEvent.class)
-    public void handlePointAt(@Nonnull SceneEvent event) {
+    public void handlePointAt(@NotNull SceneEvent event) {
         if (World.getInteractionManager().isDragging()) {
             return;
         }
@@ -287,7 +287,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
      * Called in case something is dropped on the game map.
      */
     @NiftyEventSubscriber(id = "mapDropTarget")
-    public void dropOnMap(String topic, @Nonnull DroppableDroppedEvent data) {
+    public void dropOnMap(String topic, @NotNull DroppableDroppedEvent data) {
         Element droppedElement = data.getDraggable().getElement();
         int dropSpotX = droppedElement.getX() + (droppedElement.getWidth() / 2);
         int dropSpotY = droppedElement.getY() + (droppedElement.getHeight() / 2);
@@ -332,7 +332,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         activeNifty = nifty;
         activeScreen = screen;
         gamePanel = screen.findElementById("gamePanel");
@@ -354,7 +354,7 @@ public final class GameMapHandler implements GameMapGui, ScreenController {
     }
 
     @Override
-    public void showItemTooltip(@Nonnull ServerCoordinate location, int stackPosition, @Nonnull Tooltip tooltip) {
+    public void showItemTooltip(@NotNull ServerCoordinate location, int stackPosition, @NotNull Tooltip tooltip) {
         LOGGER.debug("Now showing tooltip for {} at stack position {}", location, stackPosition);
         MapTile targetTile = World.getMap().getMapAt(location);
         if (targetTile == null) {

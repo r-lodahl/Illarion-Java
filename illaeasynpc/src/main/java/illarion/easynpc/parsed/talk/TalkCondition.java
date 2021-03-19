@@ -16,9 +16,9 @@
 package illarion.easynpc.parsed.talk;
 
 import illarion.easynpc.writer.LuaRequireTable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -47,5 +47,5 @@ public interface TalkCondition {
      * @param target the writer that takes the data
      * @throws IOException thrown in case the writing operations fail
      */
-    void writeLua(Writer target, @Nonnull LuaRequireTable requires) throws IOException;
+    void writeLua(Writer target, @NotNull LuaRequireTable requires) throws IOException;
 }

@@ -18,10 +18,10 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.CharacterId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Client Command: Looking at a character ({@link CommandList#CMD_LOOKAT_CHAR}).
@@ -30,8 +30,8 @@ import javax.annotation.Nonnull;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class LookAtCharCmd extends AbstractCommand {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LookAtCharCmd.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * FrameAnimationMode for looking in a polite way at a character. That leads to the point
      * that the character you are looking at gets no message but you get only
@@ -49,14 +49,14 @@ public final class LookAtCharCmd extends AbstractCommand {
     /**
      * The ID of the character we are looking at.
      */
-    private CharacterId charId;
+    private final CharacterId charId;
 
     /**
      * The mode that is used to look at the character. So looking in a normal
      * way at the character or staring at it. Possible values are
      * {@link #LOOKAT_POLITE} and {@link #LOOKAT_STARE}.
      */
-    private byte mode;
+    private final byte mode;
 
     /**
      * Default constructor for the look at character command.
@@ -76,7 +76,7 @@ public final class LookAtCharCmd extends AbstractCommand {
      *
      * @return the data of this command as string
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(charId + " mode: " + mode);
@@ -88,7 +88,7 @@ public final class LookAtCharCmd extends AbstractCommand {
      * @param writer the interface that allows writing data to the network communication system
      */
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         charId.encode(writer);
         writer.writeByte(mode);
     }

@@ -16,20 +16,20 @@
 package illarion.easyquest.gui;
 
 import illarion.easyquest.quest.Position;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.text.NumberFormat;
 
 @SuppressWarnings("serial")
 public class PositionParameter extends JPanel implements Parameter {
-    @Nonnull
+    @NotNull
     private final JFormattedTextField xField;
-    @Nonnull
+    @NotNull
     private final JFormattedTextField yField;
-    @Nonnull
+    @NotNull
     private final JFormattedTextField zField;
 
     public PositionParameter() {
@@ -62,7 +62,7 @@ public class PositionParameter extends JPanel implements Parameter {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Object getParameter() {
         return new Position(((Number) xField.getValue()).shortValue(), ((Number) yField.getValue()).shortValue(),
                             ((Number) zField.getValue()).shortValue());

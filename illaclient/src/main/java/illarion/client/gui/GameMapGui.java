@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the GUI controller that manages the GUI elements that are directly related to the elements on the GUI.
@@ -32,7 +32,7 @@ public interface GameMapGui {
      * @param stackPosition the position of the referenced item on the stack
      * @param tooltip the tooltip of the item that is supposed to be displayed
      */
-    void showItemTooltip(@Nonnull ServerCoordinate location, int stackPosition, @Nonnull Tooltip tooltip);
+    void showItemTooltip(@NotNull ServerCoordinate location, int stackPosition, @NotNull Tooltip tooltip);
 
     /**
      * Toggle the pulsing animation of the run button.

@@ -19,11 +19,11 @@ import illarion.client.net.CommandList;
 import illarion.client.net.annotations.ReplyMessage;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -34,8 +34,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_LOOKAT_TILE)
 public final class LookAtTileMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LookAtTileMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The location of the tile on the server map.
@@ -48,19 +48,19 @@ public final class LookAtTileMsg implements ServerReply {
     private String text;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         loc = new ServerCoordinate(reader);
         text = reader.readString();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         log.warn("Received look at for a tile. That shouldn't happen! Received \"{}\" for {}", text, loc);
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

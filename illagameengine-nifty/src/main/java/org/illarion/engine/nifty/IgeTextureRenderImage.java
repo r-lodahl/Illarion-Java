@@ -18,8 +18,8 @@ package org.illarion.engine.nifty;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the render image implementation that uses a texture that is rendered to the screen.
@@ -30,7 +30,7 @@ public class IgeTextureRenderImage implements IgeRenderImage {
     /**
      * The texture that is rendered with this image.
      */
-    @Nonnull
+    @NotNull
     private final Texture texture;
 
     /**
@@ -38,7 +38,7 @@ public class IgeTextureRenderImage implements IgeRenderImage {
      *
      * @param texture the texture that is rendered by this render image
      */
-    public IgeTextureRenderImage(@Nonnull Texture texture) {
+    public IgeTextureRenderImage(@NotNull Texture texture) {
         this.texture = texture;
     }
 
@@ -52,7 +52,7 @@ public class IgeTextureRenderImage implements IgeRenderImage {
         return texture.getHeight();
     }
 
-    @Nonnull
+    @NotNull
     public Texture getTexture() {
         return texture;
     }
@@ -64,12 +64,12 @@ public class IgeTextureRenderImage implements IgeRenderImage {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
+            @NotNull Color color,
             float imageScale) {
         int scaledWidth = Math.round(width * imageScale);
         int scaledHeight = Math.round(height * imageScale);
@@ -80,7 +80,7 @@ public class IgeTextureRenderImage implements IgeRenderImage {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int w,
@@ -89,7 +89,7 @@ public class IgeTextureRenderImage implements IgeRenderImage {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY) {

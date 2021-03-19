@@ -5,6 +5,6 @@ public interface Poolable {
     /**
     * resets the object for reuse.
     */
-    public void reset ();
+    void reset();
 
 }

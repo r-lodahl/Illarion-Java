@@ -16,30 +16,30 @@
 package illarion.download.maven;
 
 import illarion.common.util.ProgressMonitor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.RequestTrace;
 import org.eclipse.aether.transfer.TransferCancelledException;
 import org.eclipse.aether.transfer.TransferEvent;
 import org.eclipse.aether.transfer.TransferListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class MavenTransferListener implements TransferListener {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MavenTransferListener.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Override
-    public void transferInitiated(@Nonnull TransferEvent event) throws TransferCancelledException {
+    public void transferInitiated(@NotNull TransferEvent event) throws TransferCancelledException {
         log.info(event.toString());
     }
 
     @Override
-    public void transferStarted(@Nonnull TransferEvent event) throws TransferCancelledException {
+    public void transferStarted(@NotNull TransferEvent event) throws TransferCancelledException {
         log.info(event.toString());
         @Nullable ArtifactTraceData data = getTraceData(event);
         if (data != null) {
@@ -48,7 +48,7 @@ class MavenTransferListener implements TransferListener {
     }
 
     @Override
-    public void transferProgressed(@Nonnull TransferEvent event) throws TransferCancelledException {
+    public void transferProgressed(@NotNull TransferEvent event) throws TransferCancelledException {
         log.debug(event.toString());
         @Nullable ArtifactTraceData data = getTraceData(event);
         if (data != null) {
@@ -57,12 +57,12 @@ class MavenTransferListener implements TransferListener {
     }
 
     @Override
-    public void transferCorrupted(@Nonnull TransferEvent event) throws TransferCancelledException {
+    public void transferCorrupted(@NotNull TransferEvent event) throws TransferCancelledException {
         log.error(event.toString());
     }
 
     @Override
-    public void transferSucceeded(@Nonnull TransferEvent event) {
+    public void transferSucceeded(@NotNull TransferEvent event) {
         log.info(event.toString());
         @Nullable ArtifactTraceData data = getTraceData(event);
         if (data != null) {
@@ -71,12 +71,12 @@ class MavenTransferListener implements TransferListener {
     }
 
     @Override
-    public void transferFailed(@Nonnull TransferEvent event) {
+    public void transferFailed(@NotNull TransferEvent event) {
         log.info(event.toString());
     }
 
     @Nullable
-    private static ArtifactTraceData getTraceData(@Nonnull TransferEvent event) {
+    private static ArtifactTraceData getTraceData(@NotNull TransferEvent event) {
         @Nullable RequestTrace trace = event.getResource().getTrace();
         while (true) {
             if (trace == null) {
@@ -90,7 +90,7 @@ class MavenTransferListener implements TransferListener {
         return null;
     }
 
-    private static void reportTrace(@Nonnull ArtifactTraceData data, @Nonnull TransferEvent event) {
+    private static void reportTrace(@NotNull ArtifactTraceData data, @NotNull TransferEvent event) {
         ArtifactRequestTracer requestTracer = data.getTracer();
         ProgressMonitor monitor = data.getMonitor();
         long totalSize = event.getResource().getContentLength();

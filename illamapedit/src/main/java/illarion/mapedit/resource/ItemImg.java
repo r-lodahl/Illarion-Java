@@ -16,8 +16,8 @@
 package illarion.mapedit.resource;
 
 import illarion.common.graphics.ItemInfo;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
@@ -33,7 +33,7 @@ public class ItemImg {
     private final int frameCount;
     private final int animationSpeed;
     private final int itemMode;
-    @Nonnull
+    @NotNull
     private final Image[] imgs;
     private final String itemName;
     private final int editorGroup;
@@ -97,7 +97,7 @@ public class ItemImg {
             int frameCount,
             int animationSpeed,
             int itemMode,
-            @Nonnull Image[] imgs,
+            @NotNull Image[] imgs,
             ItemInfo info) {
 
         this.itemId = itemId;
@@ -116,7 +116,7 @@ public class ItemImg {
         System.arraycopy(imgs, 0, this.imgs, 0, imgs.length);
     }
 
-    @Nonnull
+    @NotNull
     public Image[] getImgs() {
         return imgs;
     }

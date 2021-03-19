@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.common.data.Skill;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to control the display of the skill messages in the GUI.
@@ -47,5 +47,5 @@ public interface SkillGui {
      * @param value the new value of the skill
      * @param minor the minor value of the skill
      */
-    void updateSkill(@Nonnull Skill skill, int value, int minor);
+    void updateSkill(@NotNull Skill skill, int value, int minor);
 }

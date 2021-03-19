@@ -16,11 +16,11 @@
 package illarion.common.data;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
 import java.util.Locale;
 
 /**
@@ -32,13 +32,13 @@ public final class Book {
     /**
      * The german version of this book.
      */
-    @Nonnull
+    @NotNull
     private final BookLanguage germanBook;
 
     /**
      * The english version of this book.
      */
-    @Nonnull
+    @NotNull
     private final BookLanguage englishBook;
 
     /**
@@ -54,7 +54,7 @@ public final class Book {
      *
      * @param source the XML node that is the source of the book data
      */
-    public Book(@Nonnull Node source) {
+    public Book(@NotNull Node source) {
         this();
         loadData(source);
     }
@@ -64,7 +64,7 @@ public final class Book {
      *
      * @param source the source node
      */
-    public void loadData(@Nonnull Node source) {
+    public void loadData(@NotNull Node source) {
         if (!"book".equals(source.getNodeName())) {
             if (source.hasChildNodes()) {
                 NodeList children = source.getChildNodes();
@@ -101,7 +101,7 @@ public final class Book {
      *
      * @return the german version of the book
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public BookLanguage getGermanBook() {
         return germanBook;
@@ -112,7 +112,7 @@ public final class Book {
      *
      * @return the english version of the book
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public BookLanguage getEnglishBook() {
         return englishBook;
@@ -124,9 +124,9 @@ public final class Book {
      * @param locale the locale that is requested
      * @return the localised version of the book
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    public BookLanguage getLocalisedBook(@Nonnull Locale locale) {
+    public BookLanguage getLocalisedBook(@NotNull Locale locale) {
         return Locale.GERMAN.equals(locale) ? getGermanBook() : getEnglishBook();
     }
 }

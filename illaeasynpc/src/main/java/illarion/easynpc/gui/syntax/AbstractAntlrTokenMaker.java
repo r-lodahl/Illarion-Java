@@ -21,8 +21,8 @@ import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
 import org.fife.ui.rsyntaxtextarea.Token;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.text.Segment;
 import java.beans.ConstructorProperties;
 import java.io.CharArrayReader;
@@ -38,16 +38,16 @@ public abstract class AbstractAntlrTokenMaker<T extends Lexer> extends AbstractT
     /**
      * The lexer that provides the data.
      */
-    @Nonnull
+    @NotNull
     private final T lexer;
 
     @ConstructorProperties("lexer")
-    protected AbstractAntlrTokenMaker(@Nonnull T lexer) {
+    protected AbstractAntlrTokenMaker(@NotNull T lexer) {
         this.lexer = lexer;
     }
 
     @Override
-    public Token getTokenList(@Nonnull Segment text, int initialTokenType, int startOffset) {
+    public Token getTokenList(@NotNull Segment text, int initialTokenType, int startOffset) {
         try (Reader textReader = new CharArrayReader(text.array, text.offset, text.count)) {
             lexer.setInputStream(new ANTLRInputStream(textReader));
             TokenStream tokenStream = new UnbufferedTokenStream(lexer);

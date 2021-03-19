@@ -15,8 +15,9 @@
  */
 package illarion.easyquest.quest;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class HandlerTemplate {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return title;
     }

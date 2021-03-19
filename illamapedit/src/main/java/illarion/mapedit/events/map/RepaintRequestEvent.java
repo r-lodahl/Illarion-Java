@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.events.map;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -33,7 +34,7 @@ public class RepaintRequestEvent {
         this.dirty = dirty;
     }
 
-    public void doRepaint(@Nonnull JPanel c) {
+    public void doRepaint(@NotNull JPanel c) {
         if (dirty != null) {
             c.repaint(dirty);
         } else {

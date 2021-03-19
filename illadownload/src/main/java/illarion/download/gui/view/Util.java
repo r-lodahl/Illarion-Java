@@ -18,9 +18,9 @@ package illarion.download.gui.view;
 import illarion.download.gui.controller.Controller;
 import illarion.download.gui.model.GuiModel;
 import javafx.fxml.FXMLLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -41,9 +41,9 @@ final class Util {
      * @return the FXML node
      * @throws IOException in case the file does not exist or is not a valid FXML file
      */
-    @Nonnull
+    @NotNull
     public static <T> T loadFXML(
-            @Nonnull String file, @Nonnull GuiModel model, @Nonnull ResourceBundle bundle)
+            @NotNull String file, @NotNull GuiModel model, @NotNull ResourceBundle bundle)
             throws IOException {
         URL resource = Util.class.getResource(file);
         if (resource == null) {
@@ -65,10 +65,10 @@ final class Util {
         return obj;
     }
 
-    @Nonnull
-    public static ResourceBundle loadResourceBundle(@Nonnull String name) {
+    @NotNull
+    public static ResourceBundle loadResourceBundle(@NotNull String name) {
         String dir = "illarion/download/gui/view/";
-        @Nonnull ResourceBundle bundle;
+        @NotNull ResourceBundle bundle;
         if (Locale.getDefault().getLanguage().equals(Locale.GERMAN.getLanguage())) {
             bundle = ResourceBundle.getBundle(dir + name, Locale.GERMAN, Util.class.getClassLoader());
         } else {
@@ -78,7 +78,7 @@ final class Util {
     }
 
     @Nullable
-    public static String getCssReference(@Nonnull String baseName) {
+    public static String getCssReference(@NotNull String baseName) {
         @Nullable URL bss = Util.class.getResource(baseName + ".bss");
         if (bss != null) {
             return bss.toExternalForm();

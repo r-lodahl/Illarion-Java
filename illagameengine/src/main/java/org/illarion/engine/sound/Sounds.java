@@ -15,7 +15,8 @@
  */
 package org.illarion.engine.sound;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface provides the required access to play sound effects and background music.
@@ -58,7 +59,7 @@ public interface Sounds {
      * @param handle the handle of the sound effect that is returned by {@link #playSound(Sound, float)}
      * @return the volume of the sound effect
      */
-    float getSoundVolume(@Nonnull Sound sound, int handle);
+    float getSoundVolume(@NotNull Sound sound, int handle);
 
     /**
      * Check if a specific music track is currently playing.
@@ -66,7 +67,7 @@ public interface Sounds {
      * @param music the music track to check
      * @return {@code true} in case this music track is currently played
      */
-    boolean isMusicPlaying(@Nonnull Music music);
+    boolean isMusicPlaying(@NotNull Music music);
 
     /**
      * Check if a sound effect is currently playing.
@@ -75,7 +76,7 @@ public interface Sounds {
      * @param handle the handle of the sound effect that is returned by {@link #playSound(Sound, float)}
      * @return {@code true} in case this sound effect is currently played
      */
-    boolean isSoundPlaying(@Nonnull Sound sound, int handle);
+    boolean isSoundPlaying(@NotNull Sound sound, int handle);
 
     /**
      * Start playing some background music.
@@ -87,7 +88,7 @@ public interface Sounds {
      * this parameter is ignored in case there is not music playing currently.
      * @param fadeInTime the time to fade the new track in
      */
-    void playMusic(@Nonnull Music music, int fadeOutTime, int fadeInTime);
+    void playMusic(@NotNull Music music, int fadeOutTime, int fadeInTime);
 
     /**
      * Play a sound effect.
@@ -96,7 +97,7 @@ public interface Sounds {
      * @param volume the volume of the sound effect, this volume is multiplied with the global sound effect volume
      * @return the reference handle to the played sound effect
      */
-    int playSound(@Nonnull Sound sound, float volume);
+    int playSound(@NotNull Sound sound, float volume);
 
     /**
      * Play a sound with a offset to the listener in 3D space.
@@ -108,7 +109,7 @@ public interface Sounds {
      * @param offsetZ the Z offset
      * @return the reference handle to the played sound effect
      */
-    int playSound(@Nonnull Sound sound, float volume, int offsetX, int offsetY, int offsetZ);
+    int playSound(@NotNull Sound sound, float volume, int offsetX, int offsetY, int offsetZ);
 
     /**
      * This function should be called once during the update run of the game, to allow the sound engine to process
@@ -127,7 +128,7 @@ public interface Sounds {
      * @param handle the handle of the sound effect that is returned by {@link #playSound(Sound, float)}
      * @param volume the volume of the sound effects
      */
-    void setSoundVolume(@Nonnull Sound sound, int handle, float volume);
+    void setSoundVolume(@NotNull Sound sound, int handle, float volume);
 
     /**
      * Stop any currently played music.
@@ -146,12 +147,12 @@ public interface Sounds {
      * @param sound the sound that should be stopped
      * @param handle the handle of the sound effect that is returned by {@link #playSound(Sound, float)}
      */
-    void stopSound(@Nonnull Sound sound, int handle);
+    void stopSound(@NotNull Sound sound, int handle);
 
     /**
      * Stop the playback of all instances of a sound effect.
      *
      * @param sound the sound that should be stopped
      */
-    void stopSound(@Nonnull Sound sound);
+    void stopSound(@NotNull Sound sound);
 }

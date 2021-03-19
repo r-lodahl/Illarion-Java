@@ -21,8 +21,8 @@ import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.util.Lang;
 import illarion.common.net.NetCommReader;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -39,11 +39,11 @@ public final class DisconnectMsg implements ServerReply {
     private short reason;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         reason = reader.readUByte();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout") + '\n' + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("logout.reason") + ' ' +
@@ -51,7 +51,7 @@ public final class DisconnectMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     @SuppressWarnings({"SpellCheckingInspection", "OverlyComplexMethod"})
     private static String getMessageForReason(int reason) {
@@ -85,7 +85,7 @@ public final class DisconnectMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

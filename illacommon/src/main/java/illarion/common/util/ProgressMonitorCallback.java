@@ -15,7 +15,8 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface is the callback interface that can be used to receive updates of the progress monitor.
@@ -29,5 +30,5 @@ public interface ProgressMonitorCallback {
      *
      * @param monitor the monitor that contains the new value
      */
-    void updatedProgress(@Nonnull ProgressMonitor monitor);
+    void updatedProgress(@NotNull ProgressMonitor monitor);
 }

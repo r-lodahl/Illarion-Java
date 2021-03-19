@@ -16,8 +16,8 @@
 package org.illarion.nifty.controls.progress.builder;
 
 import de.lessvoid.nifty.builder.ControlBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Build the tooltip.
@@ -29,7 +29,7 @@ public class ProgressBuilder extends ControlBuilder {
         super("progress");
     }
 
-    public ProgressBuilder(@Nonnull String id) {
+    public ProgressBuilder(@NotNull String id) {
         super(id, "progress");
     }
 }

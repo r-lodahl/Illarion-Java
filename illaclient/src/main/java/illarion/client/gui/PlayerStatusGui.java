@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.client.world.characters.CharacterAttribute;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -29,5 +29,5 @@ public interface PlayerStatusGui {
      * @param attribute the attribute to change
      * @param value the new value of the attribute
      */
-    void setAttribute(@Nonnull CharacterAttribute attribute, int value);
+    void setAttribute(@NotNull CharacterAttribute attribute, int value);
 }

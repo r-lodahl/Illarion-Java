@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Looking at a container slot ({@link CommandList#CMD_LOOKAT_CONTAINER}).
@@ -27,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class LookAtContainerCmd extends AbstractCommand {
     /**
      * The container we are going to look at.
@@ -52,7 +49,7 @@ public final class LookAtContainerCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(containerId);
         writer.writeUByte(slot);
     }
@@ -62,7 +59,7 @@ public final class LookAtContainerCmd extends AbstractCommand {
      *
      * @return the data of this command as string
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Container: " + containerId + " Slot: " + slot);

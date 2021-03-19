@@ -18,13 +18,13 @@ package illarion.client.resources.loaders;
 import illarion.client.resources.Resource;
 import illarion.client.resources.ResourceFactory;
 import illarion.common.util.ProgressMonitor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.TextureManager;
 import org.illarion.engine.graphic.Texture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
 /**
@@ -33,8 +33,8 @@ import java.util.concurrent.Callable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public abstract class AbstractResourceLoader<T extends Resource> implements Callable<ResourceFactory<T>> {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AbstractResourceLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The factory that is supposed to store the load objects.
@@ -45,7 +45,7 @@ public abstract class AbstractResourceLoader<T extends Resource> implements Call
     /**
      * The progress monitor that keeps track of the loading progress.
      */
-    @Nonnull
+    @NotNull
     private final ProgressMonitor monitor;
 
     /**
@@ -70,7 +70,7 @@ public abstract class AbstractResourceLoader<T extends Resource> implements Call
      * @return the target factory of this loader
      * @throws IllegalStateException in case the target factory was not set before
      */
-    @Nonnull
+    @NotNull
     protected final ResourceFactory<T> getTargetFactory() {
         if (targetFactory == null) {
             throw new IllegalStateException("Requested target factory before it was set.");
@@ -92,8 +92,8 @@ public abstract class AbstractResourceLoader<T extends Resource> implements Call
      *
      * @param factory the factory that will take the data
      */
-    @Nonnull
-    public final AbstractResourceLoader<T> setTarget(@Nonnull ResourceFactory<T> factory) {
+    @NotNull
+    public final AbstractResourceLoader<T> setTarget(@NotNull ResourceFactory<T> factory) {
         if (hasTargetFactory()) {
             throw new IllegalStateException("Changing the target factory once set is not allowed");
         }
@@ -106,7 +106,7 @@ public abstract class AbstractResourceLoader<T extends Resource> implements Call
      *
      * @return the progress monitor of this loader
      */
-    @Nonnull
+    @NotNull
     public final ProgressMonitor getProgressMonitor() {
         return monitor;
     }
@@ -143,9 +143,9 @@ public abstract class AbstractResourceLoader<T extends Resource> implements Call
      * @param frames the amount of frames
      * @return a array with the length equal to the frames that contains the load textures
      */
-    @Nonnull
+    @NotNull
     protected static Texture[] getTextures(
-            @Nonnull TextureManager textureManager, @Nonnull String path, @Nonnull String name, int frames) {
+            @NotNull TextureManager textureManager, @NotNull String path, @NotNull String name, int frames) {
         Texture[] resultTextures = new Texture[frames];
         if (frames == 1) {
             resultTextures[0] = textureManager.getTexture(path, name);

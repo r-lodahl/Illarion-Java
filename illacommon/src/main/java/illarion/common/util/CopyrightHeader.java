@@ -15,16 +15,18 @@
  */
 package illarion.common.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class CopyrightHeader {
-    @Nonnull
+    @NotNull
     private static final Pattern LINE_BREAK_PATTERN = Pattern.compile("\n\r|\n|\r");
-    @Nonnull
+    @NotNull
     private static final Pattern TRIM_LINES_PATTERN = Pattern.compile("[ ]*\n[ ]*");
     /**
      * The width of a line. The width of the text is limited to this length.
@@ -61,8 +63,8 @@ public class CopyrightHeader {
     @Nullable
     private String licenseTextTemplate;
 
-    @Nonnull
-    private static final Charset TEMPLATE_CHARSET = Charset.forName("UTF-8");
+    @NotNull
+    private static final Charset TEMPLATE_CHARSET = StandardCharsets.UTF_8;
 
     public CopyrightHeader(
             int lineWidth,
@@ -77,7 +79,7 @@ public class CopyrightHeader {
         this.commentLineEnd = commentLineEnd;
     }
 
-    @Nonnull
+    @NotNull
     private String getLicenseTextTemplate() throws IOException {
         if (licenseTextTemplate != null) {
             return licenseTextTemplate;
@@ -106,7 +108,7 @@ public class CopyrightHeader {
         }
     }
 
-    public void writeTo(@Nonnull Writer writer) throws IOException {
+    public void writeTo(@NotNull Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
 
         if (commentIntro != null) {
@@ -145,7 +147,7 @@ public class CopyrightHeader {
     }
 
     private void writeLine(
-            @Nonnull Writer writer, @Nonnull String line, int padding) throws IOException {
+            @NotNull Writer writer, @NotNull String line, int padding) throws IOException {
         if (commentLineStart != null) {
             writer.write(commentLineStart);
         }
@@ -165,7 +167,7 @@ public class CopyrightHeader {
      * @param text the license text
      * @return {@code true} if the text fits the license text
      */
-    public boolean isLicenseText(@Nonnull CharSequence text) {
+    public boolean isLicenseText(@NotNull CharSequence text) {
         String[] textParts = LINE_BREAK_PATTERN.split(text);
         if (textParts.length == 0) {
             return false;

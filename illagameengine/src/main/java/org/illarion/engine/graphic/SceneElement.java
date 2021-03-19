@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic;
 
 import org.illarion.engine.BackendBinding;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is one element that is displayed on a graphics scene.
@@ -37,7 +37,7 @@ public interface SceneElement {
      *
      * @param graphics the graphics instance that is supposed to be used to render the element
      */
-    void render(@Nonnull Graphics graphics);
+    void render(@NotNull Graphics graphics);
 
     /**
      * This function is called when the element is supposed to perform a update.
@@ -53,5 +53,5 @@ public interface SceneElement {
      * @param event the event
      * @return {@code true} in case this element handled the event
      */
-    boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event);
+    boolean isEventProcessed(BackendBinding binding, int delta, @NotNull SceneEvent event);
 }

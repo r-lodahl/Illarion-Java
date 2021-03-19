@@ -18,8 +18,8 @@ package illarion.easynpc.parsed;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -71,7 +71,7 @@ public final class ParsedHair implements ParsedData {
      * Add the information about the hair and the beard to the SQL query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         switch (hairType) {
             case Beard:
                 builder.setNpcBeard(hairId);
@@ -86,14 +86,14 @@ public final class ParsedHair implements ParsedData {
      * Hair information are not written into the LUA script. No stage is effected.
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return false;
     }
 
     /**
      * No additional modules needed for this.
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.emptyList();
@@ -104,7 +104,7 @@ public final class ParsedHair implements ParsedData {
      */
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         // nothing
     }
 }

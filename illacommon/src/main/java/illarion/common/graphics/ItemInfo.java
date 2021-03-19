@@ -17,8 +17,8 @@ package illarion.common.graphics;
 
 import illarion.common.util.FastMath;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -61,7 +61,7 @@ public final class ItemInfo {
      * The buffer storage that is used to save the created item info instances to compare them during the loading
      * time so a minimal amount of instances is created.
      */
-    @Nonnull
+    @NotNull
     private static final Collection<ItemInfo> BUFFER = new ArrayList<>();
 
     /**
@@ -188,7 +188,7 @@ public final class ItemInfo {
      *                    be a light source emitting constantly light on the map
      * @return the ItemInfo object, either a newly created one, or one that was loaded from the buffer
      */
-    @Nonnull
+    @NotNull
     public static ItemInfo create(int facing, boolean movable, int special, boolean obstacle, int variance, int opacity,
                                   int level, int lightSource) {
         float prepVariance = variance / VARIANCE_MOD;

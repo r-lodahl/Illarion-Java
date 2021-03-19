@@ -15,14 +15,12 @@
  */
 package org.illarion.engine;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the container that is displaying the game. Offering platform and backend independent functions for
  * the main IllaClient to use, the implementing class in itself should be platform and backend dependent.
  */
-@NotThreadSafe
 public interface GameContainer {
     /**
      * Calling this function will activate the game, starting the lifecycle of the game,
@@ -38,12 +36,12 @@ public interface GameContainer {
      *
      * @param icons the icons (in different sizes) to load as application icons
      */
-    void setIcons(@Nonnull String... icons);
+    void setIcons(@NotNull String... icons);
 
     /**
      * Set the title of the game. This text is displayed in the title bar of the application.
      *
      * @param title the title of the game
      */
-    void setTitle(@Nonnull String title);
+    void setTitle(@NotNull String title);
 }

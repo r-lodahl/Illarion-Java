@@ -19,8 +19,8 @@ import illarion.common.config.entries.ConfigEntry;
 import illarion.common.config.entries.NumberEntry;
 import illarion.common.config.gui.entries.SavableEntry;
 import illarion.common.util.FastMath;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
@@ -63,7 +63,7 @@ public final class NumberEntrySwing extends JPanel implements SavableEntry {
          * due user interaction.
          */
         @Override
-        public void adjustmentValueChanged(@Nonnull AdjustmentEvent e) {
+        public void adjustmentValueChanged(@NotNull AdjustmentEvent e) {
             parentInstance.setCurrentValue(e.getValue());
         }
     }
@@ -81,13 +81,13 @@ public final class NumberEntrySwing extends JPanel implements SavableEntry {
     /**
      * The label the current value of the scroll bar is displayed in.
      */
-    @Nonnull
+    @NotNull
     private final JLabel display;
 
     /**
      * The text entry used to initialize this instance.
      */
-    @Nonnull
+    @NotNull
     private final NumberEntry entry;
 
     /**

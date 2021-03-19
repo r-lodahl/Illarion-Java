@@ -15,14 +15,13 @@
  */
 package illarion.common.data;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,13 +33,12 @@ import java.io.InputStream;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class SkillLoader {
     /**
      * The logger instance of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(SkillLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This value is turned {@code true} once the loading is finished.
@@ -89,17 +87,17 @@ public final class SkillLoader {
                     currentTag = parser.nextTag();
                 }
                 parser.require(XmlPullParser.END_TAG, null, "skills");
-            } catch (@Nonnull XmlPullParserException e) {
+            } catch (@NotNull XmlPullParserException e) {
                 log.error("Parsing the XML file failed.", e);
-            } catch (@Nonnull IOException e) {
+            } catch (@NotNull IOException e) {
                 log.error("Reading the XML file failed.", e);
             }
             loadingFinished = true;
         }
     }
 
-    @Nonnull
-    private static SkillGroup readSkillGroup(@Nonnull XmlPullParser parser) throws XmlPullParserException {
+    @NotNull
+    private static SkillGroup readSkillGroup(@NotNull XmlPullParser parser) throws XmlPullParserException {
         int count = parser.getAttributeCount();
         String germanName = null;
         String englishName = null;
@@ -124,8 +122,8 @@ public final class SkillLoader {
         throw new XmlPullParserException("Group tag does not contain the required attributes.", parser, null);
     }
 
-    @Nonnull
-    private static Skill readSkill(@Nonnull XmlPullParser parser, @Nonnull SkillGroup group)
+    @NotNull
+    private static Skill readSkill(@NotNull XmlPullParser parser, @NotNull SkillGroup group)
             throws XmlPullParserException {
         int count = parser.getAttributeCount();
         String serverName = null;

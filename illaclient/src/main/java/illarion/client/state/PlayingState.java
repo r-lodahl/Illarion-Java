@@ -17,19 +17,17 @@ package illarion.client.state;
 
 import com.google.common.eventbus.Subscribe;
 import illarion.client.IllaClient;
-import illarion.client.Login;
 import illarion.client.input.InputReceiver;
 import illarion.client.world.MapDimensions;
 import illarion.client.world.World;
-import illarion.client.world.events.ServerNotFoundEvent;
 import illarion.common.data.SkillLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.EventBus;
 import org.illarion.engine.event.WindowResizedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This state is active while the player is playing the game.
@@ -38,14 +36,14 @@ public class PlayingState implements GameState {
     /**
      * The logger that is used for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(PlayingState.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     private final InputReceiver inputReceiver;
 
     private BackendBinding binding;
 
-    public PlayingState(@Nonnull InputReceiver inputReceiver) {
+    public PlayingState(@NotNull InputReceiver inputReceiver) {
         this.inputReceiver = inputReceiver;
     }
 

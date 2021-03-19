@@ -16,15 +16,14 @@
 package org.illarion.engine.nifty;
 
 import illarion.common.types.ServerCoordinate;
-import org.illarion.engine.Engine;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.assets.EffectManager;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.effects.MiniMapEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This implementation of the render image is used in special to render the mini map of the game.
@@ -35,7 +34,7 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
     /**
      * The world map that supplies the data to this render image.
      */
-    @Nonnull
+    @NotNull
     private final WorldMap map;
 
     /**
@@ -46,7 +45,7 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
     /**
      * The effect that is applied ot make the mini map round.
      */
-    @Nonnull
+    @NotNull
     private final MiniMapEffect effect;
 
     /**
@@ -58,7 +57,7 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
      * @throws EngineException in case the creation of this image fails for any reason
      */
     public IgeMiniMapRenderImage(
-            @Nonnull EffectManager effectManager, @Nonnull WorldMap map, int radius) throws EngineException {
+            @NotNull EffectManager effectManager, @NotNull WorldMap map, int radius) throws EngineException {
         this.map = map;
         this.radius = radius;
         effect = effectManager.getMiniMapEffect(map, false);
@@ -66,19 +65,19 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
+            @NotNull Color color,
             float imageScale) {
         renderImage(g, x, y, width, height, 0, 0, getWidth(), getHeight(), color, imageScale, radius, radius);
     }
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int w,
@@ -87,7 +86,7 @@ public class IgeMiniMapRenderImage implements IgeRenderImage {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY) {

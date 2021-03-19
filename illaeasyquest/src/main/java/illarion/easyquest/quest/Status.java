@@ -16,9 +16,9 @@
 package illarion.easyquest.quest;
 
 import illarion.common.util.CalledByReflection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
@@ -77,7 +77,7 @@ public class Status implements Serializable {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public final String toString() {
         return getName();
     }

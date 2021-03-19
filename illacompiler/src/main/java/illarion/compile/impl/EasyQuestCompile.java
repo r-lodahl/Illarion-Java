@@ -17,10 +17,10 @@ package illarion.compile.impl;
 
 import com.mxgraph.model.mxIGraphModel;
 import illarion.easyquest.QuestIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,10 +31,10 @@ import java.nio.file.Path;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class EasyQuestCompile extends AbstractCompile {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EasyQuestCompile.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public int compileFile(@Nonnull Path file) {
+    public int compileFile(@NotNull Path file) {
         try {
             ensureTargetDir();
             mxIGraphModel model = QuestIO.loadGraphModel(file);
@@ -49,7 +49,7 @@ public class EasyQuestCompile extends AbstractCompile {
     }
 
     @Override
-    public int compileStream(@Nonnull InputStream in, @Nonnull OutputStream out) {
+    public int compileStream(@NotNull InputStream in, @NotNull OutputStream out) {
         try {
             QuestIO.loadGraphModel(new InputStreamReader(in, QuestIO.CHARSET));
         } catch (IOException e) {

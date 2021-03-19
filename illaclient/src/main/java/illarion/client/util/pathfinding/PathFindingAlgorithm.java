@@ -18,9 +18,9 @@ package illarion.client.util.pathfinding;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -47,10 +47,10 @@ public interface PathFindingAlgorithm {
      */
     @Nullable
     Path findPath(
-            @Nonnull MoveCostProvider costProvider,
-            @Nonnull ServerCoordinate start,
-            @Nonnull ServerCoordinate end,
-            int approachDistance, @Nonnull Collection<Direction> allowedDirections,
-            @Nonnull CharMovementMode movementMethod,
-            @Nonnull CharMovementMode... movementMethods);
+            @NotNull MoveCostProvider costProvider,
+            @NotNull ServerCoordinate start,
+            @NotNull ServerCoordinate end,
+            int approachDistance, @NotNull Collection<Direction> allowedDirections,
+            @NotNull CharMovementMode movementMethod,
+            @NotNull CharMovementMode... movementMethods);
 }

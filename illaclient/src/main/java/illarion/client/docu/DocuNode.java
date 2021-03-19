@@ -17,9 +17,9 @@ package illarion.client.docu;
 
 import illarion.client.util.Lang;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,11 +28,11 @@ import java.util.List;
  * @author Fredrik K
  */
 public final class DocuNode implements DocuEntry {
-    @Nonnull
+    @NotNull
     private final String docuTitle;
-    @Nonnull
+    @NotNull
     private final List<DocuEntry> children;
-    @Nonnull
+    @NotNull
     private final String npcType;
 
     /**
@@ -40,13 +40,13 @@ public final class DocuNode implements DocuEntry {
      *
      * @param type The type
      */
-    public DocuNode(@Nonnull String type) {
+    public DocuNode(@NotNull String type) {
         children = new ArrayList<>();
         npcType = type;
         docuTitle = String.format("docu.%s.title", npcType);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public DocuEntry getChild(int index) {
         return children.get(index);
@@ -64,18 +64,18 @@ public final class DocuNode implements DocuEntry {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String getTitle() {
         return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString(docuTitle);
     }
 
-    public void addChild(@Nonnull String child) {
+    public void addChild(@NotNull String child) {
         children.add(new DocuLeaf(npcType, child));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public Iterator<DocuEntry> iterator() {

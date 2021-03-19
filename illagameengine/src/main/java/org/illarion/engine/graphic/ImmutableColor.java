@@ -15,15 +15,13 @@
  */
 package org.illarion.engine.graphic;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is a special version of the color class that is immutable.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public class ImmutableColor extends Color {
     /**
      * Create a new color instance with the specified values.
@@ -76,7 +74,7 @@ public class ImmutableColor extends Color {
      *
      * @param org the original color value that is the data provider
      */
-    public ImmutableColor(@Nonnull Color org) {
+    public ImmutableColor(@NotNull Color org) {
         super(org);
     }
 
@@ -96,11 +94,11 @@ public class ImmutableColor extends Color {
      * @throws UnsupportedOperationException in any case because changes are not allowed on this immutable class
      */
     @Override
-    public void add(@Nonnull Color color) {
+    public void add(@NotNull Color color) {
         throwImmutableException();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ImmutableColor getImmutableCopy() {
         return this;
@@ -192,7 +190,7 @@ public class ImmutableColor extends Color {
      * @throws UnsupportedOperationException in any case because changes are not allowed on this immutable class
      */
     @Override
-    public void setColor(@Nonnull Color org) {
+    public void setColor(@NotNull Color org) {
         throwImmutableException();
     }
 
@@ -202,7 +200,7 @@ public class ImmutableColor extends Color {
      * @throws UnsupportedOperationException in any case because changes are not allowed on this immutable class
      */
     @Override
-    public void multiply(@Nonnull Color mul) {
+    public void multiply(@NotNull Color mul) {
         throwImmutableException();
     }
 

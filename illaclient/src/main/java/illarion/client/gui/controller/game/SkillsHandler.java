@@ -37,13 +37,13 @@ import illarion.common.config.Config;
 import illarion.common.data.Skill;
 import illarion.common.data.SkillGroup;
 import illarion.common.data.SkillGroups;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.nifty.controls.Progress;
 import org.illarion.nifty.controls.progress.builder.ProgressBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Locale;
 
 /**
@@ -52,8 +52,8 @@ import java.util.Locale;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class SkillsHandler implements SkillGui, ScreenController, UpdatableHandler {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(SkillsHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The Nifty-GUI instance this handler is bound to.
@@ -72,7 +72,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     private Window skillWindow;
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -100,8 +100,8 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
         Element skillWindowElement = getSkillWindowElement();
         if (skillWindowElement != null) {
             Config cfg = IllaClient.getConfig();
-            cfg.set("skillWindowPosX", Integer.toString(skillWindowElement.getX()) + "px");
-            cfg.set("skillWindowPosY", Integer.toString(skillWindowElement.getY()) + "px");
+            cfg.set("skillWindowPosX", skillWindowElement.getX() + "px");
+            cfg.set("skillWindowPosY", skillWindowElement.getY() + "px");
         }
 
         internalHideSkillWindow();
@@ -155,7 +155,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
         }
 
         for (SkillGroup group : SkillGroups.getInstance().getSkillGroups()) {
-            String groupId = content.getId() + "#group" + Integer.toString(group.getGroupId());
+            String groupId = content.getId() + "#group" + group.getGroupId();
             PanelBuilder groupPanel = new PanelBuilder(groupId);
             groupPanel.childLayoutVertical();
             groupPanel.height(SizeValue.px(0));
@@ -175,7 +175,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
             groupPanel.control(headline);
 
             for (Skill skill : group.getSkills()) {
-                String skillId = groupId + "#skill" + Integer.toString(skill.getId());
+                String skillId = groupId + "#skill" + skill.getId();
                 PanelBuilder skillPanel = new PanelBuilder(skillId);
                 skillPanel.childLayoutCenter();
                 skillPanel.width(content.getConstraintWidth().toString());
@@ -222,7 +222,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     private boolean layoutDirty;
 
     @Override
-    public void updateSkill(@Nonnull Skill skill, int value, int minor) {
+    public void updateSkill(@NotNull Skill skill, int value, int minor) {
         World.getUpdateTaskManager().addTask((delta) -> internalUpdateSkill(skill, value, minor));
     }
 
@@ -244,14 +244,14 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     }
 
     @Nullable
-    private Element getSkillGroupPanel(@Nonnull SkillGroup group) {
+    private Element getSkillGroupPanel(@NotNull SkillGroup group) {
         Element contentPanel = getContentPanel();
         if (contentPanel == null) {
             return null;
         }
 
         String groupId = "#group" + group.getGroupId();
-        for (@Nonnull Element groupPanel : contentPanel.getChildren()) {
+        for (@NotNull Element groupPanel : contentPanel.getChildren()) {
             String panelId = groupPanel.getId();
             if ((panelId != null) && panelId.endsWith(groupId)) {
                 return groupPanel;
@@ -261,14 +261,14 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
     }
 
     @Nullable
-    private Element getSkillPanel(@Nonnull Skill skill) {
+    private Element getSkillPanel(@NotNull Skill skill) {
         Element groupPanel = getSkillGroupPanel(skill.getGroup());
         if (groupPanel == null) {
             return null;
         }
 
         String skillId = "#skill" + skill.getId();
-        for (@Nonnull Element skillPanel : groupPanel.getChildren()) {
+        for (@NotNull Element skillPanel : groupPanel.getChildren()) {
             String panelId = skillPanel.getId();
             if ((panelId != null) && panelId.endsWith(skillId)) {
                 return skillPanel;
@@ -282,14 +282,14 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
 
         if (content != null) {
             SizeValue zero = SizeValue.px(0);
-            for (@Nonnull Element groupPanel : content.getChildren()) {
+            for (@NotNull Element groupPanel : content.getChildren()) {
                 groupPanel.setConstraintHeight(zero);
                 groupPanel.setMarginBottom(zero);
 
-                for (@Nonnull Element groupMember : groupPanel.getChildren()) {
+                for (@NotNull Element groupMember : groupPanel.getChildren()) {
                     groupMember.setConstraintHeight(zero);
 
-                    for (@Nonnull Element skillEntry : groupMember.getChildren()) {
+                    for (@NotNull Element skillEntry : groupMember.getChildren()) {
                         skillEntry.setConstraintHeight(zero);
                     }
                 }
@@ -304,7 +304,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
      * @param skill the skill that receives the update
      * @param value the new value of the skill
      */
-    private void internalUpdateSkill(@Nonnull Skill skill, int value, int minor) {
+    private void internalUpdateSkill(@NotNull Skill skill, int value, int minor) {
         if (!World.getNet().isLoginDone()) {
             return;
         }
@@ -364,7 +364,7 @@ public final class SkillsHandler implements SkillGui, ScreenController, Updatabl
         }
     }
 
-    private static void updateVisibilityOfElement(@Nonnull Element target) {
+    private static void updateVisibilityOfElement(@NotNull Element target) {
         if (0 == target.getConstraintHeight().getValueAsInt(Float.MAX_VALUE)) {
             if (target.isVisible()) {
                 target.hide();

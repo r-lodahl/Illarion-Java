@@ -20,8 +20,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.effects.HighlightEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the implementation of the highlight effect that is used by libGDX.
@@ -32,13 +32,13 @@ class GdxHighlightEffect implements HighlightEffect, GdxTextureEffect {
     /**
      * The pixel shader that is required for this effect.
      */
-    @Nonnull
+    @NotNull
     private final ShaderProgram shader;
 
     /**
      * The color that is applied to highlight the rendered object.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.graphics.Color highlightColor;
 
     /**
@@ -46,7 +46,7 @@ class GdxHighlightEffect implements HighlightEffect, GdxTextureEffect {
      *
      * @param files the file system handler used to load the effect data
      */
-    GdxHighlightEffect(@Nonnull Files files) {
+    GdxHighlightEffect(@NotNull Files files) {
         //noinspection SpellCheckingInspection
         shader = new ShaderProgram(files.internal("org/illarion/engine/backend/gdx/shaders/generic.vert"),
                                    files.internal("org/illarion/engine/backend/gdx/shaders/highlight.frag"));
@@ -54,13 +54,13 @@ class GdxHighlightEffect implements HighlightEffect, GdxTextureEffect {
     }
 
     @Override
-    public void activateEffect(@Nonnull SpriteBatch batch) {
+    public void activateEffect(@NotNull SpriteBatch batch) {
         batch.setShader(shader);
         shader.setUniformf("u_colorHighlight", highlightColor);
     }
 
     @Override
-    public void disableEffect(@Nonnull SpriteBatch batch) {
+    public void disableEffect(@NotNull SpriteBatch batch) {
         batch.setShader(null);
     }
 
@@ -73,7 +73,7 @@ class GdxHighlightEffect implements HighlightEffect, GdxTextureEffect {
     }
 
     @Override
-    public void setHighlightColor(@Nonnull Color color) {
+    public void setHighlightColor(@NotNull Color color) {
         GdxGraphics.transferColor(color, highlightColor);
     }
 }

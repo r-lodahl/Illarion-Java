@@ -23,9 +23,9 @@ import de.lessvoid.nifty.loaderv2.types.ControlType;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.screen.Screen;
 import org.illarion.nifty.controls.DialogInput;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The control creator for the input dialog.
@@ -51,7 +51,7 @@ public class CreateDialogInputControl extends ControlAttributes {
      *
      * @param id the ID of the new control
      */
-    public CreateDialogInputControl(@Nonnull String id) {
+    public CreateDialogInputControl(@NotNull String id) {
         setId(id);
         setName(NAME);
     }
@@ -65,7 +65,7 @@ public class CreateDialogInputControl extends ControlAttributes {
      * @return the newly created input dialog
      */
     @Nullable
-    public DialogInput create(@Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element parent) {
+    public DialogInput create(@NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element parent) {
         return nifty.addControl(screen, parent, getStandardControl()).getNiftyControl(DialogInput.class);
     }
 
@@ -74,7 +74,7 @@ public class CreateDialogInputControl extends ControlAttributes {
      *
      * @return the element type of the dialog
      */
-    @Nonnull
+    @NotNull
     @Override
     public ElementType createType() {
         return new ControlType(getAttributes());

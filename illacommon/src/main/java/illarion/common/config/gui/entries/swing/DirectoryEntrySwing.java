@@ -20,9 +20,9 @@ import illarion.common.config.entries.DirectoryEntry;
 import illarion.common.config.gui.entries.SavableEntry;
 import illarion.common.util.MessageSource;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -69,7 +69,7 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
              * regular expressions. Also it allows the directories to be shown.
              */
             @Override
-            public boolean accept(@Nonnull File f) {
+            public boolean accept(@NotNull File f) {
                 return f.isDirectory();
             }
 
@@ -87,19 +87,19 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
         /**
          * The entry that is used as data source for the file chooser.
          */
-        @Nonnull
+        @NotNull
         private final DirectoryEntry cfgEntry;
 
         /**
          * The source that is used to fetch the texts displayed in this entry.
          */
-        @Nonnull
+        @NotNull
         private final MessageSource messageSource;
 
         /**
          * The file entry that is the parent of this class instance.
          */
-        @Nonnull
+        @NotNull
         private final DirectoryEntrySwing parentEntry;
 
         /**
@@ -113,8 +113,8 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
          * @param msgSource the message source used as source for all texts
          * displayed in this dialog
          */
-        public ButtonListener(@Nonnull DirectoryEntrySwing fileEntry, @Nonnull DirectoryEntry cfg,
-                              @Nonnull MessageSource msgSource) {
+        public ButtonListener(@NotNull DirectoryEntrySwing fileEntry, @NotNull DirectoryEntry cfg,
+                              @NotNull MessageSource msgSource) {
             cfgEntry = cfg;
             parentEntry = fileEntry;
             messageSource = msgSource;
@@ -156,13 +156,13 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
     /**
      * The text entry used to initialize this instance.
      */
-    @Nonnull
+    @NotNull
     private final DirectoryEntry entry;
 
     /**
      * The area that displays the selected folder.
      */
-    @Nonnull
+    @NotNull
     private final JTextField input;
 
     /**
@@ -171,7 +171,7 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
      * @param usedEntry the entry used to setup this class, the entry needs to pass the check with the static method
      * @param messageSource the message source that is used to fetch the texts displayed in this entry
      */
-    public DirectoryEntrySwing(@Nonnull ConfigEntry usedEntry, @Nonnull MessageSource messageSource) {
+    public DirectoryEntrySwing(@NotNull ConfigEntry usedEntry, @NotNull MessageSource messageSource) {
         super(new BorderLayout(10, 0));
         if (!isUsableEntry(usedEntry)) {
             throw new IllegalArgumentException("ConfigEntry type illegal.");
@@ -215,7 +215,7 @@ public final class DirectoryEntrySwing extends JPanel implements SavableEntry {
      *
      * @param newValue the new value that is set from now on
      */
-    void setCurrentValue(@Nonnull Path newValue) {
+    void setCurrentValue(@NotNull Path newValue) {
         if (Files.isDirectory(newValue)) {
             currentValue = newValue;
             input.setText(newValue.toAbsolutePath().toString());

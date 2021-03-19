@@ -20,6 +20,8 @@ import illarion.client.world.World;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.Rectangle;
 import illarion.common.util.FastMath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.*;
@@ -27,12 +29,8 @@ import org.illarion.engine.graphic.effects.HighlightEffect;
 import org.illarion.engine.graphic.effects.TextureEffect;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The entity is a object that is shown in the game. It contains a sprite and possibly a frame animation. Also it
@@ -43,13 +41,12 @@ import javax.annotation.concurrent.NotThreadSafe;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public abstract class AbstractEntity<T extends AbstractEntityTemplate>
         implements DisplayItem, AlphaHandler, AnimatedFrame {
     /**
      * The default light that is used in the client.
      */
-    @Nonnull
+    @NotNull
     protected static final Color DEFAULT_LIGHT = Color.WHITE;
     /**
      * The speed value for fading the alpha values by default.
@@ -59,36 +56,36 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      * The color value of the alpha when the object is faded out fully.
      */
     private static final int FADE_OUT_ALPHA = (int) (0.4f * 255);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_HIGHLIGHT_STRONG = new ImmutableColor(1.f, 1.f, 1.f, 0.25f);
-    @Nonnull
+    @NotNull
     private static final Color COLOR_HIGHLIGHT_WEAK = new ImmutableColor(1.f, 1.f, 1.f, 0.05f);
     /**
      * The logging instance of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEntity.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The light value that is used to render this entity during the next render loop.
      */
-    @Nonnull
+    @NotNull
     private final Color renderLight = new Color(Color.WHITE);
     /**
      * This color is the color that was used last time to render the entity. Its used to check if the color changed and
      * the entity needs to be rendered again.
      */
-    @Nonnull
+    @NotNull
     private final Color lastRenderLight = new Color(Color.WHITE);
     /**
      * The template of this instance.
      */
-    @Nonnull
+    @NotNull
     private final T template;
-    @Nonnull
+    @NotNull
     private final Color tempLight = new Color(Color.WHITE);
-    @Nonnull
+    @NotNull
     private final Rectangle displayRect = new Rectangle();
-    @Nonnull
+    @NotNull
     private final Rectangle interactionRect = new Rectangle();
     /**
      * The alpha listener that is supposed to receive a message in case the alpha value of this entity changed.
@@ -120,7 +117,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      * object is displayed with its real colors or the ambient light of the weather that ensures that the object is
      * colored for the display on the map.
      */
-    @Nonnull
+    @NotNull
     private Color localLight;
     /**
      * The color that is used to overwrite the real color of this entity.
@@ -145,7 +142,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
     private HighlightEffect highlightEffect;
     private boolean fadingCorridorEffect;
 
-    protected AbstractEntity(@Nonnull T template) {
+    protected AbstractEntity(@NotNull T template) {
         this.template = template;
         baseColor = template.getDefaultColor();
         localLight = new Color(Color.WHITE);
@@ -156,13 +153,13 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
         return affectedByFC;
     }
 
-    @Nonnull
+    @NotNull
     public T getTemplate() {
         return template;
     }
 
     @Override
-    public void addAlphaChangeListener(@Nonnull AlphaChangeListener listener) {
+    public void addAlphaChangeListener(@NotNull AlphaChangeListener listener) {
         if (removedEntity) {
             LOGGER.warn("Adding a alpha listener to a removed entity is not allowed.");
             return;
@@ -283,15 +280,15 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
         return (getAlpha() > 0) && Camera.getInstance().requiresUpdate(displayRect);
     }
 
-    protected void renderSprite(@Nonnull Graphics g, int x, int y, @Nonnull Color light,
-                                @Nonnull TextureEffect... effects) {
+    protected void renderSprite(@NotNull Graphics g, int x, int y, @NotNull Color light,
+                                @NotNull TextureEffect... effects) {
         g.drawSprite(template.getSprite(), x, y, light, getCurrentFrame(), getScale(), 0.f, effects);
     }
 
     /**
      * The current location on the screen this object is displayed yet.
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public final DisplayCoordinate getDisplayCoordinate() {
         if (displayCoordinate == null) {
@@ -305,7 +302,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @return the light this entity uses at the rendering functions
      */
-    @Nonnull
+    @NotNull
     public final Color getLight() {
         return localLight;
     }
@@ -316,7 +313,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @param light the new light that shall be used by this entity
      */
-    public void setLight(@Nonnull Color light) {
+    public void setLight(@NotNull Color light) {
         if (removedEntity) {
             LOGGER.warn("Changing the light of a removed entity is not allowed.");
             return;
@@ -375,7 +372,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      * delta time that is supplied to this function.
      */
     @Override
-    public void render(@Nonnull Graphics graphics) {
+    public void render(@NotNull Graphics graphics) {
         if (performRendering()) {
             DisplayCoordinate dc = getDisplayCoordinate();
             int renderLocX = dc.getX();
@@ -461,7 +458,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
     }
 
     @Override
-    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @NotNull SceneEvent event) {
         return false;
     }
 
@@ -549,7 +546,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @param coordinate the new location on the screen.
      */
-    public void setScreenPos(@Nonnull DisplayCoordinate coordinate) {
+    public void setScreenPos(@NotNull DisplayCoordinate coordinate) {
         if (removedEntity) {
             LOGGER.warn("Changing the screen position of a removed entity is not allowed.");
             return;
@@ -570,7 +567,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
         return getInteractionRect().isInside(mouseXonDisplay, mouseYonDisplay);
     }
 
-    protected final boolean isMouseInInteractionRect(@Nonnull Input input) {
+    protected final boolean isMouseInInteractionRect(@NotNull Input input) {
         return isMouseInInteractionRect(input.getMouseX(), input.getMouseY());
     }
 
@@ -603,7 +600,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @return the local light of this entity
      */
-    @Nonnull
+    @NotNull
     public Color getLocalLight() {
         Color parentLight = getParentLight();
         if (parentLight == null) {
@@ -622,7 +619,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @return the interactive area of the object
      */
-    @Nonnull
+    @NotNull
     public final Rectangle getInteractionRect() {
         if (displayRect.isEmpty()) {
             return displayRect;
@@ -642,7 +639,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
      *
      * @return the current display rectangle
      */
-    @Nonnull
+    @NotNull
     public final Rectangle getDisplayRect() {
         return displayRect;
     }
@@ -693,13 +690,13 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
         /**
          * The first listener to get the event.
          */
-        @Nonnull
+        @NotNull
         private final AlphaChangeListener listener1;
 
         /**
          * The second listener to get the event.
          */
-        @Nonnull
+        @NotNull
         private final AlphaChangeListener listener2;
 
         /**
@@ -708,7 +705,7 @@ public abstract class AbstractEntity<T extends AbstractEntityTemplate>
          * @param l1 the first listener to get the message
          * @param l2 the second listener to get the message
          */
-        private AlphaChangeListenerMultiCast(@Nonnull AlphaChangeListener l1, @Nonnull AlphaChangeListener l2) {
+        private AlphaChangeListenerMultiCast(@NotNull AlphaChangeListener l1, @NotNull AlphaChangeListener l2) {
             listener1 = l1;
             listener2 = l2;
         }

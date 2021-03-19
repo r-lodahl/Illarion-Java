@@ -23,9 +23,9 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.illarion.engine.backend.shared.AbstractTextureManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the texture manager that takes care of loading and storing textures that were created for libGDX.
@@ -35,28 +35,28 @@ import javax.annotation.Nullable;
 class GdxTextureManager extends AbstractTextureManager<Pixmap> {
     @Override
     @Nullable
-    protected Pixmap loadTextureData(@Nonnull String textureName) {
+    protected Pixmap loadTextureData(@NotNull String textureName) {
         try {
             FileHandle fileH = Gdx.files.classpath(textureName);
             if (!fileH.exists()) {
                 return null;
             }
             return new Pixmap(fileH);
-        } catch (@Nonnull Exception ignored) {
+        } catch (@NotNull Exception ignored) {
             return null;
         }
     }
 
     @Nullable
     @Override
-    protected GdxTexture loadTexture(@Nonnull String resource, @Nonnull Pixmap preLoadData) {
+    protected GdxTexture loadTexture(@NotNull String resource, @NotNull Pixmap preLoadData) {
         try {
             Texture tex = new Texture(preLoadData, false);
             tex.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
             TextureRegion region = new TextureRegion(tex);
             region.flip(false, false);
             return new GdxTexture(region);
-        } catch (@Nonnull GdxRuntimeException e) {
+        } catch (@NotNull GdxRuntimeException e) {
             return null;
         }
     }

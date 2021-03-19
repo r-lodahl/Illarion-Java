@@ -25,11 +25,11 @@ import illarion.easynpc.parsed.talk.consequences.ConsequenceArena.Task;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,13 +41,13 @@ import java.util.Map;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class Utils {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Utils() {
     }
 
-    @Nonnull
+    @NotNull
     static String getString(@Nullable ParseTree node) {
         if (node == null) {
             LOGGER.warn("Node for string not found.");
@@ -98,9 +98,9 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     private static <T extends Enum<T>> T getEnumValue(
-            @Nullable ParserRuleContext node, @Nonnull Class<T> enumClass, @Nonnull T defaultValue) {
+            @Nullable ParserRuleContext node, @NotNull Class<T> enumClass, @NotNull T defaultValue) {
         if (node == null) {
             LOGGER.warn("Expected node for enumerator {} not found.", enumClass.getSimpleName());
             return defaultValue;
@@ -115,7 +115,7 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static Task getArenaTask(@Nullable ArenaTaskContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for arena task not found.");
@@ -135,42 +135,42 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static CharacterRace getRace(@Nullable RaceContext node) {
         return getEnumValue(node, CharacterRace.class, CharacterRace.human);
     }
 
-    @Nonnull
+    @NotNull
     static CharacterSex getSex(@Nullable GenderContext node) {
         return getEnumValue(node, CharacterSex.class, CharacterSex.male);
     }
 
-    @Nonnull
+    @NotNull
     static CharacterLanguage getCharacterLanguage(@Nullable CharLanguageContext node) {
         return getEnumValue(node, CharacterLanguage.class, CharacterLanguage.common);
     }
 
-    @Nonnull
+    @NotNull
     static PlayerLanguage getPlayerLanguage(@Nullable LanguageContext node) {
         return getEnumValue(node, PlayerLanguage.class, PlayerLanguage.english);
     }
 
-    @Nonnull
+    @NotNull
     static NpcBaseState getTalkState(@Nullable TalkstateGetContext node) {
         return getEnumValue(node, NpcBaseState.class, NpcBaseState.idle);
     }
 
-    @Nonnull
+    @NotNull
     static NpcBaseStateToggle getTalkState(@Nullable TalkstateSetContext node) {
         return getEnumValue(node, NpcBaseStateToggle.class, NpcBaseStateToggle.begin);
     }
 
-    @Nonnull
+    @NotNull
     static CharacterDirection getDirection(@Nullable DirectionContext node) {
         return getEnumValue(node, CharacterDirection.class, CharacterDirection.north);
     }
 
-    @Nonnull
+    @NotNull
     static Towns getTown(@Nullable TownContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for town not found.");
@@ -186,7 +186,7 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static Color getColor(@Nullable ColorContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for color not found.");
@@ -199,12 +199,12 @@ final class Utils {
         return new Color(red, green, blue);
     }
 
-    @Nonnull
+    @NotNull
     static CharacterAttribute getAttribute(@Nullable AttributeContext node) {
         return getEnumValue(node, CharacterAttribute.class, CharacterAttribute.strength);
     }
 
-    @Nonnull
+    @NotNull
     static CompareOperators getOperator(@Nullable CompareContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for compare not found.");
@@ -230,7 +230,7 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static CalculationOperators getOperator(@Nullable SetContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for set not found.");
@@ -250,7 +250,7 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static AdvancedNumber getAdvancedNumber(@Nullable AdvancedNumberContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for advanced number not found.");
@@ -304,7 +304,7 @@ final class Utils {
         return item;
     }
 
-    @Nonnull
+    @NotNull
     static TalkingMode getTalkMode(@Nullable ParseTree node) {
         if (node == null) {
             LOGGER.warn("Expected node for talking mode not found.");
@@ -321,12 +321,12 @@ final class Utils {
         }
     }
 
-    @Nonnull
+    @NotNull
     static CharacterMagicType getMagicType(@Nullable MagictypeContext node) {
         return getEnumValue(node, CharacterMagicType.class, CharacterMagicType.nomagic);
     }
 
-    @Nonnull
+    @NotNull
     static CharacterMagicType getMagicType(@Nullable MagictypeWithRunesContext node) {
         return getEnumValue(node, CharacterMagicType.class, CharacterMagicType.nomagic);
     }
@@ -382,7 +382,7 @@ final class Utils {
         return skill;
     }
 
-    @Nonnull
+    @NotNull
     static Map<String, String> getItemDataOpt(@Nullable ItemDataListContext node) {
         if (node == null) {
             return Collections.emptyMap();
@@ -390,7 +390,7 @@ final class Utils {
         return getItemData(node);
     }
 
-    @Nonnull
+    @NotNull
     static Map<String, String> getItemData(@Nullable ItemDataListContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for item data not found.");
@@ -406,7 +406,7 @@ final class Utils {
     }
 
     private static void getItemDataEntry(
-            @Nullable ItemDataContext node, @Nonnull Map<String, String> storage) {
+            @Nullable ItemDataContext node, @NotNull Map<String, String> storage) {
         if (node == null) {
             LOGGER.warn("Expected node for item data entry not found.");
             return;
@@ -431,7 +431,7 @@ final class Utils {
         return getInteger(node.INT());
     }
 
-    @Nonnull
+    @NotNull
     static ItemPositions getItemPosition(@Nullable ItemPosContext node) {
         return getEnumValue(node, ItemPositions.class, ItemPositions.all);
     }
@@ -445,7 +445,7 @@ final class Utils {
         return getInteger(node.INT());
     }
 
-    @Nonnull
+    @NotNull
     static ServerCoordinate getLocation(@Nullable LocationContext node) {
         if (node == null) {
             LOGGER.warn("Expected node for location not found.");
@@ -472,8 +472,8 @@ final class Utils {
         return value;
     }
 
-    @Nonnull
-    private static String removeQuotes(@Nonnull String string) {
+    @NotNull
+    private static String removeQuotes(@NotNull String string) {
         if ((string.charAt(0) == '"') && (string.charAt(string.length() - 1) == '"')) {
             return string.substring(1, string.length() - 1);
         }

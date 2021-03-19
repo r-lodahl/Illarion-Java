@@ -17,10 +17,9 @@ package org.illarion.nifty.controls;
 
 import de.lessvoid.nifty.controls.Window;
 import illarion.common.types.Rectangle;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.Collection;
 
 /**
@@ -28,21 +27,20 @@ import java.util.Collection;
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@NotThreadSafe
 public interface DialogMerchant extends Window {
     /**
      * Add all items in the supplied list to the list of items sold by the NPC.
      *
      * @param entries the list of entries to add to the list of sold items
      */
-    void addAllSellingItems(@Nonnull Collection<MerchantListEntry> entries);
+    void addAllSellingItems(@NotNull Collection<MerchantListEntry> entries);
 
     /**
      * Add all items in the supplied list to the list of items bought by the NPC.
      *
      * @param entries the list of entries to add to the list of bought items
      */
-    void addAllBuyingItems(@Nonnull Collection<MerchantListEntry> entries);
+    void addAllBuyingItems(@NotNull Collection<MerchantListEntry> entries);
 
     /**
      * Set the ID of the dialog.
@@ -92,14 +90,14 @@ public interface DialogMerchant extends Window {
      *
      * @param entry the item to add
      */
-    void addSellingItem(@Nonnull MerchantListEntry entry);
+    void addSellingItem(@NotNull MerchantListEntry entry);
 
     /**
      * Add a item to the list of items the trader is buying.
      *
      * @param entry the item to add
      */
-    void addBuyingItem(@Nonnull MerchantListEntry entry);
+    void addBuyingItem(@NotNull MerchantListEntry entry);
 
     /**
      * Remove all items from both the buying and the selling list.
@@ -112,6 +110,6 @@ public interface DialogMerchant extends Window {
      * @param entry the entry
      * @return the render area
      */
-    @Nonnull
-    Rectangle getRenderAreaForEntry(@Nonnull MerchantListEntry entry);
+    @NotNull
+    Rectangle getRenderAreaForEntry(@NotNull MerchantListEntry entry);
 }

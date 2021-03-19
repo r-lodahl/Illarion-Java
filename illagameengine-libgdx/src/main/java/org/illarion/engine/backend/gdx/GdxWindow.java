@@ -1,7 +1,6 @@
 package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.illarion.engine.Window;
 import org.illarion.engine.graphic.ResolutionManager;

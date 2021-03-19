@@ -16,10 +16,9 @@
 package illarion.common.types;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.Serializable;
 
 /**
@@ -27,7 +26,6 @@ import java.io.Serializable;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class Rectangle implements Serializable {
     /**
      * Serialization UID of this rectangle class.
@@ -64,7 +62,7 @@ public final class Rectangle implements Serializable {
         set(x, y, width, height);
     }
 
-    public Rectangle(@Nonnull Rectangle other) {
+    public Rectangle(@NotNull Rectangle other) {
         x0 = other.x0;
         x1 = other.x1;
         y0 = other.y0;
@@ -76,7 +74,7 @@ public final class Rectangle implements Serializable {
      *
      * @param other the rectangle that shall be added to the current instance
      */
-    public void add(@Nonnull Rectangle other) {
+    public void add(@NotNull Rectangle other) {
         if (isEmpty()) {
             set(other);
             return;
@@ -253,7 +251,7 @@ public final class Rectangle implements Serializable {
      * @param other the second rectangle
      * @return {@code true} in case there is an intersection
      */
-    public boolean intersects(@Nonnull Rectangle other) {
+    public boolean intersects(@NotNull Rectangle other) {
         if ((x0 > other.x1) || (x1 < other.x0)) {
             return false;
         }
@@ -312,7 +310,7 @@ public final class Rectangle implements Serializable {
      *
      * @param org the rectangle that shall be copied
      */
-    public void set(@Nonnull Rectangle org) {
+    public void set(@NotNull Rectangle org) {
         x0 = org.x0;
         x1 = org.x1;
         y0 = org.y0;
@@ -330,7 +328,7 @@ public final class Rectangle implements Serializable {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return String.format("Rectangle(x:%1$d y:%2$d w:%3$d h:%4$d)", getX(), getY(), getWidth(), getHeight());

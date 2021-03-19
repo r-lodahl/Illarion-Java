@@ -18,24 +18,19 @@ package illarion.client;
 import illarion.client.net.NetComm;
 import illarion.client.net.client.LoginCmd;
 import illarion.client.util.GlobalExecutorService;
-import illarion.client.util.Lang;
 import illarion.client.world.World;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -48,13 +43,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.security.spec.KeySpec;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -67,14 +60,14 @@ public enum Login {
     /**
      * The instance of the logger that is used write the log output of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * The string that defines the name of a error node
      */
     private static final String NODE_NAME_ERROR = "error";
 
-    @Nonnull
+    @NotNull
     private final List<CharEntry> charList = new ArrayList<>();
 
     @Nullable
@@ -83,10 +76,10 @@ public enum Login {
 
 
 
-    @Nonnull
+    @NotNull
     private Servers currentServer = Servers.Illarionserver;
 
-    @Nonnull
+    @NotNull
     private LoginData[] loginData = new LoginData[0];
 
     /**
@@ -239,7 +232,7 @@ public enum Login {
      *
      * @param password the password that stall be stored to the configuration file
      */
-    private void storePassword(@Nonnull String password) {
+    private void storePassword(@NotNull String password) {
         if (currentServer == Servers.Customserver) {
             IllaClient.getConfig().set("customSavePassword", true);
             IllaClient.getConfig().set("customFingerprint", shufflePassword(password, false));
@@ -269,7 +262,7 @@ public enum Login {
 
 
 
-    @Nonnull
+    @NotNull
     public List<CharEntry> getCharacterList() {
         return Collections.unmodifiableList(charList);
     }
@@ -313,7 +306,7 @@ public enum Login {
         return loginCharacter;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private String getPassword() {
         return loginData[currentServer.getServerKey()].password;
@@ -330,7 +323,7 @@ public enum Login {
      * @param root The XML document to read
      * @param resultCallback
      */
-    private void readXML(@Nonnull Node root, @Nonnull RequestCharListCallback resultCallback) {
+    private void readXML(@NotNull Node root, @NotNull RequestCharListCallback resultCallback) {
         // If the Node is neither the "chars" doc nor "error", recursively call on each child node
         if (!"chars".equals(root.getNodeName()) && !NODE_NAME_ERROR.equals(root.getNodeName())) {
             NodeList children = root.getChildNodes();
@@ -367,11 +360,11 @@ public enum Login {
         resultCallback.finishedRequest(0);
     }
 
-    public void requestCharacterList(@Nonnull RequestCharListCallback resultCallback) {
+    public void requestCharacterList(@NotNull RequestCharListCallback resultCallback) {
         GlobalExecutorService.getService().submit(new RequestCharacterListTask(resultCallback));
     }
 
-    private void requestCharacterListInternal(@Nonnull RequestCharListCallback resultCallback) {
+    private void requestCharacterListInternal(@NotNull RequestCharListCallback resultCallback) {
         String serverURI = IllaClient.DEFAULT_SERVER.getServerHost();
         try {
             URL requestURL = new URL("https://" + serverURI + "/account/xml_charlist.php");
@@ -407,10 +400,10 @@ public enum Login {
             Document doc = db.parse(conn.getInputStream());
             // Interprets the server's XML
             readXML(doc, resultCallback);
-        } catch (@Nonnull UnknownHostException e) {
+        } catch (@NotNull UnknownHostException e) {
             resultCallback.finishedRequest(2);
             LOGGER.error("Failed to resolve hostname, for fetching the charlist");
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             resultCallback.finishedRequest(2);
             LOGGER.error("Loading the charlist from the server failed");
         }
@@ -424,8 +417,8 @@ public enum Login {
      * @param decode false for encoding the password, true for decoding.
      * @return the encoded or the decoded password
      */
-    @Nonnull
-    private static String shufflePassword(@Nonnull String pw, boolean decode) {
+    @NotNull
+    private static String shufflePassword(@NotNull String pw, boolean decode) {
         try {
             Charset usedCharset = StandardCharsets.UTF_8;
             // creating the key
@@ -445,7 +438,7 @@ public enum Login {
             byte[] cleartext = pw.getBytes(usedCharset);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return new String(Base64.getEncoder().encode(cipher.doFinal(cleartext)), usedCharset);
-        } catch (@Nonnull GeneralSecurityException | IllegalArgumentException e) {
+        } catch (@NotNull GeneralSecurityException | IllegalArgumentException e) {
             if (decode) {
                 LOGGER.warn("Decoding the password failed");
             } else {
@@ -464,16 +457,16 @@ public enum Login {
      * Internal class to hold the name and status of each character to display for selection
      */
     public static final class CharEntry {
-        @Nonnull
+        @NotNull
         private final String charName;
         private final int charStatus;
 
-        public CharEntry(@Nonnull String name, int status) {
+        public CharEntry(@NotNull String name, int status) {
             charName = name;
             charStatus = status;
         }
 
-        @Nonnull
+        @NotNull
         public String getName() {
             return charName;
         }
@@ -484,10 +477,10 @@ public enum Login {
     }
 
     private final class RequestCharacterListTask implements Callable<Void> {
-        @Nonnull
+        @NotNull
         private final RequestCharListCallback callback;
 
-        private RequestCharacterListTask(@Nonnull RequestCharListCallback callback) {
+        private RequestCharacterListTask(@NotNull RequestCharListCallback callback) {
             this.callback = callback;
         }
 

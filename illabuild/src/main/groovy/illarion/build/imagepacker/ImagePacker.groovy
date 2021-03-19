@@ -40,7 +40,7 @@ import static java.awt.image.DataBuffer.TYPE_BYTE
  *
  * @author Martin Karing &ltnitram@illarion.org&gt
  */
-public final class ImagePacker implements Comparator<TextureElement> {
+final class ImagePacker implements Comparator<TextureElement> {
     /**
      * The color models that are used for the different kinds of textures.
      */
@@ -80,7 +80,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
     /**
      * The executor service that runs the reading operation of the sprites concurrent.
      */
-    private def ExecutorService execService
+    private ExecutorService execService
 
     /**
      * This variable is used to synchronize the access to the analysis state
@@ -148,27 +148,27 @@ public final class ImagePacker implements Comparator<TextureElement> {
     /**
      * The source directory
      */
-    private final def File srcDir;
+    private final File srcDir
 
     /**
      * The used logging instance.
      */
     @Nonnull
-    private final Logger logger;
+    private final Logger logger
 
     /**
      * Constructor for a image packer. Sets up all needed lists to handle the
      * packing of the images
      */
     @SuppressWarnings("unchecked")
-    public ImagePacker(final File srcDir, @Nonnull final Logger logger) {
-        this.logger = logger;
+    ImagePacker(final File srcDir, @Nonnull final Logger logger) {
+        this.logger = logger
         images = new List[4]
         for (int i in 0..<images.size()) {
             images[i] = new ArrayList<Sprite>()
         }
 
-        this.srcDir = srcDir;
+        this.srcDir = srcDir
     }
 
     static {
@@ -187,7 +187,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
      *
      * @param file the entry that defines the location of the source file
      */
-    public void addImages(final Collection<File> files) {
+    void addImages(final Collection<File> files) {
         def defer = { c -> getExecService().submit(c as Callable) }
         files.each { file ->
             defer { processAddImage(file) }
@@ -195,7 +195,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
     }
 
     @Override
-    public int compare(@Nonnull final TextureElement o1, @Nonnull final TextureElement o2) {
+    int compare(@Nonnull final TextureElement o1, @Nonnull final TextureElement o2) {
         return FastMath.sign(o2.height - o1.height)
     }
 
@@ -205,7 +205,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
      *
      * @return true if we are all done, false if not
      */
-    public boolean isEverythingDone() {
+    boolean isEverythingDone() {
         !images.any { imgCollection -> !imgCollection?.empty }
     }
 
@@ -220,7 +220,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
      */
     @Nullable
     @SuppressWarnings("nls")
-    public BufferedImage packImages(@Nonnull final MarkupBuilder defBuilder) throws IOException {
+    BufferedImage packImages(@Nonnull final MarkupBuilder defBuilder) throws IOException {
         logger.info("Packing images")
         shutdownExecutionService()
 
@@ -228,14 +228,14 @@ public final class ImagePacker implements Comparator<TextureElement> {
         def types = [TYPE_RGBA, TYPE_RGB, TYPE_GREY_ALPHA, TYPE_GREY] as int[]
         for (type in types) {
             if (images[type] != null && !images[type].empty) {
-                targetType = type;
-                break;
+                targetType = type
+                break
             }
         }
 
         if (targetType == -1) {
             logger.info("All images done.")
-            return null;
+            return null
         }
 
         def currType = targetType
@@ -346,7 +346,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
             images[currType].removeAll(usedImages)
 
             usedImages.each { image ->
-                String imageName = image.name;
+                String imageName = image.name
 
                 if (imageName.startsWith(srcDir.absolutePath)) {
                     imageName = imageName.replace(srcDir.absolutePath, "")
@@ -362,7 +362,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
             usedImages.clear()
 
             if (![spacesWidth, spacesHeight].any { spaceList -> !spaceList.empty }) {
-                break;
+                break
             }
 
             if (targetType == TYPE_RGBA) {
@@ -622,7 +622,7 @@ public final class ImagePacker implements Comparator<TextureElement> {
             while (true) {
                 try {
                     if (execService.awaitTermination(2, TimeUnit.HOURS)) {
-                        break;
+                        break
                     }
                 } catch (ignored) {
                 }
@@ -638,10 +638,10 @@ public final class ImagePacker implements Comparator<TextureElement> {
      * Print out information about the detected texture groupings.
      */
     @SuppressWarnings("nls")
-    public void printTypeCounts() {
+    void printTypeCounts() {
         shutdownExecutionService()
 
-        images.eachWithIndex { entry, index -> logger.info("${typeToName(index)} textures: ${entry.size()}") };
+        images.eachWithIndex { entry, index -> logger.info("${typeToName(index)} textures: ${entry.size()}") }
     }
 
     /**

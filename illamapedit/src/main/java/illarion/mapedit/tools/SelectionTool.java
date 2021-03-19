@@ -19,10 +19,10 @@ import illarion.mapedit.Lang;
 import illarion.mapedit.data.Map;
 import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.tools.panel.SelectionPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -31,7 +31,7 @@ import javax.swing.*;
  * @author Fredrik K
  */
 public class SelectionTool extends AbstractTool {
-    @Nonnull
+    @NotNull
     protected SelectionPanel panel;
 
     public SelectionTool() {
@@ -39,7 +39,7 @@ public class SelectionTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         int radius = panel.getRadius();
         for (int i = (x - radius) + 1; i <= ((x + radius) - 1); i++) {
             for (int j = (y - radius) + 1; j <= ((y + radius) - 1); j++) {
@@ -83,7 +83,7 @@ public class SelectionTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, GroupAction action) {
         if (map.contains(x, y)) {
             map.setSelected(x, y, !panel.isDeselectChecked());
         }

@@ -19,9 +19,9 @@ import illarion.client.world.World;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class is used to store the current inventory of the player character.
@@ -37,7 +37,7 @@ public final class Inventory {
     /**
      * The items stored in this inventory.
      */
-    @Nonnull
+    @NotNull
     private final InventorySlot[] slots;
 
     /**
@@ -58,7 +58,7 @@ public final class Inventory {
      * @return the item in the slot
      * @throws IndexOutOfBoundsException in case {@code slot} is outside of the valid range
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public InventorySlot getItem(int slot) {
         return slots[slot];

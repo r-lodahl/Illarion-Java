@@ -19,9 +19,9 @@ import illarion.mapedit.events.ItemDataAddedEvent;
 import illarion.mapedit.events.ItemDataRemovedEvent;
 import illarion.mapedit.events.ItemItemDataChangedEvent;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public class ItemDataTableModel extends AbstractTableModel {
     private static final Pattern PATTERN_DATA = Pattern.compile("(?:\\\\.|[^=\\\\]++)*");
 
     private final String[] columnNames = {"Key", "Value"};
-    @Nonnull
+    @NotNull
     private final List<String> data;
 
     /**
@@ -45,7 +45,7 @@ public class ItemDataTableModel extends AbstractTableModel {
      *
      * @param data List with key=value data as strings
      */
-    public ItemDataTableModel(@Nonnull List<String> data) {
+    public ItemDataTableModel(@NotNull List<String> data) {
         this.data = new ArrayList<>(data);
     }
 
@@ -88,8 +88,8 @@ public class ItemDataTableModel extends AbstractTableModel {
         return dataKeyVal[col];
     }
 
-    @Nonnull
-    private static String[] split(@Nonnull CharSequence line) {
+    @NotNull
+    private static String[] split(@NotNull CharSequence line) {
         Matcher regexMatcher = PATTERN_DATA.matcher(line);
         List<String> matches = new LinkedList<>();
         while (regexMatcher.find()) {
@@ -133,7 +133,7 @@ public class ItemDataTableModel extends AbstractTableModel {
      *
      * @param dataList List with key=value data as strings
      */
-    public void setData(@Nonnull Collection<String> dataList) {
+    public void setData(@NotNull Collection<String> dataList) {
         data.clear();
         data.addAll(dataList);
     }

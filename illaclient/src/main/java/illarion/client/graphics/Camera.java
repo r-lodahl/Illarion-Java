@@ -17,8 +17,8 @@ package illarion.client.graphics;
 
 import illarion.common.types.Rectangle;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This helper class is used to hide out all parts of the game map that are not needed to be viewed.
@@ -29,13 +29,13 @@ public final class Camera {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final Camera INSTANCE = new Camera();
 
     /**
      * This rectangle stores the viewport of the camera. Anything outside of this viewport does not need to be drawn.
      */
-    @Nonnull
+    @NotNull
     private final Rectangle viewport;
 
     /**
@@ -50,7 +50,7 @@ public final class Camera {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static Camera getInstance() {
         return INSTANCE;
     }
@@ -119,7 +119,7 @@ public final class Camera {
      * @return {@code true} in case there is no clipping area set or the tested area is at least partly within the
      * clipping area, if its fully outside {@code false} is returned
      */
-    public boolean requiresUpdate(@Nonnull Rectangle rect) {
+    public boolean requiresUpdate(@NotNull Rectangle rect) {
         return !(!viewport.intersects(rect) || rect.isEmpty());
     }
 
@@ -135,7 +135,7 @@ public final class Camera {
         viewport.set(x, y, width, height);
     }
 
-    @Nonnull
+    @NotNull
     public Rectangle getViewport() {
         return viewport;
     }

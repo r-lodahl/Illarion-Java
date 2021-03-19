@@ -16,10 +16,10 @@
 package illarion.mapedit.resource;
 
 import illarion.mapedit.util.OggPlayer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class Song implements Comparable<Song> {
     /**
      * This logger for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Song.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * Path to where songs are stored.
      */
@@ -95,7 +95,7 @@ public class Song implements Comparable<Song> {
     }
 
     @Override
-    public int compareTo(@Nonnull Song o) {
+    public int compareTo(@NotNull Song o) {
         return Integer.compare(clipID, o.getClipID());
     }
 }

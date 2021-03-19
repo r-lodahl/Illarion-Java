@@ -16,9 +16,9 @@
 package illarion.mapedit.data;
 
 import illarion.mapedit.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class AnnotationChecker {
 
-    public boolean isAnnotatedFill(@Nonnull Map map) {
+    public boolean isAnnotatedFill(@NotNull Map map) {
         List<String[]> annotatedTiles = new ArrayList<>();
         for (MapPosition pos : map.getSelectedTiles()) {
             MapTile tile = map.getTileAt(pos.getX(), pos.getY());
@@ -46,7 +46,7 @@ public class AnnotationChecker {
     }
 
     public boolean isAnnotated(
-            int x, int y, @Nonnull Map map, @Nonnull MapSelection mapSelection) {
+            int x, int y, @NotNull Map map, @NotNull MapSelection mapSelection) {
         List<String[]> annotatedTiles = new ArrayList<>();
         for (MapPosition position : mapSelection.getSelectedPositions()) {
             int newX = x + (position.getX() - mapSelection.getOffsetX());
@@ -81,8 +81,8 @@ public class AnnotationChecker {
         return shouldEditAnyway(annotatedTiles);
     }
 
-    @Nonnull
-    private static List<String[]> getAnnotatedObject(int x, int y, @Nonnull MapTile tile) {
+    @NotNull
+    private static List<String[]> getAnnotatedObject(int x, int y, @NotNull MapTile tile) {
         List<String[]> annotatedObject = new ArrayList<>();
         if (tile.hasAnnotation()) {
             String[] annoArray = {x + "", y + "", "", tile.getAnnotation()};
@@ -99,7 +99,7 @@ public class AnnotationChecker {
         return annotatedObject;
     }
 
-    private static boolean shouldEditAnyway(@Nonnull List<String[]> annotatedTiles) {
+    private static boolean shouldEditAnyway(@NotNull List<String[]> annotatedTiles) {
         String[] columnNames = {"X", "Y", "Item data", "Annotation"};
 
         String[][] dataValues = annotatedTiles.toArray(new String[annotatedTiles.size()][columnNames.length]);
@@ -118,7 +118,7 @@ public class AnnotationChecker {
     }
 
     private static class HoverCellRenderer extends DefaultTableCellRenderer {
-        @Nonnull
+        @NotNull
         @Override
         public Component getTableCellRendererComponent(
                 JTable table,

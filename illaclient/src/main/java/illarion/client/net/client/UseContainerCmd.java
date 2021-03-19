@@ -17,16 +17,13 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to tell the server that the player is using a item in a item container.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class UseContainerCmd extends AbstractCommand {
     /**
      * The ID of the container that contains the used slot.
@@ -52,13 +49,13 @@ public final class UseContainerCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte((short) 2); // CONTAINER REFERENCE
         writer.writeUByte(containerId);
         writer.writeUByte(slot);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Container: " + containerId + " Slot: " + slot);

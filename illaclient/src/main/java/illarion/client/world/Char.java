@@ -28,16 +28,15 @@ import illarion.common.graphics.CharAnimations;
 import illarion.common.graphics.Layer;
 import illarion.common.types.*;
 import illarion.common.util.FastMath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.ImmutableColor;
 import org.illarion.engine.graphic.LightSource;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
@@ -50,7 +49,6 @@ import java.util.Map;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 @SuppressWarnings("ClassNamingConvention")
-@NotThreadSafe
 public final class Char implements AnimatedMove {
     /**
      * The speed a animation runs with on default.
@@ -75,13 +73,13 @@ public final class Char implements AnimatedMove {
     /**
      * The color that is used to show dead characters.
      */
-    @Nonnull
+    @NotNull
     private static final Color DEAD_COLOR;
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Char.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * Maximal scale value for the character.
      */
@@ -93,26 +91,26 @@ public final class Char implements AnimatedMove {
     /**
      * This color is used to display the name in case the character is a player character.
      */
-    @Nonnull
+    @NotNull
     private static final Color NAME_COLOR_HUMAN = Color.YELLOW;
 
     /**
      * This color is used to display the name in case the character is a monster.
      */
-    @Nonnull
+    @NotNull
     private static final Color NAME_COLOR_MONSTER = Color.RED;
 
 
     /**
      * This color is used to display the name in case the character is a monster.
      */
-    @Nonnull
+    @NotNull
     private static final Color NAME_COLOR_PET = Color.Blue;
 
     /**
      * This color is used to display the name in case the character is a NPC.
      */
-    @Nonnull
+    @NotNull
     private static final Color NAME_COLOR_NPC = new Color(128, 179, 255);
 
     static {
@@ -122,24 +120,24 @@ public final class Char implements AnimatedMove {
     /**
      * Move animation handler for this character.
      */
-    @Nonnull
+    @NotNull
     private final MoveAnimation move;
     /**
      * A list of items this avatar wears. This list is send to the avatar at a update.
      */
-    @Nonnull
+    @NotNull
     private final Map<AvatarClothGroup, Integer> wearItems = new EnumMap<>(AvatarClothGroup.class);
     /**
      * A list of modified colors of the stuff a avatar wears.
      */
-    @Nonnull
+    @NotNull
     private final Map<AvatarClothGroup, Color> wearItemsColors = new EnumMap<>(AvatarClothGroup.class);
     /**
      * This map stores the attribute values of this character.
      */
-    @Nonnull
+    @NotNull
     private final Map<CharacterAttribute, Integer> attributes;
-    @Nonnull
+    @NotNull
     private final AvatarId avatarId;
     /**
      * The alive state of the character. {@code true} in case the character is alive.
@@ -150,11 +148,11 @@ public final class Char implements AnimatedMove {
     /**
      * The animation that is currently shown by the character.
      */
-    private int animation;
+    private final int animation;
     /**
      * Current appearance value. Depends on race and gender of the character.
      */
-    private int appearance;
+    private final int appearance;
     /**
      * Avatar of the character.
      */
@@ -246,13 +244,13 @@ public final class Char implements AnimatedMove {
         animation = CharAnimations.STAND;
     }
 
-    private static void applyPaperdollingItem(@Nullable Avatar avatar, @Nonnull AvatarClothGroup group,
+    private static void applyPaperdollingItem(@Nullable Avatar avatar, @NotNull AvatarClothGroup group,
                                               @Nullable Integer itemId) {
         int realItemId = (itemId == null) ? 0 : itemId;
         applyPaperdollingItem(avatar, group, realItemId);
     }
 
-    private static void applyPaperdollingItem(@Nullable Avatar avatar, @Nonnull AvatarClothGroup group, int itemId) {
+    private static void applyPaperdollingItem(@Nullable Avatar avatar, @NotNull AvatarClothGroup group, int itemId) {
         if (avatar != null) {
             if (itemId == 0) {
                 avatar.removeClothItem(group);
@@ -262,9 +260,9 @@ public final class Char implements AnimatedMove {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    private static DisplayCoordinate getDisplayCoordinatesAt(@Nonnull ServerCoordinate coordinate) {
+    private static DisplayCoordinate getDisplayCoordinatesAt(@NotNull ServerCoordinate coordinate) {
         int elevation = World.getMap().getElevationAt(coordinate);
         int x = coordinate.toDisplayX();
         int y = coordinate.toDisplayY() - elevation;
@@ -279,7 +277,7 @@ public final class Char implements AnimatedMove {
      * @param attribute the attribute to fetch
      * @return the value of the attribute
      */
-    public int getAttribute(@Nonnull CharacterAttribute attribute) {
+    public int getAttribute(@NotNull CharacterAttribute attribute) {
         if (removedCharacter) {
             log.warn("Fetching the attributes of a removed character.");
         }
@@ -298,7 +296,7 @@ public final class Char implements AnimatedMove {
      * @param attribute the attribute value to update
      * @param value the new value of the attribute
      */
-    public void setAttribute(@Nonnull CharacterAttribute attribute, int value) {
+    public void setAttribute(@NotNull CharacterAttribute attribute, int value) {
         if (removedCharacter) {
             return;
         }
@@ -333,7 +331,7 @@ public final class Char implements AnimatedMove {
      * @param newCharId new ID of the character
      */
     @SuppressWarnings("IfStatementWithTooManyBranches")
-    public void setCharId(@Nonnull CharacterId newCharId) {
+    public void setCharId(@NotNull CharacterId newCharId) {
         charId = newCharId;
     }
 
@@ -578,11 +576,11 @@ public final class Char implements AnimatedMove {
      * @param id the id of the item that shall be checked
      * @return {@code true} in case a item is defined and displayable
      */
-    public boolean hasWearingItem(@Nullable Avatar avatar, @Nonnull AvatarClothGroup group, int id) {
+    public boolean hasWearingItem(@Nullable Avatar avatar, @NotNull AvatarClothGroup group, int id) {
         return (id != 0) && ((avatar == null) || avatar.getTemplate().getClothes().doesClothExists(group, id));
     }
 
-    private boolean hasWearingItem(@Nullable Avatar avatar, @Nonnull AvatarClothGroup group, @Nullable Integer id) {
+    private boolean hasWearingItem(@Nullable Avatar avatar, @NotNull AvatarClothGroup group, @Nullable Integer id) {
         return hasWearingItem(avatar, group, (id == null) ? 0 : id);
     }
 
@@ -601,7 +599,7 @@ public final class Char implements AnimatedMove {
      *
      * @param avatar the avatar that is altered
      */
-    private void updatePosition(@Nullable Avatar avatar, @Nonnull DisplayCoordinate newPosition) {
+    private void updatePosition(@Nullable Avatar avatar, @NotNull DisplayCoordinate newPosition) {
         displayPos = newPosition;
 
         if (avatar != null) {
@@ -693,7 +691,7 @@ public final class Char implements AnimatedMove {
      * @param position the display position of the character
      */
     @Override
-    public void setPosition(@Nonnull DisplayCoordinate position) {
+    public void setPosition(@NotNull DisplayCoordinate position) {
         updatePosition(avatar, position);
     }
 
@@ -702,7 +700,7 @@ public final class Char implements AnimatedMove {
      *
      * @param color the new color value
      */
-    private void setNameColor(@Nonnull Color color) {
+    private void setNameColor(@NotNull Color color) {
         nameColor = color;
 
         Avatar avatar = this.avatar;
@@ -749,7 +747,7 @@ public final class Char implements AnimatedMove {
      *
      * @return the direction value
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Direction getDirection() {
         return avatarId.getDirection();
@@ -760,7 +758,7 @@ public final class Char implements AnimatedMove {
      *
      * @param newDirection the new direction value
      */
-    public void setDirection(@Nonnull Direction newDirection) {
+    public void setDirection(@NotNull Direction newDirection) {
         if (avatarId.getDirection() == newDirection) {
             log.debug("{}: Skipping direction change, because direction already matches: {}", this, newDirection);
             return;
@@ -786,7 +784,7 @@ public final class Char implements AnimatedMove {
      *
      * @return a interactive reference to this character
      */
-    @Nonnull
+    @NotNull
     public InteractiveChar getInteractive() {
         if (interactiveCharRef != null) {
             @Nullable InteractiveChar interactiveChar = interactiveCharRef.get();
@@ -831,7 +829,7 @@ public final class Char implements AnimatedMove {
      *
      * @param newLoc new location of the character
      */
-    public void setLocation(@Nonnull ServerCoordinate newLoc) {
+    public void setLocation(@NotNull ServerCoordinate newLoc) {
         if (removedCharacter) {
             log.warn("Trying to update the location of a removed character.");
             return;
@@ -853,7 +851,7 @@ public final class Char implements AnimatedMove {
      *
      * @return the name of the character
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getName() {
         if (Strings.isNullOrEmpty(name)) {
@@ -873,7 +871,7 @@ public final class Char implements AnimatedMove {
         setAvatarName();
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private String getFallbackName() {
         String key;
@@ -1017,7 +1015,7 @@ public final class Char implements AnimatedMove {
      * @param mode the mode of the move
      * @param duration the duration of the animation in milliseconds
      */
-    public void moveTo(@Nonnull ServerCoordinate newPos, @Nonnull CharMovementMode mode, int duration) {
+    public void moveTo(@NotNull ServerCoordinate newPos, @NotNull CharMovementMode mode, int duration) {
         World.getUpdateTaskManager().addTask((delta) -> moveToInternal(newPos, mode, duration));
     }
 
@@ -1034,7 +1032,7 @@ public final class Char implements AnimatedMove {
         }
     }
 
-    private void moveToInternal(@Nonnull ServerCoordinate newPos, @Nonnull CharMovementMode mode, int duration) {
+    private void moveToInternal(@NotNull ServerCoordinate newPos, @NotNull CharMovementMode mode, int duration) {
         if (mode == CharMovementMode.None) {
             return;
         }
@@ -1146,7 +1144,7 @@ public final class Char implements AnimatedMove {
         }
     }
 
-    private boolean updateLocation(@Nonnull ServerCoordinate newLocation) {
+    private boolean updateLocation(@NotNull ServerCoordinate newLocation) {
         if (newLocation.equals(location)) {
             return false;
         }
@@ -1167,7 +1165,7 @@ public final class Char implements AnimatedMove {
      *
      * @param newLoc the new location of the light source
      */
-    public void updateLight(@Nonnull ServerCoordinate newLoc) {
+    public void updateLight(@NotNull ServerCoordinate newLoc) {
         LightSource localLightSource = lightSrc;
         if (localLightSource != null) {
             World.getLights().updateLightLocation(localLightSource, newLoc);
@@ -1287,7 +1285,7 @@ public final class Char implements AnimatedMove {
      * @param group the cloth group that should be changed
      * @param color the color this part shall be displayed in
      */
-    public void setClothColor(@Nonnull AvatarClothGroup group, @Nonnull Color color) {
+    public void setClothColor(@NotNull AvatarClothGroup group, @NotNull Color color) {
         if (removedCharacter) {
             log.warn("Trying to change the cloth color of a removed character.");
             return;
@@ -1305,7 +1303,7 @@ public final class Char implements AnimatedMove {
      * @param slot the slot of the inventory
      * @param itemId the item id of the item at this slot
      */
-    public void setInventoryItem(int slot, @Nonnull ItemId itemId) {
+    public void setInventoryItem(int slot, @NotNull ItemId itemId) {
         if (removedCharacter) {
             log.warn("Trying to update the inventory of a removed character.");
             return;
@@ -1326,7 +1324,7 @@ public final class Char implements AnimatedMove {
      * @param group the group the item belongs to
      * @param id the ID of the item the character wears
      */
-    public void setWearingItem(@Nonnull AvatarClothGroup group, int id) {
+    public void setWearingItem(@NotNull AvatarClothGroup group, int id) {
         if (removedCharacter) {
             log.warn("Trying to update the worn items of a removed character.");
             return;
@@ -1409,7 +1407,7 @@ public final class Char implements AnimatedMove {
         return (obj instanceof Char) && equals((Char) obj);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         String charIdString = (charId == null) ? "" : (" (" + charId.getValue() + ')');
@@ -1422,21 +1420,21 @@ public final class Char implements AnimatedMove {
     }
 
     private static class DelayedMoveData {
-        @Nonnull
+        @NotNull
         public final CharMovementMode mode;
         public final int duration;
-        @Nonnull
+        @NotNull
         public final ServerCoordinate targetLocation;
 
-        private DelayedMoveData(@Nonnull CharMovementMode mode, int duration,
-                                @Nonnull ServerCoordinate targetLocation) {
+        private DelayedMoveData(@NotNull CharMovementMode mode, int duration,
+                                @NotNull ServerCoordinate targetLocation) {
             this.mode = mode;
             this.duration = duration;
             this.targetLocation = targetLocation;
         }
 
         @Override
-        @Nonnull
+        @NotNull
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("DelayedMoveData(");

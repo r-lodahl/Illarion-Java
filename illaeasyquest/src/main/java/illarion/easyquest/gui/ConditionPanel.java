@@ -18,9 +18,9 @@ package illarion.easyquest.gui;
 import illarion.easyquest.quest.Condition;
 import illarion.easyquest.quest.ConditionTemplate;
 import illarion.easyquest.quest.ConditionTemplates;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -28,13 +28,13 @@ import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public class ConditionPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final JComboBox<ConditionTemplate> conditionType;
-    @Nonnull
+    @NotNull
     private final JPanel parameterPanels;
-    @Nonnull
+    @NotNull
     private final JButton addCondition;
-    @Nonnull
+    @NotNull
     private final JButton removeCondition;
     private final TriggerDialog owner;
 

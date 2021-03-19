@@ -20,9 +20,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.Glyph;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Pools;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The font implementation of the libGDX backend.
@@ -33,7 +33,7 @@ class GdxFont implements Font {
     /**
      * The internal bitmap font that is used.
      */
-    @Nonnull
+    @NotNull
     private final BitmapFont bitmapFont;
 
     @Nullable
@@ -45,7 +45,7 @@ class GdxFont implements Font {
      * @param bitmapFont the bitmap font that is wrapped by this instance
      * @param outlineFont the outline font in case there is any
      */
-    GdxFont(@Nonnull BitmapFont bitmapFont, @Nullable GdxFont outlineFont) {
+    GdxFont(@NotNull BitmapFont bitmapFont, @Nullable GdxFont outlineFont) {
         this.bitmapFont = bitmapFont;
         this.outlineFont = outlineFont;
     }
@@ -61,7 +61,7 @@ class GdxFont implements Font {
     }
 
     @Override
-    public int getWidth(@Nonnull CharSequence text) {
+    public int getWidth(@NotNull CharSequence text) {
         if (text.length() == 0) { return 0; }
         GlyphLayout layout = Pools.obtain(GlyphLayout.class);
         layout.setText(bitmapFont, text);
@@ -97,7 +97,7 @@ class GdxFont implements Font {
      *
      * @return the internal font
      */
-    @Nonnull
+    @NotNull
     BitmapFont getBitmapFont() {
         return bitmapFont;
     }

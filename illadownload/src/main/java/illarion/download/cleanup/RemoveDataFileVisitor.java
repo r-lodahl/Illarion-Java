@@ -15,8 +15,9 @@
  */
 package illarion.download.cleanup;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.FileVisitResult;
@@ -32,11 +33,11 @@ import java.util.List;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class RemoveDataFileVisitor implements FileVisitor<Path> {
-    @Nonnull
+    @NotNull
     private final Deque<Boolean> removeDirectory;
     @Nullable
     private final Filter<Path> filter;
-    @Nonnull
+    @NotNull
     private final List<Path> resultList;
 
     public RemoveDataFileVisitor(@Nullable Filter<Path> filter) {
@@ -80,7 +81,7 @@ class RemoveDataFileVisitor implements FileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
-    @Nonnull
+    @NotNull
     public List<Path> getResultList() {
         return Collections.unmodifiableList(resultList);
     }

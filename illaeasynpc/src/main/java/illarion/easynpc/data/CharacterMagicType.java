@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This enumerator stores all possible types of magic types along with the
@@ -109,7 +109,7 @@ public enum CharacterMagicType {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         for (CharacterMagicType magicType : CharacterMagicType.values()) {
             map.put(magicType.getMagicTypeName(), Token.VARIABLE);
         }

@@ -27,15 +27,15 @@ import illarion.common.config.entries.SelectEntry;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.mapedit.Lang;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SkinInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
@@ -49,30 +49,30 @@ import java.util.Map;
  * @author Fredrik K
  */
 public final class MapEditorConfig {
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapEditorConfig.class);
-    @Nonnull
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
+    @NotNull
     private static final String DEFAULT_LOOK_AND_FEEL = "org.pushingpixels.substance.api.skin.OfficeSilver2007Skin";
-    @Nonnull
+    @NotNull
     private static final String[] LANGUAGES = {"English", "German", ""};
-    @Nonnull
+    @NotNull
     private static final MapEditorConfig INSTANCE = new MapEditorConfig();
     private static final int ENGLISH = 0;
     private static final int GERMAN = 1;
 
-    @Nonnull
+    @NotNull
     public static final String MAPEDIT_FOLDER = "mapeditFolder";
-    @Nonnull
+    @NotNull
     public static final String USE_WINDOW_DECO = "useWindowDeco";
-    @Nonnull
+    @NotNull
     private static final String USED_LOOK_AND_FEEL = "usedLookAndFeel";
-    @Nonnull
+    @NotNull
     public static final String USED_LANGUAGE = "usedLanguage";
-    @Nonnull
+    @NotNull
     public static final String SHOW_MAP_POSITION = "showMapPosition";
-    @Nonnull
+    @NotNull
     public static final String WINDOW_HEIGHT = "windowSizeH";
-    @Nonnull
+    @NotNull
     public static final String WINDOW_WIDTH = "windowSizeW";
 
     @Nullable
@@ -91,7 +91,7 @@ public final class MapEditorConfig {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     public static MapEditorConfig getInstance() {
         return INSTANCE;
     }
@@ -101,7 +101,7 @@ public final class MapEditorConfig {
      *
      * @return the dialog
      */
-    @Nonnull
+    @NotNull
     public ConfigDialog createDialog() {
         if (configSystem == null) {
             throw new IllegalStateException("Configuration system not initialized yet.");
@@ -197,7 +197,7 @@ public final class MapEditorConfig {
     }
 
     @EventTopicSubscriber(topic = USED_LOOK_AND_FEEL)
-    public void onConfigChanged(@Nonnull String topic, ConfigChangedEvent event) {
+    public void onConfigChanged(@NotNull String topic, ConfigChangedEvent event) {
         if (topic.equals(USED_LOOK_AND_FEEL)) {
             if (MainFrame.getInstance() != null) {
                 SubstanceLookAndFeel.setSkin(getLookAndFeel());
@@ -211,7 +211,7 @@ public final class MapEditorConfig {
      *
      * @return the class path of the look and feel that shall be used
      */
-    @Nonnull
+    @NotNull
     public String getLookAndFeel() {
         if (configSystem == null) {
             LOGGER.error("Configuration system not initialized yet.");
@@ -248,7 +248,7 @@ public final class MapEditorConfig {
      * @return a string with the path to the folder or null in case no folder is
      * set
      */
-    @Nonnull
+    @NotNull
     private static Path checkFolder() {
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         assert userDir != null;
@@ -260,7 +260,7 @@ public final class MapEditorConfig {
      *
      * @param windowSize size of the window
      */
-    public void setWindowSize(@Nonnull Dimension windowSize) {
+    public void setWindowSize(@NotNull Dimension windowSize) {
         if (configSystem == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -274,7 +274,7 @@ public final class MapEditorConfig {
      *
      * @return last saved size of the window
      */
-    @Nonnull
+    @NotNull
     public Dimension getWindowSize() {
         if (configSystem == null) {
             LOGGER.error("Configuration system not initialized yet.");
@@ -327,7 +327,7 @@ public final class MapEditorConfig {
      *
      * @param newFolder the folder where to store the maps
      */
-    public void setMapFolder(@Nonnull Path newFolder) {
+    public void setMapFolder(@NotNull Path newFolder) {
         if (configSystem == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;

@@ -19,11 +19,11 @@ import illarion.client.util.ConnectionPerformanceClock;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -32,11 +32,11 @@ import java.util.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class AStar implements PathFindingAlgorithm {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AStar.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    @Nonnull
-    private static Path buildPath(@Nonnull AStarPathNode lastNode) {
+    @NotNull
+    private static Path buildPath(@NotNull AStarPathNode lastNode) {
         LinkedList<PathNode> path = new LinkedList<>();
         @Nullable AStarPathNode nextNode = lastNode;
         while (nextNode != null) {
@@ -47,12 +47,12 @@ public final class AStar implements PathFindingAlgorithm {
     }
 
     private static void expandNode(
-            @Nonnull MoveCostProvider costProvider,
-            @Nonnull ServerCoordinate end,
+            @NotNull MoveCostProvider costProvider,
+            @NotNull ServerCoordinate end,
             @Nullable AStarPathNode nodeToExpand,
-            @Nonnull ServerCoordinate origin, @Nonnull Iterable<Direction> allowedDirections,
-            @Nonnull Collection<CharMovementMode> movementMethods,
-            @Nonnull Collection<AStarPathNode> storage) {
+            @NotNull ServerCoordinate origin, @NotNull Iterable<Direction> allowedDirections,
+            @NotNull Collection<CharMovementMode> movementMethods,
+            @NotNull Collection<AStarPathNode> storage) {
         if (movementMethods.isEmpty()) {
             throw new IllegalArgumentException("No movement methods selected. This is not valid.");
         }
@@ -91,8 +91,8 @@ public final class AStar implements PathFindingAlgorithm {
         }
     }
 
-    private static int getHeuristic(@Nonnull ServerCoordinate currentLocation,
-                                    @Nonnull ServerCoordinate targetLocation) {
+    private static int getHeuristic(@NotNull ServerCoordinate currentLocation,
+                                    @NotNull ServerCoordinate targetLocation) {
         int dX = Math.abs(currentLocation.getX() - targetLocation.getX());
         int dY = Math.abs(currentLocation.getY() - targetLocation.getY());
 
@@ -105,12 +105,12 @@ public final class AStar implements PathFindingAlgorithm {
     @Nullable
     @Override
     public Path findPath(
-            @Nonnull MoveCostProvider costProvider,
-            @Nonnull ServerCoordinate start,
-            @Nonnull ServerCoordinate end,
-            int approachDistance, @Nonnull Collection<Direction> allowedDirections,
-            @Nonnull CharMovementMode movementMethod,
-            @Nonnull CharMovementMode... movementMethods) {
+            @NotNull MoveCostProvider costProvider,
+            @NotNull ServerCoordinate start,
+            @NotNull ServerCoordinate end,
+            int approachDistance, @NotNull Collection<Direction> allowedDirections,
+            @NotNull CharMovementMode movementMethod,
+            @NotNull CharMovementMode... movementMethods) {
         if (start.equals(end)) {
             throw new IllegalArgumentException("Start and target location must not be equal.");
         }

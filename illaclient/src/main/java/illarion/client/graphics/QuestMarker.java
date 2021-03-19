@@ -24,8 +24,8 @@ import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.ImmutableColor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
     /**
      * This is the map used to store the color values for the different availability states.
      */
-    @Nonnull
+    @NotNull
     private static final Map<QuestMarkerAvailability, Color> COLOR_MAP;
 
     static {
@@ -50,12 +50,12 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
     /**
      * The tile this marker is displayed on.
      */
-    @Nonnull
+    @NotNull
     private final MapTile parentTile;
     /**
      * The availability state of this quest marker.
      */
-    @Nonnull
+    @NotNull
     private QuestMarkerAvailability availability;
     /**
      * The offset that is currently applied to the display coordinates.
@@ -68,7 +68,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
      * @param type the type of quest marker that is supposed to be created
      * @param parentTile the parent tile
      */
-    public QuestMarker(@Nonnull QuestMarkerType type, @Nonnull MapTile parentTile) {
+    public QuestMarker(@NotNull QuestMarkerType type, @NotNull MapTile parentTile) {
         this(getTemplateForType(type), parentTile);
     }
 
@@ -78,7 +78,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
      * @param template the image template
      * @param parentTile the parent tile
      */
-    public QuestMarker(@Nonnull MiscImageTemplate template, @Nonnull MapTile parentTile) {
+    public QuestMarker(@NotNull MiscImageTemplate template, @NotNull MapTile parentTile) {
         super(template);
         this.parentTile = parentTile;
 
@@ -87,8 +87,8 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
         availability = QuestMarkerAvailability.AvailableSoon;
     }
 
-    @Nonnull
-    private static MiscImageTemplate getTemplateForType(@Nonnull QuestMarkerType type) {
+    @NotNull
+    private static MiscImageTemplate getTemplateForType(@NotNull QuestMarkerType type) {
         int templateId;
         switch (type) {
             case Start:
@@ -127,7 +127,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
         super.show();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Color getLocalLight() {
         Color color = COLOR_MAP.get(availability);
@@ -153,7 +153,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
      *
      * @return the availability state
      */
-    @Nonnull
+    @NotNull
     public QuestMarkerAvailability getAvailability() {
         return availability;
     }
@@ -163,7 +163,7 @@ public class QuestMarker extends AbstractEntity<MiscImageTemplate> {
      *
      * @param availability the new availability state
      */
-    public void setAvailability(@Nonnull QuestMarkerAvailability availability) {
+    public void setAvailability(@NotNull QuestMarkerAvailability availability) {
         this.availability = availability;
     }
 }

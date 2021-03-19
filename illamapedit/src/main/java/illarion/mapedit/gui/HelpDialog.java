@@ -16,10 +16,10 @@
 package illarion.mapedit.gui;
 
 import illarion.mapedit.Lang;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
@@ -35,7 +35,7 @@ import java.net.URL;
  * @author Fredrik K
  */
 public class HelpDialog extends JDialog implements HyperlinkListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelpDialog.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public HelpDialog(JFrame frame) {
         super(frame, Lang.getMsg("gui.docu.Name"), false);
@@ -63,7 +63,7 @@ public class HelpDialog extends JDialog implements HyperlinkListener {
     }
 
     @Override
-    public void hyperlinkUpdate(@Nonnull HyperlinkEvent e) {
+    public void hyperlinkUpdate(@NotNull HyperlinkEvent e) {
         if (e.getEventType() != EventType.ACTIVATED) {
             return;
         }
@@ -71,7 +71,7 @@ public class HelpDialog extends JDialog implements HyperlinkListener {
             if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.getDesktop().browse(e.getURL().toURI());
-                } catch (@Nonnull IOException | URISyntaxException e1) {
+                } catch (@NotNull IOException | URISyntaxException e1) {
                     LOGGER.warn("Can't launch browser: ", e1);
                 }
             }

@@ -15,8 +15,9 @@
  */
 package illarion.client.graphics;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.EnumSet;
 
@@ -30,7 +31,7 @@ public final class FrameAnimation extends AbstractAnimation<AnimatedFrame> {
     /**
      * The mode the animation is running in.
      */
-    @Nonnull
+    @NotNull
     private final EnumSet<FrameAnimationMode> mode;
     /**
      * The amount of frames of this animation.
@@ -74,7 +75,7 @@ public final class FrameAnimation extends AbstractAnimation<AnimatedFrame> {
      * @param target the first target of the new animation
      * @param source the frame animation that supplies the data for the new animation
      */
-    public FrameAnimation(@Nullable AnimatedFrame target, @Nonnull FrameAnimation source) {
+    public FrameAnimation(@Nullable AnimatedFrame target, @NotNull FrameAnimation source) {
         super(target, source);
         frames = source.frames;
         stillFrame = source.stillFrame;
@@ -162,7 +163,7 @@ public final class FrameAnimation extends AbstractAnimation<AnimatedFrame> {
      * @param duration The time needed for the animation
      * @param modes the mode of the animation
      */
-    public void setup(int frames, int stillFrame, int duration, @Nonnull FrameAnimationMode... modes) {
+    public void setup(int frames, int stillFrame, int duration, @NotNull FrameAnimationMode... modes) {
         this.frames = frames;
         this.stillFrame = stillFrame;
         updateMode(modes);
@@ -178,7 +179,7 @@ public final class FrameAnimation extends AbstractAnimation<AnimatedFrame> {
      * @param duration The time needed for the animation
      * @param modes the mode of the animation
      */
-    void start(int frames, int stillFrame, int duration, @Nonnull FrameAnimationMode... modes) {
+    void start(int frames, int stillFrame, int duration, @NotNull FrameAnimationMode... modes) {
         setup(frames, stillFrame, duration, modes);
 
         restart();
@@ -189,7 +190,7 @@ public final class FrameAnimation extends AbstractAnimation<AnimatedFrame> {
      *
      * @param newModes the new mode of the animation
      */
-    void updateMode(@Nonnull FrameAnimationMode... newModes) {
+    void updateMode(@NotNull FrameAnimationMode... newModes) {
         mode.clear();
         Collections.addAll(mode, newModes);
     }

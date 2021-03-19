@@ -20,8 +20,8 @@ import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -33,11 +33,11 @@ import java.io.IOException;
 @ReplyMessage(replyId = CommandList.MSG_ATTACK)
 public final class AttackMsg implements ServerReply {
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         // nothing to decode
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         World.getPlayer().getCombatHandler().confirmAttack();
@@ -49,7 +49,7 @@ public final class AttackMsg implements ServerReply {
      *
      * @return the string that contains the values that were decoded for this  message
      */
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

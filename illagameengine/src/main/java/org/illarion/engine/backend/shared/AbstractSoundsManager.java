@@ -18,9 +18,9 @@ package org.illarion.engine.backend.shared;
 import org.illarion.engine.assets.SoundsManager;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,13 +33,13 @@ public abstract class AbstractSoundsManager implements SoundsManager {
     /**
      * The map of sounds that were already load.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, Sound> loadedSounds;
 
     /**
      * The map of music tracks that were already load.
      */
-    @Nonnull
+    @NotNull
     private final Map<String, Music> loadedMusic;
 
     /**
@@ -52,7 +52,7 @@ public abstract class AbstractSoundsManager implements SoundsManager {
 
     @Nullable
     @Override
-    public final Sound getSound(@Nonnull String ref) {
+    public final Sound getSound(@NotNull String ref) {
         @Nullable Sound existingSound = loadedSounds.get(ref);
         if (existingSound == null) {
             @Nullable Sound loadedSound = loadSound(ref);
@@ -71,7 +71,7 @@ public abstract class AbstractSoundsManager implements SoundsManager {
      * @return the sound or {@code null} in case loading the sound failed
      */
     @Nullable
-    protected abstract Sound loadSound(@Nonnull String ref);
+    protected abstract Sound loadSound(@NotNull String ref);
 
     /**
      * Load the music from the resources.
@@ -80,11 +80,11 @@ public abstract class AbstractSoundsManager implements SoundsManager {
      * @return the music or {@code null} in case loading the music failed
      */
     @Nullable
-    protected abstract Music loadMusic(@Nonnull String ref);
+    protected abstract Music loadMusic(@NotNull String ref);
 
     @Nullable
     @Override
-    public final Music getMusic(@Nonnull String ref) {
+    public final Music getMusic(@NotNull String ref) {
         @Nullable Music existingMusic = loadedMusic.get(ref);
         if (existingMusic == null) {
             @Nullable Music loadedMusicHandle = loadMusic(ref);

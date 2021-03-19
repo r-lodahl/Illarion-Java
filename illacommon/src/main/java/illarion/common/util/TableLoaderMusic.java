@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This implementation of the table loader is used to load the music table.
@@ -41,7 +41,7 @@ public class TableLoaderMusic extends TableLoader {
      * @param callback the callback sink that receives the data
      * @param <T> the type of the table loader used
      */
-    public <T extends TableLoader> TableLoaderMusic(@Nonnull TableLoaderSink<T> callback) {
+    public <T extends TableLoader> TableLoaderMusic(@NotNull TableLoaderSink<T> callback) {
         super("Songs", callback);
     }
 
@@ -62,7 +62,7 @@ public class TableLoaderMusic extends TableLoader {
      *
      * @return the song file
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getSongFile() {
         return getString(TB_NAME);

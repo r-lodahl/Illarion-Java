@@ -20,13 +20,13 @@ import illarion.mapedit.resource.TileImg;
 import illarion.mapedit.resource.loaders.TileLoader;
 import illarion.mapedit.tools.panel.cellrenderer.TileImgCellRenderer;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 
 public class TileList extends JScrollPane {
 
-    @Nonnull
+    @NotNull
     private final JList<TileImg> tileList;
 
     public TileList() {

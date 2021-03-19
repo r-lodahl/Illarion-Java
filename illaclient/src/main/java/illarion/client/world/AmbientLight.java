@@ -19,8 +19,8 @@ import illarion.common.util.PoolThreadFactory;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.ImmutableColor;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,20 +31,20 @@ import java.util.concurrent.TimeUnit;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class AmbientLight {
-    @Nonnull
+    @NotNull
     private static final GradientColorKey[] SUN_RISE_GRADIENT = {
             new GradientColorKey(Color.BLACK, 0.0),
             new GradientColorKey(new ImmutableColor(80, 70, 0), 0.1),
             new GradientColorKey(new ImmutableColor(255, 210, 170), 0.3),
             new GradientColorKey(Color.WHITE, 1.0)
     };
-    @Nonnull
+    @NotNull
     private static final Color STARLIGHT_COLOR = new ImmutableColor(0.15f, 0.15f, 0.3f);
-    @Nonnull
+    @NotNull
     private final Color ambientLight1;
-    @Nonnull
+    @NotNull
     private final Color ambientLight2;
-    @Nonnull
+    @NotNull
     private final ScheduledExecutorService calculationExecutor;
     private boolean ambientLightToggle;
     private double overcast;
@@ -107,8 +107,8 @@ final class AmbientLight {
         return (defaultSunRaiseTime + (sunRaiseVariation * phaseOfSun)) * 60.0 * 60.0;
     }
 
-    @Nonnull
-    private static Color getColorFromGradient(double key, @Nonnull GradientColorKey... gradientKeys) {
+    @NotNull
+    private static Color getColorFromGradient(double key, @NotNull GradientColorKey... gradientKeys) {
         if (gradientKeys.length < 2) {
             throw new IllegalArgumentException("Supplied gradient is no gradient. Too few values.");
         }
@@ -199,7 +199,7 @@ final class AmbientLight {
      * @param middleOfDay the second of the day that marks the middle
      * @return the color of the sun
      */
-    @Nonnull
+    @NotNull
     private static Color calculateSunlight(double dayInYear, double secondOfDay, double middleOfDay) {
         double phaseOfTheSun = getPhaseOfTheSun(dayInYear);
 
@@ -246,29 +246,29 @@ final class AmbientLight {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private Color getFreeColorStorage() {
         return ambientLightToggle ? ambientLight1 : ambientLight2;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public Color getCurrentAmbientLight() {
         return ambientLightToggle ? ambientLight2 : ambientLight1;
     }
 
     private static class GradientColorKey {
-        @Nonnull
+        @NotNull
         private final ImmutableColor color;
         private final double key;
 
-        GradientColorKey(@Nonnull ImmutableColor color, double key) {
+        GradientColorKey(@NotNull ImmutableColor color, double key) {
             this.color = color;
             this.key = key;
         }
 
-        @Nonnull
+        @NotNull
         public ImmutableColor getColor() {
             return color;
         }

@@ -16,9 +16,9 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
 import java.util.Enumeration;
@@ -40,13 +40,13 @@ public class AppIdent implements Externalizable {
     /**
      * The name of the application.
      */
-    @Nonnull
+    @NotNull
     private String appName;
 
     /**
      * The version of the application.
      */
-    @Nonnull
+    @NotNull
     private String appVersion;
 
     /**
@@ -56,7 +56,7 @@ public class AppIdent implements Externalizable {
      * @param appName the name of the application
      * @param appVersion the version of the application
      */
-    public AppIdent(@Nonnull String appName, @Nonnull String appVersion) {
+    public AppIdent(@NotNull String appName, @NotNull String appVersion) {
         this.appName = appName;
         this.appVersion = appVersion;
     }
@@ -73,7 +73,7 @@ public class AppIdent implements Externalizable {
      *
      * @param appName the name of the application
      */
-    public AppIdent(@Nonnull String appName) {
+    public AppIdent(@NotNull String appName) {
         this.appName = appName;
 
         @Nullable String foundVersion = null;
@@ -91,19 +91,19 @@ public class AppIdent implements Externalizable {
                         foundVersion = mainAttribs.getValue("Implementation-Version");
                         break;
                     }
-                } catch (@Nonnull IOException ex) {
+                } catch (@NotNull IOException ex) {
                     // nothing
                 } finally {
                     if (stream != null) {
                         try {
                             stream.close();
-                        } catch (@Nonnull IOException ex) {
+                        } catch (@NotNull IOException ex) {
                             // nothing
                         }
                     }
                 }
             }
-        } catch (@Nonnull IOException ex) {
+        } catch (@NotNull IOException ex) {
             // nothing
         }
 
@@ -119,7 +119,7 @@ public class AppIdent implements Externalizable {
      *
      * @return the name of the application
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getApplicationName() {
         return appName;
@@ -130,7 +130,7 @@ public class AppIdent implements Externalizable {
      *
      * @return the version of the application or a empty string in case the version is unknown
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getApplicationVersion() {
         return appVersion;
@@ -141,7 +141,7 @@ public class AppIdent implements Externalizable {
      *
      * @return the application root version
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getApplicationRootVersion() {
         int indexOfSeparator = appVersion.indexOf('-');
@@ -168,7 +168,7 @@ public class AppIdent implements Externalizable {
         }
         try {
             return Integer.parseInt(appVersion.substring(indexOfSeparator + 1, indexSecondSeparator));
-        } catch (@Nonnull NumberFormatException e) {
+        } catch (@NotNull NumberFormatException e) {
             return 0;
         }
     }
@@ -178,7 +178,7 @@ public class AppIdent implements Externalizable {
      *
      * @return the identifier of the application
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getApplicationIdentifier() {
         if (appVersion.isEmpty()) {
@@ -188,14 +188,14 @@ public class AppIdent implements Externalizable {
     }
 
     @Override
-    public void writeExternal(@Nonnull ObjectOutput out) throws IOException {
+    public void writeExternal(@NotNull ObjectOutput out) throws IOException {
         out.writeLong(serialVersionUID);
         out.writeObject(appName);
         out.writeObject(appVersion);
     }
 
     @Override
-    public void readExternal(@Nonnull ObjectInput in) throws IOException, ClassNotFoundException {
+    public void readExternal(@NotNull ObjectInput in) throws IOException, ClassNotFoundException {
         long version = in.readLong();
         if (version == 1L) {
             appName = in.readObject().toString();

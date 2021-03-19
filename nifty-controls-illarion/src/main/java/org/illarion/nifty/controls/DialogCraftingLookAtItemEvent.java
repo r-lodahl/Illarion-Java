@@ -15,22 +15,18 @@
  */
 package org.illarion.nifty.controls;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired in case the player looks at a item in the crafting dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class DialogCraftingLookAtItemEvent extends DialogEvent {
     /**
      * The item the player is looking at.
      */
-    @Nonnull
+    @NotNull
     private final CraftingItemEntry item;
 
     /**
@@ -39,7 +35,7 @@ public final class DialogCraftingLookAtItemEvent extends DialogEvent {
      * @param id the ID of the dialog
      * @param item the item the player is looking at
      */
-    public DialogCraftingLookAtItemEvent(int id, @Nonnull CraftingItemEntry item) {
+    public DialogCraftingLookAtItemEvent(int id, @NotNull CraftingItemEntry item) {
         super(id);
         this.item = item;
     }
@@ -49,7 +45,7 @@ public final class DialogCraftingLookAtItemEvent extends DialogEvent {
      *
      * @return the item
      */
-    @Nonnull
+    @NotNull
     public CraftingItemEntry getItem() {
         return item;
     }

@@ -16,29 +16,29 @@
 package illarion.download.maven;
 
 import illarion.common.util.ProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class ArtifactTraceData {
-    @Nonnull
+    @NotNull
     private final ProgressMonitor monitor;
-    @Nonnull
+    @NotNull
     private final ArtifactRequestTracer tracer;
 
-    ArtifactTraceData(@Nonnull ArtifactRequestTracer tracer, @Nonnull ProgressMonitor monitor) {
+    ArtifactTraceData(@NotNull ArtifactRequestTracer tracer, @NotNull ProgressMonitor monitor) {
         this.tracer = tracer;
         this.monitor = monitor;
     }
 
-    @Nonnull
+    @NotNull
     public ProgressMonitor getMonitor() {
         return monitor;
     }
 
-    @Nonnull
+    @NotNull
     public ArtifactRequestTracer getTracer() {
         return tracer;
     }

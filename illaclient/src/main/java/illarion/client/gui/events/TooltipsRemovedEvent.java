@@ -20,6 +20,6 @@ package illarion.client.gui.events;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@SuppressWarnings({"EmptyClass"})
+@SuppressWarnings("EmptyClass")
 public final class TooltipsRemovedEvent {
 }

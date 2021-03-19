@@ -16,8 +16,8 @@
 package illarion.easynpc.parsed;
 
 import illarion.easynpc.writer.LuaWriter.WritingStage;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -71,11 +71,11 @@ public abstract class AbstractParsedTrade implements ParsedData {
     }
 
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return stage == WritingStage.Trading;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Arrays.asList("npc.base.basic", "npc.base.trade");

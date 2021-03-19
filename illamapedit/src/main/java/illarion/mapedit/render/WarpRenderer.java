@@ -20,10 +20,10 @@ import illarion.mapedit.data.Map;
 import illarion.mapedit.data.MapTile;
 import illarion.mapedit.data.MapWarpPoint;
 import illarion.mapedit.util.SwingLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -43,10 +43,10 @@ public class WarpRenderer extends AbstractMapRenderer {
 
     @Override
     public void renderMap(
-            @Nonnull Map map,
-            @Nonnull Rectangle viewport,
+            @NotNull Map map,
+            @NotNull Rectangle viewport,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         int width = map.getWidth();
         int height = map.getHeight();
         int z = map.getZ() - level;

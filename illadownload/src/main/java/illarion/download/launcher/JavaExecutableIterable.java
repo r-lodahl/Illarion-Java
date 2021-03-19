@@ -15,7 +15,8 @@
  */
 package illarion.download.launcher;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
 import java.util.Iterator;
 
@@ -26,7 +27,7 @@ import java.util.Iterator;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class JavaExecutableIterable extends AbstractJavaExecutableIterable {
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<Path> iterator() {
         return new AbstractJavaExecutableIterator(this);

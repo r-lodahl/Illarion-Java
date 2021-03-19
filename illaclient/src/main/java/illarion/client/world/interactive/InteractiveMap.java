@@ -21,9 +21,8 @@ import illarion.client.world.MapTile;
 import illarion.client.world.World;
 import illarion.common.types.DisplayCoordinate;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static illarion.client.graphics.MapDisplayManager.TILE_PERSPECTIVE_OFFSET;
 
@@ -36,7 +35,7 @@ public final class InteractiveMap {
     /**
      * The actual map that supplies this class with data.
      */
-    @Nonnull
+    @NotNull
     private final GameMap parentMap;
 
     /**
@@ -44,7 +43,7 @@ public final class InteractiveMap {
      *
      * @param map the map to interact with
      */
-    public InteractiveMap(@Nonnull GameMap map) {
+    public InteractiveMap(@NotNull GameMap map) {
         parentMap = map;
     }
 

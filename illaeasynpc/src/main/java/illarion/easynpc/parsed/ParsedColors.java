@@ -19,8 +19,8 @@ import illarion.easynpc.data.Color;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -50,13 +50,13 @@ public final class ParsedColors implements ParsedData {
     /**
      * The target of this color.
      */
-    @Nonnull
+    @NotNull
     private final ColorTarget colorTarget;
 
     /**
      * The actual color value.
      */
-    @Nonnull
+    @NotNull
     private final Color color;
 
     /**
@@ -65,7 +65,7 @@ public final class ParsedColors implements ParsedData {
      * @param target the target of the color
      * @param color the color stored in this parsed color
      */
-    public ParsedColors(@Nonnull ColorTarget target, @Nonnull Color color) {
+    public ParsedColors(@NotNull ColorTarget target, @NotNull Color color) {
         colorTarget = target;
         this.color = color;
     }
@@ -74,7 +74,7 @@ public final class ParsedColors implements ParsedData {
      * Insert the needed values into the SQL query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         switch (colorTarget) {
             case Skin:
                 builder.setNpcSkinColor(color.getRed(), color.getGreen(), color.getBlue());
@@ -91,7 +91,7 @@ public final class ParsedColors implements ParsedData {
      * @return {@code false} at all times
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return false;
     }
 
@@ -100,7 +100,7 @@ public final class ParsedColors implements ParsedData {
      *
      * @return {@code null} at all times
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.emptyList();
@@ -111,7 +111,7 @@ public final class ParsedColors implements ParsedData {
      */
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws
             IOException {
         // nothing to do
     }

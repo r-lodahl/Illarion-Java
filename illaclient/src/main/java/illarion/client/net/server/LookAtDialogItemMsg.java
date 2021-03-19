@@ -22,12 +22,12 @@ import illarion.client.net.CommandList;
 import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -72,11 +72,11 @@ public final class LookAtDialogItemMsg implements ServerReply {
     @Nullable
     private Tooltip tooltip;
 
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LookAtDialogItemMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         dialogId = reader.readInt();
         type = reader.readUByte();
         switch (type) {
@@ -95,7 +95,7 @@ public final class LookAtDialogItemMsg implements ServerReply {
         tooltip = new Tooltip(reader);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if (tooltip == null) {
@@ -128,7 +128,7 @@ public final class LookAtDialogItemMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

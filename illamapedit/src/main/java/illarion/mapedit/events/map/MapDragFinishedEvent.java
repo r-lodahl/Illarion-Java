@@ -16,8 +16,8 @@
 package illarion.mapedit.events.map;
 
 import illarion.mapedit.data.Map;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Tim
@@ -57,7 +57,7 @@ public class MapDragFinishedEvent {
         return startX;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "MapDragFinishedEvent{" +

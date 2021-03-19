@@ -18,13 +18,13 @@ package illarion.mapedit.history;
 import illarion.mapedit.events.HistoryEvent;
 import illarion.mapedit.events.HistoryPasteCutEvent;
 import illarion.mapedit.events.map.RepaintRequestEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -36,18 +36,18 @@ import java.util.LinkedList;
  * @since 0.99
  */
 public class HistoryManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HistoryManager.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final int MAX_HISTORY_LENGHT = 100;
     /**
      * The list of history entries that can be done again.
      */
-    @Nonnull
+    @NotNull
     private final Deque<HistoryAction> redoList;
 
     /**
      * The list of history entries that can be undone.
      */
-    @Nonnull
+    @NotNull
     private final Deque<HistoryAction> undoList;
 
     public HistoryManager() {
@@ -112,7 +112,7 @@ public class HistoryManager {
     }
 
     @EventSubscriber
-    public void onHistoryEvent(@Nonnull HistoryEvent e) {
+    public void onHistoryEvent(@NotNull HistoryEvent e) {
         if (e.isUndo()) {
             undo();
         } else {
@@ -122,7 +122,7 @@ public class HistoryManager {
     }
 
     @EventSubscriber
-    public void onHistoryCutPasteEvent(@Nonnull HistoryPasteCutEvent e) {
+    public void onHistoryCutPasteEvent(@NotNull HistoryPasteCutEvent e) {
         addEntry(e.getAction());
     }
 }

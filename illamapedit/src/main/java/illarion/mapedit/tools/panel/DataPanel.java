@@ -23,9 +23,9 @@ import illarion.mapedit.tools.panel.components.ItemInspectorList;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ import java.util.List;
  * @author Fredrik K
  */
 public class DataPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final ItemInspectorList itemPanel;
-    @Nonnull
+    @NotNull
     private final ItemDataPanel dataPanel;
 
     public DataPanel() {
@@ -52,7 +52,7 @@ public class DataPanel extends JPanel {
         add(dataPanel);
     }
 
-    public void setAnnotation(@Nonnull String text) {
+    public void setAnnotation(@NotNull String text) {
         itemPanel.setAnnotation(text);
     }
 
@@ -71,22 +71,22 @@ public class DataPanel extends JPanel {
     }
 
     @EventSubscriber
-    public void onItemDataChanged(@Nonnull ItemItemDataChangedEvent e) {
+    public void onItemDataChanged(@NotNull ItemItemDataChangedEvent e) {
         itemPanel.getSelectedItem().addItemData(e.getRow(), e.getData());
     }
 
     @EventSubscriber
-    public void onItemDataRemoved(@Nonnull ItemDataRemovedEvent e) {
+    public void onItemDataRemoved(@NotNull ItemDataRemovedEvent e) {
         itemPanel.getSelectedItem().removeItemData(e.getIndex());
     }
 
     @EventSubscriber
-    public void onItemDataAdded(@Nonnull ItemDataAddedEvent e) {
+    public void onItemDataAdded(@NotNull ItemDataAddedEvent e) {
         itemPanel.getSelectedItem().addItemData(e.getData());
     }
 
     @EventSubscriber
-    public void onItemsUpdated(@Nonnull ItemsUpdatedEvent e) {
+    public void onItemsUpdated(@NotNull ItemsUpdatedEvent e) {
         List<MapItem> items = new ArrayList<>();
         if (e.getItems() != null) {
             items = e.getItems();
@@ -95,7 +95,7 @@ public class DataPanel extends JPanel {
     }
 
     @EventSubscriber
-    public void onItemDataAnnotation(@Nonnull ItemDataAnnotationEvent e) {
+    public void onItemDataAnnotation(@NotNull ItemDataAnnotationEvent e) {
         itemPanel.getSelectedItem().setAnnotation(e.getText());
         EventBus.publish(new RepaintRequestEvent());
     }

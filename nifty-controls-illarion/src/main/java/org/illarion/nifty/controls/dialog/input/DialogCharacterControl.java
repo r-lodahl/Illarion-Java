@@ -25,9 +25,9 @@ import de.lessvoid.nifty.tools.SizeValue;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.illarion.nifty.controls.DialogInput;
 import org.illarion.nifty.controls.DialogInputConfirmedEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the main control class for Character View window
@@ -80,7 +80,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
     @Nullable
     private String description;
 
-    @Nonnull
+    @NotNull
     private String initialText;
 
     @Nullable
@@ -88,7 +88,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         niftyInstance = nifty;
         currentScreen = screen;
@@ -160,7 +160,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
     }
 
     @Override
-    public void setButtonLabel(@Nonnull DialogButton button, @Nonnull String label) {
+    public void setButtonLabel(@NotNull DialogButton button, @NotNull String label) {
         Button buttonControl = null;
         switch (button) {
             case LeftButton:
@@ -186,7 +186,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
     }
 
     @Override
-    public void setDescription(@Nonnull String text) {
+    public void setDescription(@NotNull String text) {
         Label label = getContent().findNiftyControl("#description", Label.class);
         if (label == null) {
             throw new IllegalArgumentException("Failed to fetch description label.");
@@ -205,7 +205,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
     }
 
     @Override
-    public void onEvent(@Nonnull String topic, ButtonClickedEvent data) {
+    public void onEvent(@NotNull String topic, ButtonClickedEvent data) {
         if (topic.contains("#buttonLeft")) {
             fireResponse(DialogButton.LeftButton);
         } else {
@@ -213,7 +213,7 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
         }
     }
 
-    private void fireResponse(@Nonnull DialogButton button) {
+    private void fireResponse(@NotNull DialogButton button) {
         assert niftyInstance != null : "Control was not bound correctly.";
         if (alreadyClosed) {
             return;
@@ -229,16 +229,16 @@ public class DialogCharacterControl extends WindowControl implements DialogInput
         alreadyClosed = true;
     }
 
-    @Nonnull
+    @NotNull
     String getInputText() {
         return getTextField().getRealText();
     }
 
-    private void setInputText(@Nonnull CharSequence text) {
+    private void setInputText(@NotNull CharSequence text) {
         getTextField().setText(text);
     }
 
-    @Nonnull
+    @NotNull
     private TextField getTextField() {
         Element content = getContent();
         if (content == null) {

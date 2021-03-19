@@ -17,8 +17,8 @@ package illarion.mapedit.tools.panel;
 
 import illarion.mapedit.Lang;
 import illarion.mapedit.tools.panel.components.ItemTree;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,9 +27,9 @@ import java.awt.*;
  * @author Fredrik K
  */
 public class ItemBrushPanel extends JPanel {
-    @Nonnull
+    @NotNull
     private final JRadioButton fillSelectedCheckbox;
-    @Nonnull
+    @NotNull
     private final JRadioButton fillAreaCheckbox;
 
     public ItemBrushPanel() {

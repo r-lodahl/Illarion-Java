@@ -16,8 +16,8 @@
 package illarion.client.world.items;
 
 import illarion.client.world.interactive.InteractiveContainerSlot;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class represents a single slot in a container that is able to store one item that is located in the container.
@@ -38,7 +38,7 @@ public final class ContainerSlot extends AbstractItemSlot {
     /**
      * The interactive reference to this container slot.
      */
-    @Nonnull
+    @NotNull
     private final InteractiveContainerSlot interactive;
 
     /**
@@ -76,7 +76,7 @@ public final class ContainerSlot extends AbstractItemSlot {
      *
      * @return the interactive reference
      */
-    @Nonnull
+    @NotNull
     public InteractiveContainerSlot getInteractive() {
         return interactive;
     }

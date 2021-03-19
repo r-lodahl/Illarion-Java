@@ -16,12 +16,12 @@
 package org.illarion.engine.backend.shared;
 
 import illarion.common.util.ProgressMonitor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Texture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +34,7 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
     /**
      * The logger that provides the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TextureAtlasFinalizeTask.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final class SpriteData {
         String spriteName;
@@ -44,24 +44,24 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
         int height;
     }
 
-    @Nonnull
+    @NotNull
     private final FutureTask<T> preLoadTask;
-    @Nonnull
+    @NotNull
     private final AbstractTextureManager<T> textureManager;
-    @Nonnull
+    @NotNull
     private final String atlasName;
-    @Nonnull
+    @NotNull
     private final List<SpriteData> spriteList;
-    @Nonnull
+    @NotNull
     private final ProgressMonitor monitor;
     private final float progressToAdd;
     private boolean done;
 
     public TextureAtlasFinalizeTask(
-            @Nonnull FutureTask<T> preLoadTask,
-            @Nonnull String atlasName,
-            @Nonnull AbstractTextureManager<T> textureManager,
-            @Nonnull ProgressMonitor monitor,
+            @NotNull FutureTask<T> preLoadTask,
+            @NotNull String atlasName,
+            @NotNull AbstractTextureManager<T> textureManager,
+            @NotNull ProgressMonitor monitor,
             float progressToAdd) {
         this.preLoadTask = preLoadTask;
         this.atlasName = atlasName;
@@ -73,7 +73,7 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
     }
 
     public void addSprite(
-            @Nonnull String name, int posX, int posY, int width, int height) {
+            @NotNull String name, int posX, int posY, int width, int height) {
         SpriteData data = new SpriteData();
         data.spriteName = name;
         data.posX = posX;
@@ -98,7 +98,7 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
                 Texture atlasTexture = textureManager.loadTexture(atlasName, preLoadData);
                 if (atlasTexture != null) {
                     textureManager.addTexture(atlasName, atlasTexture);
-                    for (@Nonnull SpriteData data : spriteList) {
+                    for (@NotNull SpriteData data : spriteList) {
                         Texture spriteTexture = atlasTexture
                                 .getSubTexture(data.posX, data.posY, data.width, data.height);
                         textureManager.addTexture(data.spriteName, spriteTexture);
@@ -106,9 +106,9 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
                 }
             }
             monitor.setProgress(monitor.getProgress() + progressToAdd);
-        } catch (@Nonnull InterruptedException e) {
+        } catch (@NotNull InterruptedException e) {
             LOGGER.error("Loading thread got interrupted.", e);
-        } catch (@Nonnull ExecutionException e) {
+        } catch (@NotNull ExecutionException e) {
             LOGGER.error("Failure while loading texture data.", e);
         } finally {
             done = true;

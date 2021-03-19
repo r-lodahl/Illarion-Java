@@ -15,7 +15,8 @@
  */
 package org.illarion.engine.input;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the interface of the input implementation.
@@ -33,7 +34,7 @@ public interface Input {
      *
      * @param listener the input event listener
      */
-    void setListener(@Nonnull InputListener listener);
+    void setListener(@NotNull InputListener listener);
 
     /**
      * Check if the specified button is currently pressed down.
@@ -41,7 +42,7 @@ public interface Input {
      * @param button the button
      * @return {@code true} if the button is currently down
      */
-    boolean isButtonDown(@Nonnull Button button);
+    boolean isButtonDown(@NotNull Button button);
 
     /**
      * Check if the key is currently pressed down.
@@ -49,7 +50,7 @@ public interface Input {
      * @param key the key
      * @return {@code true} in case the key is pressed
      */
-    boolean isKeyDown(@Nonnull Key key);
+    boolean isKeyDown(@NotNull Key key);
 
     /**
      * Check if any mouse button is currently pressed.
@@ -64,7 +65,7 @@ public interface Input {
      * @param buttons the list of mouse buttons to check
      * @return {@code true} if at least one of the buttons is pressed
      */
-    boolean isAnyButtonDown(@Nonnull Button... buttons);
+    boolean isAnyButtonDown(@NotNull Button... buttons);
 
     /**
      * Check if any keyboard key is pressed.
@@ -79,7 +80,7 @@ public interface Input {
      * @param keys the keys to check
      * @return {@code true} in case one of those keys is pressed
      */
-    boolean isAnyKeyDown(@Nonnull Key... keys);
+    boolean isAnyKeyDown(@NotNull Key... keys);
 
     /**
      * Get the X coordinate of the current mouse location.
@@ -109,26 +110,26 @@ public interface Input {
      * @param target the forwarding target
      * @return {@code true} in case forwarding is enabled for this target
      */
-    boolean isForwardingEnabled(@Nonnull ForwardingTarget target);
+    boolean isForwardingEnabled(@NotNull ForwardingTarget target);
 
     /**
      * Enable forwarding for the specified target.
      *
      * @param target the forwarding target that is supposed to be enabled
      */
-    void enableForwarding(@Nonnull ForwardingTarget target);
+    void enableForwarding(@NotNull ForwardingTarget target);
 
     /**
      * Disable the forwarding for the specified target.
      *
      * @param target the forwarding target that is supposed to be disabled
      */
-    void disableForwarding(@Nonnull ForwardingTarget target);
+    void disableForwarding(@NotNull ForwardingTarget target);
 
     /**
      * Add a listener that monitors the forwarding state.
      *
      * @param listener the new forwarding listener
      */
-    void addForwardingListener(@Nonnull ForwardingListener listener);
+    void addForwardingListener(@NotNull ForwardingListener listener);
 }

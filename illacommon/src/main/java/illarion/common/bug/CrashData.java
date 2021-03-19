@@ -17,8 +17,8 @@ package illarion.common.bug;
 
 import illarion.common.util.AppIdent;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 /**
  * This class is used to wrap the data that is collected about one crash into a
  * single object and prepare the value set for later usage. The object is
@@ -45,37 +45,37 @@ public final class CrashData {
     /**
      * The human readable description of the problem
      */
-    @Nonnull
+    @NotNull
     private final String description;
 
     /**
      * The exception that caused the crash.
      */
-    @Nonnull
+    @NotNull
     private final String exception;
 
     /**
      * The name of the exception class.
      */
-    @Nonnull
+    @NotNull
     private final String exceptionName;
 
     /**
      * The application identifier for the application that crashed.
      */
-    @Nonnull
+    @NotNull
     private final AppIdent applicationIdentifier;
 
     /**
      * The thread the crash happened in.
      */
-    @Nonnull
+    @NotNull
     private final String threadName;
 
     /**
      * The name of the mantis project this report is supposed to end up in.
      */
-    @Nonnull
+    @NotNull
     private final String mantisProject;
 
     /**
@@ -88,11 +88,11 @@ public final class CrashData {
      * @param crashException the exception that caused the crash
      */
     public CrashData(
-            @Nonnull AppIdent appIdent,
-            @Nonnull String mantisProject,
-            @Nonnull String problemDescription,
-            @Nonnull Thread crashThread,
-            @Nonnull Throwable crashException) {
+            @NotNull AppIdent appIdent,
+            @NotNull String mantisProject,
+            @NotNull String problemDescription,
+            @NotNull Thread crashThread,
+            @NotNull Throwable crashException) {
         applicationIdentifier = appIdent;
         threadName = crashThread.getName();
         this.mantisProject = mantisProject;
@@ -131,7 +131,7 @@ public final class CrashData {
      *
      * @return the string to identify the operation system
      */
-    @Nonnull
+    @NotNull
     static String getOSName() {
 
         return System.getProperty("os.name") + ' ' + System.getProperty("os.version") + ' ' +
@@ -143,7 +143,7 @@ public final class CrashData {
      *
      * @return the identifier of the application
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     AppIdent getApplicationIdentifier() {
         return applicationIdentifier;
@@ -154,7 +154,7 @@ public final class CrashData {
      *
      * @return the description of the problem
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     String getDescription() {
         return description;
@@ -165,7 +165,7 @@ public final class CrashData {
      *
      * @return the simple name of the exception
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     String getExceptionName() {
         return exceptionName;
@@ -176,7 +176,7 @@ public final class CrashData {
      *
      * @return the stack backtrace
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     String getStackBacktrace() {
         return exception;
@@ -187,13 +187,13 @@ public final class CrashData {
      *
      * @return the name of the thread that crashed
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     String getThreadName() {
         return threadName;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     String getMantisProject() {
         return mantisProject;

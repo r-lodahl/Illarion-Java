@@ -16,8 +16,8 @@
 package illarion.easyquest;
 
 import illarion.common.util.MessageSource;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -26,24 +26,24 @@ public final class Lang implements MessageSource {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final Lang INSTANCE = new Lang();
 
     /**
      * The file name of the message bundles the client loads for the language.
      */
-    @Nonnull
+    @NotNull
     private static final String MESSAGE_BUNDLE = "easyquest_messages";
     /**
      * The storage of the localized messages. Holds the key for the string and
      * the localized full message.
      */
-    @Nonnull
+    @NotNull
     private final ResourceBundle messages;
     /**
      * The current local settings.
      */
-    @Nonnull
+    @NotNull
     private Locale locale;
 
     /**
@@ -65,7 +65,7 @@ public final class Lang implements MessageSource {
      *
      * @return the instance of the class
      */
-    @Nonnull
+    @NotNull
     public static Lang getInstance() {
         return INSTANCE;
     }
@@ -78,8 +78,8 @@ public final class Lang implements MessageSource {
      * @return the localized message or the key with surrounding < > in case the
      * key was not found in the storage
      */
-    @Nonnull
-    public static String getMsg(@Nonnull Class<?> clazz, @Nonnull String key) {
+    @NotNull
+    public static String getMsg(@NotNull Class<?> clazz, @NotNull String key) {
         return getMsg(clazz.getName() + '.' + key);
     }
 
@@ -90,8 +90,8 @@ public final class Lang implements MessageSource {
      * @return the localized message or the key with surrounding &lt; &gt; in
      * case the key was not found in the storage
      */
-    @Nonnull
-    public static String getMsg(@Nonnull String key) {
+    @NotNull
+    public static String getMsg(@NotNull String key) {
         return INSTANCE.getMessage(key);
     }
 
@@ -100,7 +100,7 @@ public final class Lang implements MessageSource {
      *
      * @return the local object of the chosen local settings
      */
-    @Nonnull
+    @NotNull
     public Locale getLocale() {
         return locale;
     }
@@ -113,11 +113,11 @@ public final class Lang implements MessageSource {
      * case the key was not found in the storage
      */
     @Override
-    @Nonnull
-    public String getMessage(@Nonnull String key) {
+    @NotNull
+    public String getMessage(@NotNull String key) {
         try {
             return messages.getString(key);
-        } catch (@Nonnull MissingResourceException e) {
+        } catch (@NotNull MissingResourceException e) {
             System.out.println("Failed searching translated version of: " + key);
             return '<' + key + '>';
         }
@@ -129,10 +129,10 @@ public final class Lang implements MessageSource {
      * @param key the key that shall be checked
      * @return true in case a message was found
      */
-    public boolean hasMsg(@Nonnull String key) {
+    public boolean hasMsg(@NotNull String key) {
         try {
             messages.getString(key);
-        } catch (@Nonnull MissingResourceException e) {
+        } catch (@NotNull MissingResourceException e) {
             return false;
         }
         return true;

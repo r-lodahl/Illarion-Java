@@ -15,23 +15,24 @@
  */
 package illarion.client.util.translation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.Callable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class TranslateSentenceTask implements Callable<String> {
-    @Nonnull
+    @NotNull
     private final TranslationProvider provider;
-    @Nonnull
+    @NotNull
     private final TranslationDirection direction;
-    @Nonnull
+    @NotNull
     private final String original;
 
-    public TranslateSentenceTask(@Nonnull TranslationProvider provider, @Nonnull TranslationDirection direction,
-                                 @Nonnull String original) {
+    public TranslateSentenceTask(@NotNull TranslationProvider provider, @NotNull TranslationDirection direction,
+                                 @NotNull String original) {
         this.provider = provider;
         this.direction = direction;
         this.original = original;

@@ -17,8 +17,8 @@ package org.illarion.engine.assets;
 
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The sprite factory is used to create sprite objects that can be used by the specified backend for more complex
@@ -63,7 +63,7 @@ public interface SpriteFactory {
      * @param mirror {@code true} in case the textures are supposed to be rendered mirrored
      * @return the created sprite
      */
-    @Nonnull
+    @NotNull
     Sprite createSprite(
-            @Nonnull Texture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror);
+            @NotNull Texture[] textures, int offsetX, int offsetY, float centerX, float centerY, boolean mirror);
 }

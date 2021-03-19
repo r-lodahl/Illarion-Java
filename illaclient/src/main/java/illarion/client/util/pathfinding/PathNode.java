@@ -17,8 +17,8 @@ package illarion.client.util.pathfinding;
 
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface represents a node along the calculated path.
@@ -31,7 +31,7 @@ public interface PathNode {
      *
      * @return the location of the node
      */
-    @Nonnull
+    @NotNull
     ServerCoordinate getLocation();
 
     /**
@@ -39,6 +39,6 @@ public interface PathNode {
      *
      * @return get the movement method
      */
-    @Nonnull
+    @NotNull
     CharMovementMode getMovementMethod();
 }

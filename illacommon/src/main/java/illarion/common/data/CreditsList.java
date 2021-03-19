@@ -15,7 +15,8 @@
  */
 package illarion.common.data;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -27,19 +28,19 @@ public final class CreditsList implements Iterable<CreditsPerson> {
     /**
      * The german name of this list.
      */
-    @Nonnull
+    @NotNull
     private final String nameGerman;
 
     /**
      * The english name of this list.
      */
-    @Nonnull
+    @NotNull
     private final String nameEnglish;
 
     /**
      * The persons who belong to this list.
      */
-    @Nonnull
+    @NotNull
     private final List<CreditsPerson> members;
 
     /**
@@ -52,7 +53,7 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      *
      * @param name the name of the list
      */
-    public CreditsList(@Nonnull String name) {
+    public CreditsList(@NotNull String name) {
         this(name, name);
     }
 
@@ -62,7 +63,7 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      * @param nameGerman the german name of the list
      * @param nameEnglish the english name of the list
      */
-    public CreditsList(@Nonnull String nameGerman, @Nonnull String nameEnglish) {
+    public CreditsList(@NotNull String nameGerman, @NotNull String nameEnglish) {
         this.nameGerman = nameGerman;
         this.nameEnglish = nameEnglish;
 
@@ -74,7 +75,7 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      *
      * @param person the person to add to the list
      */
-    public void addMember(@Nonnull CreditsPerson person) {
+    public void addMember(@NotNull CreditsPerson person) {
         members.add(person);
         listDirty = true;
     }
@@ -96,7 +97,7 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      *
      * @return the german name
      */
-    @Nonnull
+    @NotNull
     public String getNameGerman() {
         return nameGerman;
     }
@@ -106,12 +107,12 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      *
      * @return the english name
      */
-    @Nonnull
+    @NotNull
     public String getNameEnglish() {
         return nameEnglish;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Iterator<CreditsPerson> iterator() {
         sortList();
@@ -123,7 +124,7 @@ public final class CreditsList implements Iterable<CreditsPerson> {
      *
      * @return the first list member
      */
-    @Nonnull
+    @NotNull
     public CreditsPerson getFirst() {
         sortList();
         return Objects.requireNonNull(members.get(0));

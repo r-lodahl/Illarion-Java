@@ -17,16 +17,13 @@ package illarion.client.net.client;
 
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to buy a item from a trader.
  *
  * @author Martin Karing &gt;nitram@illarion.org&lt;
  */
-@Immutable
 public final class BuyTradingItem extends AbstractTradeItemCmd {
     /**
      * The index of the item that is supposed to be bought.
@@ -36,7 +33,7 @@ public final class BuyTradingItem extends AbstractTradeItemCmd {
     /**
      * The amount of items to buy.
      */
-    @Nonnull
+    @NotNull
     private final ItemCount amount;
 
     /**
@@ -51,7 +48,7 @@ public final class BuyTradingItem extends AbstractTradeItemCmd {
      * @param index the index of the item to buy
      * @param count the amount of items to buy
      */
-    public BuyTradingItem(int dialogId, int index, @Nonnull ItemCount count) {
+    public BuyTradingItem(int dialogId, int index, @NotNull ItemCount count) {
         super(dialogId, SUB_CMD_ID);
 
         this.index = (short) index;
@@ -59,13 +56,13 @@ public final class BuyTradingItem extends AbstractTradeItemCmd {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         super.encode(writer);
         writer.writeUByte(index);
         amount.encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(super.toString() + " Index: " + index + ' ' + amount);

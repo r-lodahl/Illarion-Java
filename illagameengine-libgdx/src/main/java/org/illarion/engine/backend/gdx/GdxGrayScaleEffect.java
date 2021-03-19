@@ -19,8 +19,8 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import org.illarion.engine.graphic.effects.GrayScaleEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the libGDX implementation of the gray scale effect.
@@ -31,10 +31,10 @@ class GdxGrayScaleEffect implements GrayScaleEffect, GdxSceneEffect, GdxTextureE
     /**
      * The pixel shader that is required for this effect.
      */
-    @Nonnull
+    @NotNull
     private final ShaderProgram shader;
 
-    GdxGrayScaleEffect(@Nonnull Files files) {
+    GdxGrayScaleEffect(@NotNull Files files) {
         //noinspection SpellCheckingInspection
         shader = new ShaderProgram(files.internal("org/illarion/engine/backend/gdx/shaders/generic.vert"),
                                    files.internal("org/illarion/engine/backend/gdx/shaders/grayScale.frag"));
@@ -47,17 +47,17 @@ class GdxGrayScaleEffect implements GrayScaleEffect, GdxSceneEffect, GdxTextureE
 
     @Override
     public void activateEffect(
-            @Nonnull SpriteBatch batch, int screenWidth, int screenHeight, int textureWidth, int textureHeight) {
+            @NotNull SpriteBatch batch, int screenWidth, int screenHeight, int textureWidth, int textureHeight) {
         batch.setShader(shader);
     }
 
     @Override
-    public void activateEffect(@Nonnull SpriteBatch batch) {
+    public void activateEffect(@NotNull SpriteBatch batch) {
         batch.setShader(shader);
     }
 
     @Override
-    public void disableEffect(@Nonnull SpriteBatch batch) {
+    public void disableEffect(@NotNull SpriteBatch batch) {
         batch.setShader(null);
     }
 

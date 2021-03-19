@@ -18,33 +18,33 @@ package illarion.client.world.movement;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 /**
  * A movement handler that turns to the target instead of moving.
  *
  * @author Ilya Osadchiy
  */
 public class TurnToMovementHandler extends AbstractMovementHandler implements TargetTurnHandler {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(TurnToMovementHandler.class);
-    @Nonnull
-    private static final Marker marker = MarkerFactory.getMarker("Movement");
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
+    private static final Marker marker = MarkerManager.getMarker("Movement");
 
     @Nullable
     private ServerCoordinate targetLocation;
 
-    TurnToMovementHandler(@Nonnull Movement movement) {
+    TurnToMovementHandler(@NotNull Movement movement) {
         super(movement);
     }
 
     @Override
-    public void turnTo(@Nonnull ServerCoordinate target) {
+    public void turnTo(@NotNull ServerCoordinate target) {
         targetLocation = target;
     }
 
@@ -56,7 +56,7 @@ public class TurnToMovementHandler extends AbstractMovementHandler implements Ta
 
     @Nullable
     @Override
-    public StepData getNextStep(@Nonnull ServerCoordinate currentLocation) {
+    public StepData getNextStep(@NotNull ServerCoordinate currentLocation) {
         if (targetLocation == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class TurnToMovementHandler extends AbstractMovementHandler implements Ta
         return new DefaultStepData(CharMovementMode.None, direction);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Turn to target movement handler";

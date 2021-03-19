@@ -18,9 +18,7 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Looking at a item on the map. ({@link CommandList#CMD_LOOK_AT_MAP_ITEM}).
@@ -28,12 +26,11 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class LookAtMapItemCmd extends AbstractCommand {
     /**
      * The position on the map we are going to look at.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate location;
 
     /**
@@ -47,7 +44,7 @@ public final class LookAtMapItemCmd extends AbstractCommand {
      * @param tileLocation the location of the tile to look at
      * @param position the position of the item inside the stack
      */
-    public LookAtMapItemCmd(@Nonnull ServerCoordinate tileLocation, int position) {
+    public LookAtMapItemCmd(@NotNull ServerCoordinate tileLocation, int position) {
         super(CommandList.CMD_LOOK_AT_MAP_ITEM);
         if (position < 0) {
             throw new IllegalArgumentException("Position has to be 0 or more. Got: " + position);
@@ -57,12 +54,12 @@ public final class LookAtMapItemCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         location.encode(writer);
         writer.writeUByte(stackPosition);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(location + " Stack position: " + stackPosition);

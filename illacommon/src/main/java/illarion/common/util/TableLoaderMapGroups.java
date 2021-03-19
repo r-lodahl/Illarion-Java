@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the special implementation of a table loader that is used to load the map group names of the items.
@@ -45,7 +45,7 @@ public final class TableLoaderMapGroups extends TableLoader {
      *
      * @param callback the callback that will receive the data of this loader
      */
-    public TableLoaderMapGroups(@Nonnull TableLoaderSink<TableLoaderMapGroups> callback) {
+    public TableLoaderMapGroups(@NotNull TableLoaderSink<TableLoaderMapGroups> callback) {
         super("MapGroup", false, callback, ",");
     }
 
@@ -64,7 +64,7 @@ public final class TableLoaderMapGroups extends TableLoader {
      *
      * @return the german name of the map group
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameGerman() {
         return getString(TB_NAME_GERMAN);
@@ -75,7 +75,7 @@ public final class TableLoaderMapGroups extends TableLoader {
      *
      * @return the english name of the map group
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getNameEnglish() {
         return getString(TB_NAME_ENGLISH);

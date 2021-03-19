@@ -1,7 +1,8 @@
 package illarion.common.memory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
@@ -12,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 */
 public class MemoryPool<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MemoryPool.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     protected Queue<T> freeObjs = new ConcurrentLinkedQueue<>();
     protected final int MAX_OBJECTS = 20;

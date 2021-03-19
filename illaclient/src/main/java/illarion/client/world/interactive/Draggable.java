@@ -16,8 +16,8 @@
 package illarion.client.world.interactive;
 
 import illarion.common.types.ItemCount;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface is implemented by any interactive instance that can be dragged
@@ -33,7 +33,7 @@ public interface Draggable {
      * @param targetChar the character to drag the object to
      * @param count the amount of objects to be transferred
      */
-    void dragTo(@Nonnull InteractiveChar targetChar, @Nonnull ItemCount count);
+    void dragTo(@NotNull InteractiveChar targetChar, @NotNull ItemCount count);
 
     /**
      * Drag the object on a inventory slot.
@@ -41,7 +41,7 @@ public interface Draggable {
      * @param targetSlot the slot in the inventory that is the target
      * @param count the amount of objects to be transferred
      */
-    void dragTo(@Nonnull InteractiveInventorySlot targetSlot, @Nonnull ItemCount count);
+    void dragTo(@NotNull InteractiveInventorySlot targetSlot, @NotNull ItemCount count);
 
     /**
      * Drag the object to a map tile.
@@ -49,7 +49,7 @@ public interface Draggable {
      * @param targetTile the tile the object shall be dragged on
      * @param count the amount of objects to be transferred
      */
-    void dragTo(@Nonnull InteractiveMapTile targetTile, @Nonnull ItemCount count);
+    void dragTo(@NotNull InteractiveMapTile targetTile, @NotNull ItemCount count);
 
     /**
      * Drag the object to a container slot.
@@ -57,5 +57,5 @@ public interface Draggable {
      * @param targetSlot the target container slot
      * @param count the amount of objects to be transferred
      */
-    void dragTo(@Nonnull InteractiveContainerSlot targetSlot, @Nonnull ItemCount count);
+    void dragTo(@NotNull InteractiveContainerSlot targetSlot, @NotNull ItemCount count);
 }

@@ -18,8 +18,8 @@ package org.illarion.engine.backend.shared;
 import org.illarion.engine.input.ForwardingListener;
 import org.illarion.engine.input.ForwardingTarget;
 import org.illarion.engine.input.Input;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,13 +34,13 @@ public abstract class AbstractForwardingInput implements Input {
     /**
      * The internal structure used to store the forwarding flags.
      */
-    @Nonnull
+    @NotNull
     private final Set<ForwardingTarget> forwardingFlags;
 
     /**
      * The list of forwarding listeners that receive updates in case the forwarding state changed.
      */
-    @Nonnull
+    @NotNull
     private final List<ForwardingListener> forwardingListeners;
 
     /**
@@ -52,12 +52,12 @@ public abstract class AbstractForwardingInput implements Input {
     }
 
     @Override
-    public boolean isForwardingEnabled(@Nonnull ForwardingTarget target) {
+    public boolean isForwardingEnabled(@NotNull ForwardingTarget target) {
         return forwardingFlags.contains(ForwardingTarget.All) || forwardingFlags.contains(target);
     }
 
     @Override
-    public void enableForwarding(@Nonnull ForwardingTarget target) {
+    public void enableForwarding(@NotNull ForwardingTarget target) {
         boolean changedSomething;
         if (target == ForwardingTarget.All) {
             changedSomething = forwardingFlags.addAll(EnumSet.allOf(ForwardingTarget.class));
@@ -65,14 +65,14 @@ public abstract class AbstractForwardingInput implements Input {
             changedSomething = forwardingFlags.add(target);
         }
         if (changedSomething) {
-            for (@Nonnull ForwardingListener listener : forwardingListeners) {
+            for (@NotNull ForwardingListener listener : forwardingListeners) {
                 listener.forwardingEnabledFor(target);
             }
         }
     }
 
     @Override
-    public void disableForwarding(@Nonnull ForwardingTarget target) {
+    public void disableForwarding(@NotNull ForwardingTarget target) {
         boolean changedSomething = false;
         if (target == ForwardingTarget.All) {
             changedSomething = !forwardingFlags.isEmpty();
@@ -86,14 +86,14 @@ public abstract class AbstractForwardingInput implements Input {
             }
         }
         if (changedSomething) {
-            for (@Nonnull ForwardingListener listener : forwardingListeners) {
+            for (@NotNull ForwardingListener listener : forwardingListeners) {
                 listener.forwardingDisabledFor(target);
             }
         }
     }
 
     @Override
-    public void addForwardingListener(@Nonnull ForwardingListener listener) {
+    public void addForwardingListener(@NotNull ForwardingListener listener) {
         forwardingListeners.add(listener);
     }
 }

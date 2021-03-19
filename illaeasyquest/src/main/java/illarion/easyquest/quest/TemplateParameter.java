@@ -16,8 +16,8 @@
 package illarion.easyquest.quest;
 
 import illarion.easyquest.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 public class TemplateParameter {
     private final String name;
@@ -38,7 +38,7 @@ public class TemplateParameter {
         return type;
     }
 
-    @Nonnull
+    @NotNull
     public String getDescription() {
         return Lang.getMsg(description);
     }

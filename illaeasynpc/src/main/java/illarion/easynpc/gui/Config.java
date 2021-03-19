@@ -27,15 +27,15 @@ import illarion.common.config.entries.SelectEntry;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.easynpc.Lang;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SkinInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -113,7 +113,7 @@ public final class Config {
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The property key value for the luaNPC script folder.
@@ -191,7 +191,7 @@ public final class Config {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     public static Config getInstance() {
         return INSTANCE;
     }
@@ -204,7 +204,7 @@ public final class Config {
      * @return a string with the path to the folder or null in case no folder is
      * set
      */
-    @Nonnull
+    @NotNull
     private static Path checkFolder() {
         return DirectoryManager.getInstance().getDirectory(Directory.User);
     }
@@ -214,7 +214,7 @@ public final class Config {
      *
      * @param file the file to prepend
      */
-    public void addLastOpenedFile(@Nonnull Path file) {
+    public void addLastOpenedFile(@NotNull Path file) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -224,7 +224,7 @@ public final class Config {
     }
 
     @EventTopicSubscriber(topic = USED_LOOK_AND_FEEL)
-    public void onConfigChanged(@Nonnull String topic, ConfigChangedEvent event) {
+    public void onConfigChanged(@NotNull String topic, ConfigChangedEvent event) {
         if (topic.equals(USED_LOOK_AND_FEEL)) {
             SubstanceLookAndFeel.setSkin(getLookAndFeel());
             MainFrame mainFrame = MainFrame.getInstance();
@@ -239,7 +239,7 @@ public final class Config {
         }
     }
 
-    @Nonnull
+    @NotNull
     public ConfigDialog createDialog() {
         if (cfg == null) {
             throw new IllegalStateException("Configuration system not initialized yet.");
@@ -319,7 +319,7 @@ public final class Config {
      *
      * @return the folder to store the easyNPC scripts
      */
-    @Nonnull
+    @NotNull
     public String getEasyNpcFolder() {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
@@ -337,7 +337,7 @@ public final class Config {
      *
      * @param newFolder the folder where to store the easyNPC scripts
      */
-    public void setEasyNpcFolder(@Nonnull String newFolder) {
+    public void setEasyNpcFolder(@NotNull String newFolder) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -360,7 +360,7 @@ public final class Config {
      *
      * @return the list of last opened files
      */
-    @Nonnull
+    @NotNull
     public Path[] getLastOpenedFiles() {
         if (lastOpenedFilesBuffer != null) {
             return lastOpenedFilesBuffer;
@@ -424,7 +424,7 @@ public final class Config {
      *
      * @param comp The window that shall receive the stored settings
      */
-    public void getLastWindowValue(@Nonnull JFrame comp) {
+    public void getLastWindowValue(@NotNull JFrame comp) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
         }
@@ -454,7 +454,7 @@ public final class Config {
                 comp.setExtendedState(cfg.getInteger(LAST_WINDOW_STATE));
                 return;
             }
-        } catch (@Nonnull Exception e) {
+        } catch (@NotNull Exception e) {
             // nothing to do
         }
 
@@ -469,7 +469,7 @@ public final class Config {
      *
      * @return the class path of the look and feel that shall be used
      */
-    @Nonnull
+    @NotNull
     public String getLookAndFeel() {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
@@ -488,7 +488,7 @@ public final class Config {
      *
      * @param lookAndFeel the class path of the look and feel
      */
-    public void setLookAndFeel(@Nonnull String lookAndFeel) {
+    public void setLookAndFeel(@NotNull String lookAndFeel) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -523,7 +523,7 @@ public final class Config {
      *
      * @param newFolder the folder where to store the easyNPC scripts
      */
-    public void setLuaNpcFolder(@Nonnull Path newFolder) {
+    public void setLuaNpcFolder(@NotNull Path newFolder) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -537,7 +537,7 @@ public final class Config {
      *
      * @return the list of file paths
      */
-    @Nonnull
+    @NotNull
     public Collection<String> getOldFiles() {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
@@ -556,7 +556,7 @@ public final class Config {
      *
      * @param files the files to open
      */
-    public void setOldFiles(@Nonnull Iterable<Path> files) {
+    public void setOldFiles(@NotNull Iterable<Path> files) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;
@@ -743,7 +743,7 @@ public final class Config {
      *
      * @param comp the window that is the source for the stored data
      */
-    public void setLastWindowValues(@Nonnull JFrame comp) {
+    public void setLastWindowValues(@NotNull JFrame comp) {
         if (cfg == null) {
             LOGGER.error("Configuration system not initialized yet.");
             return;

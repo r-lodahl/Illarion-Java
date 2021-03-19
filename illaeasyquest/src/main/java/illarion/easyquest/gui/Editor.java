@@ -35,9 +35,9 @@ import illarion.easyquest.QuestIO;
 import illarion.easyquest.quest.Position;
 import illarion.easyquest.quest.Status;
 import illarion.easyquest.quest.Trigger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,24 +57,24 @@ public final class Editor extends mxGraphComponent {
 
     private int questID = 10000;
 
-    @Nonnull
+    @NotNull
     @SuppressWarnings("unused")
     private final mxKeyboardHandler keyboardHandler;
-    @Nonnull
+    @NotNull
     @SuppressWarnings("unused")
     private final mxRubberband rubberband;
 
-    @Nonnull
+    @NotNull
     private final mxUndoManager undoManager;
 
     private final mxIEventListener undoHandler = new mxIEventListener() {
         @Override
-        public void invoke(Object source, @Nonnull mxEventObject evt) {
+        public void invoke(Object source, @NotNull mxEventObject evt) {
             undoManager.undoableEditHappened((mxUndoableEdit) evt.getProperty("edit"));
         }
     };
 
-    Editor(@Nonnull Graph graph) {
+    Editor(@NotNull Graph graph) {
         super(graph);
 
         mxICell root = (mxCell) graph.getModel().getRoot();
@@ -118,7 +118,7 @@ public final class Editor extends mxGraphComponent {
 
         getGraphControl().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(@Nonnull MouseEvent e) {
+            public void mouseClicked(@NotNull MouseEvent e) {
                 if ((e.getClickCount() == 2) || ((e.getClickCount() == 1) &&
                         (MainFrame.getInstance().getCreateType() == MainFrame.CREATE_STATUS))) {
                     Object cell = getCellAt(e.getX(), e.getY());
@@ -158,7 +158,7 @@ public final class Editor extends mxGraphComponent {
         });
     }
 
-    private static void setup(@Nonnull Graph graph) {
+    private static void setup(@NotNull Graph graph) {
         mxStylesheet stylesheet = graph.getStylesheet();
         Map<String, Object> nodeStyle = stylesheet.getDefaultVertexStyle();
         nodeStyle.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
@@ -179,7 +179,7 @@ public final class Editor extends mxGraphComponent {
         stylesheet.putCellStyle("StartStyle", startStyle);
     }
 
-    @Nonnull
+    @NotNull
     public mxUndoManager getUndoManager() {
         return undoManager;
     }
@@ -247,7 +247,7 @@ public final class Editor extends mxGraphComponent {
         savedSinceLastChange = true;
     }
 
-    @Nonnull
+    @NotNull
     public static Editor loadQuest(@Nullable Path quest) {
         mxIGraphModel model;
         if (quest == null) {

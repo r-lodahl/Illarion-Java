@@ -17,16 +17,13 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This command is used to tell the server that the player is using a item in the inventory.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class UseInventoryCmd extends AbstractCommand {
     /**
      * The inventory slot that is used.
@@ -45,12 +42,12 @@ public final class UseInventoryCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte((short) 3); // INVENTORY REFERENCE
         writer.writeUByte(slot);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Slot: " + slot);

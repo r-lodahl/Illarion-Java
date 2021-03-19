@@ -16,8 +16,8 @@
 package org.illarion.engine.graphic;
 
 import illarion.common.util.Bresenham;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ final class LightRays {
     /**
      * The root node.
      */
-    @Nonnull
+    @NotNull
     private final RayNode root;
 
     /**
@@ -42,10 +42,10 @@ final class LightRays {
     /**
      * The caches for the rays.
      */
-    @Nonnull
+    @NotNull
     private static final Map<Integer, LightRays> RAY_CACHE = new HashMap<>();
 
-    @Nonnull
+    @NotNull
     public static LightRays getRays(int size) {
         LightRays rays = RAY_CACHE.get(size);
         if (rays == null) {
@@ -87,7 +87,7 @@ final class LightRays {
      *
      * @param light the source of the light that shall be mapped with the pre
      */
-    public void apply(@Nonnull LightSource light) {
+    public void apply(@NotNull LightSource light) {
         root.apply(light, 1.0f);
     }
 
@@ -97,7 +97,7 @@ final class LightRays {
      * @param x the x coordinate of the target location of the ray
      * @param y the y coordinate of the target location of the ray
      */
-    private void createRay(int x, int y, @Nonnull Bresenham bresenham) {
+    private void createRay(int x, int y, @NotNull Bresenham bresenham) {
         bresenham.calculate(0, 0, x, y);
         bresenham.adjustStart(0, 0);
 

@@ -17,8 +17,8 @@ package illarion.client.resources;
 
 import illarion.client.resources.data.EffectTemplate;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The effect factory that stores the effect templates.
@@ -35,7 +35,7 @@ public final class EffectFactory extends AbstractTemplateFactory<EffectTemplate>
     /**
      * The singleton instance of the effect factory.
      */
-    @Nonnull
+    @NotNull
     private static final EffectFactory INSTANCE = new EffectFactory();
 
     /**
@@ -43,7 +43,7 @@ public final class EffectFactory extends AbstractTemplateFactory<EffectTemplate>
      *
      * @return the singleton instance for the effect factory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static EffectFactory getInstance() {
         return INSTANCE;

@@ -17,9 +17,9 @@ package illarion.easynpc.data;
 
 import illarion.common.types.ItemId;
 import illarion.common.util.TableLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,7 +38,7 @@ public final class Items implements Comparable<Items> {
     /**
      * The list of items that were load.
      */
-    @Nonnull
+    @NotNull
     private static final int[] itemsList;
 
     static {
@@ -77,7 +77,7 @@ public final class Items implements Comparable<Items> {
      *
      * @return the array of references to the item objects
      */
-    @Nonnull
+    @NotNull
     public static Items[] values() {
         Items[] retList = new Items[itemsList.length];
         for (int i = 0; i < itemsList.length; i++) {
@@ -123,7 +123,7 @@ public final class Items implements Comparable<Items> {
     }
 
     @Override
-    public int compareTo(@Nonnull Items o) {
+    public int compareTo(@NotNull Items o) {
         return Integer.compare(itemId, o.itemId);
     }
 

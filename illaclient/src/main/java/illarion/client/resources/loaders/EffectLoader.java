@@ -19,13 +19,13 @@ import illarion.client.resources.ResourceFactory;
 import illarion.client.resources.data.EffectTemplate;
 import illarion.common.util.TableLoaderEffects;
 import illarion.common.util.TableLoaderSink;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Sprite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the effect definitions from the resource table that was created using the configuration
@@ -39,20 +39,20 @@ public final class EffectLoader extends AbstractResourceLoader<EffectTemplate>
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(EffectLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The resource path to the effect graphics. All graphics need to be located at this path within the JAR-resource
      * files.
      */
-    @Nonnull
+    @NotNull
     private static final String EFFECTS_PATH = "effects/";
 
     /**
      * The assets of the game engine that are required to load the data needed for the effects.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -60,14 +60,14 @@ public final class EffectLoader extends AbstractResourceLoader<EffectTemplate>
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public EffectLoader(@Nonnull Assets assets) {
+    public EffectLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
     /**
      * Trigger the loading sequence for this loader.
      */
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<EffectTemplate> call() {
         if (!hasTargetFactory()) {
@@ -89,7 +89,7 @@ public final class EffectLoader extends AbstractResourceLoader<EffectTemplate>
      * Handle a single line of the resource table.
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderEffects loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderEffects loader) {
         int effectID = loader.getEffectId();
         String name = loader.getResourceName();
         int frames = loader.getFrameCount();
@@ -105,7 +105,7 @@ public final class EffectLoader extends AbstractResourceLoader<EffectTemplate>
         EffectTemplate template = new EffectTemplate(effectID, effectSprite, frames, speed, light);
         try {
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             log.error("Failed adding effect to internal factory. ID: {} - Filename: {}", effectID, name);
         }
 

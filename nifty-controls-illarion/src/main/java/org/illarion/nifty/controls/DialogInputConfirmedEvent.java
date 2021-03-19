@@ -16,29 +16,24 @@
 package org.illarion.nifty.controls;
 
 import org.illarion.nifty.controls.DialogInput.DialogButton;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired in case a input dialog is confirmed.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class DialogInputConfirmedEvent extends DialogEvent {
     /**
      * The dialog button that was pressed to trigger this event.
      */
-    @Nonnull
+    @NotNull
     private final DialogButton button;
 
     /**
      * The text that was typed into the input area.
      */
-    @Nonnull
+    @NotNull
     private final String text;
 
     /**
@@ -49,7 +44,7 @@ public final class DialogInputConfirmedEvent extends DialogEvent {
      * @param inputText the text that was typed into the text input area of the dialog
      */
     public DialogInputConfirmedEvent(
-            int id, @Nonnull DialogButton pressedButton, @Nonnull String inputText) {
+            int id, @NotNull DialogButton pressedButton, @NotNull String inputText) {
         super(id);
         button = pressedButton;
         text = inputText;
@@ -60,7 +55,7 @@ public final class DialogInputConfirmedEvent extends DialogEvent {
      *
      * @return the constant that defines what button was used
      */
-    @Nonnull
+    @NotNull
     public DialogButton getPressedButton() {
         return button;
     }
@@ -70,7 +65,7 @@ public final class DialogInputConfirmedEvent extends DialogEvent {
      *
      * @return the text the user typed into the dialog
      */
-    @Nonnull
+    @NotNull
     public String getText() {
         return text;
     }

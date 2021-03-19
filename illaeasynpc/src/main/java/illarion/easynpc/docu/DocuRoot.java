@@ -16,9 +16,9 @@
 package illarion.easynpc.docu;
 
 import illarion.easynpc.Lang;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +26,9 @@ import java.util.List;
  * @author Fredrik K
  */
 public final class DocuRoot implements DocuEntry {
-    @Nonnull
+    @NotNull
     private static final DocuRoot INSTANCE = new DocuRoot();
-    @Nonnull
+    @NotNull
     private final List<DocuEntry> types;
 
     private DocuRoot() {
@@ -158,12 +158,12 @@ public final class DocuRoot implements DocuEntry {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static DocuRoot getInstance() {
         return INSTANCE;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public DocuEntry getChild(int index) {
         if ((index >= 0) && (index < types.size())) {

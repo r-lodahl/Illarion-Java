@@ -15,8 +15,9 @@
  */
 package illarion.easyquest.gui;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -49,7 +50,7 @@ public class IntegerParameter extends JFormattedTextField implements Parameter {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Object getParameter() {
         return getValue();
     }

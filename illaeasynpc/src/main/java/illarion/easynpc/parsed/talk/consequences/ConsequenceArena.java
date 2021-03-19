@@ -18,8 +18,8 @@ package illarion.easynpc.parsed.talk.consequences;
 import illarion.easynpc.parsed.talk.TalkConsequence;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -34,21 +34,21 @@ public class ConsequenceArena implements TalkConsequence {
         ShowRanking
     }
 
-    @Nonnull
+    @NotNull
     private final Task task;
 
-    public ConsequenceArena(@Nonnull Task task) {
+    public ConsequenceArena(@NotNull Task task) {
         this.task = task;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getLuaModule() {
         return BASE_LUA_MODULE + "arena";
     }
 
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires) throws IOException {
         target.write("talkEntry:addConsequence(");
         target.write(requires.getStorage(getLuaModule()) + "(\"");
         switch (task) {

@@ -17,8 +17,8 @@ package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.illarion.engine.graphic.effects.SceneEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the extended interface of scene effects that are applied to the libGDX scene renderer.
@@ -43,12 +43,12 @@ interface GdxSceneEffect extends SceneEffect {
      * @param textureHeight the height of the texture that holds the scene in its current state
      */
     void activateEffect(
-            @Nonnull SpriteBatch batch, int screenWidth, int screenHeight, int textureWidth, int textureHeight);
+            @NotNull SpriteBatch batch, int screenWidth, int screenHeight, int textureWidth, int textureHeight);
 
     /**
      * Disable the effect so it does not apply anymore
      *
      * @param batch the batch used for the drawing operation
      */
-    void disableEffect(@Nonnull SpriteBatch batch);
+    void disableEffect(@NotNull SpriteBatch batch);
 }

@@ -20,9 +20,9 @@ import org.illarion.engine.EngineException;
 import org.illarion.engine.assets.EffectManager;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.effects.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The effect manager of the libGDX backend.
@@ -33,7 +33,7 @@ class GdxEffectManager implements EffectManager {
     /**
      * The file system handler used to load the effect data.
      */
-    @Nonnull
+    @NotNull
     private final Files files;
 
     /**
@@ -71,13 +71,13 @@ class GdxEffectManager implements EffectManager {
      *
      * @param files the file system handler that should be used to load the data
      */
-    GdxEffectManager(@Nonnull Files files) {
+    GdxEffectManager(@NotNull Files files) {
         this.files = files;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public MiniMapEffect getMiniMapEffect(@Nonnull WorldMap worldMap, boolean sharedInstance) throws EngineException {
+    public MiniMapEffect getMiniMapEffect(@NotNull WorldMap worldMap, boolean sharedInstance) throws EngineException {
         if (sharedInstance) {
             if (sharedMiniMapEffect == null) {
                 sharedMiniMapEffect = new GdxMiniMapEffect(files, worldMap);
@@ -87,7 +87,7 @@ class GdxEffectManager implements EffectManager {
         return new GdxMiniMapEffect(files, worldMap);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public HighlightEffect getHighlightEffect(boolean sharedInstance) throws EngineException {
         if (sharedInstance) {
@@ -99,7 +99,7 @@ class GdxEffectManager implements EffectManager {
         return new GdxHighlightEffect(files);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FogEffect getFogEffect(boolean sharedInstance) throws EngineException {
         if (sharedInstance) {
@@ -111,7 +111,7 @@ class GdxEffectManager implements EffectManager {
         return new GdxFogEffect(files);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public GrayScaleEffect getGrayScaleEffect(boolean sharedInstance) throws EngineException {
         if (sharedInstance) {
@@ -123,7 +123,7 @@ class GdxEffectManager implements EffectManager {
         return new GdxGrayScaleEffect(files);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public TileLightEffect getTileLightEffect(boolean sharedInstance) throws EngineException {
         if (sharedInstance) {

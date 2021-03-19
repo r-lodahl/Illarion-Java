@@ -26,16 +26,16 @@ import illarion.mapedit.history.HistoryManager;
 import illarion.mapedit.history.ItemPlacedAction;
 import illarion.mapedit.render.RendererManager;
 import illarion.mapedit.util.SwingLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -51,20 +51,20 @@ import java.util.List;
  */
 public class GuiController extends WindowAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GuiController.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    @Nonnull
+    @NotNull
     private final MainFrame mainFrame;
 
-    @Nonnull
+    @NotNull
     private final List<Map> maps;
 
-    @Nonnull
+    @NotNull
     private final HistoryManager historyManager;
 
-    @Nonnull
+    @NotNull
     private final AnnotationChecker annotationChecker;
-    @Nonnull
+    @NotNull
     private final HelpDialog helpDialog;
 
     @Nullable
@@ -87,7 +87,7 @@ public class GuiController extends WindowAdapter {
         helpDialog = new HelpDialog(mainFrame);
     }
 
-    @Nonnull
+    @NotNull
     public AnnotationChecker getAnnotationChecker() {
         return annotationChecker;
     }
@@ -100,7 +100,7 @@ public class GuiController extends WindowAdapter {
         startGui();
     }
 
-    @Nonnull
+    @NotNull
     public List<Map> getMaps() {
         return maps;
     }
@@ -168,7 +168,7 @@ public class GuiController extends WindowAdapter {
         }
     }
 
-    @Nonnull
+    @NotNull
     public HistoryManager getHistoryManager() {
         return historyManager;
     }
@@ -218,7 +218,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onMapSelected(@Nonnull MapSelectedEvent e) {
+    public void onMapSelected(@NotNull MapSelectedEvent e) {
         if ((e.getIndex() < 0) || (e.getIndex() >= maps.size())) {
             selected = null;
         } else {
@@ -238,14 +238,14 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onMapLoaded(@Nonnull MapLoadedEvent e) {
+    public void onMapLoaded(@NotNull MapLoadedEvent e) {
         if (!maps.contains(e.getMap())) {
             addMap(e.getMap());
         }
     }
 
     @EventSubscriber
-    public void onMapOpen(@Nonnull MapOpenEvent e) {
+    public void onMapOpen(@NotNull MapOpenEvent e) {
         MapIO.loadMap(e.getPath(), e.getName());
     }
 
@@ -255,19 +255,19 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onMapCloseAtIndex(@Nonnull CloseMapEvent e) {
+    public void onMapCloseAtIndex(@NotNull CloseMapEvent e) {
         removeMap(e.getIndex());
     }
 
     @EventSubscriber
-    public void onCopyClipboard(@Nonnull ClipboardCopyEvent e) {
+    public void onCopyClipboard(@NotNull ClipboardCopyEvent e) {
         if (getSelected() != null) {
             clipboard = getSelected().copySelectedTiles();
         }
     }
 
     @EventSubscriber
-    public void onCutClipboard(@Nonnull ClipboardCutEvent e) {
+    public void onCutClipboard(@NotNull ClipboardCutEvent e) {
         if ((getSelected() != null) && !annotationChecker.isAnnotatedFill(getSelected())) {
             clipboard = getSelected().cutSelectedTiles();
             EventBus.publish(new RepaintRequestEvent());
@@ -276,7 +276,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onPasteClipboard(@Nonnull PasteEvent e) {
+    public void onPasteClipboard(@NotNull PasteEvent e) {
         EventBus.publish(new DidPasteEvent());
         if ((getSelected() != null) && (clipboard != null) &&
                 !annotationChecker.isAnnotated(e.getX(), e.getY(), getSelected(), clipboard)) {
@@ -287,7 +287,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onItemRemove(@Nonnull ItemRemoveEvent e) {
+    public void onItemRemove(@NotNull ItemRemoveEvent e) {
         if (getSelected() != null) {
             ItemPlacedAction historyAction = getSelected().removeItemOnActiveTile(e.getIndex());
             if (historyAction != null) {
@@ -300,7 +300,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onItemReplace(@Nonnull ItemReplaceEvent e) {
+    public void onItemReplace(@NotNull ItemReplaceEvent e) {
         if (getSelected() != null) {
             getSelected().replaceItemOnActiveTile(e.getIndex(), e.getNewIndex());
             EventBus.publish(new RepaintRequestEvent());
@@ -309,7 +309,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onMapPosition(@Nonnull MapPositionEvent e) {
+    public void onMapPosition(@NotNull MapPositionEvent e) {
         if (getSelected() != null) {
             getSelected().setMapPosition(e.getMapX(), e.getMapY());
             EventBus.publish(new RepaintRequestEvent());
@@ -317,7 +317,7 @@ public class GuiController extends WindowAdapter {
     }
 
     @EventSubscriber
-    public void onItemDataAnnotation(@Nonnull TileAnnotationEvent e) {
+    public void onItemDataAnnotation(@NotNull TileAnnotationEvent e) {
         if (getSelected() == null) {
             return;
         }

@@ -17,8 +17,8 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This command is used to request a look at on a ingredient inside the crafting menu.
@@ -57,14 +57,14 @@ public final class LookAtCraftIngredientCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeInt(dialogId);
         writer.writeByte((byte) 3);
         writer.writeUByte(itemIndex);
         writer.writeUByte(ingredientIndex);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Dialog ID: " + dialogId + " Look at index: " + itemIndex + " Ingredient index:" +

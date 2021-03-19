@@ -18,8 +18,8 @@ package illarion.common.config.gui.entries.swing;
 import illarion.common.config.entries.CheckEntry;
 import illarion.common.config.entries.ConfigEntry;
 import illarion.common.config.gui.entries.SavableEntry;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 
 /**
@@ -38,7 +38,7 @@ public final class CheckEntrySwing extends JCheckBox implements SavableEntry {
     /**
      * The text entry used to initialize this instance.
      */
-    @Nonnull
+    @NotNull
     private final CheckEntry entry;
 
     /**
@@ -48,7 +48,7 @@ public final class CheckEntrySwing extends JCheckBox implements SavableEntry {
      * @param usedEntry the entry used to setup this class, the entry needs to
      * pass the check with the static method
      */
-    public CheckEntrySwing(@Nonnull ConfigEntry usedEntry) {
+    public CheckEntrySwing(@NotNull ConfigEntry usedEntry) {
         if (!isUsableEntry(usedEntry)) {
             throw new IllegalArgumentException("ConfigEntry type illegal.");
         }

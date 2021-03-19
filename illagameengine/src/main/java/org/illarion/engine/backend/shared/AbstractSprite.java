@@ -19,10 +19,9 @@ import illarion.common.types.Rectangle;
 import illarion.common.util.FastMath;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
 
 /**
@@ -31,12 +30,11 @@ import java.util.Arrays;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public abstract class AbstractSprite<T extends Texture> implements Sprite {
     /**
      * The textures assigned to this sprite.
      */
-    @Nonnull
+    @NotNull
     private final T[] textures;
 
     /**
@@ -67,7 +65,7 @@ public abstract class AbstractSprite<T extends Texture> implements Sprite {
     /**
      * The rectangle that defines the area the sprite is displayed in.
      */
-    @Nonnull
+    @NotNull
     private final Rectangle displayRectangle;
 
     /**
@@ -81,7 +79,7 @@ public abstract class AbstractSprite<T extends Texture> implements Sprite {
      * @param mirror the mirrored flag
      */
     protected AbstractSprite(
-            @Nonnull T[] textures,
+            @NotNull T[] textures,
             int offsetX,
             int offsetY,
             float centerX,
@@ -134,7 +132,7 @@ public abstract class AbstractSprite<T extends Texture> implements Sprite {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public T getFrame(int frame) {
         if ((frame < 0) || (frame >= textures.length)) {
             throw new IndexOutOfBoundsException("Frame out of bounds: " + frame);
@@ -164,11 +162,11 @@ public abstract class AbstractSprite<T extends Texture> implements Sprite {
         return mirror;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Rectangle getDisplayArea(
             int x, int y, double scale, double rotation, @Nullable Rectangle storage) {
-        @Nonnull Rectangle targetRectangle = (storage == null) ? new Rectangle() : storage;
+        @NotNull Rectangle targetRectangle = (storage == null) ? new Rectangle() : storage;
 
         long displayWidth = FastMath.floor(displayRectangle.getWidth() * scale);
         long displayHeight = FastMath.floor(displayRectangle.getHeight() * scale);

@@ -16,9 +16,9 @@
 package illarion.common.data;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This class contains a single person that is listed in the credits.
@@ -29,13 +29,13 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
     /**
      * The name of the person.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
      * The string used to compare the name with others.
      */
-    @Nonnull
+    @NotNull
     private final String compareName;
 
     /**
@@ -46,9 +46,9 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
      * @param lists the lists this member is supposed to be added to
      */
     public static void create(
-            @Nonnull String firstName,
-            @Nonnull String lastName,
-            @Nonnull CreditsList... lists) {
+            @NotNull String firstName,
+            @NotNull String lastName,
+            @NotNull CreditsList... lists) {
         create(firstName, null, lastName, lists);
     }
 
@@ -58,7 +58,7 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
      * @param nickName the nick name of the person
      * @param lists the lists this member is supposed to be added to
      */
-    public static void create(@Nonnull String nickName, @Nonnull CreditsList... lists) {
+    public static void create(@NotNull String nickName, @NotNull CreditsList... lists) {
         create(null, nickName, null, lists);
     }
 
@@ -74,7 +74,7 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
             @Nullable String firstName,
             @Nullable String nickName,
             @Nullable String lastName,
-            @Nonnull CreditsList... lists) {
+            @NotNull CreditsList... lists) {
         CreditsPerson person = new CreditsPerson(firstName, nickName, lastName);
         for (CreditsList list : lists) {
             list.addMember(person);
@@ -117,13 +117,13 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
      *
      * @return the name of the person
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getName() {
         return name;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {
@@ -143,7 +143,7 @@ public final class CreditsPerson implements Comparable<CreditsPerson> {
 
     @Override
     @Contract(pure = true)
-    public int compareTo(@Nonnull CreditsPerson o) {
+    public int compareTo(@NotNull CreditsPerson o) {
         return compareName.compareTo(o.compareName);
     }
 

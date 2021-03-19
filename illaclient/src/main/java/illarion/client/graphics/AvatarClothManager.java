@@ -19,9 +19,9 @@ import illarion.client.resources.ClothFactory;
 import illarion.client.resources.ItemFactory;
 import illarion.client.resources.data.AvatarClothTemplate;
 import illarion.client.resources.data.ItemTemplate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public final class AvatarClothManager {
     /**
      * The storage for the known clothes of each group.
      */
-    @Nonnull
+    @NotNull
     private final Map<AvatarClothGroup, ClothFactory> existingClothes;
 
     /**
@@ -45,8 +45,8 @@ public final class AvatarClothManager {
         existingClothes = new EnumMap<>(AvatarClothGroup.class);
     }
 
-    @Nonnull
-    public static String toString(@Nonnull AvatarClothGroup group) {
+    @NotNull
+    public static String toString(@NotNull AvatarClothGroup group) {
         return "AvatarClothManager(" + group.name() + ')';
     }
 
@@ -57,7 +57,7 @@ public final class AvatarClothManager {
      * @param group the group the item shall be assigned to
      * @param cloth the definition of the cloth itself
      */
-    public void addCloth(@Nonnull AvatarClothGroup group, @Nonnull AvatarClothTemplate cloth) {
+    public void addCloth(@NotNull AvatarClothGroup group, @NotNull AvatarClothTemplate cloth) {
         existingClothes.compute(group, (g, factory) -> {
             if (factory == null) {
                 factory = new ClothFactory();
@@ -75,7 +75,7 @@ public final class AvatarClothManager {
      * @param itemID the item id of the item that shall be checked
      * @return {@code true} in case the cloth item is defined for that location
      */
-    public boolean doesClothExists(@Nonnull AvatarClothGroup group, int itemID) {
+    public boolean doesClothExists(@NotNull AvatarClothGroup group, int itemID) {
         ClothFactory factory = existingClothes.get(group);
         if (factory == null) {
             return false;
@@ -109,7 +109,7 @@ public final class AvatarClothManager {
      * defined in this storage
      */
     @Nullable
-    public AvatarCloth getCloth(@Nonnull AvatarClothGroup group, int itemID, @Nonnull Avatar parentAvatar) {
+    public AvatarCloth getCloth(@NotNull AvatarClothGroup group, int itemID, @NotNull Avatar parentAvatar) {
         ClothFactory factory = existingClothes.get(group);
         if (factory == null) {
             return null;
@@ -128,7 +128,7 @@ public final class AvatarClothManager {
         AvatarClothTemplate template;
         try {
             template = factory.getTemplate(refID);
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             return null;
         }
         if (template.getId() == 0) {

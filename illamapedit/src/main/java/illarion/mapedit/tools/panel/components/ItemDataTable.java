@@ -22,9 +22,9 @@ import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.tools.ToolManager;
 import illarion.mapedit.tools.panel.components.models.ItemDataTableModel;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,22 +34,22 @@ import java.util.ArrayList;
  */
 public class ItemDataTable extends JPanel {
     private static final int PREFERRED_KEY_WIDTH = 15;
-    @Nonnull
+    @NotNull
     private static final String[] DATA_KEYS = {"", "nameDe", "nameEn", "descriptionDe", "descriptionEn", "rareness",
                                                "craftedBy", "magicalDiamond", "magicalEmerald", "magicalRuby",
                                                "magicalSapphire", "magicalAmethyst", "magicalObsidian", "magicalTopaz"};
 
-    @Nonnull
+    @NotNull
     private final ItemDataTableModel dataTableModel;
-    @Nonnull
+    @NotNull
     private final JTable dataTable;
-    @Nonnull
+    @NotNull
     private final AnnotationLabel annotation;
-    @Nonnull
+    @NotNull
     private final JButton addDataButton;
-    @Nonnull
+    @NotNull
     private final JButton removeDataButton;
-    @Nonnull
+    @NotNull
     private final JButton annotationButton;
 
     public ItemDataTable() {
@@ -147,7 +147,7 @@ public class ItemDataTable extends JPanel {
         annotationButton.setEnabled(false);
     }
 
-    public void setDataList(@Nonnull MapItem item) {
+    public void setDataList(@NotNull MapItem item) {
         dataTableModel.clearData();
         if (item.getItemData() != null) {
             dataTableModel.setData(item.getItemData());

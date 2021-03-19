@@ -18,11 +18,10 @@ package illarion.client.net;
 import illarion.client.IllaClient;
 import illarion.client.net.client.AbstractCommand;
 import illarion.common.net.NetCommWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -39,7 +38,6 @@ import java.util.concurrent.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @author Nop
  */
-@NotThreadSafe
 final class Sender implements NetCommWriter {
     /**
      * The XOR mask the command ID is masked with to decode the checking ID and
@@ -50,8 +48,8 @@ final class Sender implements NetCommWriter {
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Sender.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The maximal size in bytes one command can use.
@@ -62,31 +60,31 @@ final class Sender implements NetCommWriter {
      * Length of the byte buffer used to store the data before its send to the
      * server.
      */
-    @Nonnull
+    @NotNull
     private final ByteBuffer buffer = ByteBuffer.allocateDirect(MAX_COMMAND_SIZE);
 
     /**
      * The string encoder that is used to encode the strings before they are
      * send to the server.
      */
-    @Nonnull
+    @NotNull
     private final CharsetEncoder encoder;
 
     /**
      * The buffer that is used to temporary store the decoded characters that
      * were send to the player.
      */
-    @Nonnull
+    @NotNull
     private final CharBuffer encodingBuffer = CharBuffer.allocate(65535);
 
     /**
      * The output stream of the socket connection to the server. The encoded
      * data is written on this stream to be send to the server.
      */
-    @Nonnull
+    @NotNull
     private final WritableByteChannel outChannel;
 
-    @Nonnull
+    @NotNull
     private final ExecutorService commandExecutor;
 
     /**
@@ -95,14 +93,14 @@ final class Sender implements NetCommWriter {
      * @param out the output channel of the socket connection used to send the
      * data to the server
      */
-    Sender(@Nonnull WritableByteChannel out) {
+    Sender(@NotNull WritableByteChannel out) {
         commandExecutor = Executors.newSingleThreadExecutor();
         outChannel = out;
 
         encoder = NetComm.SERVER_STRING_ENCODING.newEncoder();
     }
 
-    void sendCommand(@Nonnull AbstractCommand cmd) {
+    void sendCommand(@NotNull AbstractCommand cmd) {
         commandExecutor.submit(() -> {
             try {
                 encodeCommand(cmd);
@@ -117,7 +115,7 @@ final class Sender implements NetCommWriter {
         });
     }
 
-    private void encodeCommand(@Nonnull AbstractCommand cmd) throws IOException {
+    private void encodeCommand(@NotNull AbstractCommand cmd) throws IOException {
         if (cmd.getId() != CommandList.CMD_KEEPALIVE) {
             log.debug("SND: {}", cmd);
         }
@@ -175,7 +173,7 @@ final class Sender implements NetCommWriter {
             }
 
             @Override
-            @Nonnull
+            @NotNull
             public Boolean get() throws InterruptedException, ExecutionException {
                 try {
                     return get(1, TimeUnit.HOURS);
@@ -185,8 +183,8 @@ final class Sender implements NetCommWriter {
             }
 
             @Override
-            @Nonnull
-            public Boolean get(long timeout, @Nonnull TimeUnit unit)
+            @NotNull
+            public Boolean get(long timeout, @NotNull TimeUnit unit)
                     throws InterruptedException, ExecutionException, TimeoutException {
                 return commandExecutor.awaitTermination(timeout, unit);
             }
@@ -230,7 +228,7 @@ final class Sender implements NetCommWriter {
      * @param value the string that shall be send to the server
      */
     @Override
-    public void writeString(@Nonnull String value) throws CharacterCodingException {
+    public void writeString(@NotNull String value) throws CharacterCodingException {
         int startIndex = buffer.position();
         buffer.putShort((short) 0);
 

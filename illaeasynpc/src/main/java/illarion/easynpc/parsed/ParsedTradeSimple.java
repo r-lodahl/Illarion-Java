@@ -19,8 +19,8 @@ import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -34,10 +34,10 @@ public class ParsedTradeSimple extends AbstractParsedTrade {
     /**
      * The IDs of the items that are supposed to be traded.
      */
-    @Nonnull
+    @NotNull
     private final int[] itemIds;
 
-    public ParsedTradeSimple(ParsedTradeSimple.TradeMode tradeMode, @Nonnull List<Integer> tradeItemIds) {
+    public ParsedTradeSimple(ParsedTradeSimple.TradeMode tradeMode, @NotNull List<Integer> tradeItemIds) {
         super(tradeMode);
         itemIds = new int[tradeItemIds.size()];
         for (int i = 0; i < itemIds.length; i++) {
@@ -46,12 +46,12 @@ public class ParsedTradeSimple extends AbstractParsedTrade {
     }
 
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to do
     }
 
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         if (stage == WritingStage.Trading) {
             for (int itemId : itemIds) {
                 target.write("tradingNPC:addItem(" + requires.getStorage("npc.base.trade") + ".tradeNPCItem(");

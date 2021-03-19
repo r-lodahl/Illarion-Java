@@ -17,8 +17,8 @@ package org.illarion.engine.nifty;
 
 import de.lessvoid.nifty.spi.render.RenderFont;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the render font implementation for Nifty that uses the font interface to prepare the font.
@@ -29,7 +29,7 @@ class IgeRenderFont implements RenderFont {
     /**
      * The font that is backing this render font.
      */
-    @Nonnull
+    @NotNull
     private final Font font;
 
     /**
@@ -37,7 +37,7 @@ class IgeRenderFont implements RenderFont {
      *
      * @param font the backing font
      */
-    IgeRenderFont(@Nonnull Font font) {
+    IgeRenderFont(@NotNull Font font) {
         this.font = font;
     }
 
@@ -46,13 +46,13 @@ class IgeRenderFont implements RenderFont {
      *
      * @return the backing font
      */
-    @Nonnull
+    @NotNull
     public Font getFont() {
         return font;
     }
 
     @Override
-    public int getWidth(@Nonnull String text) {
+    public int getWidth(@NotNull String text) {
         if (text.isEmpty()) {
             return 0;
         }
@@ -60,7 +60,7 @@ class IgeRenderFont implements RenderFont {
     }
 
     @Override
-    public int getWidth(@Nonnull String text, float size) {
+    public int getWidth(@NotNull String text, float size) {
         return (int) Math.ceil(getWidth(text) * size);
     }
 

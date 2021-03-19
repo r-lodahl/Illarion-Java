@@ -16,10 +16,7 @@
 package illarion.client.resources.data;
 
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the template that contains the required data to create the graphical representation of a utility or GUI
@@ -27,8 +24,6 @@ import javax.annotation.concurrent.ThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class MiscImageTemplate extends AbstractMultiFrameEntityTemplate {
     /**
      * The constructor of this class.
@@ -37,7 +32,7 @@ public class MiscImageTemplate extends AbstractMultiFrameEntityTemplate {
      * @param sprite the sprite used to render the entity
      * @param frames the total amount of frames
      */
-    public MiscImageTemplate(int id, @Nonnull Sprite sprite, int frames) {
+    public MiscImageTemplate(int id, @NotNull Sprite sprite, int frames) {
         super(id, sprite, frames, 0, null, 0);
     }
 }

@@ -23,13 +23,13 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.render.NiftyImage;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.illarion.nifty.controls.InventorySlot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The control class of the inventory slot.
@@ -104,11 +104,11 @@ public class InventorySlotControl extends AbstractController implements Inventor
     /**
      * The logger that displays all logging output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(InventorySlotControl.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty, @Nonnull Screen screen, @Nonnull Element element, @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty, @NotNull Screen screen, @NotNull Element element, @NotNull Parameters parameter) {
         bind(element);
 
         this.screen = screen;
@@ -232,7 +232,7 @@ public class InventorySlotControl extends AbstractController implements Inventor
     }
 
     @Override
-    public void setLabelText(@Nonnull String text) {
+    public void setLabelText(@NotNull String text) {
         backgroundImageLabel.getNiftyControl(Label.class).setText(text);
         if (backgroundImageLabel.isVisible()) {
             backgroundImageLabel.getParent().layoutElements();
@@ -278,7 +278,7 @@ public class InventorySlotControl extends AbstractController implements Inventor
     }
 
     @Override
-    public void showMerchantOverlay(@Nonnull MerchantBuyLevel level) {
+    public void showMerchantOverlay(@NotNull MerchantBuyLevel level) {
         switch (level) {
             case Copper:
                 merchantOverlay.getRenderer(ImageRenderer.class).setImage(nifty.createImage("gui/coin_1_c.png", false));
@@ -304,7 +304,7 @@ public class InventorySlotControl extends AbstractController implements Inventor
     }
 
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         return true;
     }
 }

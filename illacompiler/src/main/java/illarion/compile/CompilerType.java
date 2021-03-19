@@ -18,8 +18,8 @@ package illarion.compile;
 import illarion.compile.impl.Compile;
 import illarion.compile.impl.EasyNpcCompile;
 import illarion.compile.impl.EasyQuestCompile;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -40,12 +40,12 @@ public enum CompilerType {
      */
     easyQuest(new EasyQuestCompile(), ".quest");
 
-    @Nonnull
+    @NotNull
     private final Compile compiler;
-    @Nonnull
+    @NotNull
     private final String[] extensions;
 
-    CompilerType(@Nonnull Compile compiler, @Nonnull String... extensions) {
+    CompilerType(@NotNull Compile compiler, @NotNull String... extensions) {
         this.compiler = compiler;
         this.extensions = Arrays.copyOf(extensions, extensions.length);
     }
@@ -69,7 +69,7 @@ public enum CompilerType {
      * @param file the file to check
      * @return {@code true} in case this file is valid for this compiler
      */
-    public boolean isValidFile(@Nonnull Path file) {
+    public boolean isValidFile(@NotNull Path file) {
         if (!Files.isReadable(file)) {
             return false;
         }

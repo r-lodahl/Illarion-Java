@@ -17,13 +17,12 @@ package illarion.client.resources;
 
 import com.google.common.collect.ImmutableMap;
 import illarion.client.resources.data.ResourceTemplate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,10 +32,9 @@ import java.util.Set;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implements ResourceFactory<T> {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AbstractTemplateFactory.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This is the builder that is used to create the resource storage. This variable is only used during the
@@ -77,7 +75,7 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
     }
 
     @Override
-    public void storeResource(@Nonnull T resource) {
+    public void storeResource(@NotNull T resource) {
         if (storageBuilder == null || storageBuilderKeys == null) {
             throw new IllegalStateException("Factory was not initialized yet.");
         }
@@ -115,7 +113,7 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
         return storage.containsKey(templateId);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public T getTemplate(int templateId) {
         if (storage == null) {

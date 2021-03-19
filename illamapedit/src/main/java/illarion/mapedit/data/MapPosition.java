@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.data;
 
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Fredrik K

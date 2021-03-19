@@ -17,8 +17,8 @@ package illarion.client.gui;
 
 import de.lessvoid.nifty.screen.ScreenController;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface is the global accessor to the GUI of the game.
@@ -32,7 +32,7 @@ public interface GameGui {
      *
      * @return the controller of the book display
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     BookGui getBookGui();
 
@@ -41,7 +41,7 @@ public interface GameGui {
      *
      * @return the chat GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     ChatGui getChatGui();
 
@@ -50,7 +50,7 @@ public interface GameGui {
      *
      * @return the item container gui controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     ContainerGui getContainerGui();
 
@@ -59,7 +59,7 @@ public interface GameGui {
      *
      * @return the dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogGui getDialogGui();
 
@@ -68,7 +68,7 @@ public interface GameGui {
      *
      * @return the crafting dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogCraftingGui getDialogCraftingGui();
 
@@ -77,7 +77,7 @@ public interface GameGui {
      *
      * @return the crafting dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogMerchantGui getDialogMerchantGui();
 
@@ -86,7 +86,7 @@ public interface GameGui {
      *
      * @return the input dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogInputGui getDialogInputGui();
 
@@ -95,7 +95,7 @@ public interface GameGui {
      *
      * @return the message dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogMessageGui getDialogMessageGui();
 
@@ -104,7 +104,7 @@ public interface GameGui {
      *
      * @return the selection dialog GUI control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DialogSelectionGui getDialogSelectionGui();
 
@@ -113,7 +113,7 @@ public interface GameGui {
      *
      * @return the game map gui controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     GameMapGui getGameMapGui();
 
@@ -122,7 +122,7 @@ public interface GameGui {
      *
      * @return the inform GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     InformGui getInformGui();
 
@@ -131,7 +131,7 @@ public interface GameGui {
      *
      * @return the inventory gui controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     InventoryGui getInventoryGui();
 
@@ -140,7 +140,7 @@ public interface GameGui {
      *
      * @return the player character GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     PlayerStatusGui getPlayerStatusGui();
 
@@ -149,7 +149,7 @@ public interface GameGui {
      *
      * @return the quest GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     QuestGui getQuestGui();
 
@@ -158,7 +158,7 @@ public interface GameGui {
      *
      * @return the documentation GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     DocumentationGui getDocumentationGui();
 
@@ -167,7 +167,7 @@ public interface GameGui {
      *
      * @return the GUI screen controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     ScreenController getScreenController();
 
@@ -176,7 +176,7 @@ public interface GameGui {
      *
      * @return the skill GUI controller
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     SkillGui getSkillGui();
 
@@ -185,11 +185,11 @@ public interface GameGui {
      *
      * @return the mini map display control
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     MiniMapGui getMiniMapGui();
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     CloseGameGui getCloseGameGui();
 

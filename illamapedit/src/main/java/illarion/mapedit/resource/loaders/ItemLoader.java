@@ -22,12 +22,12 @@ import illarion.common.util.TableLoaderSink;
 import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.resource.Resource;
 import illarion.mapedit.resource.loaders.TextureLoaderAwt.AwtTexture;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.TextureManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public final class ItemLoader implements TableLoaderSink<TableLoaderItems>, Reso
     /**
      * The logger instance for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ItemLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final int DB_INDEX_NAME = 2;
     private static final ItemLoader INSTANCE = new ItemLoader();
     private static final String DIR_IMG_ITEMS = "items/";
@@ -53,14 +53,14 @@ public final class ItemLoader implements TableLoaderSink<TableLoaderItems>, Reso
         new TableLoaderItems(this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Items";
     }
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderItems loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderItems loader) {
         int mode = loader.getItemMode();
         int itemID = loader.getItemId();
         int face = loader.getFace();
@@ -89,8 +89,8 @@ public final class ItemLoader implements TableLoaderSink<TableLoaderItems>, Reso
         return true;
     }
 
-    @Nonnull
-    private static Image[] getTextures(@Nonnull String resourceName, int frameCount) {
+    @NotNull
+    private static Image[] getTextures(@NotNull String resourceName, int frameCount) {
         Image[] imgs = new Image[frameCount];
         TextureManager manager = TextureLoaderAwt.getInstance();
         if (frameCount == 1) {
@@ -107,7 +107,7 @@ public final class ItemLoader implements TableLoaderSink<TableLoaderItems>, Reso
         return imgs;
     }
 
-    @Nonnull
+    @NotNull
     public static ItemLoader getInstance() {
         return INSTANCE;
     }

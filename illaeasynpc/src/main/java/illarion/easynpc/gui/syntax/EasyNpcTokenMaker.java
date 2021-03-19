@@ -21,9 +21,9 @@ import illarion.easynpc.grammar.EasyNpcLexer;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the token generator for the easyNPC language. Don't dare questioning the contents of this script.
@@ -38,7 +38,7 @@ final class EasyNpcTokenMaker extends AbstractAntlrTokenMaker<EasyNpcLexer> {
         super(new EasyNpcLexer(null));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public TokenMap getWordsToHighlight() {
         TokenMap tokenMap = new TokenMap(true);

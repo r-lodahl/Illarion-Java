@@ -25,15 +25,15 @@ import illarion.common.config.ConfigChangedEvent;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
 import illarion.common.util.FastMath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -42,8 +42,8 @@ import java.util.EnumSet;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseTargetMovementHandler {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(WalkToMouseMovementHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * Limit the path finding to the direction the mouse is pointing at.
      */
@@ -59,10 +59,10 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
      */
     private int lastMouseY;
 
-    @Nonnull
+    @NotNull
     private final Input input;
 
-    WalkToMouseMovementHandler(@Nonnull Movement movement, @Nonnull Input input) {
+    WalkToMouseMovementHandler(@NotNull Movement movement, @NotNull Input input) {
         super(movement);
 
         this.input = input;
@@ -94,7 +94,7 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     protected CharMovementMode getMovementMode() {
         if (input.isKeyDown(Key.LeftAlt)) {
@@ -122,10 +122,10 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
         return CharMovementMode.Walk;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    protected Collection<Direction> getAllowedDirections(@Nonnull ServerCoordinate current,
-                                                         @Nonnull ServerCoordinate target) {
+    protected Collection<Direction> getAllowedDirections(@NotNull ServerCoordinate current,
+                                                         @NotNull ServerCoordinate target) {
         if (limitPathFindingToMouseDirection) {
             int dirX = FastMath.sign(target.getX() - current.getX());
             int dirY = FastMath.sign(target.getY() - current.getY());
@@ -152,7 +152,7 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
 
     @Override
     @Nullable
-    protected Path calculateNewPath(@Nonnull ServerCoordinate currentLocation) {
+    protected Path calculateNewPath(@NotNull ServerCoordinate currentLocation) {
         int maxDistance = currentLocation.getStepDistance(getTargetLocation());
 
         while (getTargetDistance() < maxDistance) {
@@ -202,12 +202,12 @@ class WalkToMouseMovementHandler extends WalkToMovementHandler implements MouseT
 
     @EventTopicSubscriber(topic = "limitPathFindingToMouseDirection")
     private void limitPathFindingToMouseDirectionChanged(
-            @Nonnull String topic, @Nonnull ConfigChangedEvent configChangedEvent) {
+            @NotNull String topic, @NotNull ConfigChangedEvent configChangedEvent) {
         limitPathFindingToMouseDirection = configChangedEvent.getConfig()
                 .getBoolean("limitPathFindingToMouseDirection");
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Walk to mouse pointer movement handler";

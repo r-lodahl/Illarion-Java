@@ -22,8 +22,8 @@ import illarion.common.config.entries.ConfigEntry;
 import illarion.common.config.gui.entries.SavableEntry;
 import illarion.common.config.gui.entries.swing.*;
 import illarion.common.util.MessageSource;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -49,7 +49,7 @@ public final class ConfigDialogSwing extends JDialog {
          * The parent dialog that is supposed to be closed once the action is
          * performed.
          */
-        @Nonnull
+        @NotNull
         private final JDialog parentDialog;
 
         /**
@@ -60,7 +60,7 @@ public final class ConfigDialogSwing extends JDialog {
          * @param parent the parent dialog that is closed once this action is
          * performed
          */
-        public CancelButtonListener(@Nonnull JDialog parent) {
+        public CancelButtonListener(@NotNull JDialog parent) {
             parentDialog = parent;
         }
 
@@ -84,14 +84,14 @@ public final class ConfigDialogSwing extends JDialog {
         /**
          * The parent dialog that is supposed to be closed once the action is performed.
          */
-        @Nonnull
+        @NotNull
         private final JDialog parentDialog;
 
         /**
          * The list that stores all save able items of this dialog. When the action is performed all this items are
          * saved.
          */
-        @Nonnull
+        @NotNull
         private final List<SavableEntry> todoList;
 
         /**
@@ -101,7 +101,7 @@ public final class ConfigDialogSwing extends JDialog {
          * @param saveList the list of objects saved in case this action is performed
          * @param parent the parent dialog that is closed once this action is performed
          */
-        public SaveButtonListener(@Nonnull List<SavableEntry> saveList, @Nonnull JDialog parent) {
+        public SaveButtonListener(@NotNull List<SavableEntry> saveList, @NotNull JDialog parent) {
             //noinspection AssignmentToCollectionOrArrayFieldFromParameter
             todoList = saveList;
             parentDialog = parent;
@@ -131,7 +131,7 @@ public final class ConfigDialogSwing extends JDialog {
      *
      * @param dialog the configuration dialog that is needed to be displayed
      */
-    public ConfigDialogSwing(@Nonnull ConfigDialog dialog) {
+    public ConfigDialogSwing(@NotNull ConfigDialog dialog) {
         super((JDialog) null, dialog.getMessageSource().getMessage("illarion.common.config.gui.Title"), true);
 
         MessageSource msgs = dialog.getMessageSource();

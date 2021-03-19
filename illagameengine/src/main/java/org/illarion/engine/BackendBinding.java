@@ -6,8 +6,6 @@ import org.illarion.engine.input.Input;
 import org.illarion.engine.sound.Sounds;
 import org.illarion.engine.ui.UserInterface;
 
-import java.nio.file.Files;
-
 public interface BackendBinding {
     Assets getAssets();
     Input getInput();

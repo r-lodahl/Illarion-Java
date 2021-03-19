@@ -22,12 +22,12 @@ import illarion.common.util.TableLoaderTiles;
 import illarion.mapedit.resource.Resource;
 import illarion.mapedit.resource.TileImg;
 import illarion.mapedit.resource.loaders.TextureLoaderAwt.AwtTexture;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.TextureManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Locale;
@@ -39,7 +39,7 @@ public final class TileLoader implements TableLoaderSink<TableLoaderTiles>, Reso
     /**
      * The logger instance for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TileLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final TileLoader INSTANCE = new TileLoader();
     private static final String DIR_IMG_TILES = "tiles/";
 
@@ -53,7 +53,7 @@ public final class TileLoader implements TableLoaderSink<TableLoaderTiles>, Reso
         new TableLoaderTiles(this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Tiles";
@@ -63,7 +63,7 @@ public final class TileLoader implements TableLoaderSink<TableLoaderTiles>, Reso
      * Handle a single line of the resource table.
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderTiles loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderTiles loader) {
         int id = loader.getTileId();
         int mode = loader.getTileMode();
         String name = loader.getResourceName();
@@ -105,8 +105,8 @@ public final class TileLoader implements TableLoaderSink<TableLoaderTiles>, Reso
         return true;
     }
 
-    @Nonnull
-    public Image[] getImages(@Nonnull String name, int frames) {
+    @NotNull
+    public Image[] getImages(@NotNull String name, int frames) {
 
         Image[] imgs = new Image[frames];
         TextureManager manager = TextureLoaderAwt.getInstance();
@@ -131,7 +131,7 @@ public final class TileLoader implements TableLoaderSink<TableLoaderTiles>, Reso
         return null;
     }
 
-    @Nonnull
+    @NotNull
     public static TileLoader getInstance() {
         return INSTANCE;
     }

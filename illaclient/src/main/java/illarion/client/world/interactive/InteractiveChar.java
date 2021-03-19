@@ -23,22 +23,19 @@ import illarion.client.world.MapTile;
 import illarion.client.world.World;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents the interactive variant of a character.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class InteractiveChar implements Draggable, DropTarget, Usable {
     /**
      * The character this interactive reference points to.
      */
-    @Nonnull
+    @NotNull
     private final Char parentChar;
 
     /**
@@ -46,7 +43,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      *
      * @param parent the character this interactive reference points to
      */
-    public InteractiveChar(@Nonnull Char parent) {
+    public InteractiveChar(@NotNull Char parent) {
         parentChar = parent;
     }
 
@@ -54,7 +51,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      * Drag one character to another character. Does nothing currently.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveChar targetChar, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveChar targetChar, @NotNull ItemCount count) {
         // nothing
     }
 
@@ -62,7 +59,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      * Dragging the character into the inventory does nothing at all.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveInventorySlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveInventorySlot targetSlot, @NotNull ItemCount count) {
         // nothing
     }
 
@@ -71,12 +68,12 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      * character.
      */
     @Override
-    public void dragTo(@Nonnull InteractiveMapTile targetTile, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveMapTile targetTile, @NotNull ItemCount count) {
         // nothing
     }
 
     @Override
-    public void dragTo(@Nonnull InteractiveContainerSlot targetSlot, @Nonnull ItemCount count) {
+    public void dragTo(@NotNull InteractiveContainerSlot targetSlot, @NotNull ItemCount count) {
         // nothing
     }
 
@@ -110,7 +107,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      *
      * @return the location of the character on the map
      */
-    @Nonnull
+    @NotNull
     public ServerCoordinate getLocation() {
         return parentChar.getLocation();
     }
@@ -171,7 +168,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
      */
     @Override
     public boolean isInUseRange() {
-        @Nonnull ServerCoordinate playerLocation = World.getPlayer().getLocation();
+        @NotNull ServerCoordinate playerLocation = World.getPlayer().getLocation();
         return (playerLocation.getZ() == getLocation().getZ()) &&
                 (playerLocation.getStepDistance(getLocation()) <= getUseRange());
     }
@@ -181,7 +178,7 @@ public final class InteractiveChar implements Draggable, DropTarget, Usable {
         return 2;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Interactive " + parentChar;

@@ -15,8 +15,9 @@
  */
 package org.illarion.engine.backend.shared;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.Callable;
 
 /**
@@ -28,13 +29,13 @@ public class TextureAtlasPreLoadTask<V> implements Callable<V> {
     /**
      * The texture manager used to load the texture data.
      */
-    @Nonnull
+    @NotNull
     private final AbstractTextureManager<V> textureManager;
 
     /**
      * The name of the texture to load.
      */
-    @Nonnull
+    @NotNull
     private final String textureName;
 
     /**
@@ -44,7 +45,7 @@ public class TextureAtlasPreLoadTask<V> implements Callable<V> {
      * @param textureName the name of the texture atlas
      */
     public TextureAtlasPreLoadTask(
-            @Nonnull AbstractTextureManager<V> textureManager, @Nonnull String textureName) {
+            @NotNull AbstractTextureManager<V> textureManager, @NotNull String textureName) {
         this.textureManager = textureManager;
         this.textureName = textureName;
     }

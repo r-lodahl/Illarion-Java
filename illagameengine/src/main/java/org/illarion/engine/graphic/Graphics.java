@@ -17,16 +17,13 @@ package org.illarion.engine.graphic;
 
 import illarion.common.types.Rectangle;
 import org.illarion.engine.graphic.effects.TextureEffect;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the graphics interface used to draw anything on the screen.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public interface Graphics {
     /**
      * Clean everything that was rendered from the output device.
@@ -46,14 +43,14 @@ public interface Graphics {
      * @param effects the effects that are supposed to be applied to this sprite while drawing
      */
     void drawSprite(
-            @Nonnull Sprite sprite,
+            @NotNull Sprite sprite,
             int posX,
             int posY,
-            @Nonnull Color color,
+            @NotNull Color color,
             int frame,
             double scale,
             double rotation,
-            @Nonnull TextureEffect... effects);
+            @NotNull TextureEffect... effects);
 
     /**
      * This is a dedicated function to render tiles. It has additional abilities regarding the coloring to allow
@@ -70,18 +67,18 @@ public interface Graphics {
      * @param frame the frame of the sprite that is supposed to be rendered
      * @param effects the texture effects that should be applied
      */
-    void drawTileSprite(@Nonnull Sprite sprite, int posX, int posY,
-                        @Nonnull Color topColor, @Nonnull Color bottomColor,
-                        @Nonnull Color leftColor, @Nonnull Color rightColor,
-                        @Nonnull Color centerColor, int frame,
-                        @Nonnull TextureEffect... effects);
+    void drawTileSprite(@NotNull Sprite sprite, int posX, int posY,
+                        @NotNull Color topColor, @NotNull Color bottomColor,
+                        @NotNull Color leftColor, @NotNull Color rightColor,
+                        @NotNull Color centerColor, int frame,
+                        @NotNull TextureEffect... effects);
 
     /**
      * Set the method used to blend the colors of overlapping areas.
      *
      * @param mode the blending mode
      */
-    void setBlendingMode(@Nonnull BlendingMode mode);
+    void setBlendingMode(@NotNull BlendingMode mode);
 
     /**
      * Draw a text in its original size to the screen.
@@ -92,7 +89,7 @@ public interface Graphics {
      * @param x the x coordinate on the screen the text is rendered to
      * @param y the y coordinate on the screen the text is rendered to
      */
-    void drawText(@Nonnull Font font, @Nonnull CharSequence text, @Nonnull Color color, int x, int y);
+    void drawText(@NotNull Font font, @NotNull CharSequence text, @NotNull Color color, int x, int y);
 
     /**
      * Draw a text to the screen.
@@ -106,9 +103,9 @@ public interface Graphics {
      * @param scaleY the scale applied to the height of the text
      */
     void drawText(
-            @Nonnull Font font,
-            @Nonnull CharSequence text,
-            @Nonnull Color color,
+            @NotNull Font font,
+            @NotNull CharSequence text,
+            @NotNull Color color,
             int x,
             int y,
             double scaleX,
@@ -123,7 +120,7 @@ public interface Graphics {
      * @param height the height of the rectangle
      * @param color the color of the rectangle
      */
-    void drawRectangle(int x, int y, int width, int height, @Nonnull Color color);
+    void drawRectangle(int x, int y, int width, int height, @NotNull Color color);
 
     /**
      * Draw a rectangle with a solid color.
@@ -131,7 +128,7 @@ public interface Graphics {
      * @param rectangle the rectangle that is supposed to be rendered
      * @param color the color of the rectangle
      */
-    void drawRectangle(@Nonnull Rectangle rectangle, @Nonnull Color color);
+    void drawRectangle(@NotNull Rectangle rectangle, @NotNull Color color);
 
     /**
      * Draw a rectangle with a different color in each corner.
@@ -150,10 +147,10 @@ public interface Graphics {
             int y,
             int width,
             int height,
-            @Nonnull Color topLeftColor,
-            @Nonnull Color topRightColor,
-            @Nonnull Color bottomLeftColor,
-            @Nonnull Color bottomRightColor);
+            @NotNull Color topLeftColor,
+            @NotNull Color topRightColor,
+            @NotNull Color bottomLeftColor,
+            @NotNull Color bottomRightColor);
 
     /**
      * Draw a texture to the screen.
@@ -167,13 +164,13 @@ public interface Graphics {
      * @param effects the effects that are supposed to be applied to this texture while drawing
      */
     void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects);
+            @NotNull Color color,
+            @NotNull TextureEffect... effects);
 
     /**
      * Draw a part of a texture to the screen.
@@ -191,7 +188,7 @@ public interface Graphics {
      * @param effects the effects that are supposed to be applied to this texture while drawing
      */
     void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
@@ -200,8 +197,8 @@ public interface Graphics {
             int texY,
             int texWidth,
             int texHeight,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects);
+            @NotNull Color color,
+            @NotNull TextureEffect... effects);
 
     /**
      * Draw a part of a texture to the screen.
@@ -222,7 +219,7 @@ public interface Graphics {
      * @param effects the effects that are supposed to be applied to this texture while drawing
      */
     void drawTexture(
-            @Nonnull Texture texture,
+            @NotNull Texture texture,
             int x,
             int y,
             int width,
@@ -234,8 +231,8 @@ public interface Graphics {
             int centerX,
             int centerY,
             double rotate,
-            @Nonnull Color color,
-            @Nonnull TextureEffect... effects);
+            @NotNull Color color,
+            @NotNull TextureEffect... effects);
 
     /**
      * Set a clipping area. Outside of this area, render operations don't have any effect.

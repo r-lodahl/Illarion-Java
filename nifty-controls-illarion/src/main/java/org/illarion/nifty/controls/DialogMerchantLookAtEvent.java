@@ -15,22 +15,18 @@
  */
 package org.illarion.nifty.controls;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired in case the player want to look at a item in the merchant dialog.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class DialogMerchantLookAtEvent extends DialogEvent {
     /**
      * The item that was bought.
      */
-    @Nonnull
+    @NotNull
     private final MerchantListEntry item;
 
     /**
@@ -39,7 +35,7 @@ public final class DialogMerchantLookAtEvent extends DialogEvent {
      * @param id the ID of the dialog
      * @param buyItem the item to buy
      */
-    public DialogMerchantLookAtEvent(int id, @Nonnull MerchantListEntry buyItem) {
+    public DialogMerchantLookAtEvent(int id, @NotNull MerchantListEntry buyItem) {
         super(id);
         item = buyItem;
     }
@@ -49,7 +45,7 @@ public final class DialogMerchantLookAtEvent extends DialogEvent {
      *
      * @return the item that is bought
      */
-    @Nonnull
+    @NotNull
     public MerchantListEntry getItem() {
         return item;
     }

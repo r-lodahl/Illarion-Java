@@ -18,27 +18,27 @@ package illarion.client.world.movement;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class DefaultStepData implements StepData {
-    @Nonnull
+    @NotNull
     private final CharMovementMode movementMode;
     @Nullable
     private final Direction direction;
     @Nullable
     private final Runnable postStepAction;
 
-    public DefaultStepData(@Nonnull CharMovementMode movementMode,
+    public DefaultStepData(@NotNull CharMovementMode movementMode,
                            @Nullable Direction direction) {
         this(movementMode, direction, null);
     }
 
-    public DefaultStepData(@Nonnull CharMovementMode movementMode,
+    public DefaultStepData(@NotNull CharMovementMode movementMode,
                            @Nullable Direction direction,
                            @Nullable Runnable postStepAction) {
         this.movementMode = movementMode;
@@ -47,7 +47,7 @@ class DefaultStepData implements StepData {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public CharMovementMode getMovementMode() {
         return movementMode;
@@ -68,7 +68,7 @@ class DefaultStepData implements StepData {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String toString() {
         return "Mode: " + movementMode.name() + " Direction: " +

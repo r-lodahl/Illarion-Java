@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.data;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.HashMap;
  */
 public class MapSelection {
 
-    @Nonnull
+    @NotNull
     private final HashMap<MapPosition, MapTile> selectedTiles;
     private int minX = Integer.MAX_VALUE;
     private int minY = Integer.MAX_VALUE;
@@ -36,14 +37,14 @@ public class MapSelection {
         selectedTiles = new HashMap<>();
     }
 
-    public void addSelectedTile(@Nonnull MapPosition mapPosition, MapTile tile) {
+    public void addSelectedTile(@NotNull MapPosition mapPosition, MapTile tile) {
         if (!selectedTiles.containsKey(mapPosition)) {
             adjustOffsets(mapPosition);
             selectedTiles.put(mapPosition, tile);
         }
     }
 
-    private void adjustOffsets(@Nonnull MapPosition mapPosition) {
+    private void adjustOffsets(@NotNull MapPosition mapPosition) {
         adjustHorizontalOffset(mapPosition.getX());
         adjustVerticalOffset(mapPosition.getY());
     }
@@ -68,7 +69,7 @@ public class MapSelection {
         return minY;
     }
 
-    @Nonnull
+    @NotNull
     public Collection<MapPosition> getSelectedPositions() {
         return Collections.unmodifiableCollection(selectedTiles.keySet());
     }

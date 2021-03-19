@@ -15,12 +15,15 @@
  */
 package illarion.common.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,8 +46,8 @@ public class ConfigSystem implements Config {
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSystem.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * This flag is set to {@code true} in case any changes where applied
@@ -56,7 +59,7 @@ public class ConfigSystem implements Config {
     /**
      * The file that stores the configuration.
      */
-    @Nonnull
+    @NotNull
     private final Path configFile;
 
     /**
@@ -64,10 +67,10 @@ public class ConfigSystem implements Config {
      * properly. A read write lock is used here because most of the time the
      * configuration will be accessed reading.
      */
-    @Nonnull
+    @NotNull
     private final ReadWriteLock lock;
 
-    @Nonnull
+    @NotNull
     private final Properties userProperties;
 
     /**
@@ -76,7 +79,7 @@ public class ConfigSystem implements Config {
      *
      * @param source The configuration file that is supposed to be load
      */
-    public ConfigSystem(@Nonnull Path source, InputStream defaultPropertiesStream) {
+    public ConfigSystem(@NotNull Path source, InputStream defaultPropertiesStream) {
         configFile = source;
         changed = false;
 
@@ -111,12 +114,12 @@ public class ConfigSystem implements Config {
     }
 
     @Override
-    public boolean getBoolean(@Nonnull String key) {
+    public boolean getBoolean(@NotNull String key) {
         return Boolean.parseBoolean(getString(key));
     }
 
     @Override
-    public double getDouble(@Nonnull String key) {
+    public double getDouble(@NotNull String key) {
         String value = getString(key);
 
         if (value.equals("")) {
@@ -133,7 +136,7 @@ public class ConfigSystem implements Config {
 
     @Nullable
     @Override
-    public Path getPath(@Nonnull String key) {
+    public Path getPath(@NotNull String key) {
         String value = getString(key);
 
         if (value.equals("")) {
@@ -144,7 +147,7 @@ public class ConfigSystem implements Config {
     }
 
     @Override
-    public float getFloat(@Nonnull String key) {
+    public float getFloat(@NotNull String key) {
         String value = getString(key);
 
         if (value.equals("")) {
@@ -160,7 +163,7 @@ public class ConfigSystem implements Config {
     }
 
     @Override
-    public int getInteger(@Nonnull String key) {
+    public int getInteger(@NotNull String key) {
         String value = getString(key);
 
         if (value.equals("")) {
@@ -175,9 +178,9 @@ public class ConfigSystem implements Config {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String getString(@Nonnull String key) {
+    public String getString(@NotNull String key) {
         String value;
         lock.readLock().lock();
         try {
@@ -195,7 +198,7 @@ public class ConfigSystem implements Config {
     }
 
     @Override
-    public void remove(@Nonnull String key) {
+    public void remove(@NotNull String key) {
         userProperties.remove(key);
     }
 
@@ -214,7 +217,7 @@ public class ConfigSystem implements Config {
         try (OutputStream stream = Files.newOutputStream(configFile)){
             userProperties.store(stream, "Writing user properties file.");
             changed = false;
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             LOGGER.error("Configuration not saved: error accessing config file.");
         } finally {
             lock.writeLock().unlock();
@@ -222,27 +225,27 @@ public class ConfigSystem implements Config {
     }
 
     @Override
-    public void set(@Nonnull String key, boolean value) {
+    public void set(@NotNull String key, boolean value) {
         set(key, Boolean.valueOf(value));
     }
 
     @Override
-    public void set(@Nonnull String key, double value) {
+    public void set(@NotNull String key, double value) {
         set(key, Double.valueOf(value));
     }
 
     @Override
-    public void set(@Nonnull String key, @Nonnull Path value) {
+    public void set(@NotNull String key, @NotNull Path value) {
         set(key, value.toAbsolutePath().toString());
     }
 
     @Override
-    public void set(@Nonnull String key, float value) {
+    public void set(@NotNull String key, float value) {
         set(key, Float.valueOf(value));
     }
 
     @Override
-    public void set(@Nonnull String key, int value) {
+    public void set(@NotNull String key, int value) {
         set(key, Integer.valueOf(value));
     }
 
@@ -252,12 +255,12 @@ public class ConfigSystem implements Config {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    public void set(@Nonnull String key, @Nonnull Object value) {
+    public void set(@NotNull String key, @NotNull Object value) {
         set(key, value.toString());
     }
 
     @Override
-    public void set(@Nonnull String key, @Nonnull String value) {
+    public void set(@NotNull String key, @NotNull String value) {
         lock.writeLock().lock();
         try {
             if (value.equals(userProperties.getProperty(key))) {
@@ -280,7 +283,7 @@ public class ConfigSystem implements Config {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    public void setDefault(@Nonnull String key, String value) {
+    public void setDefault(@NotNull String key, String value) {
         if (!(userProperties.get(key) instanceof String)) {
             set(key, value);
         }
@@ -296,7 +299,7 @@ public class ConfigSystem implements Config {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    public void setDefault(@Nonnull String key, double value) {
+    public void setDefault(@NotNull String key, double value) {
         if (!(userProperties.get(key) instanceof Double)) {
             set(key, value);
         }
@@ -312,7 +315,7 @@ public class ConfigSystem implements Config {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    public void setDefault(@Nonnull String key, @Nonnull Path value) {
+    public void setDefault(@NotNull String key, @NotNull Path value) {
         if (!(userProperties.get(key) instanceof String)) {
             set(key, value);
         }
@@ -324,7 +327,7 @@ public class ConfigSystem implements Config {
      *
      * @param key the key that was changed
      */
-    private void reportChangedKey(@Nonnull String key) {
+    private void reportChangedKey(@NotNull String key) {
         changed = true;
 
         EventBus.publish(key, new ConfigChangedEvent(this, key));

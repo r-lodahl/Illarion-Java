@@ -17,9 +17,9 @@ package org.illarion.engine.graphic;
 
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.Disposable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interfaces defines how the world map is drawn. This map is drawn on a fully black texture.
@@ -63,7 +63,7 @@ public interface WorldMap extends Disposable {
      *
      * @return the world map texture
      */
-    @Nonnull
+    @NotNull
     Texture getWorldMap();
 
     /**
@@ -71,7 +71,7 @@ public interface WorldMap extends Disposable {
      *
      * @param location the location of the tile that was changed
      */
-    void setTileChanged(@Nonnull ServerCoordinate location);
+    void setTileChanged(@NotNull ServerCoordinate location);
 
     /**
      * Mark the entire map as changed. Once this is done the entire map needs to be updated.
@@ -84,7 +84,7 @@ public interface WorldMap extends Disposable {
      *
      * @param location the new location of the map
      */
-    void setPlayerLocation(@Nonnull ServerCoordinate location);
+    void setPlayerLocation(@NotNull ServerCoordinate location);
 
     /**
      * Set the origin location of the world map. The map will expand starting from this point a specific amount of
@@ -94,7 +94,7 @@ public interface WorldMap extends Disposable {
      *
      * @param location the new origin location of the map
      */
-    void setMapOrigin(@Nonnull ServerCoordinate location);
+    void setMapOrigin(@NotNull ServerCoordinate location);
 
     /**
      * This function causes all map data to be thrown away. The map turned empty.

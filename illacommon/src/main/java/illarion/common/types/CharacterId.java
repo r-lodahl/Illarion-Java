@@ -18,11 +18,9 @@ package illarion.common.types;
 import illarion.common.net.NetCommReader;
 import illarion.common.net.NetCommWriter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -31,8 +29,6 @@ import java.io.Serializable;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class CharacterId implements Serializable, Comparable<CharacterId> {
     /**
      * This is the mask used to find out the type of the character that is represented by this ID.
@@ -52,7 +48,7 @@ public final class CharacterId implements Serializable, Comparable<CharacterId> 
     /**
      * Check if the character is a pet
      */
-    private boolean isPet = false;
+    private boolean isPet;
 
     /**
      * The item count.
@@ -74,7 +70,7 @@ public final class CharacterId implements Serializable, Comparable<CharacterId> 
      * @param reader the reader
      * @throws IOException in case the reading operation fails for some reason
      */
-    public CharacterId(@Nonnull NetCommReader reader) throws IOException {
+    public CharacterId(@NotNull NetCommReader reader) throws IOException {
         this(reader.readInt());
     }
 
@@ -127,11 +123,11 @@ public final class CharacterId implements Serializable, Comparable<CharacterId> 
         return value;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {
-        return "character ID: " + Long.toString(getValue());
+        return "character ID: " + getValue();
     }
 
     /**
@@ -139,7 +135,7 @@ public final class CharacterId implements Serializable, Comparable<CharacterId> 
      *
      * @param writer the writer that receives the value
      */
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeInt(value);
     }
 
@@ -174,7 +170,7 @@ public final class CharacterId implements Serializable, Comparable<CharacterId> 
 
     @Override
     @Contract(pure = true)
-    public int compareTo(@Nonnull CharacterId o) {
+    public int compareTo(@NotNull CharacterId o) {
         if (value == o.value) {
             return 0;
         }

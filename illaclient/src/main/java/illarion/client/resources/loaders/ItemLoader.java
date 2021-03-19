@@ -20,15 +20,15 @@ import illarion.client.resources.data.ItemTemplate;
 import illarion.common.graphics.ItemInfo;
 import illarion.common.util.TableLoaderItems;
 import illarion.common.util.TableLoaderSink;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the item definitions from the resource table that was created using the configuration
@@ -42,27 +42,27 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ItemLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The resource path to the item graphics. All graphics need to be located at this path within the JAR-resource
      * files.
      */
-    @Nonnull
+    @NotNull
     private static final String ITEM_PATH = "items/";
 
     /**
      * The resource path to the GUI graphics. All graphics need to be located at this path within the JAR-resource
      * files.
      */
-    @Nonnull
+    @NotNull
     private static final String GUI_PATH = "gui/";
 
     /**
      * The assets of the game engine that are required to load the data needed for the items.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -70,11 +70,11 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public ItemLoader(@Nonnull Assets assets) {
+    public ItemLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<ItemTemplate> call() {
         if (!hasTargetFactory()) {
@@ -94,7 +94,7 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
 
     @SuppressWarnings("OverlyLongMethod")
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderItems loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderItems loader) {
         String name = loader.getResourceName();
 
         int colorRed = loader.getColorModRed();
@@ -149,7 +149,7 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
             itemSprite = assets.getSpriteFactory()
                     .createSprite(getTextures(assets.getTextureManager(), ITEM_PATH, name, frames), offsetX, offsetY,
                                   SpriteFactory.CENTER, SpriteFactory.BOTTOM, false);
-        } catch (@Nonnull IllegalArgumentException e) {
+        } catch (@NotNull IllegalArgumentException e) {
             log.error("Failed to fetch graphics for item {} (ID: {}) because: {}", name, itemID, e.getMessage());
             return true;
         }
@@ -164,7 +164,7 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
         // register item with factory
         try {
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException e) {
+        } catch (@NotNull IllegalStateException e) {
             log.error("Failed to register item {} in factory due a duplicated ID: {}", name, itemID);
         }
 

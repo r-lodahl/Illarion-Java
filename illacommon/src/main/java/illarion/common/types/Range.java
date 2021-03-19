@@ -16,24 +16,19 @@
 package illarion.common.types;
 
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Class to handle a range between two values.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class Range {
     /**
      * The format of the string that is returned with the {@link #toString()} function.
      */
-    @Nonnull
+    @NotNull
     private static final String TO_STRING_FORMAT = "r(%s$1; %s$2)";
 
     /**
@@ -70,7 +65,7 @@ public final class Range {
      *
      * @param org the range object that shall be copied
      */
-    public Range(@Nonnull Range org) {
+    public Range(@NotNull Range org) {
         minValue = org.minValue;
         maxValue = org.maxValue;
     }
@@ -135,10 +130,10 @@ public final class Range {
      *
      * @return the generated string
      */
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {
-        return String.format(TO_STRING_FORMAT, Integer.toString(minValue), Integer.toString(maxValue));
+        return String.format(TO_STRING_FORMAT, minValue, maxValue);
     }
 }

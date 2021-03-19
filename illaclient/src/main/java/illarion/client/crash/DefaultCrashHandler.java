@@ -16,8 +16,8 @@
 package illarion.client.crash;
 
 import illarion.client.util.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the default crash handler that is called in case anything crashes
@@ -47,7 +47,7 @@ public final class DefaultCrashHandler extends AbstractCrashHandler {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static DefaultCrashHandler getInstance() {
         return INSTANCE;
     }
@@ -57,9 +57,9 @@ public final class DefaultCrashHandler extends AbstractCrashHandler {
      *
      * @return the error message
      */
-    @Nonnull
+    @NotNull
     @Override
-    protected String getCrashMessage(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected String getCrashMessage(@NotNull Thread t, @NotNull Throwable e) {
         if (isMissingOpenGLSupportMessage(t, e)) {
             return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.noOpenGL");
         }
@@ -68,11 +68,11 @@ public final class DefaultCrashHandler extends AbstractCrashHandler {
     }
 
     @Override
-    protected boolean isUnsolvableError(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected boolean isUnsolvableError(@NotNull Thread t, @NotNull Throwable e) {
         return isMissingOpenGLSupportMessage(t, e);
     }
 
-    private static boolean isMissingOpenGLSupportMessage(@Nonnull Thread t, @Nonnull Throwable e) {
+    private static boolean isMissingOpenGLSupportMessage(@NotNull Thread t, @NotNull Throwable e) {
         return "LWJGL Application".equals(t.getName()) && (e instanceof RuntimeException) &&
                 (e.getMessage() != null) && e.getMessage().startsWith("OpenGL is not supported by the video driver");
     }
@@ -81,7 +81,7 @@ public final class DefaultCrashHandler extends AbstractCrashHandler {
      * Crash the client right away, since there is no specific thing to do here.
      */
     @Override
-    protected void restart(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected void restart(@NotNull Thread t, @NotNull Throwable e) {
         crashClient(t, e);
     }
 }

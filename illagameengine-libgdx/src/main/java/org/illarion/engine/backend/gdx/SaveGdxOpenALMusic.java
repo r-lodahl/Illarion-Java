@@ -20,10 +20,10 @@ import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This hack class resolves the libGDX sound problem.
@@ -31,11 +31,11 @@ import javax.annotation.Nonnull;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class SaveGdxOpenALMusic extends OpenALMusic {
-    private static final Logger log = LoggerFactory.getLogger(SaveGdxOpenALMusic.class);
-    @Nonnull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
     private final OpenALMusic internalMusic;
 
-    public SaveGdxOpenALMusic(@Nonnull Audio audio, @Nonnull FileHandle ref) {
+    public SaveGdxOpenALMusic(@NotNull Audio audio, @NotNull FileHandle ref) {
         super((OpenALLwjgl3Audio) audio, ref);
         internalMusic = (OpenALMusic) audio.newMusic(ref);
     }

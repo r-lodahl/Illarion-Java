@@ -16,8 +16,8 @@
 package illarion.client.graphics;
 
 import illarion.common.types.DisplayCoordinate;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * Interface for movement based animation targets.
@@ -30,5 +30,5 @@ public interface AnimatedMove extends Animated {
      *
      * @param position the new movement position
      */
-    void setPosition(@Nonnull DisplayCoordinate position);
+    void setPosition(@NotNull DisplayCoordinate position);
 }

@@ -29,11 +29,11 @@ import illarion.client.IllaClient;
 import illarion.client.docu.DocuEntry;
 import illarion.client.docu.DocuRoot;
 import illarion.client.gui.DocumentationGui;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Fredrik K
@@ -42,8 +42,8 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
     /**
      * The logging instance of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentationHandler.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Nifty nifty;
     private Screen screen;
@@ -110,7 +110,7 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -135,7 +135,7 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
 
         int groupCnt = 0;
         for (DocuEntry group : DocuRoot.getInstance()) {
-            String groupId = content.getId() + "#group" + Integer.toString(groupCnt++);
+            String groupId = content.getId() + "#group" + groupCnt++;
             PanelBuilder groupPanel = new PanelBuilder(groupId);
             groupPanel.childLayoutVertical();
             groupPanel.height(SizeValue.def());
@@ -153,7 +153,7 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
 
             int entryCnt = 0;
             for (DocuEntry child : group) {
-                String entryId = groupId + "#entry" + Integer.toString(entryCnt++);
+                String entryId = groupId + "#entry" + entryCnt++;
                 PanelBuilder entryPanel = new PanelBuilder(entryId);
                 entryPanel.childLayoutCenter();
                 entryPanel.width(content.getConstraintWidth().toString());
@@ -196,8 +196,8 @@ public class DocumentationHandler implements DocumentationGui, ScreenController,
     @Override
     public void onEndScreen() {
         nifty.unsubscribeAnnotations(this);
-        IllaClient.getConfig().set("docuWindowPosX", Integer.toString(documentationWindow.getElement().getX()) + "px");
-        IllaClient.getConfig().set("docuWindowPosY", Integer.toString(documentationWindow.getElement().getY()) + "px");
+        IllaClient.getConfig().set("docuWindowPosX", documentationWindow.getElement().getX() + "px");
+        IllaClient.getConfig().set("docuWindowPosY", documentationWindow.getElement().getY() + "px");
         hideDocumentation();
     }
 

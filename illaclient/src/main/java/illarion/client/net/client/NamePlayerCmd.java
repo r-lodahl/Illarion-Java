@@ -18,9 +18,8 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.CharacterId;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 
 /**
@@ -28,15 +27,14 @@ import java.io.IOException;
  *
  * @author Andreas Grob &lt;vilarion@illarion.org&gt;
  */
-@Immutable
 public final class NamePlayerCmd extends AbstractCommand {
-    @Nonnull
+    @NotNull
     private final CharacterId playerId;
 
-    @Nonnull
+    @NotNull
     private final String customName;
 
-    public NamePlayerCmd(@Nonnull CharacterId playerId, @Nonnull String customName) {
+    public NamePlayerCmd(@NotNull CharacterId playerId, @NotNull String customName) {
         super(CommandList.CMD_NAME_PLAYER);
 
         this.playerId = playerId;
@@ -50,12 +48,12 @@ public final class NamePlayerCmd extends AbstractCommand {
      * communication system
      */
     @Override
-    public void encode(@Nonnull NetCommWriter writer) throws IOException {
+    public void encode(@NotNull NetCommWriter writer) throws IOException {
         playerId.encode(writer);
         writer.writeString(customName);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(playerId + " is named: " + customName);

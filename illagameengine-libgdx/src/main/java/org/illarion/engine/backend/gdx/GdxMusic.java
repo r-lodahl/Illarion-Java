@@ -16,8 +16,8 @@
 package org.illarion.engine.backend.gdx;
 
 import org.illarion.engine.sound.Music;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The wrapper for a background music track of the libGDX backend.
@@ -29,10 +29,10 @@ class GdxMusic implements Music {
     /**
      * The music track that is wrapped in this class.
      */
-    @Nonnull
+    @NotNull
     private final com.badlogic.gdx.audio.Music wrappedMusic;
 
-    @Nonnull
+    @NotNull
     private final String ref;
 
     /**
@@ -40,7 +40,7 @@ class GdxMusic implements Music {
      *
      * @param wrappedMusic the new music wrapper
      */
-    GdxMusic(@Nonnull String ref, @Nonnull com.badlogic.gdx.audio.Music wrappedMusic) {
+    GdxMusic(@NotNull String ref, @NotNull com.badlogic.gdx.audio.Music wrappedMusic) {
         this.ref = ref;
         this.wrappedMusic = wrappedMusic;
     }
@@ -55,12 +55,12 @@ class GdxMusic implements Music {
      *
      * @return the wrapped music object
      */
-    @Nonnull
+    @NotNull
     public com.badlogic.gdx.audio.Music getWrappedMusic() {
         return wrappedMusic;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "GDX Music: " + ref;

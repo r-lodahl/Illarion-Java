@@ -16,9 +16,12 @@
 package illarion.client.graphics;
 
 import illarion.common.types.Rectangle;
-import org.illarion.engine.graphic.*;
+import org.illarion.engine.graphic.Color;
+import org.illarion.engine.graphic.Font;
+import org.illarion.engine.graphic.Graphics;
+import org.illarion.engine.graphic.ImmutableColor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The text tags are the small texts over the heads of characters that display the name of the character.
@@ -30,26 +33,26 @@ public class TextTag {
     /**
      * The color of the background pane that is displayed behind the text.
      */
-    @Nonnull
+    @NotNull
     private static final Color BACK_COLOR = new ImmutableColor(0.f, 0.f, 0.f, 0.3f);
 
     /**
      * The font that is used to render texts of the text tags.
      */
-    @Nonnull
+    @NotNull
     private final Font font;
 
     /**
      * The color implementation that is used to render the text.
      */
-    @Nonnull
+    @NotNull
     private final Color color;
     /**
      * The actual text that is displayed by this tag.
      */
-    @Nonnull
+    @NotNull
     private final String text;
-    @Nonnull
+    @NotNull
     private final Rectangle displayRect = new Rectangle();
     /**
      * The x coordinate of the offset of this text tag.
@@ -80,7 +83,7 @@ public class TextTag {
      */
     private int height;
 
-    public TextTag(@Nonnull String text, @Nonnull Color color) {
+    public TextTag(@NotNull String text, @NotNull Color color) {
         this.text = text;
         this.color = color;
         font = FontLoader.getInstance().getFont(FontLoader.SMALL_FONT);
@@ -135,7 +138,7 @@ public class TextTag {
         dirty = true;
     }
 
-    public void render(@Nonnull Graphics g) {
+    public void render(@NotNull Graphics g) {
         if (!Camera.getInstance().requiresUpdate(displayRect)) {
             return;
         }
@@ -144,7 +147,7 @@ public class TextTag {
         g.drawText(font, text, color, displayX - dX, displayY - dY);
     }
 
-    @Nonnull
+    @NotNull
     public Rectangle getDisplayRect() {
         return displayRect;
     }

@@ -20,14 +20,14 @@ import illarion.mapedit.events.MapScrollEvent;
 import illarion.mapedit.events.map.RepaintRequestEvent;
 import illarion.mapedit.events.map.ZoomEvent;
 import illarion.mapedit.util.Vector2i;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -40,14 +40,14 @@ import java.util.List;
  * @author Tim
  */
 public class RendererManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RendererManager.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final int DEFAULT_TILE_HEIGHT = 16;
     private static final int DEFAULT_TILE_WIDTH = 32;
     public static final float DEFAULT_ZOOM = 1f;
     private static final float MIN_ZOOM = 0.27f;
     public static final float ZOOM_STEP = .1f;
 
-    @Nonnull
+    @NotNull
     private final List<AbstractMapRenderer> renderers;
 
     private float zoom = DEFAULT_ZOOM;
@@ -74,7 +74,7 @@ public class RendererManager {
         EventBus.publish(new RepaintRequestEvent());
     }
 
-    public void render(Map map, @Nonnull Rectangle viewport, @Nonnull Graphics2D g) {
+    public void render(Map map, @NotNull Rectangle viewport, @NotNull Graphics2D g) {
         Rectangle renderViewport = new Rectangle((int) (viewport.x - (getTileWidth() * getZoom())),
                                                        (int) (viewport.y - (getTileHeight() * getZoom())),
                                                        (int) (viewport.width + (2 * getTileWidth() * getZoom())),
@@ -209,7 +209,7 @@ public class RendererManager {
     }
 
     @EventSubscriber
-    public void onZoom(@Nonnull ZoomEvent e) {
+    public void onZoom(@NotNull ZoomEvent e) {
         if (e.isOriginal()) {
             setZoom(DEFAULT_ZOOM);
             setTranslationX(defaultTranslationX);
@@ -220,7 +220,7 @@ public class RendererManager {
     }
 
     @EventSubscriber
-    public void onScroll(@Nonnull MapScrollEvent e) {
+    public void onScroll(@NotNull MapScrollEvent e) {
         changeTranslation(e.getX(), e.getY());
         EventBus.publish(new RepaintRequestEvent());
     }

@@ -18,8 +18,8 @@ package org.illarion.nifty.controls;
 import de.lessvoid.nifty.render.NiftyImage;
 import illarion.common.types.ItemCount;
 import illarion.common.types.Money;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interfaces defines a entry in the merchant dialog that contains one item to buy.
@@ -35,7 +35,7 @@ public interface MerchantListEntry {
      *
      * @return the nifty image to display
      */
-    @Nonnull
+    @NotNull
     NiftyImage getItemImage();
 
     /**
@@ -43,7 +43,7 @@ public interface MerchantListEntry {
      *
      * @return the name of the item
      */
-    @Nonnull
+    @NotNull
     String getName();
 
     /**
@@ -51,7 +51,7 @@ public interface MerchantListEntry {
      *
      * @return the price of the item
      */
-    @Nonnull
+    @NotNull
     Money getPrice();
 
     /**
@@ -59,7 +59,7 @@ public interface MerchantListEntry {
      *
      * @return the amount of items bought at once
      */
-    @Nonnull
+    @NotNull
     ItemCount getBundleSize();
 
     /**
@@ -74,6 +74,6 @@ public interface MerchantListEntry {
      *
      * @return the entry type
      */
-    @Nonnull
+    @NotNull
     EntryType getEntryType();
 }

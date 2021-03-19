@@ -29,9 +29,9 @@ import org.illarion.nifty.controls.DialogSelect;
 import org.illarion.nifty.controls.DialogSelectCancelEvent;
 import org.illarion.nifty.controls.DialogSelectSelectEvent;
 import org.illarion.nifty.controls.SelectListEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -65,13 +65,13 @@ public final class DialogSelectControl extends WindowControl implements DialogSe
     /**
      * The event handler that handles the events on the close button.
      */
-    @Nonnull
+    @NotNull
     private final EventTopicSubscriber<ButtonClickedEvent> closeButtonEventHandler;
 
     /**
      * The event handler that handles clicks on the select button.
      */
-    @Nonnull
+    @NotNull
     private final EventTopicSubscriber<ButtonClickedEvent> selectButtonEventHandler;
 
     public DialogSelectControl() {
@@ -92,10 +92,10 @@ public final class DialogSelectControl extends WindowControl implements DialogSe
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element element,
-            @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element element,
+            @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         niftyInstance = nifty;
         currentScreen = screen;
@@ -114,8 +114,8 @@ public final class DialogSelectControl extends WindowControl implements DialogSe
         int x = (parent.getWidth() - element.getWidth()) / 2;
         int y = (parent.getHeight() - element.getHeight()) / 2;
 
-        element.setConstraintX(new SizeValue(Integer.toString(x) + "px"));
-        element.setConstraintY(new SizeValue(Integer.toString(y) + "px"));
+        element.setConstraintX(new SizeValue(x + "px"));
+        element.setConstraintY(new SizeValue(y + "px"));
 
         parent.layoutElements();
 
@@ -151,7 +151,7 @@ public final class DialogSelectControl extends WindowControl implements DialogSe
     }
 
     @Override
-    public void addItem(@Nonnull SelectListEntry entry) {
+    public void addItem(@NotNull SelectListEntry entry) {
         getList().addItem(entry);
     }
 

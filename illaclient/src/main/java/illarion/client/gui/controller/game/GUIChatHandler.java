@@ -52,9 +52,9 @@ import illarion.common.types.Rectangle;
 import illarion.common.util.FastMath;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.illarion.engine.graphic.Font;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -107,7 +107,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      * @param color the color of the message
      */
     @Override
-    public void addChatMessage(@Nonnull String message, @Nonnull Color color) {
+    public void addChatMessage(@NotNull String message, @NotNull Color color) {
         World.getUpdateTaskManager().addTask(new ChatBoxEntry(message, color));
     }
 
@@ -120,7 +120,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      */
     @Override
     public void showChatBubble(
-            @Nullable Char character, @Nonnull String message, @Nonnull Color color) {
+            @Nullable Char character, @NotNull String message, @NotNull Color color) {
         World.getUpdateTaskManager().addTask(new CharTalkEntry(character, message, color));
     }
 
@@ -131,13 +131,13 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         /**
          * The text of the entry.
          */
-        @Nonnull
+        @NotNull
         private final String text;
 
         /**
          * The color of the entry.
          */
-        @Nonnull
+        @NotNull
         private final Color color;
 
         /**
@@ -146,12 +146,12 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
          * @param msgText the text stored in the entry
          * @param msgColor the color of the entry
          */
-        ChatBoxEntry(@Nonnull String msgText, @Nonnull Color msgColor) {
+        ChatBoxEntry(@NotNull String msgText, @NotNull Color msgColor) {
             text = msgText;
             color = msgColor;
         }
 
-        @Nonnull
+        @NotNull
         protected Color getColor() {
             return color;
         }
@@ -168,7 +168,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         /**
          * The text of the entry.
          */
-        @Nonnull
+        @NotNull
         private final String text;
 
         /**
@@ -183,7 +183,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
          * @param message the text stored in the entry
          * @param msgColor the color of the entry
          */
-        CharTalkEntry(@Nullable Char character, @Nonnull String message, Color msgColor) {
+        CharTalkEntry(@Nullable Char character, @NotNull String message, Color msgColor) {
             text = message;
             color = msgColor;
             targetChar = character;
@@ -198,19 +198,19 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
     /**
      * This pattern is used to clean the text before its send to the server.
      */
-    @Nonnull
+    @NotNull
     private static final Pattern REPEATED_SPACE_PATTERN = Pattern.compile("\\s+");
 
     /**
      * The expanded height of the Chat.
      */
-    @Nonnull
+    @NotNull
     private static final SizeValue CHAT_EXPANDED_HEIGHT = SizeValue.px(500);
 
     /**
      * The collapsed size of the Chat.
      */
-    @Nonnull
+    @NotNull
     private static final SizeValue CHAT_COLLAPSED_HEIGHT = SizeValue.px(170);
 
     /**
@@ -303,7 +303,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         return (chatScroll != null) && chatScroll.getConstraintHeight().equals(CHAT_EXPANDED_HEIGHT);
     }
 
-    private void setHeightOfChatLog(@Nonnull SizeValue value) {
+    private void setHeightOfChatLog(@NotNull SizeValue value) {
         if (screen == null) {
             return;
         }
@@ -323,7 +323,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.screen = screen;
         this.nifty = nifty;
 
@@ -339,7 +339,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      * Receive a Input event from the GUI and send a text in case this event applies.
      */
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         if (inputEvent == NiftyStandardInputEvent.SubmitText) {
             assert chatMsg != null;
             if (chatMsg.hasFocus()) {
@@ -368,7 +368,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      *
      * @param text the text to send
      */
-    private void sendText(@Nonnull String text) {
+    private void sendText(@NotNull String text) {
         if (introducePattern.matcher(text).matches()) {
             World.getNet().sendCommand(new IntroduceCmd());
             return;
@@ -410,7 +410,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      * @param mode the speech mode used to send the command
      */
     private static void cleanAndSendText(
-            String prefix, @Nonnull String text, @Nonnull SpeechMode mode) {
+            String prefix, @NotNull String text, @NotNull SpeechMode mode) {
         String cleanText = REPEATED_SPACE_PATTERN.matcher(text.trim()).replaceAll(" ");
         if (cleanText.isEmpty()) {
             return;
@@ -516,7 +516,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         }
     }
 
-    @Nonnull
+    @NotNull
     private final AtomicLong chatLineCounter = new AtomicLong(0L);
 
     private SizeValue emptyLineHeight;
@@ -527,7 +527,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      * @param text the text to add
      * @param color the color of the text to add
      */
-    private void addChatLogText(@Nonnull String text, @Nonnull Color color) {
+    private void addChatLogText(@NotNull String text, @NotNull Color color) {
         if (chatLog == null) {
             return;
         }
@@ -572,11 +572,11 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         dirty = true;
     }
 
-    @Nonnull
+    @NotNull
     private final Translator translator = new Translator();
 
     @NiftyEventSubscriber(pattern = "chatLog#chatLine-[0-9]+")
-    public void onChatLineDoubleClick(@Nonnull String id, @Nonnull NiftyMousePrimaryMultiClickedEvent event) {
+    public void onChatLineDoubleClick(@NotNull String id, @NotNull NiftyMousePrimaryMultiClickedEvent event) {
         if ((screen == null) || !translator.isServiceEnabled() || (chatLog == null) || (event.getClickCount() != 2)) {
             return;
         }
@@ -633,7 +633,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
      * @param message the message to display
      * @param color the color to show the text in
      */
-    private void addMessageBubble(@Nullable Char character, @Nonnull String message, @Nonnull Color color) {
+    private void addMessageBubble(@Nullable Char character, @NotNull String message, @NotNull Color color) {
         if ((character == null) || (chatLayer == null)) {
             return;
         }
@@ -680,7 +680,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
         activeBubbles.put(character, bubble);
     }
 
-    private boolean updateChatBubbleLocation(@Nonnull Char character, @Nonnull Element bubble) {
+    private boolean updateChatBubbleLocation(@NotNull Char character, @NotNull Element bubble) {
         if (chatLayer == null) {
             return false;
         }
@@ -731,7 +731,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
                                                   child.getHeight());
 
             boolean childWillBeRemoved = false;
-            for (@Nonnull Rectangle coveredArea : coveredAreas) {
+            for (@NotNull Rectangle coveredArea : coveredAreas) {
                 if (coveredArea.intersects(elementArea)) {
                     elementsToRemove.add(child);
                     childWillBeRemoved = true;
@@ -744,7 +744,7 @@ public final class GUIChatHandler implements ChatGui, KeyInputHandler, ScreenCon
             }
         }
 
-        for (@Nonnull Element elementToRemove : elementsToRemove) {
+        for (@NotNull Element elementToRemove : elementsToRemove) {
             nifty.removeElement(screen, elementToRemove);
         }
 

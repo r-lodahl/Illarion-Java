@@ -17,19 +17,16 @@ package illarion.client.loading;
 
 import illarion.common.util.ProgressMonitor;
 import org.illarion.engine.assets.TextureManager;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The purpose of this class is to load the texture resources that are required for the game.
  */
-@NotThreadSafe
 final class TextureLoadingTask implements LoadingTask {
     /**
      * The engine used to load the data.
      */
-    @Nonnull
+    @NotNull
     private final TextureManager textureManager;
 
     /**
@@ -42,7 +39,7 @@ final class TextureLoadingTask implements LoadingTask {
      *
      * @param textureManager the engine used to load the textures
      */
-    TextureLoadingTask(@Nonnull TextureManager textureManager) {
+    TextureLoadingTask(@NotNull TextureManager textureManager) {
         this.textureManager = textureManager;
     }
 
@@ -59,7 +56,7 @@ final class TextureLoadingTask implements LoadingTask {
         return textureManager.isLoadingDone();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ProgressMonitor getProgressMonitor() {
         return textureManager.getProgress();

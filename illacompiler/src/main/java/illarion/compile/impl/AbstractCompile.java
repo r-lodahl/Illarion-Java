@@ -15,7 +15,8 @@
  */
 package illarion.compile.impl;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +28,7 @@ public abstract class AbstractCompile implements Compile {
     private Path targetDir;
 
     @Override
-    public void setTargetDir(@Nonnull Path directory) {
+    public void setTargetDir(@NotNull Path directory) {
         targetDir = directory;
     }
 

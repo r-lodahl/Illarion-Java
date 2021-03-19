@@ -1,7 +1,8 @@
 package illarion.common.config;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.nio.file.Path;
 
 public interface ConfigReader {
@@ -11,7 +12,7 @@ public interface ConfigReader {
      * @param key the key of that value
      * @return the value that was read from the configuration or {@code false} in case no value is set
      */
-    boolean getBoolean(@Nonnull String key);
+    boolean getBoolean(@NotNull String key);
 
     /**
      * Get one entry of the configuration file. In this case the value is read as a double value.
@@ -20,7 +21,7 @@ public interface ConfigReader {
      * @return the value that was read from the configuration file or {@code 0} in case there is no value set
      * for this key
      */
-    double getDouble(@Nonnull String key);
+    double getDouble(@NotNull String key);
 
     /**
      * Get one entry of the configuration file. In this case the value is read as a Path value.
@@ -30,7 +31,7 @@ public interface ConfigReader {
      * for this key
      */
     @Nullable
-    Path getPath(@Nonnull String key);
+    Path getPath(@NotNull String key);
 
     /**
      * Get one entry of the configuration file. In this case the value is read as a float value.
@@ -39,7 +40,7 @@ public interface ConfigReader {
      * @return the value that was read from the configuration file or {@code 0} in case there is no value set
      * for this key
      */
-    float getFloat(@Nonnull String key);
+    float getFloat(@NotNull String key);
 
     /**
      * Get one entry of the configuration file. In this case the value is read as a integer value.
@@ -48,7 +49,7 @@ public interface ConfigReader {
      * @return the value that was read from the configuration file or {@code 0} in case there is no value set
      * for this key
      */
-    int getInteger(@Nonnull String key);
+    int getInteger(@NotNull String key);
 
     /**
      * Get one entry of the configuration file. In this case the value is read as a String value.
@@ -58,5 +59,5 @@ public interface ConfigReader {
      * for this key
      */
     @Nullable
-    String getString(@Nonnull String key);
+    String getString(@NotNull String key);
 }

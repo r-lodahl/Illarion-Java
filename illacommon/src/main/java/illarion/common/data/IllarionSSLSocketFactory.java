@@ -15,11 +15,12 @@
  */
 package illarion.common.data;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -72,8 +73,8 @@ public class IllarionSSLSocketFactory {
     /**
      * The logger used to show the error output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(IllarionSSLSocketFactory.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     public IllarionSSLSocketFactory() {
         try {
@@ -82,7 +83,7 @@ public class IllarionSSLSocketFactory {
             ClassLoader cls = Thread.currentThread().getContextClassLoader();
             try (InputStream keyStoreInput = cls.getResourceAsStream("keystore.jks")) {
                 keyStore.load(keyStoreInput, "jcFv8XQxRN".toCharArray());
-            } catch (@Nonnull CertificateException | IOException | NoSuchAlgorithmException e) {
+            } catch (@NotNull CertificateException | IOException | NoSuchAlgorithmException e) {
                 log.error("Failed to load keystore.", e);
             }
 
@@ -94,11 +95,11 @@ public class IllarionSSLSocketFactory {
             SSLContext ctx = SSLContext.getInstance("TLS");
             ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
             sslFactory = ctx.getSocketFactory();
-        } catch (@Nonnull KeyStoreException e) {
+        } catch (@NotNull KeyStoreException e) {
             log.error("Failed to read keystore.", e);
-        } catch (@Nonnull KeyManagementException e) {
+        } catch (@NotNull KeyManagementException e) {
             log.error("Failed to use keystore.", e);
-        } catch (@Nonnull NoSuchAlgorithmException e) {
+        } catch (@NotNull NoSuchAlgorithmException e) {
             log.error("Failed to decode keystore.", e);
         } catch (UnrecoverableKeyException e) {
             log.error("Failed to open keystore.", e);

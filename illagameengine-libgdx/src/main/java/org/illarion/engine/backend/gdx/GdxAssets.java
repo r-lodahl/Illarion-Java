@@ -26,7 +26,6 @@ import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the asset manager that fetches its data from libGDX.
@@ -37,49 +36,49 @@ class GdxAssets implements Assets {
     /**
      * The texture manager that is used.
      */
-    @Nonnull
+    @NotNull
     private final GdxTextureManager textureManager;
 
     /**
      * The font manager that is used.
      */
-    @Nonnull
+    @NotNull
     private final GdxFontManager fontManager;
 
     /**
      * The cursor manager used to load the mouse cursors.
      */
-    @Nonnull
+    @NotNull
     private final CursorManager cursorManager;
 
     /**
      * The sounds manager used to load and store the sound effects.
      */
-    @Nonnull
+    @NotNull
     private final GdxSoundsManager soundsManager;
 
     /**
      * The sprite factory of the libGDX backend.
      */
-    @Nonnull
+    @NotNull
     private final GdxSpriteFactory spriteFactory;
 
     /**
      * The effect manager that creates the graphic effects.
      */
-    @Nonnull
+    @NotNull
     private final GdxEffectManager effectManager;
 
     /**
      * The backends window reference.
      */
-    @Nonnull
+    @NotNull
     private final Window window;
 
     /**
      * Create a new instance of the libGDX assets management.
      */
-    GdxAssets(Graphics graphics, Files files, Audio audio, @Nonnull Window window) {
+    GdxAssets(Graphics graphics, Files files, Audio audio, @NotNull Window window) {
         textureManager = new GdxTextureManager();
         fontManager = new GdxFontManager(files, textureManager);
         cursorManager = new GdxCursorManager(graphics, files);
@@ -89,49 +88,49 @@ class GdxAssets implements Assets {
         this.window = window;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public GdxTextureManager getTextureManager() {
         return textureManager;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FontManager getFontManager() {
         return fontManager;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public CursorManager getCursorManager() {
         return cursorManager;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public SoundsManager getSoundsManager() {
         return soundsManager;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public GdxSpriteFactory getSpriteFactory() {
         return spriteFactory;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Scene createNewScene() {
         return new GdxScene(window);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public WorldMap createWorldMap(@Nonnull WorldMapDataProvider provider) throws EngineException {
+    public WorldMap createWorldMap(@NotNull WorldMapDataProvider provider) throws EngineException {
         return new GdxWorldMap(provider);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public EffectManager getEffectManager() {
         return effectManager;

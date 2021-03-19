@@ -19,30 +19,25 @@ import illarion.client.graphics.FrameAnimation;
 import illarion.client.graphics.FrameAnimationMode;
 import illarion.common.graphics.TileInfo;
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This template contains the required data to display a tile on the screen.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class TileTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The general information about this tile.
      */
-    @Nonnull
+    @NotNull
     private final TileInfo tileInfo;
 
     /**
      * All tiles of one type share a single animation.
      */
-    @Nonnull
+    @NotNull
     private final FrameAnimation sharedAnimation;
 
     /**
@@ -55,14 +50,14 @@ public class TileTemplate extends AbstractAnimatedEntityTemplate {
      * @param tileInfo the general tile information on this tile
      */
     public TileTemplate(
-            int id, @Nonnull Sprite sprite, int frames, int speed, @Nonnull TileInfo tileInfo) {
+            int id, @NotNull Sprite sprite, int frames, int speed, @NotNull TileInfo tileInfo) {
         super(id, sprite, frames, 0, speed, null, 0);
         this.tileInfo = tileInfo;
         sharedAnimation = new FrameAnimation(null);
         sharedAnimation.setup(frames, 0, speed * 150, FrameAnimationMode.Looped);
     }
 
-    @Nonnull
+    @NotNull
     public TileInfo getTileInfo() {
         return tileInfo;
     }

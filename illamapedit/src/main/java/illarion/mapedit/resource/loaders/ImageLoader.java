@@ -16,12 +16,12 @@
 package illarion.mapedit.resource.loaders;
 
 import illarion.mapedit.resource.Resource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Tim
  */
 public final class ImageLoader implements Resource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImageLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final ImageLoader INSTANCE = new ImageLoader();
     private static final Map<String, Image> IMAGES = new HashMap<>();
 
@@ -51,7 +51,7 @@ public final class ImageLoader implements Resource {
 
     }
 
-    @Nonnull
+    @NotNull
     public static ImageLoader getInstance() {
         return INSTANCE;
     }
@@ -65,7 +65,7 @@ public final class ImageLoader implements Resource {
         return IMAGES.get(key);
     }
 
-    @Nonnull
+    @NotNull
     public static ResizableIcon getResizableIcon(String key) {
         Image image = getImage(key);
 
@@ -75,7 +75,7 @@ public final class ImageLoader implements Resource {
         return resizeIcon;
     }
 
-    @Nonnull
+    @NotNull
     public static ImageIcon getImageIcon(String key) {
         return new ImageIcon(getImage(key));
     }
@@ -94,7 +94,7 @@ public final class ImageLoader implements Resource {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Images";

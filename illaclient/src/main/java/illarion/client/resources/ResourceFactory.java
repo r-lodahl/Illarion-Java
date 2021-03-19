@@ -15,7 +15,8 @@
  */
 package illarion.client.resources;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface is shared by all resource factories and ensures that they
@@ -40,5 +41,5 @@ public interface ResourceFactory<T extends Resource> {
      *
      * @param resource the resource to store
      */
-    void storeResource(@Nonnull T resource);
+    void storeResource(@NotNull T resource);
 }

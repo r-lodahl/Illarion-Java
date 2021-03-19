@@ -23,9 +23,9 @@ import illarion.common.net.NetCommReader;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -79,7 +79,7 @@ public final class ShowcaseMsg implements ServerReply {
     private ItemCount[] itemCounts;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         containerId = reader.readUByte();
         title = reader.readString();
         description = reader.readString();
@@ -102,7 +102,7 @@ public final class ShowcaseMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         //noinspection OverlyComplexBooleanExpression
@@ -132,7 +132,7 @@ public final class ShowcaseMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

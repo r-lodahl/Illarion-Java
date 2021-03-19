@@ -18,11 +18,9 @@ package illarion.common.types;
 import illarion.common.net.NetCommReader;
 import illarion.common.net.NetCommWriter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -32,8 +30,6 @@ import java.util.Locale;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
-@Immutable
 public final class ItemCount implements Comparable<ItemCount> {
     /**
      * The maximal value that is valid for the item count.
@@ -48,13 +44,13 @@ public final class ItemCount implements Comparable<ItemCount> {
     /**
      * Stack instance for the count value 0.
      */
-    @Nonnull
+    @NotNull
     public static final ItemCount ZERO = new ItemCount(0);
 
     /**
      * Static instance for the count value 1.
      */
-    @Nonnull
+    @NotNull
     public static final ItemCount ONE = new ItemCount(1);
 
     /**
@@ -70,7 +66,7 @@ public final class ItemCount implements Comparable<ItemCount> {
      * @throws IllegalArgumentException in case the value is less then {@link #MIN_VALUE} or larger then
      * {@link #MAX_VALUE}.
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static ItemCount getInstance(int value) {
         switch (value) {
@@ -92,8 +88,8 @@ public final class ItemCount implements Comparable<ItemCount> {
      * {@link #MAX_VALUE}.
      * @throws IOException in case the reading operation fails
      */
-    @Nonnull
-    public static ItemCount getInstance(@Nonnull NetCommReader reader) throws IOException {
+    @NotNull
+    public static ItemCount getInstance(@NotNull NetCommReader reader) throws IOException {
         return getInstance(reader.readUShort());
     }
 
@@ -133,11 +129,11 @@ public final class ItemCount implements Comparable<ItemCount> {
         return value;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {
-        return "Item count: " + Integer.toString(value);
+        return "Item count: " + value;
     }
 
     /**
@@ -146,9 +142,9 @@ public final class ItemCount implements Comparable<ItemCount> {
      * @param locale the locale used for the format
      * @return the string
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    public String getShortText(@Nonnull Locale locale) {
+    public String getShortText(@NotNull Locale locale) {
         if (value < 1000) {
             return Integer.toString(value);
         }
@@ -166,7 +162,7 @@ public final class ItemCount implements Comparable<ItemCount> {
      *
      * @param writer the writer that receives the value
      */
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUShort(value);
     }
 

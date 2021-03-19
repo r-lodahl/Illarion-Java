@@ -20,8 +20,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,7 +46,7 @@ public class ApplicationController extends AbstractController {
     }
 
     @Override
-    public void setModel(@Nonnull GuiModel model) {
+    public void setModel(@NotNull GuiModel model) {
         super.setModel(model);
         rootPane.setOnMousePressed(me -> {
             if (me.getButton() != MouseButton.MIDDLE) {
@@ -64,12 +64,12 @@ public class ApplicationController extends AbstractController {
     }
 
     @FXML
-    public void close(@Nonnull ActionEvent event) {
+    public void close(@NotNull ActionEvent event) {
         getModel().getStage().close();
     }
 
     @FXML
-    public void minimize(@Nonnull ActionEvent event) {
+    public void minimize(@NotNull ActionEvent event) {
         getModel().getStage().setIconified(true);
     }
 }

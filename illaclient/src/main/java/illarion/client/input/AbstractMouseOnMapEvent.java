@@ -15,10 +15,9 @@
  */
 package illarion.client.input;
 
-import illarion.common.memory.Poolable;
 import org.illarion.engine.input.Button;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This event is in general triggered in case the user performs any action with the mouse on the map.
@@ -38,7 +37,7 @@ public abstract class AbstractMouseOnMapEvent extends AbstractMouseLocationEvent
      * @param x the x coordinate of the click
      * @param y the y coordinate of the click
      */
-    protected AbstractMouseOnMapEvent(@Nonnull Button key, int x, int y) {
+    protected AbstractMouseOnMapEvent(@NotNull Button key, int x, int y) {
         super(x, y);
         this.key = key;
     }
@@ -55,7 +54,7 @@ public abstract class AbstractMouseOnMapEvent extends AbstractMouseLocationEvent
      *
      * @param org the original object to copy
      */
-    protected AbstractMouseOnMapEvent(@Nonnull AbstractMouseOnMapEvent org) {
+    protected AbstractMouseOnMapEvent(@NotNull AbstractMouseOnMapEvent org) {
         super(org);
         key = org.key;
     }
@@ -67,7 +66,7 @@ public abstract class AbstractMouseOnMapEvent extends AbstractMouseLocationEvent
      * @param x the x coordinate of the click
      * @param y the y coordinate of the click
      */
-    public void set (@Nonnull Button key, int x, int y) {
+    public void set (@NotNull Button key, int x, int y) {
         super.set(x, y);
         this.key = key;
     }

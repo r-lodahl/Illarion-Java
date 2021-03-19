@@ -20,12 +20,12 @@ import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -36,8 +36,8 @@ import java.util.*;
  */
 @ReplyMessage(replyId = CommandList.MSG_QUEST_AVAILABILITY)
 public final class QuestAvailabilityMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(QuestAvailabilityMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * This array contains the available quests in range of the character.
@@ -52,7 +52,7 @@ public final class QuestAvailabilityMsg implements ServerReply {
     private List<ServerCoordinate> availableSoonQuests;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         int availableQuestCount = reader.readUShort();
         if (availableQuestCount > 0) {
             availableQuests = Arrays.asList(new ServerCoordinate[availableQuestCount]);
@@ -74,7 +74,7 @@ public final class QuestAvailabilityMsg implements ServerReply {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((availableQuests == null) || (availableSoonQuests == null)) {
@@ -94,7 +94,7 @@ public final class QuestAvailabilityMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

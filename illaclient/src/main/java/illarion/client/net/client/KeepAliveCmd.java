@@ -18,18 +18,13 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.client.util.ConnectionPerformanceClock;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Keep alive command to send to the server. This is used to notify the server that the client is still working fine.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public final class KeepAliveCmd extends AbstractCommand {
     /**
      * Default constructor for the keep alive command.
@@ -39,11 +34,11 @@ public final class KeepAliveCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         ConnectionPerformanceClock.notifyNetCommEncode();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString(null);

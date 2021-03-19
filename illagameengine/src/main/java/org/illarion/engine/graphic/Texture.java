@@ -16,18 +16,13 @@
 package org.illarion.engine.graphic;
 
 import org.illarion.engine.Disposable;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class represents a single texture.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@NotThreadSafe
 public interface Texture extends Disposable {
     /**
      * Get a new texture object that points to a part of this original texture.
@@ -38,7 +33,7 @@ public interface Texture extends Disposable {
      * @param height the height of the new texture
      * @return the new sub-texture instance
      */
-    @Nonnull
+    @NotNull
     Texture getSubTexture(int x, int y, int width, int height);
 
     /**

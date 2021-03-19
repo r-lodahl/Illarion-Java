@@ -20,36 +20,31 @@ import illarion.client.graphics.AvatarInfo;
 import illarion.common.types.Direction;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the template that contains the required data to create the graphical representation of a avatar on the map.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class AvatarTemplate extends AbstractMultiFrameEntityTemplate {
     /**
      * The direction this avatar is facing.
      */
-    @Nonnull
+    @NotNull
     private final Direction direction;
 
     /**
      * The clothes this avatar is able to wear.
      */
-    @Nonnull
+    @NotNull
     private final AvatarClothManager clothes;
 
     /**
      * General information about this avatar.
      */
-    @Nonnull
+    @NotNull
     private final AvatarInfo avatarInfo;
 
     /**
@@ -66,12 +61,12 @@ public class AvatarTemplate extends AbstractMultiFrameEntityTemplate {
      */
     public AvatarTemplate(
             int id,
-            @Nonnull Sprite sprite,
+            @NotNull Sprite sprite,
             int frames,
             int stillFrame,
             @Nullable Color defaultColor,
-            int shadowOffset, @Nonnull Direction direction,
-            @Nonnull AvatarInfo avatarInfo) {
+            int shadowOffset, @NotNull Direction direction,
+            @NotNull AvatarInfo avatarInfo) {
         super(id, sprite, frames, stillFrame, defaultColor, shadowOffset);
 
         this.direction = direction;
@@ -79,17 +74,17 @@ public class AvatarTemplate extends AbstractMultiFrameEntityTemplate {
         clothes = new AvatarClothManager();
     }
 
-    @Nonnull
+    @NotNull
     public Direction getDirection() {
         return direction;
     }
 
-    @Nonnull
+    @NotNull
     public AvatarClothManager getClothes() {
         return clothes;
     }
 
-    @Nonnull
+    @NotNull
     public AvatarInfo getAvatarInfo() {
         return avatarInfo;
     }

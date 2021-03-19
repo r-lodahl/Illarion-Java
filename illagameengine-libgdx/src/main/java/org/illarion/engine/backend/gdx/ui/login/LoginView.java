@@ -1,6 +1,5 @@
 package org.illarion.engine.backend.gdx.ui.login;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -9,10 +8,9 @@ import com.badlogic.gdx.utils.Align;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 
-public class LoginView extends Table {
+public final class LoginView extends Table {
     private final TextButton optionsButton, creditsButton, exitButton, loginButton;
     private final SelectBox<String> serverSelection;
     private final TextField accountNameField, passwordField;
@@ -40,7 +38,7 @@ public class LoginView extends Table {
         savePasswordCheckbox = new CheckBox("", skin);
 
         loginButton = new TextButton(resourceBundle.getLocalizedString("login"), skin);
-        loginButton.pad(20f, 70f, 20f, 70f);
+        loginButton.pad(20.0f, 70.0f, 20.0f, 70.0f);
 
         optionsButton = new TextButton(resourceBundle.getLocalizedString("options"), skin);
         creditsButton = new TextButton(resourceBundle.getLocalizedString("credits"), skin);
@@ -80,7 +78,7 @@ public class LoginView extends Table {
 
         loginEditFieldsTable.row();
         loginEditFieldsTable.add(new Label(resourceBundle.getLocalizedString("savePassword"), skin));
-        loginEditFieldsTable.add(savePasswordCheckbox).width(20f).padLeft(-4f);
+        loginEditFieldsTable.add(savePasswordCheckbox).width(20.0f).padLeft(-4.0f);
         add(loginEditFieldsTable);
 
         row();
@@ -88,9 +86,9 @@ public class LoginView extends Table {
 
         row();
         Table buttonRowTable = new Table();
-        buttonRowTable.row().width(100f);
+        buttonRowTable.row().width(100.0f);
         buttonRowTable.add(optionsButton);
-        buttonRowTable.add(creditsButton).spaceLeft(2f).spaceRight(2f);
+        buttonRowTable.add(creditsButton).spaceLeft(2.0f).spaceRight(2.0f);
         buttonRowTable.add(exitButton);
         add(buttonRowTable);
 

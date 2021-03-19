@@ -17,8 +17,8 @@ package illarion.client.crash;
 
 import illarion.client.IllaClient;
 import illarion.client.util.Lang;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The crash handler that takes care for crashes of the network interface. It
@@ -45,7 +45,7 @@ public final class NetCommCrashHandler extends AbstractCrashHandler {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static NetCommCrashHandler getInstance() {
         return INSTANCE;
     }
@@ -55,9 +55,9 @@ public final class NetCommCrashHandler extends AbstractCrashHandler {
      *
      * @return the error message
      */
-    @Nonnull
+    @NotNull
     @Override
-    protected String getCrashMessage(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected String getCrashMessage(@NotNull Thread t, @NotNull Throwable e) {
         return Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.netcomm")
                 + '\n' + e.getLocalizedMessage();
     }
@@ -66,7 +66,7 @@ public final class NetCommCrashHandler extends AbstractCrashHandler {
      * Prepare everything for a proper restart of the map processor.
      */
     @Override
-    protected void restart(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected void restart(@NotNull Thread t, @NotNull Throwable e) {
         IllaClient.performLogout();
     }
 }

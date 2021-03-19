@@ -22,6 +22,8 @@ import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.ProgressMonitor;
 import illarion.download.maven.MavenDownloaderCallback.State;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.building.DefaultModelBuilderFactory;
 import org.apache.maven.model.building.ModelBuilder;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
@@ -58,11 +60,9 @@ import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
 import org.eclipse.aether.util.graph.selector.ScopeDependencySelector;
 import org.eclipse.aether.util.graph.visitor.FilteringDependencyVisitor;
 import org.eclipse.aether.util.graph.visitor.TreeDependencyVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -79,15 +79,15 @@ import static org.eclipse.aether.util.artifact.JavaScopes.*;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class MavenDownloader {
-    @Nonnull
+    @NotNull
     private static final AppIdent APPLICATION = new AppIdent("Illarion Launcher");
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(MavenDownloader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The list of repositories that are used.
      */
-    @Nonnull
+    @NotNull
     private final List<RemoteRepository> repositories;
 
     @Nullable
@@ -97,13 +97,13 @@ public class MavenDownloader {
      * The repository system that is used by this downloader. This stores the repositories that are queried for the
      * artifacts and the location of the local repository.
      */
-    @Nonnull
+    @NotNull
     private final RepositorySystem system;
 
     /**
      * The maven session that stores the current temporary states of the maven resolver.
      */
-    @Nonnull
+    @NotNull
     private final DefaultRepositorySystemSession session;
 
     /**
@@ -119,10 +119,10 @@ public class MavenDownloader {
     /**
      * The configuration provider.
      */
-    @Nonnull
+    @NotNull
     private final Config config;
 
-    @Nonnull
+    @NotNull
     private final MavenRepositoryListener repositoryListener;
 
     /**
@@ -133,7 +133,7 @@ public class MavenDownloader {
      * @param attempts the indicator how many times downloading was already tried and failed.
      * @param cfg the configuration provider
      */
-    public MavenDownloader(boolean snapshot, int attempts, @Nonnull Config cfg) {
+    public MavenDownloader(boolean snapshot, int attempts, @NotNull Config cfg) {
         log.trace("Creating Maven Downloader. Attempt number: {}", attempts);
         this.snapshot = snapshot;
         config = cfg;
@@ -185,7 +185,7 @@ public class MavenDownloader {
      */
     @Nullable
     public Collection<File> downloadArtifact(
-            @Nonnull String groupId, @Nonnull String artifactId, @Nonnull MavenDownloaderCallback callback)
+            @NotNull String groupId, @NotNull String artifactId, @NotNull MavenDownloaderCallback callback)
             throws DependencyCollectionException, InterruptedException, ExecutionException {
         Artifact artifact = new DefaultArtifact(groupId, artifactId, "jar", "[1,]");
         try {
@@ -237,7 +237,7 @@ public class MavenDownloader {
 
             List<FutureArtifactRequest> requests = builder.getRequests();
 
-            for (@Nonnull FutureArtifactRequest request : requests) {
+            for (@NotNull FutureArtifactRequest request : requests) {
                 progressMonitor.addChild(request.getProgressMonitor());
             }
             callback.reportNewState(ResolvingArtifacts, progressMonitor, offline, null);
@@ -255,17 +255,17 @@ public class MavenDownloader {
             }
 
             Collection<File> result = new ArrayList<>();
-            for (@Nonnull Future<ArtifactResult> artifactResult : results) {
+            for (@NotNull Future<ArtifactResult> artifactResult : results) {
                 result.add(artifactResult.get().getArtifact().getFile());
             }
 
             if (result.isEmpty()) {
-                callback.resolvingDone(Collections.<File>emptyList());
+                callback.resolvingDone(Collections.emptyList());
                 return null;
             }
             callback.resolvingDone(result);
             return result;
-        } catch (@Nonnull DependencyCollectionException | InterruptedException | ExecutionException e) {
+        } catch (@NotNull DependencyCollectionException | InterruptedException | ExecutionException e) {
             callback.resolvingFailed(e);
             throw e;
         }
@@ -291,19 +291,19 @@ public class MavenDownloader {
         session.setLocalRepositoryManager(manager);
     }
 
-    @Nonnull
-    private RemoteRepository setupRepository(@Nonnull String id,
-                                             @Nonnull String url,
-                                             @Nonnull RemoteRepository... mirrors) {
+    @NotNull
+    private RemoteRepository setupRepository(@NotNull String id,
+                                             @NotNull String url,
+                                             @NotNull RemoteRepository... mirrors) {
         return setupRepository(id, url, false, false, mirrors);
     }
 
-    @Nonnull
-    private RemoteRepository setupRepository(@Nonnull String id,
-                                             @Nonnull String url,
+    @NotNull
+    private RemoteRepository setupRepository(@NotNull String id,
+                                             @NotNull String url,
                                              boolean alwaysCheck,
                                              boolean enableSnapshots,
-                                             @Nonnull RemoteRepository... mirrors) {
+                                             @NotNull RemoteRepository... mirrors) {
         Builder repo = new Builder(id, "default", url);
 
         String checksumPolicy =
@@ -323,7 +323,7 @@ public class MavenDownloader {
         return repo.build();
     }
 
-    @Nonnull
+    @NotNull
     private static ServiceLocator setupServiceLocator() {
         DefaultServiceLocator serviceLocator = MavenRepositorySystemUtils.newServiceLocator();
 

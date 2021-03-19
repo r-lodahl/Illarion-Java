@@ -19,10 +19,10 @@ import illarion.client.resources.ResourceFactory;
 import illarion.client.util.IdWrapper;
 import illarion.common.util.TableLoaderSink;
 import illarion.common.util.TableLoaderSound;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the sound definitions from the resource table that was created using the configuration
@@ -36,13 +36,13 @@ public final class SoundLoader extends AbstractResourceLoader<IdWrapper<String>>
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(SoundLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * Trigger the loading sequence for this loader.
      */
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<IdWrapper<String>> call() {
         if (!hasTargetFactory()) {
@@ -64,13 +64,13 @@ public final class SoundLoader extends AbstractResourceLoader<IdWrapper<String>>
      * Handle a single line of the resource table.
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderSound loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderSound loader) {
         int clipID = loader.getSoundId();
         String filename = loader.getSoundFile();
 
         try {
             getTargetFactory().storeResource(new IdWrapper<>(clipID, filename));
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             log.error("Failed adding sound to internal factory. ID: {} - Filename: {}", clipID, filename);
         }
 

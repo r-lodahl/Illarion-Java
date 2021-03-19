@@ -16,8 +16,8 @@
 package illarion.client.util.translation.yandex;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +32,7 @@ class Response {
     @SerializedName("text")
     private List<String> text;
 
-    @Nonnull
+    @NotNull
     public List<String> getTexts() {
         if (text == null) {
             return Collections.emptyList();

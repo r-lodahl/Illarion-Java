@@ -22,12 +22,12 @@ import illarion.client.world.Char;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -37,8 +37,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_CHARACTER_ANIMATION)
 public final class CharacterAnimationMsg implements ServerReply, UpdateTask {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(CharacterAnimationMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The ID of the animation that is shown.
@@ -52,12 +52,12 @@ public final class CharacterAnimationMsg implements ServerReply, UpdateTask {
     private CharacterId charId;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         charId = new CharacterId(reader);
         animationId = reader.readUByte();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if (charId == null) {
@@ -77,7 +77,7 @@ public final class CharacterAnimationMsg implements ServerReply, UpdateTask {
         character.startAnimation(animationId, Char.DEFAULT_ANIMATION_SPEED);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

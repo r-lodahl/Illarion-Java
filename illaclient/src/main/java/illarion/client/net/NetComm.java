@@ -21,17 +21,18 @@ import illarion.client.crash.NetCommCrashHandler;
 import illarion.client.net.client.AbstractCommand;
 import illarion.client.net.client.KeepAliveCmd;
 import illarion.client.util.ConnectionPerformanceClock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.*;
@@ -44,7 +45,7 @@ public final class NetComm {
     /**
      * This constant holds the encoding for strings that are received from and send to the server.
      */
-    public static final Charset SERVER_STRING_ENCODING = Charset.forName("ISO-8859-1");
+    public static final Charset SERVER_STRING_ENCODING = StandardCharsets.ISO_8859_1;
 
     /**
      * The value that is added and used for the modulus division that is done on the buffer value before printing it.
@@ -69,15 +70,15 @@ public final class NetComm {
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(NetComm.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * General time to wait in case its needed that other threads need to react on some input.
      */
     private static final int THREAD_WAIT_TIME = 100;
 
-    @Nonnull
+    @NotNull
     private final ScheduledExecutorService keepAliveExecutor;
 
     /**
@@ -123,7 +124,7 @@ public final class NetComm {
      * @param len the amount of byte that shall be included to the checksum calculation
      * @return the calculated checksum
      */
-    public static int getCRC(@Nonnull ByteBuffer buffer, int len) {
+    public static int getCRC(@NotNull ByteBuffer buffer, int len) {
         int crc = 0;
         int remain = len;
         int pos = buffer.position();
@@ -155,7 +156,7 @@ public final class NetComm {
      * @param prefix The prefix that shall be written first to the log
      * @param buffer The buffer that contains the values that shall be written
      */
-    static void dump(String prefix, @Nonnull ByteBuffer buffer) {
+    static void dump(String prefix, @NotNull ByteBuffer buffer) {
         StringBuilder builder = new StringBuilder();
         StringBuilder builderText = new StringBuilder();
 
@@ -195,7 +196,7 @@ public final class NetComm {
         try {
             Servers usedServer = IllaClient.getInstance().getUsedServer();
 
-            @Nonnull String serverAddress;
+            @NotNull String serverAddress;
             int serverPort;
             if (usedServer == Servers.Customserver) {
                 String configServer = IllaClient.getConfig().getString("serverAddress");
@@ -230,7 +231,7 @@ public final class NetComm {
                     sendCommand(new KeepAliveCmd());
                 }
             }, 500, 500, TimeUnit.MILLISECONDS);
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             log.error("Connection error");
             return false;
         }
@@ -282,7 +283,7 @@ public final class NetComm {
             // wait for threads to react
             try {
                 Thread.sleep(THREAD_WAIT_TIME);
-            } catch (@Nonnull InterruptedException e) {
+            } catch (@NotNull InterruptedException e) {
                 log.warn("Disconnecting wait got interrupted.");
             }
 
@@ -291,7 +292,7 @@ public final class NetComm {
                 socket.close();
                 socket = null;
             }
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             log.warn("Disconnecting failed.", e);
         }
     }
@@ -306,7 +307,7 @@ public final class NetComm {
         return loginDone;
     }
 
-    public void sendCommand(@Nonnull AbstractCommand cmd) {
+    public void sendCommand(@NotNull AbstractCommand cmd) {
         if (sender != null) {
             sender.sendCommand(cmd);
         } else {

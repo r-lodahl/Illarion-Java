@@ -19,8 +19,8 @@ import org.illarion.engine.EngineException;
 import org.illarion.engine.graphic.Scene;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines how the assets that need to be managed by the game engine can be accessed.
@@ -33,7 +33,7 @@ public interface Assets {
      *
      * @return the texture asset manager
      */
-    @Nonnull
+    @NotNull
     TextureManager getTextureManager();
 
     /**
@@ -41,7 +41,7 @@ public interface Assets {
      *
      * @return the font asset manager
      */
-    @Nonnull
+    @NotNull
     FontManager getFontManager();
 
     /**
@@ -49,7 +49,7 @@ public interface Assets {
      *
      * @return the mouse cursor asset manager
      */
-    @Nonnull
+    @NotNull
     CursorManager getCursorManager();
 
     /**
@@ -57,7 +57,7 @@ public interface Assets {
      *
      * @return the sound asset manager
      */
-    @Nonnull
+    @NotNull
     SoundsManager getSoundsManager();
 
     /**
@@ -65,7 +65,7 @@ public interface Assets {
      *
      * @return the sprite factory
      */
-    @Nonnull
+    @NotNull
     SpriteFactory getSpriteFactory();
 
     /**
@@ -73,7 +73,7 @@ public interface Assets {
      *
      * @return the newly created scene
      */
-    @Nonnull
+    @NotNull
     Scene createNewScene();
 
     /**
@@ -84,14 +84,14 @@ public interface Assets {
      * @return the newly created world map texture creator
      * @throws EngineException in case creating the world map fails for some reason
      */
-    @Nonnull
-    WorldMap createWorldMap(@Nonnull WorldMapDataProvider provider) throws EngineException;
+    @NotNull
+    WorldMap createWorldMap(@NotNull WorldMapDataProvider provider) throws EngineException;
 
     /**
      * Get the manager for the graphical effects.
      *
      * @return the graphic effect manager
      */
-    @Nonnull
+    @NotNull
     EffectManager getEffectManager();
 }

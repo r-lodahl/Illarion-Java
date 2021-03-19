@@ -16,23 +16,23 @@
 package illarion.common.types;
 
 import illarion.common.graphics.CharAnimations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class AvatarId {
-    private static final Logger log = LoggerFactory.getLogger(AvatarId.class);
+    private static final Logger log = LogManager.getLogger();
     private int raceId;
     private int typeId;
-    @Nonnull
+    @NotNull
     private Direction direction;
     private int animationId;
 
-    public AvatarId(int raceId, int typeId, @Nonnull Direction direction, int animationId) {
+    public AvatarId(int raceId, int typeId, @NotNull Direction direction, int animationId) {
         this.raceId = raceId;
         this.typeId = typeId;
         this.direction = direction;
@@ -148,12 +148,12 @@ public final class AvatarId {
         this.typeId = typeId;
     }
 
-    @Nonnull
+    @NotNull
     public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(@Nonnull Direction direction) {
+    public void setDirection(@NotNull Direction direction) {
         this.direction = direction;
     }
 

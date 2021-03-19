@@ -17,8 +17,8 @@ package illarion.client.input;
 
 import illarion.client.world.MapTile;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This even is send to the map display to handle dragging event on items. It uses callback functions to inform the
@@ -28,21 +28,21 @@ import javax.annotation.Nonnull;
  */
 public final class PrimaryKeyMapDrag extends DragOnMapEvent {
     public interface PrimaryKeyMapDragCallback {
-        boolean startDraggingItemFromTile(@Nonnull PrimaryKeyMapDrag event, @Nonnull MapTile tile);
+        boolean startDraggingItemFromTile(@NotNull PrimaryKeyMapDrag event, @NotNull MapTile tile);
 
         void notHandled();
     }
 
-    @Nonnull
+    @NotNull
     private final PrimaryKeyMapDragCallback callback;
 
-    public PrimaryKeyMapDrag(@Nonnull DragOnMapEvent org, @Nonnull PrimaryKeyMapDragCallback callback) {
+    public PrimaryKeyMapDrag(@NotNull DragOnMapEvent org, @NotNull PrimaryKeyMapDragCallback callback) {
         super(org);
         this.callback = callback;
     }
 
     @Contract(pure = false)
-    public boolean startDraggingItemFromTile(@Nonnull MapTile tile) {
+    public boolean startDraggingItemFromTile(@NotNull MapTile tile) {
         return callback.startDraggingItemFromTile(this, tile);
     }
 

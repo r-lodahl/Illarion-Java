@@ -17,10 +17,10 @@ package illarion.client.graphics;
 
 import illarion.client.resources.MiscImageFactory;
 import illarion.client.resources.data.MiscImageTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to store the markers that are displayed below a avatar.
@@ -31,13 +31,13 @@ public class AvatarMarker extends AbstractEntity<MiscImageTemplate> {
     /**
      * The logging instance of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(AvatarMarker.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The avatar that is the parent of this class.
      */
-    @Nonnull
+    @NotNull
     private final Avatar parent;
 
     /**
@@ -46,7 +46,7 @@ public class AvatarMarker extends AbstractEntity<MiscImageTemplate> {
      * @param markerId the image ID of this marker
      * @param parentAvatar the parent avatar
      */
-    public AvatarMarker(int markerId, @Nonnull Avatar parentAvatar) {
+    public AvatarMarker(int markerId, @NotNull Avatar parentAvatar) {
         super(MiscImageFactory.getInstance().getTemplate(markerId));
         parent = parentAvatar;
     }

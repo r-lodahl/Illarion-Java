@@ -18,9 +18,8 @@ package illarion.client.net.client;
 import illarion.client.net.CommandList;
 import illarion.client.util.ChatHandler.SpeechMode;
 import illarion.common.net.NetCommWriter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 
 /**
@@ -30,18 +29,17 @@ import java.io.IOException;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class SayCmd extends AbstractCommand {
     /**
      * The text that is send to the server.
      */
-    @Nonnull
+    @NotNull
     private final String text;
 
     /**
      * Default constructor for the say text command.
      */
-    public SayCmd(@Nonnull SpeechMode mode, @Nonnull String text) {
+    public SayCmd(@NotNull SpeechMode mode, @NotNull String text) {
         super(getCommandId(mode));
 
         this.text = text;
@@ -55,7 +53,7 @@ public final class SayCmd extends AbstractCommand {
      * @throws IllegalArgumentException in case {@code mode} is not {@link SpeechMode#Normal} or
      * {@link SpeechMode#Shout} or {@link SpeechMode#Whisper}
      */
-    private static int getCommandId(@Nonnull SpeechMode mode) {
+    private static int getCommandId(@NotNull SpeechMode mode) {
         switch (mode) {
             case Normal:
                 return CommandList.CMD_SAY;
@@ -68,14 +66,14 @@ public final class SayCmd extends AbstractCommand {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Text: " + text + " FrameAnimationMode: " + getId());
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) throws IOException {
+    public void encode(@NotNull NetCommWriter writer) throws IOException {
         writer.writeString(text);
     }
 }

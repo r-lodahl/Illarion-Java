@@ -18,8 +18,8 @@ package illarion.common.config.gui.entries.swing;
 import illarion.common.config.entries.ConfigEntry;
 import illarion.common.config.entries.TextEntry;
 import illarion.common.config.gui.entries.SavableEntry;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 
 /**
@@ -38,7 +38,7 @@ public final class TextEntrySwing extends JTextField implements SavableEntry {
     /**
      * The text entry used to initialize this instance.
      */
-    @Nonnull
+    @NotNull
     private final TextEntry entry;
 
     /**

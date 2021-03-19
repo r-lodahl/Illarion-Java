@@ -15,7 +15,6 @@
  */
 package illarion.client.util;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interface defines a task that is executed by the {@link UpdateTaskManager}.

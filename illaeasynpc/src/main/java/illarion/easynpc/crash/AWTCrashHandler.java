@@ -18,8 +18,8 @@ package illarion.easynpc.crash;
 import illarion.common.bug.CrashData;
 import illarion.common.bug.CrashReporter;
 import illarion.easynpc.Parser;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This crash handler differs from the rest of the crash handlers. It will bind
@@ -45,7 +45,7 @@ public final class AWTCrashHandler {
      *
      * @param e the crash information
      */
-    public void handle(@Nonnull Throwable e) {
+    public void handle(@NotNull Throwable e) {
         CrashData data = new CrashData(Parser.APPLICATION, "easyNPC Editor", "crash.awt", Thread.currentThread(), e);
         CrashReporter.getInstance().reportCrash(data, true);
     }

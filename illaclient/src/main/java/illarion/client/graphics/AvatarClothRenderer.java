@@ -21,9 +21,9 @@ import illarion.common.types.DisplayCoordinate;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -39,7 +39,7 @@ final class AvatarClothRenderer {
      * The definition of the orders that are used to render the clothes a character wears. Each direction has a
      * separated order that is stored in this list.
      */
-    @Nonnull
+    @NotNull
     private static final EnumMap<Direction, List<AvatarClothGroup>> RENDER_DIR;
 
     static {
@@ -169,12 +169,12 @@ final class AvatarClothRenderer {
     /**
      * The list of clothes the avatar currently wears. This clothes are rendered one by one when its requested.
      */
-    @Nonnull
+    @NotNull
     private final Map<AvatarClothGroup, AvatarCloth> currentClothes;
     /**
      * The direction if the parent that defines the order that is used to render the parts of the clothes.
      */
-    @Nonnull
+    @NotNull
     private final Direction direction;
     /**
      * The amount of frames the parent animation stores.
@@ -183,7 +183,7 @@ final class AvatarClothRenderer {
     /**
      * This is the lock used to ensure the proper access on the cloth objects.
      */
-    @Nonnull
+    @NotNull
     private final ReadWriteLock clothLock;
     /**
      * The current x coordinate of the avatar on the screen.
@@ -214,7 +214,7 @@ final class AvatarClothRenderer {
      * @param dir the direction this character is looking at.
      * @param frames the amount of frames the parent avatar animation contains
      */
-    AvatarClothRenderer(@Nonnull Direction dir, int frames) {
+    AvatarClothRenderer(@NotNull Direction dir, int frames) {
         clothLock = new ReentrantReadWriteLock();
         scale = 1.f;
         currentClothes = new EnumMap<>(AvatarClothGroup.class);
@@ -274,7 +274,7 @@ final class AvatarClothRenderer {
      *
      * @param light the light object that is send to all currently set clothes
      */
-    public void setLight(@Nonnull Color light) {
+    public void setLight(@NotNull Color light) {
         currentLight = light;
         clothLock.readLock().lock();
         try {
@@ -305,7 +305,7 @@ final class AvatarClothRenderer {
      * @param group the group that shall be changed
      * @param color the new color that shall be used as base color, {@code null} to get the default color
      */
-    void changeBaseColor(@Nonnull AvatarClothGroup group, @Nullable Color color) {
+    void changeBaseColor(@NotNull AvatarClothGroup group, @Nullable Color color) {
         clothLock.readLock().lock();
         try {
             AvatarCloth cloth = currentClothes.get(group);
@@ -320,7 +320,7 @@ final class AvatarClothRenderer {
     /**
      * Render all clothes in the correct order.
      */
-    void render(@Nonnull Graphics g) {
+    void render(@NotNull Graphics g) {
         clothLock.readLock().lock();
         try {
             List<AvatarClothGroup> renderOrder = RENDER_DIR.get(direction);
@@ -354,7 +354,7 @@ final class AvatarClothRenderer {
      * @param group the group the item is a part of. So the location its shown at
      * @param item the item that shall be shown itself or {@code null} to remove the item
      */
-    void setCloth(@Nonnull AvatarClothGroup group, @Nullable AvatarCloth item) {
+    void setCloth(@NotNull AvatarClothGroup group, @Nullable AvatarCloth item) {
         clothLock.writeLock().lock();
         try {
             AvatarCloth oldItem = currentClothes.get(group);
@@ -391,7 +391,7 @@ final class AvatarClothRenderer {
      *
      * @param coordinate the display coordinate of the parent avatar
      */
-    void setScreenPos(@Nonnull DisplayCoordinate coordinate) {
+    void setScreenPos(@NotNull DisplayCoordinate coordinate) {
         avatarPos = coordinate;
         clothLock.readLock().lock();
         try {

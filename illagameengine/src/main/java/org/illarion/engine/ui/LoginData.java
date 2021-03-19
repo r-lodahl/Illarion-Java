@@ -1,6 +1,7 @@
 package org.illarion.engine.ui;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 public class LoginData {
     public final int serverId;
@@ -9,7 +10,7 @@ public class LoginData {
     public final String password;
     public final boolean savePassword;
 
-    public LoginData(int serverId, @Nonnull String server, @Nonnull String username, @Nonnull String password, boolean savePassword) {
+    public LoginData(int serverId, @NotNull String server, @NotNull String username, @NotNull String password, boolean savePassword) {
         this.serverId = serverId;
         this.server = server;
         this.username = username;

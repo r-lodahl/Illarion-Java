@@ -20,8 +20,8 @@ import illarion.common.util.TableLoaderMapGroups;
 import illarion.common.util.TableLoaderSink;
 import illarion.mapedit.Lang;
 import illarion.mapedit.resource.Resource;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
@@ -32,7 +32,7 @@ public class ItemGroupLoader implements TableLoaderSink<TableLoaderMapGroups>, R
     private final boolean isGerman = Lang.getInstance().isGerman();
     private final TIntObjectHashMap<String> groups = new TIntObjectHashMap<>();
 
-    @Nonnull
+    @NotNull
     public static ItemGroupLoader getInstance() {
         return INSTANCE;
     }
@@ -42,14 +42,14 @@ public class ItemGroupLoader implements TableLoaderSink<TableLoaderMapGroups>, R
         new TableLoaderMapGroups(this);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Item Groups";
     }
 
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderMapGroups loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderMapGroups loader) {
         if (isGerman) {
             groups.put(loader.getId(), loader.getNameGerman());
         } else {

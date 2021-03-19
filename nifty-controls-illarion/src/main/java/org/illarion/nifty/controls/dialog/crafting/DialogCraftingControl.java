@@ -37,9 +37,9 @@ import illarion.common.types.ItemCount;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.illarion.nifty.controls.*;
 import org.illarion.nifty.effects.DoubleEffect;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.security.InvalidParameterException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -92,7 +92,7 @@ public class DialogCraftingControl extends WindowControl
     private final class SelectCraftItemEventSubscriber
             implements EventTopicSubscriber<TreeItemSelectionChangedEvent<ListEntry>> {
         @Override
-        public void onEvent(String topic, @Nonnull TreeItemSelectionChangedEvent<ListEntry> data) {
+        public void onEvent(String topic, @NotNull TreeItemSelectionChangedEvent<ListEntry> data) {
             List<TreeItem<ListEntry>> selection = data.getSelection();
             if (selection.isEmpty()) {
                 return;
@@ -122,7 +122,7 @@ public class DialogCraftingControl extends WindowControl
 
     private final class MouseOverIngredientItemEventSubscriber implements EventTopicSubscriber<NiftyMouseMovedEvent> {
         @Override
-        public void onEvent(@Nonnull String topic, NiftyMouseMovedEvent data) {
+        public void onEvent(@NotNull String topic, NiftyMouseMovedEvent data) {
             CraftingItemEntry selectedItem = getSelectedCraftingItem();
             if (selectedItem == null) {
                 return;
@@ -180,21 +180,21 @@ public class DialogCraftingControl extends WindowControl
      */
     private TreeItem<ListEntry> treeRootNode;
 
-    @Nonnull
+    @NotNull
     private final CraftButtonClickedEventSubscriber craftButtonEventHandler;
-    @Nonnull
+    @NotNull
     private final CloseButtonClickedEventSubscriber closeButtonEventHandler;
-    @Nonnull
+    @NotNull
     private final SelectCraftItemEventSubscriber listSelectionChangedEventHandler;
-    @Nonnull
+    @NotNull
     private final MouseOverItemEventSubscriber mouseOverItemEventHandler;
-    @Nonnull
+    @NotNull
     private final MouseOverIngredientItemEventSubscriber mouseOverIngredientEventHandler;
-    @Nonnull
+    @NotNull
     private final IncreaseAmountButtonEventSubscriber increaseAmountButtonEventHandler;
-    @Nonnull
+    @NotNull
     private final DecreaseAmountButtonEventSubscriber decreaseAmountButtonEventHandler;
-    @Nonnull
+    @NotNull
     private final DecimalFormat timeFormat;
 
     public DialogCraftingControl() {
@@ -212,10 +212,10 @@ public class DialogCraftingControl extends WindowControl
 
     @Override
     public void bind(
-            @Nonnull Nifty nifty,
-            @Nonnull Screen screen,
-            @Nonnull Element element,
-            @Nonnull Parameters parameter) {
+            @NotNull Nifty nifty,
+            @NotNull Screen screen,
+            @NotNull Element element,
+            @NotNull Parameters parameter) {
         super.bind(nifty, screen, element, parameter);
         niftyInstance = nifty;
         currentScreen = screen;
@@ -245,10 +245,10 @@ public class DialogCraftingControl extends WindowControl
         });
 
         getAmountTextField().setFormat(new TextFieldDisplayFormat() {
-            @Nonnull
+            @NotNull
             @Override
             public CharSequence getDisplaySequence(
-                    @Nonnull CharSequence original,
+                    @NotNull CharSequence original,
                     int start,
                     int end) {
                 CharSequence usedText = original;
@@ -273,8 +273,8 @@ public class DialogCraftingControl extends WindowControl
         int x = (parent.getWidth() - element.getWidth()) / 2;
         int y = (parent.getHeight() - element.getHeight()) / 2;
 
-        element.setConstraintX(new SizeValue(Integer.toString(x) + "px"));
-        element.setConstraintY(new SizeValue(Integer.toString(y) + "px"));
+        element.setConstraintX(new SizeValue(x + "px"));
+        element.setConstraintY(new SizeValue(y + "px"));
 
         parent.layoutElements();
 
@@ -363,17 +363,17 @@ public class DialogCraftingControl extends WindowControl
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Element getCraftingItemDisplay() {
         return getElement().findElementById("#selectedItemInfos");
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Element getIngredientItemDisplay(int index) {
         Element ingredientsPanel = getElement().findElementById("#ingredients");
-        return ingredientsPanel.findElementById("#ingredient" + Integer.toString(index));
+        return ingredientsPanel.findElementById("#ingredient" + index);
     }
 
     /**
@@ -408,13 +408,13 @@ public class DialogCraftingControl extends WindowControl
         }
 
         @Override
-        @Nonnull
+        @NotNull
         public String toString() {
             return entry.getTreeLabel();
         }
     }
 
-    private static void applyImage(@Nonnull Element element, @Nonnull NiftyImage image, int maxSize) {
+    private static void applyImage(@NotNull Element element, @NotNull NiftyImage image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
         if (width > maxSize) {
@@ -532,7 +532,7 @@ public class DialogCraftingControl extends WindowControl
         getElement().getParent().layoutElements();
     }
 
-    private boolean deleteIngredientPanel(@Nonnull Element ingredientsPanel, int index) {
+    private boolean deleteIngredientPanel(@NotNull Element ingredientsPanel, int index) {
         List<Element> elements = ingredientsPanel.getChildren();
         if ((elements.size() - 1) >= index) {
             niftyInstance.removeElement(currentScreen, elements.get(index));
@@ -541,8 +541,8 @@ public class DialogCraftingControl extends WindowControl
         return false;
     }
 
-    @Nonnull
-    private Element getIngredientPanel(@Nonnull Element ingredientsPanel, int index) {
+    @NotNull
+    private Element getIngredientPanel(@NotNull Element ingredientsPanel, int index) {
         List<Element> elements = ingredientsPanel.getChildren();
         if ((elements.size() - 1) >= index) {
             return elements.get(index);
@@ -557,8 +557,8 @@ public class DialogCraftingControl extends WindowControl
         return builder.build(niftyInstance, currentScreen, ingredientsPanel);
     }
 
-    private boolean deleteIngredientImage(@Nonnull Element ingredientsPanel, int index) {
-        Element image = ingredientsPanel.findElementById("#ingredient" + Integer.toString(index));
+    private boolean deleteIngredientImage(@NotNull Element ingredientsPanel, int index) {
+        Element image = ingredientsPanel.findElementById("#ingredient" + index);
         if (image == null) {
             return false;
         }
@@ -567,8 +567,8 @@ public class DialogCraftingControl extends WindowControl
         return true;
     }
 
-    @Nonnull
-    private Element getIngredientImage(String parentId, @Nonnull Element parentPanel, int index) {
+    @NotNull
+    private Element getIngredientImage(String parentId, @NotNull Element parentPanel, int index) {
         List<Element> elements = parentPanel.getChildren();
         if ((elements.size() - 1) >= index) {
             return elements.get(index);
@@ -577,7 +577,7 @@ public class DialogCraftingControl extends WindowControl
             throw new InvalidParameterException("Index out of valid range");
         }
 
-        PanelBuilder panelBuilder = new PanelBuilder(parentId + "#ingredient" + Integer.toString(index));
+        PanelBuilder panelBuilder = new PanelBuilder(parentId + "#ingredient" + index);
         panelBuilder.margin("1px");
         panelBuilder.childLayoutCenter();
         panelBuilder.width(SizeValue.px(INGREDIENT_IMAGE_SIZE + 8).toString());
@@ -594,12 +594,12 @@ public class DialogCraftingControl extends WindowControl
     }
 
     @Override
-    public boolean inputEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean inputEvent(@NotNull NiftyInputEvent inputEvent) {
         super.inputEvent(inputEvent);
         return true;
     }
 
-    private void showIngredientAmount(@Nonnull Element ingredientElement, @Nonnull ItemCount count) {
+    private void showIngredientAmount(@NotNull Element ingredientElement, @NotNull ItemCount count) {
         List<Element> elements = ingredientElement.getChildren();
         if ((elements.size() > 2) || (elements.size() < 1)) {
             throw new InvalidParameterException("Something is wrong, parent element appears to be wrong.");
@@ -629,19 +629,19 @@ public class DialogCraftingControl extends WindowControl
         }
     }
 
-    @Nonnull
+    @NotNull
     @SuppressWarnings("unchecked")
     private TreeBox<ListEntry> getItemList() {
         return getContent().findNiftyControl("#craftItemList", TreeBox.class);
     }
 
     @Override
-    public void addCraftingItems(@Nonnull CraftingCategoryEntry... entries) {
+    public void addCraftingItems(@NotNull CraftingCategoryEntry... entries) {
         addCraftingItems(Arrays.asList(entries));
     }
 
     @Override
-    public <T extends CraftingCategoryEntry> void addCraftingItems(@Nonnull Collection<T> entries) {
+    public <T extends CraftingCategoryEntry> void addCraftingItems(@NotNull Collection<T> entries) {
         TreeBox<ListEntry> list = getItemList();
 
         for (T entry : entries) {

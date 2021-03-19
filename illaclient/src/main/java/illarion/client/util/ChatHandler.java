@@ -19,13 +19,12 @@ import illarion.client.gui.ChatGui;
 import illarion.client.world.Char;
 import illarion.client.world.World;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.RegEx;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +36,7 @@ import java.util.regex.Pattern;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class ChatHandler {
+
     /**
      * The possible speech modes that are displays on the screen.
      */
@@ -92,7 +92,7 @@ public final class ChatHandler {
          */
         SpeechMode(
                 Color modeColor,
-                @Nullable @RegEx String findRegexp,
+                @Nullable String findRegexp,
                 @Nullable String replace) {
             color = modeColor;
             if (findRegexp == null) {
@@ -139,7 +139,7 @@ public final class ChatHandler {
     /**
      * The logger that takes care of the logging output of the Chat handler.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Handle a message by this processor. This method stores a message in the
@@ -149,7 +149,7 @@ public final class ChatHandler {
      * @param location the location where the text was spoken
      */
     public void handleMessage(
-            @Nonnull String text, @Nonnull ServerCoordinate location, @Nonnull SpeechMode receivedMode) {
+            @NotNull String text, @NotNull ServerCoordinate location, @NotNull SpeechMode receivedMode) {
         Char talkingChar = World.getPeople().getCharacterAt(location);
 
         SpeechMode mode;
@@ -196,7 +196,7 @@ public final class ChatHandler {
             textBuilder.append(resultText);
 
             String emoteText = textBuilder.toString();
-            World.getPlayer().getChatLog().logText(emoteText);
+            LOGGER.info(emoteText);
             World.getGameGui().getChatGui().addChatMessage(emoteText, ChatGui.COLOR_EMOTE);
             World.getGameGui().getChatGui().showChatBubble(talkingChar, emoteText, ChatGui.COLOR_EMOTE);
         } else {
@@ -251,7 +251,7 @@ public final class ChatHandler {
             }
 
             String talkText = textBuilder.toString();
-            World.getPlayer().getChatLog().logText(talkText);
+            LOGGER.info(talkText);
             World.getGameGui().getChatGui().addChatMessage(talkText, color);
             World.getGameGui().getChatGui().showChatBubble(talkingChar, bubbleText, color);
         }

@@ -15,7 +15,8 @@
  */
 package illarion.client.world.movement;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The generic shared implementation for the movement handlers.
@@ -23,10 +24,10 @@ import javax.annotation.Nonnull;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 abstract class AbstractMovementHandler implements MovementHandler {
-    @Nonnull
+    @NotNull
     private final Movement movement;
 
-    protected AbstractMovementHandler(@Nonnull Movement movement) {
+    protected AbstractMovementHandler(@NotNull Movement movement) {
         this.movement = movement;
     }
 
@@ -45,7 +46,7 @@ abstract class AbstractMovementHandler implements MovementHandler {
         movement.disengage(this);
     }
 
-    @Nonnull
+    @NotNull
     public Movement getMovement() {
         return movement;
     }

@@ -27,9 +27,9 @@ import illarion.client.world.events.ServerNotFoundEvent;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Fredrik K
@@ -50,7 +50,7 @@ public class DisconnectHandler implements ScreenController, UpdatableHandler, Ev
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         parentNifty = nifty;
         parentScreen = screen;
         popup = nifty.createPopup("noServerFound");
@@ -102,7 +102,7 @@ public class DisconnectHandler implements ScreenController, UpdatableHandler, Ev
     }
 
     @EventSubscriber
-    public void onConnectionLostEventReceived(@Nonnull ConnectionLostEvent event) {
+    public void onConnectionLostEventReceived(@NotNull ConnectionLostEvent event) {
         if (isActive || (popup == null)) {
             return;
         }
@@ -120,7 +120,7 @@ public class DisconnectHandler implements ScreenController, UpdatableHandler, Ev
     }
 
     @Override
-    public void onEvent(@Nonnull String topic, @Nonnull ButtonClickedEvent data) {
+    public void onEvent(@NotNull String topic, @NotNull ButtonClickedEvent data) {
         popup.hide();
         IllaClient.returnToLogin(null);
     }

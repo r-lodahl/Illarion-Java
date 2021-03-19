@@ -16,8 +16,8 @@
 package illarion.common.util;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -42,13 +42,13 @@ public final class Bresenham {
     /**
      * The list of x-coordinates that were calculated due the last line calculation.
      */
-    @Nonnull
+    @NotNull
     private final int[] x = new int[MAX_LINE_LENGTH];
 
     /**
      * The list of y-coordinates that were calculated due the last line calculation.
      */
-    @Nonnull
+    @NotNull
     private final int[] y = new int[MAX_LINE_LENGTH];
 
     /**
@@ -152,7 +152,7 @@ public final class Bresenham {
      *
      * @return the list of x coordinates
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public int[] getX() {
         return Arrays.copyOf(x, length);
@@ -163,13 +163,13 @@ public final class Bresenham {
      *
      * @return the list of y coordinates
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public int[] getY() {
         return Arrays.copyOf(y, length);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

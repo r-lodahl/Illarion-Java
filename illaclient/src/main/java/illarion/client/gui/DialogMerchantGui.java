@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.client.world.items.MerchantItem;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -34,7 +34,7 @@ public interface DialogMerchantGui {
      * @param itemIndex the referenced index of the item
      * @param tooltip the tooltip
      */
-    void showMerchantListTooltip(int dialogId, int list, int itemIndex, @Nonnull Tooltip tooltip);
+    void showMerchantListTooltip(int dialogId, int list, int itemIndex, @NotNull Tooltip tooltip);
 
     /**
      * Show a merchant dialog.
@@ -43,5 +43,5 @@ public interface DialogMerchantGui {
      * @param title    the title of the dialog
      * @param items    the items shown in the dialog
      */
-    void showMerchantDialog(int dialogId, @Nonnull String title, @Nonnull Collection<MerchantItem> items);
+    void showMerchantDialog(int dialogId, @NotNull String title, @NotNull Collection<MerchantItem> items);
 }

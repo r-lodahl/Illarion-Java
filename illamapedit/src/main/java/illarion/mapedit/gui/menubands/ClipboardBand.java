@@ -24,6 +24,7 @@ import illarion.mapedit.gui.MainFrame;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
@@ -32,7 +33,6 @@ import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Hig
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies.Mirror;
 import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
-import javax.annotation.Nonnull;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class ClipboardBand extends JRibbonBand {
 
-    @Nonnull
+    @NotNull
     final JCommandToggleButton paste;
 
     public ClipboardBand() {
@@ -76,7 +76,7 @@ public class ClipboardBand extends JRibbonBand {
     }
 
     @EventSubscriber
-    public void onDidPaste(@Nonnull DidPasteEvent e) {
+    public void onDidPaste(@NotNull DidPasteEvent e) {
         paste.getActionModel().setSelected(false);
     }
 }

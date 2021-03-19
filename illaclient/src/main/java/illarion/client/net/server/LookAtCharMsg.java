@@ -15,20 +15,17 @@
  */
 package illarion.client.net.server;
 
-import de.lessvoid.nifty.Nifty;
-import illarion.client.gui.ChatGui;
-import illarion.client.gui.controller.game.DialogHandler;
 import illarion.client.net.CommandList;
 import illarion.client.net.annotations.ReplyMessage;
 import illarion.client.world.World;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.CharacterId;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -41,8 +38,8 @@ import java.io.IOException;
  */
 @ReplyMessage(replyId = CommandList.MSG_LOOKAT_CHAR)
 public final class LookAtCharMsg implements ServerReply {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LookAtCharMsg.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The ID of the character the look at text is related to.
@@ -56,12 +53,12 @@ public final class LookAtCharMsg implements ServerReply {
     private String text;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         charId = new CharacterId(reader);
         text = reader.readString();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         log.warn("Executing a look at char message for {} with the text {}", charId, text);
@@ -77,7 +74,7 @@ public final class LookAtCharMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

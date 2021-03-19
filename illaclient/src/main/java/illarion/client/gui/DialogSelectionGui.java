@@ -16,8 +16,8 @@
 package illarion.client.gui;
 
 import illarion.client.world.items.SelectionItem;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -34,6 +34,6 @@ public interface DialogSelectionGui {
      * @param content  the description text displayed in the dialog
      * @param items    the entries that are supposed to be displayed
      */
-    void showSelectionDialog(int dialogId, @Nonnull String title, @Nonnull String content,
-                             @Nonnull Collection<SelectionItem> items);
+    void showSelectionDialog(int dialogId, @NotNull String title, @NotNull String content,
+                             @NotNull Collection<SelectionItem> items);
 }

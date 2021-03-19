@@ -15,10 +15,10 @@
  */
 package illarion.download.launcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This small utility class is used to detect the operating system and the architecture of the current system and
@@ -80,7 +80,7 @@ public final class OSDetection {
     /**
      * The logger instance that takes care for the logger output of this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OSDetection.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The private constructor that generates the required values.
@@ -117,7 +117,7 @@ public final class OSDetection {
      *
      * @return the string identifier of the architecture
      */
-    @Nonnull
+    @NotNull
     public static String getArchValue() {
         switch (INSTANCE.arch) {
             case BIT32:
@@ -134,7 +134,7 @@ public final class OSDetection {
      *
      * @return the OS identifier of the operating system
      */
-    @Nonnull
+    @NotNull
     public static String getOsValue() {
         switch (INSTANCE.os) {
             case WINDOWS:

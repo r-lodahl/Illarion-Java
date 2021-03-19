@@ -16,11 +16,11 @@
 package illarion.client.world;
 
 import illarion.client.graphics.AnimationUtility;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Color;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 /**
@@ -97,7 +97,7 @@ public final class Weather {
     /**
      * The instance of the logger that is used to write out the data.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Weather.class);
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * General value for no effect in the used environment.
      */
@@ -187,19 +187,19 @@ public final class Weather {
     /**
      * Color of the ambient light.
      */
-    @Nonnull
+    @NotNull
     private final Color ambientLight;
 
     /**
      * The color the ambient light is approaching.
      */
-    @Nonnull
+    @NotNull
     private final Color ambientTargetColor;
     /**
      * The random value generator used by this class.
      */
     private final Random rnd = new Random();
-    @Nonnull
+    @NotNull
     private final AmbientLight ambientLightCalculation;
     /**
      * The current state of the clouds at the sky. Values between 0 for no
@@ -335,7 +335,7 @@ public final class Weather {
      *
      * @return the current ambient light
      */
-    @Nonnull
+    @NotNull
     public Color getAmbientLight() {
         return ambientLight;
     }

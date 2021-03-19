@@ -1,7 +1,8 @@
 package org.illarion.engine.ui;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 public interface NullSecureResourceBundle {
-    @Nonnull String getLocalizedString(String key);
+    @NotNull String getLocalizedString(String key);
 }

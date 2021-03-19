@@ -18,11 +18,11 @@ package illarion.client.util.pathfinding;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -36,13 +36,13 @@ public class MeasureWrapper implements PathFindingAlgorithm {
     /**
      * The logger utilized by this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MeasureWrapper.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The wrapped algorithm.
      */
-    @Nonnull
+    @NotNull
     private final PathFindingAlgorithm wrappedAlgorithm;
 
     /**
@@ -50,19 +50,19 @@ public class MeasureWrapper implements PathFindingAlgorithm {
      *
      * @param wrappedAlgorithm the wrapped algorithm
      */
-    public MeasureWrapper(@Nonnull PathFindingAlgorithm wrappedAlgorithm) {
+    public MeasureWrapper(@NotNull PathFindingAlgorithm wrappedAlgorithm) {
         this.wrappedAlgorithm = wrappedAlgorithm;
     }
 
     @Nullable
     @Override
     public Path findPath(
-            @Nonnull MoveCostProvider costProvider,
-            @Nonnull ServerCoordinate start,
-            @Nonnull ServerCoordinate end,
-            int approachDistance, @Nonnull Collection<Direction> allowedDirections,
-            @Nonnull CharMovementMode movementMethod,
-            @Nonnull CharMovementMode... movementMethods) {
+            @NotNull MoveCostProvider costProvider,
+            @NotNull ServerCoordinate start,
+            @NotNull ServerCoordinate end,
+            int approachDistance, @NotNull Collection<Direction> allowedDirections,
+            @NotNull CharMovementMode movementMethod,
+            @NotNull CharMovementMode... movementMethods) {
         long startTime = System.currentTimeMillis();
         Path path = wrappedAlgorithm
                 .findPath(costProvider, start, end, approachDistance, allowedDirections, movementMethod, movementMethods);

@@ -16,9 +16,9 @@
 package illarion.client.world.movement;
 
 import illarion.common.types.ServerCoordinate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The purpose of this movement handler is in general to approach a specified target location.
@@ -32,7 +32,7 @@ public interface TargetMovementHandler extends MovementHandler {
      * @param target the target location
      * @param distance the distance to the location that is sufficient for the approach
      */
-    void walkTo(@Nonnull ServerCoordinate target, int distance);
+    void walkTo(@NotNull ServerCoordinate target, int distance);
 
     /**
      * Set the action that is executed once the target of the path is reached.

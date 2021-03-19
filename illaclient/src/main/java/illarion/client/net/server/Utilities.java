@@ -16,8 +16,8 @@
 package illarion.client.net.server;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -29,17 +29,17 @@ final class Utilities {
     private Utilities() {
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    static <T extends ServerReply> String toString(@Nonnull Class<T> baseClass) {
+    static <T extends ServerReply> String toString(@NotNull Class<T> baseClass) {
         return baseClass.getSimpleName();
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     @SuppressWarnings("OverloadedVarargsMethod")
-    static <T extends ServerReply> String toString(@Nonnull Class<T> baseClass,
-                                                   @Nonnull Object... dataValues) {
+    static <T extends ServerReply> String toString(@NotNull Class<T> baseClass,
+                                                   @NotNull Object... dataValues) {
         return toString(baseClass) + Arrays.toString(dataValues);
     }
 }

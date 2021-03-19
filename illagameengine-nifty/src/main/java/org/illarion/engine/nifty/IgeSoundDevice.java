@@ -22,9 +22,9 @@ import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
 import org.illarion.engine.Engine;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the sound device for the Nifty-GUI that uses the Illarion Game Engine to play background music and sound
@@ -36,7 +36,7 @@ public class IgeSoundDevice implements SoundDevice {
     /**
      * The sounds playback engine.
      */
-    @Nonnull
+    @NotNull
     private final Engine engine;
 
     /**
@@ -44,18 +44,18 @@ public class IgeSoundDevice implements SoundDevice {
      *
      * @param engine the engine that is used by this device
      */
-    public IgeSoundDevice(@Nonnull Engine engine) {
+    public IgeSoundDevice(@NotNull Engine engine) {
         this.engine = engine;
     }
 
     @Override
-    public void setResourceLoader(@Nonnull NiftyResourceLoader niftyResourceLoader) {
+    public void setResourceLoader(@NotNull NiftyResourceLoader niftyResourceLoader) {
         // nothing
     }
 
     @Nullable
     @Override
-    public SoundHandle loadSound(@Nonnull SoundSystem soundSystem, @Nonnull String filename) {
+    public SoundHandle loadSound(@NotNull SoundSystem soundSystem, @NotNull String filename) {
         Sound sound = engine.getAssets().getSoundsManager().getSound(filename);
         if (sound == null) {
             return null;
@@ -65,7 +65,7 @@ public class IgeSoundDevice implements SoundDevice {
 
     @Nullable
     @Override
-    public SoundHandle loadMusic(@Nonnull SoundSystem soundSystem, @Nonnull String filename) {
+    public SoundHandle loadMusic(@NotNull SoundSystem soundSystem, @NotNull String filename) {
         Music music = engine.getAssets().getSoundsManager().getMusic(filename);
         if (music == null) {
             return null;

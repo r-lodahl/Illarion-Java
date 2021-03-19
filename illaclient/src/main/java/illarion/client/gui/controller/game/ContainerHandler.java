@@ -48,6 +48,8 @@ import illarion.client.world.items.MerchantList;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.graphic.Font;
 import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
@@ -57,11 +59,9 @@ import org.illarion.nifty.controls.InventorySlot.MerchantBuyLevel;
 import org.illarion.nifty.controls.ItemContainerCloseEvent;
 import org.illarion.nifty.controls.itemcontainer.builder.ItemContainerBuilder;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -76,45 +76,45 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
     /**
      * The pattern to fetch the ID of a slot name.
      */
-    @Nonnull
+    @NotNull
     private static final Pattern slotPattern = Pattern.compile("slot([0-9]+)");
     /**
      * The pattern to fetch the ID of a container name.
      */
-    @Nonnull
+    @NotNull
     private static final Pattern containerPattern = Pattern.compile("container([0-9]+)");
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(ContainerHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * The select popup handler that is used to receive money input from the user.
      */
-    @Nonnull
+    @NotNull
     private final NumberSelectPopupHandler numberSelect;
     /**
      * The tooltip handler that is used to show the tooltips of this container.
      */
-    @Nonnull
+    @NotNull
     private final TooltipHandler tooltipHandler;
     /**
      * The list of item containers that are currently displayed.
      */
-    @Nonnull
+    @NotNull
     private final Map<Integer, org.illarion.nifty.controls.ItemContainer> itemContainerMap;
     /**
      * Creating new item containers in a extremely expensive operation. It is in all cases better to reuse existing
      * instances of the containers if possible.
      */
-    @Nonnull
+    @NotNull
     private final Collection<org.illarion.nifty.controls.ItemContainer> itemContainerCache;
     /**
      * The task that is executed to update the merchant overlays.
      */
-    @Nonnull
+    @NotNull
     private final UpdateTask updateMerchantOverlays = (delta) -> updateAllMerchantOverlays();
     /**
      * The input system that is used to query the state of the keyboard.
      */
-    @Nonnull
+    @NotNull
     private final Input input;
     /**
      * The Nifty-GUI instance that is handling the GUI display currently.
@@ -134,8 +134,8 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param numberSelectPopupHandler the number select handler
      * @param tooltip the tooltip handler
      */
-    public ContainerHandler(@Nonnull Input input, @Nonnull NumberSelectPopupHandler numberSelectPopupHandler,
-                            @Nonnull TooltipHandler tooltip) {
+    public ContainerHandler(@NotNull Input input, @NotNull NumberSelectPopupHandler numberSelectPopupHandler,
+                            @NotNull TooltipHandler tooltip) {
         itemContainerMap = new HashMap<>();
         itemContainerCache = new ArrayList<>();
         numberSelect = numberSelectPopupHandler;
@@ -149,7 +149,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param key the key of the element
      * @return the extracted ID
      */
-    private static int getSlotId(@Nonnull CharSequence key) {
+    private static int getSlotId(@NotNull CharSequence key) {
         Matcher matcher = slotPattern.matcher(key);
         if (!matcher.find()) {
             return -1;
@@ -162,8 +162,8 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         return Integer.parseInt(matcher.group(1));
     }
 
-    @Nonnull
-    private static SizeValue getSizeValueFromConfig(@Nonnull String key) {
+    @NotNull
+    private static SizeValue getSizeValueFromConfig(@NotNull String key) {
         String configEntry = IllaClient.getConfig().getString(key);
         if (configEntry == null) {
             return SizeValue.def();
@@ -183,7 +183,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private static String getPrefix(int containerId) {
         String prefix = "bag";
@@ -195,8 +195,8 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         return prefix;
     }
 
-    @Nonnull
-    private static String buildTitle(@Nonnull ItemContainer container) {
+    @NotNull
+    private static String buildTitle(@NotNull ItemContainer container) {
         String title = container.getTitle();
 
         String description = container.getDescription();
@@ -216,10 +216,10 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private static String getShortenedDescription(
-            @Nonnull String description, @Nonnull String expansion, @Nonnull Font usedFont, int maxWidth) {
+            @NotNull String description, @NotNull String expansion, @NotNull Font usedFont, int maxWidth) {
         if (maxWidth <= 0) {
             return "";
         }
@@ -246,7 +246,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param data the event data
      */
     @NiftyEventSubscriber(pattern = ".*container[0-9]+.*")
-    public void onItemContainerClose(@Nonnull String topic, @Nonnull ItemContainerCloseEvent data) {
+    public void onItemContainerClose(@NotNull String topic, @NotNull ItemContainerCloseEvent data) {
         int containerId = getContainerId(topic);
         World.getPlayer().removeContainer(containerId);
         if (isContainerCreated(containerId)) {
@@ -297,7 +297,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param data the event data
      */
     @NiftyEventSubscriber(pattern = ".*container[0-9]+.*slot[0-9]+.*")
-    public void onDoubleClickInContainer(@Nonnull String topic, @Nonnull NiftyMousePrimaryMultiClickedEvent data) {
+    public void onDoubleClickInContainer(@NotNull String topic, @NotNull NiftyMousePrimaryMultiClickedEvent data) {
         int slotId = getSlotId(topic);
         int containerId = getContainerId(topic);
 
@@ -331,7 +331,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param key the key of the element
      * @return the extracted ID
      */
-    private int getContainerId(@Nonnull CharSequence key) {
+    private int getContainerId(@NotNull CharSequence key) {
         Matcher matcher = containerPattern.matcher(key);
         if (!matcher.find()) {
             return -1;
@@ -364,7 +364,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param data the event data
      */
     @NiftyEventSubscriber(pattern = ".*container[0-9]+.*slot[0-9]+.*")
-    public void dragFrom(@Nonnull String topic, @Nonnull DraggableDragStartedEvent data) {
+    public void dragFrom(@NotNull String topic, @NotNull DraggableDragStartedEvent data) {
         int slotId = getSlotId(topic);
         int containerId = getContainerId(topic);
 
@@ -385,7 +385,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param data the event data
      */
     @NiftyEventSubscriber(pattern = ".*container[0-9]+.*slot[0-9]+.*")
-    public void dropIn(@Nonnull String topic, @Nonnull DroppableDroppedEvent data) {
+    public void dropIn(@NotNull String topic, @NotNull DroppableDroppedEvent data) {
         int slotId = getSlotId(topic);
         int containerId = getContainerId(topic);
 
@@ -423,7 +423,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
     }
 
     @NiftyEventSubscriber(pattern = ".*container[0-9]+.*slot[0-9]+.*")
-    public void onMouseMoveOverSlot(String topic, @Nonnull NiftyMouseMovedEvent event) {
+    public void onMouseMoveOverSlot(String topic, @NotNull NiftyMouseMovedEvent event) {
         int slotId = getSlotId(topic);
         int containerId = getContainerId(topic);
 
@@ -446,7 +446,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         activeNifty = nifty;
         activeScreen = screen;
 
@@ -501,12 +501,12 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
     }
 
     @Override
-    public void showContainer(@Nonnull ItemContainer container) {
+    public void showContainer(@NotNull ItemContainer container) {
         World.getUpdateTaskManager().addTask(new UpdateContainerTask(container));
     }
 
     @Override
-    public void showTooltip(int containerId, int slotId, @Nonnull Tooltip tooltip) {
+    public void showTooltip(int containerId, int slotId, @NotNull Tooltip tooltip) {
         @Nullable org.illarion.nifty.controls.ItemContainer container = itemContainerMap.get(containerId);
         if (container == null) {
             return;
@@ -532,7 +532,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      *
      * @param itemContainer the item container the GUI is supposed to display
      */
-    private void createNewContainer(@Nonnull ItemContainer itemContainer) {
+    private void createNewContainer(@NotNull ItemContainer itemContainer) {
         /* First try to retrieve a existing container from the cache. */
 
         org.illarion.nifty.controls.ItemContainer conControl = null;
@@ -563,9 +563,9 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         itemContainerMap.put(itemContainer.getContainerId(), conControl);
     }
 
-    @Nonnull
+    @NotNull
     private org.illarion.nifty.controls.ItemContainer buildNewContainer(int slotCount) {
-        String containerId = "container" + Integer.toString(++lastContainerId);
+        String containerId = "container" + ++lastContainerId;
         ItemContainerBuilder builder = new ItemContainerBuilder(containerId, "NoTitle");
         builder.slots(slotCount);
         builder.slotDim(35, 35);
@@ -602,7 +602,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      * @param slot the slot to update
      * @param itemId the item ID in this slot
      */
-    private void updateMerchantOverlay(@Nonnull InventorySlot slot, @Nullable ItemId itemId) {
+    private void updateMerchantOverlay(@NotNull InventorySlot slot, @Nullable ItemId itemId) {
         if (!ItemId.isValidItem(itemId)) {
             slot.hideMerchantOverlay();
             return;
@@ -634,7 +634,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
      *
      * @param itemContainer the item container that contains the new data of the container
      */
-    private void updateContainer(@Nonnull ItemContainer itemContainer) {
+    private void updateContainer(@NotNull ItemContainer itemContainer) {
         @Nullable org.illarion.nifty.controls.ItemContainer conControl = itemContainerMap
                 .get(itemContainer.getContainerId());
         if (conControl == null) {
@@ -687,7 +687,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
         /**
          * The inventory slot that requires the reset.
          */
-        @Nonnull
+        @NotNull
         private final InventorySlot invSlot;
 
         /**
@@ -695,7 +695,7 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
          *
          * @param slot the inventory slot to reset
          */
-        EndOfDragOperation(@Nonnull InventorySlot slot) {
+        EndOfDragOperation(@NotNull InventorySlot slot) {
             invSlot = slot;
         }
 
@@ -709,10 +709,10 @@ public final class ContainerHandler implements ContainerGui, ScreenController {
     }
 
     private final class UpdateContainerTask implements UpdateTask {
-        @Nonnull
+        @NotNull
         private final ItemContainer itemContainer;
 
-        UpdateContainerTask(@Nonnull ItemContainer container) {
+        UpdateContainerTask(@NotNull ItemContainer container) {
             itemContainer = container;
         }
 

@@ -15,8 +15,9 @@
  */
 package illarion.client.util.translation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This interface is the common definition for the translation providers. It allows the common class to query the
@@ -33,7 +34,7 @@ public interface TranslationProvider {
      * @return The translated text
      */
     @Nullable
-    String getTranslation(@Nonnull String original, @Nonnull TranslationDirection direction);
+    String getTranslation(@NotNull String original, @NotNull TranslationDirection direction);
 
     /**
      * Check if the provider is working correctly.

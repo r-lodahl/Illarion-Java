@@ -18,9 +18,7 @@ package illarion.client.world;
 import illarion.client.net.client.MapDimensionCmd;
 import illarion.common.graphics.MapConstants;
 import illarion.common.util.FastMath;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is used to store and calculate the dimensions of the map. It requires the size of the screen as
@@ -28,7 +26,6 @@ import javax.annotation.concurrent.NotThreadSafe;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@NotThreadSafe
 public final class MapDimensions {
     /**
      * This is the amount of rows and columns that are requested from the server in addition to the tiles needed to
@@ -51,7 +48,7 @@ public final class MapDimensions {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final MapDimensions INSTANCE = new MapDimensions();
 
     /**
@@ -130,7 +127,7 @@ public final class MapDimensions {
      *
      * @return the singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     public static MapDimensions getInstance() {
         return INSTANCE;
     }

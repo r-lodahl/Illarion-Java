@@ -17,9 +17,9 @@ package illarion.common.config.entries;
 
 import illarion.common.config.Config;
 import illarion.common.util.FastMath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public final class SelectEntry implements ConfigEntry {
      * This is the message displayed in case the storage mode is set to a
      * illegal value.
      */
-    @Nonnull
+    @NotNull
     private static final String ERROR_STORE_TYPE = "Illegal store type chosen.";
 
     /**
@@ -59,19 +59,19 @@ public final class SelectEntry implements ConfigEntry {
     /**
      * The key in the configuration that is handled by this configuration.
      */
-    @Nonnull
+    @NotNull
     private final String configEntry;
 
     /**
      * The texts that are displayed for each entry.
      */
-    @Nonnull
+    @NotNull
     private final String[] labels;
 
     /**
      * The options that are select able by the ComboBox described with this entry.
      */
-    @Nonnull
+    @NotNull
     private final Object[] options;
 
     /**
@@ -86,7 +86,7 @@ public final class SelectEntry implements ConfigEntry {
      * @param store the method used to store the values in the configuration
      * @param option the options to be displayed in this entry
      */
-    public SelectEntry(@Nonnull String entry, int store, @Nonnull Object... option) {
+    public SelectEntry(@NotNull String entry, int store, @NotNull Object... option) {
         configEntry = entry;
         storeValue = store;
         options = Arrays.copyOf(option, option.length);
@@ -106,7 +106,7 @@ public final class SelectEntry implements ConfigEntry {
      * @param label the texts displayed for each entry
      */
     @SuppressWarnings("MethodCanBeVariableArityMethod")
-    public SelectEntry(@Nonnull String entry, int store, @Nonnull Object[] option, @Nonnull String[] label) {
+    public SelectEntry(@NotNull String entry, int store, @NotNull Object[] option, @NotNull String[] label) {
         configEntry = entry;
         storeValue = store;
         options = Arrays.copyOf(option, option.length);
@@ -143,7 +143,7 @@ public final class SelectEntry implements ConfigEntry {
      *
      * @return a array of all possible values
      */
-    @Nonnull
+    @NotNull
     public Collection<Object> getItems() {
         return Arrays.asList(options);
     }
@@ -153,7 +153,7 @@ public final class SelectEntry implements ConfigEntry {
      *
      * @return the label that is supposed to be displayed currently.
      */
-    @Nonnull
+    @NotNull
     public String getLabel() {
         if (cfg == null) {
             throw new IllegalStateException("The reference to the config system was not set.");
@@ -179,7 +179,7 @@ public final class SelectEntry implements ConfigEntry {
      *
      * @return a array of all possible values
      */
-    @Nonnull
+    @NotNull
     public Collection<String> getLabels() {
         return Arrays.asList(labels);
     }
@@ -189,7 +189,7 @@ public final class SelectEntry implements ConfigEntry {
      *
      * @return the configuration stored for this check entry
      */
-    @Nonnull
+    @NotNull
     public Object getValue() {
         if (cfg == null) {
             throw new IllegalStateException("The reference to the config system was not set.");
@@ -217,7 +217,7 @@ public final class SelectEntry implements ConfigEntry {
      * configuration entry
      */
     @Override
-    public void setConfig(@Nonnull Config config) {
+    public void setConfig(@NotNull Config config) {
         cfg = config;
     }
 
@@ -247,7 +247,7 @@ public final class SelectEntry implements ConfigEntry {
      *
      * @param newValue the new configuration value
      */
-    public void setValue(@Nonnull Object newValue) {
+    public void setValue(@NotNull Object newValue) {
         if (cfg == null) {
             throw new IllegalStateException("The reference to the config system was not set.");
         }

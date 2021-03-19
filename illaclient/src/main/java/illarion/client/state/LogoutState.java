@@ -17,10 +17,10 @@ package illarion.client.state;
 
 import illarion.client.IllaClient;
 import illarion.client.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This state is activated during the shutdown of the game.
@@ -29,8 +29,8 @@ public final class LogoutState implements GameState {
     /**
      * The logger that is used for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LogoutState.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     private int logoutDelay;
 

@@ -30,15 +30,15 @@ import illarion.common.types.CharacterId;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
 import illarion.common.util.FastMath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.illarion.engine.input.Input;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,11 +49,11 @@ import java.util.concurrent.Executors;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class Movement {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Movement.class);
-    @Nonnull
-    private static final Marker marker = MarkerFactory.getMarker("Movement");
-    @Nonnull
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
+    @NotNull
+    private static final Marker marker = MarkerManager.getMarker("Movement");
+    @NotNull
     private static final String THEAD_NAME_HEADER = "Movement Thread-";
     private static final int MAX_WALK_AGI = 20;
     private static final int MIN_WALK_COST = 300;
@@ -61,36 +61,36 @@ public class Movement {
     /**
      * The instance of the player that is moved around by this class.
      */
-    @Nonnull
+    @NotNull
     private final Player player;
-    @Nonnull
+    @NotNull
     private final ExecutorService executorService;
-    @Nonnull
+    @NotNull
     private final MoveAnimator animator;
 
-    @Nonnull
+    @NotNull
     private final MouseMovementHandler followMouseHandler;
 
-    @Nonnull
+    @NotNull
     private final KeyboardMovementHandler keyboardHandler;
 
-    @Nonnull
+    @NotNull
     private final TargetMovementHandler targetMovementHandler;
 
-    @Nonnull
+    @NotNull
     private final MouseTargetMovementHandler targetMouseMovementHandler;
 
-    @Nonnull
+    @NotNull
     private final TargetTurnHandler targetTurnHandler;
 
-    @Nonnull
+    @NotNull
     private final MoveAnimation moveAnimation;
     /**
      * The currently active movement handler.
      */
     @Nullable
     private MovementHandler activeHandler;
-    @Nonnull
+    @NotNull
     private CharMovementMode defaultMovementMode;
     private boolean stepInProgress;
     @Nullable
@@ -102,7 +102,7 @@ public class Movement {
     @Nullable
     private ServerCoordinate playerLocation;
 
-    public Movement(@Nonnull Player player, @Nonnull Input input, @Nonnull AnimatedMove movementReceiver) {
+    public Movement(@NotNull Player player, @NotNull Input input, @NotNull AnimatedMove movementReceiver) {
         this.player = player;
         moveAnimation = new MoveAnimation(movementReceiver);
         defaultMovementMode = CharMovementMode.Walk;
@@ -142,7 +142,7 @@ public class Movement {
      *
      * @return the server location of the player
      */
-    @Nonnull
+    @NotNull
     public ServerCoordinate getServerLocation() {
         if (playerLocation == null) {
             throw new IllegalStateException("The location of the player is not known yet.");
@@ -154,7 +154,7 @@ public class Movement {
         return moveAnimation.isRunning();
     }
 
-    void activate(@Nonnull MovementHandler handler) {
+    void activate(@NotNull MovementHandler handler) {
         if (!isActive(handler)) {
             MovementHandler oldHandler = activeHandler;
             if (oldHandler != null) {
@@ -166,7 +166,7 @@ public class Movement {
         update();
     }
 
-    void disengage(@Nonnull MovementHandler handler) {
+    void disengage(@NotNull MovementHandler handler) {
         if (isActive(handler)) {
             activeHandler = null;
         } else {
@@ -174,19 +174,19 @@ public class Movement {
         }
     }
 
-    boolean isActive(@Nonnull MovementHandler handler) {
+    boolean isActive(@NotNull MovementHandler handler) {
         return (activeHandler != null) && handler.equals(activeHandler);
     }
 
-    public void executeServerRespTurn(@Nonnull Direction direction) {
+    public void executeServerRespTurn(@NotNull Direction direction) {
         executorService.submit(() -> executeServerRespTurnInternal(direction));
     }
 
-    private void executeServerRespTurnInternal(@Nonnull Direction direction) {
+    private void executeServerRespTurnInternal(@NotNull Direction direction) {
         animator.scheduleTurn(direction);
     }
 
-    private void scheduleEarlyTurn(@Nonnull Direction direction) {
+    private void scheduleEarlyTurn(@NotNull Direction direction) {
         animator.scheduleTurn(direction);
     }
 
@@ -199,7 +199,7 @@ public class Movement {
     }
 
     public void executeServerRespMove(
-            @Nonnull CharMovementMode mode, @Nonnull ServerCoordinate target, int duration) {
+            @NotNull CharMovementMode mode, @NotNull ServerCoordinate target, int duration) {
         ServerCoordinate orgLocation = playerLocation;
         if (orgLocation == null) {
             throw new IllegalStateException("The player location is currently unknown.");
@@ -210,9 +210,9 @@ public class Movement {
     }
 
     private void executeServerRespMoveInternal(
-            @Nonnull ServerCoordinate orgLocation,
-            @Nonnull CharMovementMode mode,
-            @Nonnull ServerCoordinate target,
+            @NotNull ServerCoordinate orgLocation,
+            @NotNull CharMovementMode mode,
+            @NotNull ServerCoordinate target,
             int duration) {
         log.debug("Received response from the server! Mode: {} Target {} Duration {}ms", mode, target, duration);
         if (orgLocation.equals(target)) {
@@ -224,7 +224,7 @@ public class Movement {
         }
     }
 
-    private void scheduleEarlyMove(@Nonnull CharMovementMode mode, @Nonnull Direction direction) {
+    private void scheduleEarlyMove(@NotNull CharMovementMode mode, @NotNull Direction direction) {
         if (playerLocation == null) {
             throw new IllegalStateException("The current player location is not known yet.");
         }
@@ -235,9 +235,9 @@ public class Movement {
     }
 
     @Contract(pure = true)
-    public int getMovementDuration(@Nonnull ServerCoordinate current,
-                                   @Nonnull CharMovementMode mode,
-                                   @Nonnull Direction dir) {
+    public int getMovementDuration(@NotNull ServerCoordinate current,
+                                   @NotNull CharMovementMode mode,
+                                   @NotNull Direction dir) {
         if (player.getCarryLoad().isWalkingPossible()) {
             ServerCoordinate walkingTarget = new ServerCoordinate(current, dir);
             MapTile walkingTile = World.getMap().getMapAt(walkingTarget);
@@ -267,7 +267,7 @@ public class Movement {
         return -1;
     }
 
-    public void executeServerLocation(@Nonnull ServerCoordinate target) {
+    public void executeServerLocation(@NotNull ServerCoordinate target) {
         World.getUpdateTaskManager().addTask((delta) -> {
             MovementHandler currentHandler = activeHandler;
             if (currentHandler != null) {
@@ -288,7 +288,7 @@ public class Movement {
      * @param direction the direction of the requested move
      * @param mode the mode of the requested move
      */
-    private void sendMoveToServer(@Nonnull Direction direction, @Nonnull CharMovementMode mode) {
+    private void sendMoveToServer(@NotNull Direction direction, @NotNull CharMovementMode mode) {
         CharacterId playerId = player.getPlayerId();
         if (playerId == null) {
             log.error(marker, "Send move to server while ID is not known.");
@@ -309,7 +309,7 @@ public class Movement {
         }
     }
 
-    private void sendTurnToServer(@Nonnull Direction direction) {
+    private void sendTurnToServer(@NotNull Direction direction) {
         if (player.getCharacter().getDirection() != direction) {
             TurnCmd cmd = new TurnCmd(direction);
             log.debug(marker, "Sending turn command to server: {}", cmd);
@@ -381,9 +381,9 @@ public class Movement {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
-    private ServerCoordinate getTargetLocation(@Nonnull CharMovementMode mode, @Nonnull Direction direction) {
+    private ServerCoordinate getTargetLocation(@NotNull CharMovementMode mode, @NotNull Direction direction) {
         if (playerLocation == null) {
             throw new IllegalStateException("The current player location is not known yet.");
         }
@@ -401,53 +401,53 @@ public class Movement {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     Player getPlayer() {
         return player;
     }
 
     @Contract(pure = true)
-    public boolean isMovementModePossible(@Nonnull CharMovementMode mode) {
+    public boolean isMovementModePossible(@NotNull CharMovementMode mode) {
         return (mode != CharMovementMode.Run) ||
                 World.getPlayer().getCharacter().isAnimationAvailable(CharAnimations.RUN);
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public CharMovementMode getDefaultMovementMode() {
         return defaultMovementMode;
     }
 
-    public void setDefaultMovementMode(@Nonnull CharMovementMode defaultMovementMode) {
+    public void setDefaultMovementMode(@NotNull CharMovementMode defaultMovementMode) {
         this.defaultMovementMode = defaultMovementMode;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public MouseMovementHandler getFollowMouseHandler() {
         return followMouseHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public KeyboardMovementHandler getKeyboardHandler() {
         return keyboardHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public TargetMovementHandler getTargetMovementHandler() {
         return targetMovementHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public MouseTargetMovementHandler getTargetMouseMovementHandler() {
         return targetMouseMovementHandler;
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public TargetTurnHandler getTargetTurnHandler() {
         return targetTurnHandler;

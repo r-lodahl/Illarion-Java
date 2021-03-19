@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.history;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * @author Tim
  */
 public class GroupAction extends HistoryAction {
-    @Nonnull
+    @NotNull
     private final List<HistoryAction> actions;
 
     public GroupAction() {

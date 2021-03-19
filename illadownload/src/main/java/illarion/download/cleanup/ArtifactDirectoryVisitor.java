@@ -15,8 +15,9 @@
  */
 package illarion.download.cleanup;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -33,7 +34,7 @@ import java.util.Collections;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class ArtifactDirectoryVisitor implements FileVisitor<Path> {
-    @Nonnull
+    @NotNull
     private final Collection<Path> artifactDirectories;
 
     /**
@@ -48,18 +49,18 @@ class ArtifactDirectoryVisitor implements FileVisitor<Path> {
         artifactDirectories = new ArrayList<>();
     }
 
-    @Nonnull
+    @NotNull
     Collection<Path> getArtifactDirectories() {
         return Collections.unmodifiableCollection(artifactDirectories);
     }
 
     @Override
-    public FileVisitResult preVisitDirectory(@Nonnull Path dir, @Nonnull BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(@NotNull Path dir, @NotNull BasicFileAttributes attrs) throws IOException {
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult visitFile(@Nonnull Path file, @Nonnull BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult visitFile(@NotNull Path file, @NotNull BasicFileAttributes attrs) throws IOException {
         //noinspection ConstantConditions
         if (Files.isRegularFile(file) && file.getFileName().toString().endsWith(".jar")) {
             /* This is a jar file. Means two directories up is a artifact directory. */
@@ -71,12 +72,12 @@ class ArtifactDirectoryVisitor implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFileFailed(@Nonnull Path file, @Nonnull IOException exc) throws IOException {
+    public FileVisitResult visitFileFailed(@NotNull Path file, @NotNull IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(@Nonnull Path dir, @Nullable IOException exc) throws IOException {
+    public FileVisitResult postVisitDirectory(@NotNull Path dir, @Nullable IOException exc) throws IOException {
         if (dropOutCounter > 1) {
             dropOutCounter -= 1;
             return FileVisitResult.SKIP_SIBLINGS;

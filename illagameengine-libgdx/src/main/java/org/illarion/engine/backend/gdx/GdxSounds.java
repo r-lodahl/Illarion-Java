@@ -15,16 +15,14 @@
  */
 package org.illarion.engine.backend.gdx;
 
-import com.google.common.eventbus.Subscribe;
-import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
 import org.illarion.engine.sound.Sounds;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the sound engine that uses the libGDX backend.
@@ -32,7 +30,7 @@ import javax.annotation.Nullable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxSounds implements Sounds {
-    private static final Logger log = LoggerFactory.getLogger(GdxSounds.class);
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The current global music volume.
@@ -91,7 +89,7 @@ class GdxSounds implements Sounds {
     }
 
     @Override
-    public float getSoundVolume(@Nonnull Sound sound, int handle) {
+    public float getSoundVolume(@NotNull Sound sound, int handle) {
         return soundVolume;
     }
 
@@ -110,12 +108,12 @@ class GdxSounds implements Sounds {
      * @return {@code true} in case this music track is currently played
      */
     @Override
-    public boolean isMusicPlaying(@Nonnull Music music) {
+    public boolean isMusicPlaying(@NotNull Music music) {
         return (music instanceof GdxMusic) && ((GdxMusic) music).getWrappedMusic().isPlaying();
     }
 
     @Override
-    public boolean isSoundPlaying(@Nonnull Sound sound, int handle) {
+    public boolean isSoundPlaying(@NotNull Sound sound, int handle) {
         return false;
     }
 
@@ -130,7 +128,7 @@ class GdxSounds implements Sounds {
      * @param fadeInTime (UNSUPPORTED)
      */
     @Override
-    public void playMusic(@Nonnull Music music, int fadeOutTime, int fadeInTime) {
+    public void playMusic(@NotNull Music music, int fadeOutTime, int fadeInTime) {
         if (!(music instanceof GdxMusic)) {
             throw new IllegalArgumentException("Type of music track is wrong: " + music.getClass());
         }
@@ -147,7 +145,7 @@ class GdxSounds implements Sounds {
     }
 
     @Override
-    public int playSound(@Nonnull Sound sound, float volume) {
+    public int playSound(@NotNull Sound sound, float volume) {
         if (!(sound instanceof GdxSound)) {
             throw new IllegalArgumentException("Type of sound effect is wrong: " + sound.getClass());
         }
@@ -170,7 +168,7 @@ class GdxSounds implements Sounds {
      * @return the reference handle to the played sound effect
      */
     @Override
-    public int playSound(@Nonnull Sound sound, float volume, int offsetX, int offsetY, int offsetZ) {
+    public int playSound(@NotNull Sound sound, float volume, int offsetX, int offsetY, int offsetZ) {
         return playSound(sound, volume);
     }
 
@@ -192,7 +190,7 @@ class GdxSounds implements Sounds {
      * @param volume the volume of the sound effects
      */
     @Override
-    public void setSoundVolume(@Nonnull Sound sound, int handle, float volume) {
+    public void setSoundVolume(@NotNull Sound sound, int handle, float volume) {
         if (!(sound instanceof GdxSound)) {
             throw new IllegalArgumentException("Type of sound effect is wrong: " + sound.getClass());
         }
@@ -223,7 +221,7 @@ class GdxSounds implements Sounds {
      * @param handle the handle of the sound effect that is returned by {@link #playSound(Sound, float)}
      */
     @Override
-    public void stopSound(@Nonnull Sound sound, int handle) {
+    public void stopSound(@NotNull Sound sound, int handle) {
         if (sound instanceof GdxSound) {
             ((GdxSound) sound).getWrappedSound().stop(handle);
         }
@@ -234,7 +232,7 @@ class GdxSounds implements Sounds {
      * @param sound the sound that should be stopped
      */
     @Override
-    public void stopSound(@Nonnull Sound sound) {
+    public void stopSound(@NotNull Sound sound) {
         if (sound instanceof GdxSound) {
             ((GdxSound) sound).getWrappedSound().stop();
         }

@@ -19,12 +19,12 @@ import de.lessvoid.nifty.NiftyInputConsumer;
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 import de.lessvoid.nifty.spi.input.InputSystem;
 import de.lessvoid.nifty.tools.resourceloader.NiftyResourceLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.input.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This is the input system that is used to forward the input data provided by the game engine to the Nifty-GUI.
@@ -32,17 +32,17 @@ import javax.annotation.Nullable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public class IgeInputSystem implements InputSystem, InputListener {
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(IgeInputSystem.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
     /**
      * The input implementation of the engine.
      */
-    @Nonnull
+    @NotNull
     private final Input input;
     /**
      * This is the listener that is supposed to receive the input data that was not processed by the Nifty-GUI.
      */
-    @Nonnull
+    @NotNull
     private final InputListener listener;
     /**
      * This value contains a key that was stalled as key down to properly detect typing events.
@@ -65,7 +65,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
      * @param input the input implementation
      * @param listener the listener that receives input data was was not processed by the Nifty-GUI
      */
-    public IgeInputSystem(@Nonnull Input input, @Nonnull InputListener listener) {
+    public IgeInputSystem(@NotNull Input input, @NotNull InputListener listener) {
         input.setListener(this);
         this.input = input;
         this.listener = listener;
@@ -77,7 +77,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
      * @param button the button
      * @return the button key for the Nifty-GUI
      */
-    private static int getNiftyButtonKey(@Nonnull Button button) {
+    private static int getNiftyButtonKey(@NotNull Button button) {
         switch (button) {
             case Left:
                 return 0;
@@ -96,7 +96,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
      * @return the Nifty-GUI key code
      */
     @SuppressWarnings("SwitchStatementWithTooManyBranches")
-    private static int getNiftyKeyId(@Nonnull Key key) {
+    private static int getNiftyKeyId(@NotNull Key key) {
         switch (key) {
             case A:
                 return KeyboardInputEvent.KEY_A;
@@ -241,7 +241,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void keyDown(@Nonnull Key key) {
+    public void keyDown(@NotNull Key key) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -271,7 +271,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void keyUp(@Nonnull Key key) {
+    public void keyUp(@NotNull Key key) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -333,7 +333,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void buttonDown(int mouseX, int mouseY, @Nonnull Button button) {
+    public void buttonDown(int mouseX, int mouseY, @NotNull Button button) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -351,7 +351,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void buttonUp(int mouseX, int mouseY, @Nonnull Button button) {
+    public void buttonUp(int mouseX, int mouseY, @NotNull Button button) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -369,7 +369,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void buttonClicked(int mouseX, int mouseY, @Nonnull Button button, int count) {
+    public void buttonClicked(int mouseX, int mouseY, @NotNull Button button, int count) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -399,7 +399,7 @@ public class IgeInputSystem implements InputSystem, InputListener {
 
     @Override
     public void mouseDragged(
-            @Nonnull Button button, int fromX, int fromY, int toX, int toY) {
+            @NotNull Button button, int fromX, int fromY, int toX, int toY) {
         if (currentConsumer == null) {
             throw new IllegalStateException("Receiving input data while none was requested");
         }
@@ -429,12 +429,12 @@ public class IgeInputSystem implements InputSystem, InputListener {
     }
 
     @Override
-    public void setResourceLoader(@Nonnull NiftyResourceLoader niftyResourceLoader) {
+    public void setResourceLoader(@NotNull NiftyResourceLoader niftyResourceLoader) {
         // not needed
     }
 
     @Override
-    public void forwardEvents(@Nonnull NiftyInputConsumer inputEventConsumer) {
+    public void forwardEvents(@NotNull NiftyInputConsumer inputEventConsumer) {
         currentConsumer = inputEventConsumer;
         input.poll();
         currentConsumer = null;

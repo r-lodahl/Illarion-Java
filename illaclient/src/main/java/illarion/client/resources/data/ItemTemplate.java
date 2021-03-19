@@ -21,19 +21,14 @@ import illarion.common.graphics.ItemInfo;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.graphic.Texture;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the template that contains the required data to create the graphical representation of a item on the map.
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
-@ThreadSafe
 public class ItemTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The minimal height of the item image in pixels that is needed so the item graphic fades out in case the player
@@ -44,7 +39,7 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The general item information.
      */
-    @Nonnull
+    @NotNull
     private final ItemInfo itemInfo;
 
     /**
@@ -61,13 +56,13 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
     /**
      * The GUI texture of this item.
      */
-    @Nonnull
+    @NotNull
     private final Texture guiTexture;
 
     /**
      * The sharedAnimation instance all the items share.
      */
-    @Nonnull
+    @NotNull
     private final FrameAnimation sharedAnimation;
 
     /**
@@ -85,12 +80,12 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
      */
     public ItemTemplate(
             int id,
-            @Nonnull Sprite sprite,
-            @Nonnull Texture guiTexture,
+            @NotNull Sprite sprite,
+            @NotNull Texture guiTexture,
             int frames,
             int shadowOffset,
             int speed,
-            @Nonnull ItemInfo itemInfo,
+            @NotNull ItemInfo itemInfo,
             int paperdollingId,
             @Nullable Color paperdollingColor) {
         super(id, sprite, frames, 0, speed, null, shadowOffset);
@@ -103,7 +98,7 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
         this.guiTexture = guiTexture;
     }
 
-    @Nonnull
+    @NotNull
     public ItemInfo getItemInfo() {
         return itemInfo;
     }
@@ -117,7 +112,7 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
         return paperdollingColor;
     }
 
-    @Nonnull
+    @NotNull
     public Texture getGuiTexture() {
         return guiTexture;
     }
@@ -126,7 +121,7 @@ public class ItemTemplate extends AbstractAnimatedEntityTemplate {
         return getSprite().getHeight() > FADING_LIMIT;
     }
 
-    @Nonnull
+    @NotNull
     public FrameAnimation getSharedAnimation() {
         return sharedAnimation;
     }

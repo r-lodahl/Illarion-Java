@@ -19,13 +19,12 @@ import illarion.client.net.client.AttackCmd;
 import illarion.client.net.client.StandDownCmd;
 import illarion.common.types.CharacterId;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -37,13 +36,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@ThreadSafe
 public final class CombatHandler {
     /**
      * The logging instance of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(CombatHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The character that is currently under attack.
@@ -54,13 +52,13 @@ public final class CombatHandler {
     /**
      * The characters that were not yet confirmed by the server for the attack.
      */
-    @Nonnull
+    @NotNull
     private final Queue<Char> unconfirmedChars = new LinkedList<>();
 
     /**
      * This flag is used to track if the next target lost command from the server is supposed to be ignored.
      */
-    @Nonnull
+    @NotNull
     private final AtomicBoolean ignoreNextTargetLost = new AtomicBoolean(false);
 
     /**
@@ -78,7 +76,7 @@ public final class CombatHandler {
      *
      * @param character the character to start or stop attacking
      */
-    public void toggleAttackOnCharacter(@Nonnull Char character) {
+    public void toggleAttackOnCharacter(@NotNull Char character) {
         if (isAttacking(character)) {
             standDown();
         } else {
@@ -93,7 +91,7 @@ public final class CombatHandler {
      * @return {@code true} in case the character is the current target
      */
     @Contract(pure = true)
-    public boolean isAttacking(@Nonnull Char testChar) {
+    public boolean isAttacking(@NotNull Char testChar) {
         return testChar.equals(attackedChar);
     }
 
@@ -104,7 +102,7 @@ public final class CombatHandler {
      * @return {@code true} if that character is scheduled to be attacked.
      */
     @Contract(pure = true)
-    public boolean isGoingToAttack(@Nonnull Char testChar) {
+    public boolean isGoingToAttack(@NotNull Char testChar) {
         return unconfirmedChars.contains(testChar);
     }
 
@@ -191,7 +189,7 @@ public final class CombatHandler {
      *
      * @param character the character that is now attacked
      */
-    public void setAttackTarget(@Nonnull Char character) {
+    public void setAttackTarget(@NotNull Char character) {
         // Disable chat box to allow proper movement. Does not clear input.
         World.getGameGui().getChatGui().deactivateChatBox(false);
         if (isAttacking(character) || isGoingToAttack(character)) {
@@ -220,7 +218,7 @@ public final class CombatHandler {
      * @return {@code true} in case the character is not the player and not a NPC.
      */
     @Contract(pure = true)
-    public boolean canBeAttacked(@Nonnull Char character) {
+    public boolean canBeAttacked(@NotNull Char character) {
         return !World.getPlayer().isPlayer(character.getCharId()) && !character.isNPC();
     }
 
@@ -229,7 +227,7 @@ public final class CombatHandler {
      *
      * @param id the ID of the character to fight
      */
-    private static void sendAttackToServer(@Nonnull CharacterId id) {
+    private static void sendAttackToServer(@NotNull CharacterId id) {
         World.getNet().sendCommand(new AttackCmd(id));
     }
 }

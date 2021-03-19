@@ -16,19 +16,19 @@
 package illarion.client.world.movement;
 
 import illarion.common.types.Direction;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class TurningTask implements MoveAnimatorTask {
-    @Nonnull
+    @NotNull
     private final MoveAnimator moveAnimator;
-    @Nonnull
+    @NotNull
     private final Direction direction;
 
-    TurningTask(@Nonnull MoveAnimator moveAnimator, @Nonnull Direction direction) {
+    TurningTask(@NotNull MoveAnimator moveAnimator, @NotNull Direction direction) {
         this.moveAnimator = moveAnimator;
         this.direction = direction;
     }
@@ -38,7 +38,7 @@ class TurningTask implements MoveAnimatorTask {
         moveAnimator.executeTurn(direction);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return "Turning Task - Direction: " + direction;

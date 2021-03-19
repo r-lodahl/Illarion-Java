@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.events.menu;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
 
 /**
@@ -23,16 +24,16 @@ import java.nio.file.Path;
  */
 public class MapOpenEvent {
 
-    @Nonnull
+    @NotNull
     private final Path path;
     private final String name;
 
-    public MapOpenEvent(@Nonnull Path path, String name) {
+    public MapOpenEvent(@NotNull Path path, String name) {
         this.path = path;
         this.name = name;
     }
 
-    @Nonnull
+    @NotNull
     public Path getPath() {
         return path;
     }
@@ -41,7 +42,7 @@ public class MapOpenEvent {
         return name;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return name;

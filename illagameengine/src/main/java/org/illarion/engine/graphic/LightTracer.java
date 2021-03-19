@@ -18,10 +18,10 @@ package org.illarion.engine.graphic;
 import illarion.common.types.ServerCoordinate;
 import illarion.common.util.PoolThreadFactory;
 import illarion.common.util.Stoppable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -43,10 +43,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public final class LightTracer implements Stoppable {
     private class CalculateLightTask implements Callable<Void> {
-        @Nonnull
+        @NotNull
         private final LightSource light;
 
-        private CalculateLightTask(@Nonnull LightSource light) {
+        private CalculateLightTask(@NotNull LightSource light) {
             this.light = light;
         }
 
@@ -80,10 +80,10 @@ public final class LightTracer implements Stoppable {
         }
     }
 
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(LightTracer.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    @Nonnull
+    @NotNull
     private final Callable<Void> publishLightsTask = () -> {
         notifyLightCalculationDone();
         return null;
@@ -92,26 +92,26 @@ public final class LightTracer implements Stoppable {
     /**
      * The executor service that takes care for calculating the lights.
      */
-    @Nonnull
+    @NotNull
     private final ExecutorService lightCalculationService;
 
     /**
      * This integer stores the amount of lights that are currently calculated.
      */
-    @Nonnull
+    @NotNull
     private final AtomicInteger lightsInProgress;
 
     /**
      * The lighting map that is the data source and the target for the light
      * calculating results for all light sources handled by this light tracer.
      */
-    @Nonnull
+    @NotNull
     private final LightingMap mapSource;
 
     /**
      * The list of lights that were processed at least once and contain all data to be applied to the map.
      */
-    @Nonnull
+    @NotNull
     private final List<LightSource> lights;
 
     /**
@@ -119,7 +119,7 @@ public final class LightTracer implements Stoppable {
      */
     private boolean isShutDown;
 
-    @Nonnull
+    @NotNull
     private final ReadWriteLock applyingLock;
 
     /**
@@ -128,7 +128,7 @@ public final class LightTracer implements Stoppable {
      *
      * @param tracerMapSource the map the lights this tracer handles are on
      */
-    public LightTracer(@Nonnull LightingMap tracerMapSource) {
+    public LightTracer(@NotNull LightingMap tracerMapSource) {
         mapSource = tracerMapSource;
         lights = new CopyOnWriteArrayList<>();
 
@@ -147,7 +147,7 @@ public final class LightTracer implements Stoppable {
      * @param light the light that shall be added to the light tracer and so to
      * the game screen
      */
-    public void addLight(@Nonnull LightSource light) {
+    public void addLight(@NotNull LightSource light) {
         if (isShutDown) {
             return;
         }
@@ -186,7 +186,7 @@ public final class LightTracer implements Stoppable {
      *
      * @param loc the location the change occurred at
      */
-    public void notifyChange(@Nonnull ServerCoordinate loc) {
+    public void notifyChange(@NotNull ServerCoordinate loc) {
         if (isShutDown) {
             return;
         }
@@ -217,7 +217,7 @@ public final class LightTracer implements Stoppable {
         }
     }
 
-    public void updateLightLocation(@Nonnull LightSource light, @Nonnull ServerCoordinate newLocation) {
+    public void updateLightLocation(@NotNull LightSource light, @NotNull ServerCoordinate newLocation) {
         if (isShutDown) {
             return;
         }
@@ -234,7 +234,7 @@ public final class LightTracer implements Stoppable {
      *
      * @param light the light that shall be updated.
      */
-    public void refreshLight(@Nonnull LightSource light) {
+    public void refreshLight(@NotNull LightSource light) {
         if (isShutDown) {
             return;
         }
@@ -251,7 +251,7 @@ public final class LightTracer implements Stoppable {
         }
     }
 
-    public void replace(@Nonnull LightSource oldSource, @Nonnull LightSource newSource) {
+    public void replace(@NotNull LightSource oldSource, @NotNull LightSource newSource) {
         if (isShutDown) {
             return;
         }
@@ -266,7 +266,7 @@ public final class LightTracer implements Stoppable {
      *
      * @param light the light source that shall be removed
      */
-    public void remove(@Nonnull LightSource light) {
+    public void remove(@NotNull LightSource light) {
         if (isShutDown) {
             return;
         }

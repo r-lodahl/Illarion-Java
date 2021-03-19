@@ -21,12 +21,12 @@ import illarion.common.util.AppIdent;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.MessageSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.rpc.ServiceException;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -80,21 +80,21 @@ public final class CrashReporter {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final CrashReporter INSTANCE = new CrashReporter();
 
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(CrashReporter.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     static {
         URL result = null;
         try {
             result = new URL("https://illarion.org/mantis/api/soap/mantisconnect.php"); //$NON-NLS-1$
-        } catch (@Nonnull MalformedURLException e) {
-            log.warn("Preparing the crash report target URL failed. Crash reporter not functional."); //$NON-NLS-1$
+        } catch (@NotNull MalformedURLException e) {
+            LOGGER.warn("Preparing the crash report target URL failed. Crash reporter not functional."); //$NON-NLS-1$
         }
         CRASH_SERVER = result;
     }
@@ -103,7 +103,7 @@ public final class CrashReporter {
      * The configuration handler that is used for the settings of this class.
      */
     @Nullable
-    private Config cfg;
+    private Config config;
 
     /**
      * The currently displayed report dialog is displayed in this class.
@@ -145,7 +145,7 @@ public final class CrashReporter {
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static CrashReporter getInstance() {
         return INSTANCE;
@@ -166,7 +166,7 @@ public final class CrashReporter {
      *
      * @param crash the data about the crash
      */
-    public void reportCrash(@Nonnull CrashData crash) {
+    public void reportCrash(@NotNull CrashData crash) {
         reportCrash(crash, false);
     }
 
@@ -178,19 +178,17 @@ public final class CrashReporter {
      * @param ownThread {@code true} in case the crash report is supposed
      * to be started in a additional thread
      */
-    public void reportCrash(@Nonnull CrashData crash, boolean ownThread) {
+    public void reportCrash(@NotNull CrashData crash, boolean ownThread) {
         if (ownThread) {
-            new Thread(() -> {
-                reportCrash(crash, false);
-            }).start();
+            new Thread(() -> reportCrash(crash, false)).start();
         }
 
         if ("NoClassDefFoundError".equals(crash.getExceptionName())) {
             try {
                 Files.createFile(
                         DirectoryManager.getInstance().resolveFile(Directory.Data, "corrupted"));
-            } catch (@Nonnull IOException e) {
-                log.error("Failed to mark data as corrupted.");
+            } catch (@NotNull IOException e) {
+                LOGGER.error("Failed to mark data as corrupted.");
             }
         }
 
@@ -214,8 +212,8 @@ public final class CrashReporter {
                 switch (result) {
                     case ReportDialog.SEND_ALWAYS:
                         setMode(MODE_ALWAYS);
-                        if (cfg != null) {
-                            cfg.set(CFG_KEY, MODE_ALWAYS);
+                        if (config != null) {
+                            config.set(CFG_KEY, MODE_ALWAYS);
                         }
                         sendCrashData(crash);
                         break;
@@ -224,8 +222,8 @@ public final class CrashReporter {
                         break;
                     case ReportDialog.SEND_NEVER:
                         setMode(MODE_NEVER);
-                        if (cfg != null) {
-                            cfg.set(CFG_KEY, MODE_NEVER);
+                        if (config != null) {
+                            config.set(CFG_KEY, MODE_NEVER);
                         }
                         break;
                     default:
@@ -245,7 +243,7 @@ public final class CrashReporter {
      * @param config the new configuration
      */
     public void setConfig(@Nullable Config config) {
-        cfg = config;
+        this.config = config;
         if (config != null) {
             setMode(config.getInteger(CFG_KEY));
         }
@@ -274,7 +272,7 @@ public final class CrashReporter {
             try {
                 localLatch.await();
             } catch (InterruptedException e) {
-                log.debug("Wait for report was interrupted!", e);
+                LOGGER.debug("Wait for report was interrupted!", e);
                 // Thread interrupted. Just exit the function
             }
         }
@@ -291,7 +289,7 @@ public final class CrashReporter {
      *
      * @param data the data that was collected about the crash
      */
-    private static void sendCrashData(@Nonnull CrashData data) {
+    private static void sendCrashData(@NotNull CrashData data) {
         if (CRASH_SERVER == null) {
             return;
         }
@@ -301,7 +299,7 @@ public final class CrashReporter {
 
             ProjectData selectedProject = connector.getProject(data.getMantisProject());
             if (selectedProject == null) {
-                log.error("Failed to find {} project.", data.getMantisProject());
+                LOGGER.error("Failed to find {} project.", data.getMantisProject());
                 return;
             }
 
@@ -325,7 +323,7 @@ public final class CrashReporter {
             FilterData filter = connector.getFilter(selectedProject);
             Collection<IssueHeaderData> headers = connector.getIssueHeaders(selectedProject, filter);
 
-            for (@Nonnull IssueHeaderData header : headers) {
+            for (@NotNull IssueHeaderData header : headers) {
                 if (!CATEGORY.equals(header.getCategory())) {
                     continue;
                 }
@@ -334,7 +332,7 @@ public final class CrashReporter {
                     continue;
                 }
 
-                @Nonnull IssueData checkedIssue = connector.getIssue(header);
+                @NotNull IssueData checkedIssue = connector.getIssue(header);
 
                 if (!saveString(checkedIssue.getDescription()).endsWith(exceptionDescription)) {
                     continue;
@@ -382,7 +380,7 @@ public final class CrashReporter {
                 issue.setPriority(PRIORITY_HIGH_NUM);
 
                 BigInteger id = connector.addIssue(selectedProject, issue);
-                log.info("Added new Issue #{}", id);
+                LOGGER.info("Added new Issue #{}", id);
 
                 if (similarIssue != null) {
                     connector.addNote(issue, "Similar issue was found at #" + similarIssue.getId());
@@ -390,11 +388,11 @@ public final class CrashReporter {
                 }
             }
         } catch (ServiceException | RemoteException e) {
-            log.error("Failed to send error reporting data.", e);
+            LOGGER.error("Failed to send error reporting data.", e);
         }
     }
 
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     private static String saveString(@Nullable String input) {
         if (input == null) {

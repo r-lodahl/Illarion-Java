@@ -13,9 +13,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package illarion.build.imagepacker;
+package illarion.build.imagepacker
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nonnull
 
 /**
  * This class is used to define the empty space on a texture atlas.
@@ -27,7 +27,7 @@ final class Space extends TextureElement {
      * Default constructor
      */
     Space(final int x, final int y, final int height, final int width) {
-        super(x, y, height, width);
+        super(x, y, height, width)
     }
 
     /**
@@ -36,8 +36,8 @@ final class Space extends TextureElement {
      * @param s the sprite to test
      * @return <code>true</code> in case the sprite fits into the space
      */
-    public boolean isFittingInside(@Nonnull final TextureElement s) {
-        return (s.height <= height) && (s.width <= width);
+    boolean isFittingInside(@Nonnull final TextureElement s) {
+        return (s.height <= height) && (s.width <= width)
     }
 
     /**

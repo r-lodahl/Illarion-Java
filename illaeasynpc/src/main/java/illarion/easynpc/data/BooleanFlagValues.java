@@ -17,8 +17,8 @@ package illarion.easynpc.data;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.regex.Pattern;
 
 /**
@@ -45,7 +45,7 @@ public enum BooleanFlagValues {
     /**
      * The pattern used to identify the boolean flag.
      */
-    @Nonnull
+    @NotNull
     private final Pattern findPattern;
 
     /**
@@ -61,7 +61,7 @@ public enum BooleanFlagValues {
      * @param lua the LUa representation of this flag
      */
     BooleanFlagValues(
-            @Nonnull String regex, String easy, String lua) {
+            @NotNull String regex, String easy, String lua) {
         findPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         luaString = lua;
         easyString = easy;
@@ -99,7 +99,7 @@ public enum BooleanFlagValues {
      *
      * @param map the map that stores the tokens
      */
-    public static void enlistHighlightedWords(@Nonnull TokenMap map) {
+    public static void enlistHighlightedWords(@NotNull TokenMap map) {
         map.put(off.easyString, Token.VARIABLE);
         map.put(on.easyString, Token.VARIABLE);
     }

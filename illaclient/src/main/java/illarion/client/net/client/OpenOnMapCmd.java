@@ -20,10 +20,8 @@ import illarion.client.world.World;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.Direction;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Client Command: Open a container on the map ({@link CommandList#CMD_OPEN_MAP}).
@@ -31,7 +29,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class OpenOnMapCmd extends AbstractCommand {
     /**
      * The direction relative to the player character the bag is located at.
@@ -44,7 +41,7 @@ public final class OpenOnMapCmd extends AbstractCommand {
      *
      * @param mapLocation the location on the map where the container is supposed to be opened
      */
-    public OpenOnMapCmd(@Nonnull ServerCoordinate mapLocation) {
+    public OpenOnMapCmd(@NotNull ServerCoordinate mapLocation) {
         super(CommandList.CMD_OPEN_MAP);
         direction = World.getPlayer().getLocation().getDirection(mapLocation);
     }
@@ -55,7 +52,7 @@ public final class OpenOnMapCmd extends AbstractCommand {
      * @param writer the interface that allows writing data to the network communication system
      */
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         Direction.encode(direction, writer);
     }
 
@@ -64,7 +61,7 @@ public final class OpenOnMapCmd extends AbstractCommand {
      *
      * @return the data of this command as string
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("from direction:" + direction);

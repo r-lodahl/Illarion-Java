@@ -15,7 +15,8 @@
  */
 package illarion.common.net;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.charset.CharacterCodingException;
 
 /**
@@ -51,7 +52,7 @@ public interface NetCommWriter {
      *
      * @param value the string that shall be send to the server
      */
-    void writeString(@Nonnull String value) throws CharacterCodingException;
+    void writeString(@NotNull String value) throws CharacterCodingException;
 
     /**
      * Write 1 byte as unsigned value to the network.

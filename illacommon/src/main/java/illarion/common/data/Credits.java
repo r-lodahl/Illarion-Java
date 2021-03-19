@@ -15,8 +15,9 @@
  */
 package illarion.common.data;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,13 +31,13 @@ public final class Credits {
     /**
      * The list of entries that are assigned to a single person always.
      */
-    @Nonnull
+    @NotNull
     private final List<CreditsList> singlePosList;
 
     /**
      * The list of entries that are assigned to multiple persons.
      */
-    @Nonnull
+    @NotNull
     private final List<CreditsList> multiPosList;
 
     /**
@@ -200,7 +201,7 @@ public final class Credits {
      *
      * @return the single person entries
      */
-    @Nonnull
+    @NotNull
     public Iterator<CreditsList> getSingleLists() {
         return singlePosList.iterator();
     }
@@ -210,7 +211,7 @@ public final class Credits {
      *
      * @return the multi person entries
      */
-    @Nonnull
+    @NotNull
     public Iterator<CreditsList> getMultiLists() {
         return multiPosList.iterator();
     }

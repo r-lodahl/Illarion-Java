@@ -15,54 +15,14 @@
  */
 package illarion.download;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import illarion.common.util.DirectoryManager;
-import illarion.common.util.DirectoryManager.Directory;
 import illarion.download.gui.GuiApplication;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.net.URL;
-import java.nio.file.Path;
-
-/**
- * Main entry class for the launcher/downloader.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public final class Application {
     private Application() {
     }
 
     public static void main(String... args) {
-        initLogs();
         System.setProperty("javafx.userAgentStylesheetUrl", "CASPIAN");
-
         javafx.application.Application.launch(GuiApplication.class, args);
-    }
-
-    private static void initLogs() {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
-
-        Path dir = DirectoryManager.getInstance().getDirectory(Directory.User);
-        System.setProperty("log_dir", dir.toAbsolutePath().toString());
-
-        //Reload:
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ContextInitializer ci = new ContextInitializer(lc);
-        lc.reset();
-        try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL resource = cl.getResource("logback-with-file.xml");
-            if (resource != null) {
-                ci.configureByResource(resource);
-            } else {
-                ci.autoConfig();
-            }
-        } catch (JoranException ignored) {
-        }
     }
 }

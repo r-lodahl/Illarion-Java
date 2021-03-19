@@ -19,8 +19,8 @@ import org.illarion.engine.assets.Assets;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.sound.Sounds;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This interfaces defines the access to the actual game engine elements. This interface is implemented by the
@@ -34,7 +34,7 @@ public interface Engine {
      *
      * @return the graphics component
      */
-    @Nonnull
+    @NotNull
     Graphics getGraphics();
 
     /**
@@ -42,7 +42,7 @@ public interface Engine {
      *
      * @return the sounds component
      */
-    @Nonnull
+    @NotNull
     Sounds getSounds();
 
     /**
@@ -50,7 +50,7 @@ public interface Engine {
      *
      * @return the asset component of the engine
      */
-    @Nonnull
+    @NotNull
     Assets getAssets();
 
     /**
@@ -58,6 +58,6 @@ public interface Engine {
      *
      * @return the input component
      */
-    @Nonnull
+    @NotNull
     Input getInput();
 }

@@ -16,8 +16,8 @@
 package illarion.client;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * The definitions of the existing servers. All data needed to connect and
@@ -56,7 +56,7 @@ public enum Servers {
     /**
      * Storage of the server host address the client needs to connect to.
      */
-    @Nonnull
+    @NotNull
     private final String serverHostName;
     /**
      * The identifier key for this server.
@@ -82,7 +82,7 @@ public enum Servers {
      * @param version  the version that shall be transferred to the server to
      *                 validate the correct client version
      */
-    Servers(int key, @Nonnull String name, @Nonnull String hostName, int port, int version) {
+    Servers(int key, @NotNull String name, @NotNull String hostName, int port, int version) {
         serverKey = key;
         serverName = name;
         serverHostName = hostName;
@@ -105,7 +105,7 @@ public enum Servers {
      *
      * @return the host address of the server
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getServerHost() {
         return serverHostName;
@@ -121,7 +121,7 @@ public enum Servers {
      *
      * @return the name of the server
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getServerName() {
         return serverName;

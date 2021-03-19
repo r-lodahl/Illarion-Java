@@ -25,8 +25,8 @@ import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import org.illarion.engine.Engine;
 import org.illarion.engine.sound.Music;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -34,15 +34,15 @@ import javax.annotation.Nonnull;
 public final class CreditsStartScreenController implements ScreenController, KeyInputHandler {
     private Nifty nifty;
 
-    @Nonnull
+    @NotNull
     private final Engine engine;
 
-    public CreditsStartScreenController(@Nonnull Engine engine) {
+    public CreditsStartScreenController(@NotNull Engine engine) {
         this.engine = engine;
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
     }
 
@@ -65,7 +65,7 @@ public final class CreditsStartScreenController implements ScreenController, Key
     }
 
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         if (inputEvent == NiftyStandardInputEvent.Escape) {
             nifty.gotoScreen("login");
             return true;

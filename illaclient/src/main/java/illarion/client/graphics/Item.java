@@ -34,6 +34,8 @@ import illarion.common.gui.AbstractMultiActionHelper;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.ServerCoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
@@ -42,11 +44,9 @@ import org.illarion.engine.input.Button;
 import org.illarion.engine.input.Input;
 import org.illarion.engine.input.Key;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * A item is a object that is on the game map or in the inventory or in any container showcase of the client.
@@ -56,7 +56,7 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("ClassNamingConvention")
 public final class Item extends AbstractEntity<ItemTemplate> implements Resource {
-    @Nonnull
+    @NotNull
     private static final DelayGoToItemHandler delayGoToItem = new DelayGoToItemHandler();
     /**
      * The frame animation object that is used in case the item contains a animation that needs to be played.
@@ -66,12 +66,12 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
     /**
      * The ID of this item.
      */
-    @Nonnull
+    @NotNull
     private final ItemId itemId;
     /**
      * The tile this item is located on.
      */
-    @Nonnull
+    @NotNull
     private final MapTile parentTile;
     /**
      * True in case the object contains variances instead of a frame animation for the different frames of the image. So
@@ -100,8 +100,8 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
     /**
      * The logging instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(Item.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     private int showHighlight;
     @Nullable
@@ -113,7 +113,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      * @param template the template used to create the new item
      * @param parentTile the tile this item is located on
      */
-    public Item(@Nonnull ItemTemplate template, @Nonnull MapTile parentTile) {
+    public Item(@NotNull ItemTemplate template, @NotNull MapTile parentTile) {
         super(template);
 
         itemId = new ItemId(template.getId());
@@ -147,8 +147,8 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      * @param parent the tile this item is located on
      * @return the new item
      */
-    @Nonnull
-    public static Item create(@Nonnull ItemId itemID, int locColumn, int locRow, @Nonnull MapTile parent) {
+    @NotNull
+    public static Item create(@NotNull ItemId itemID, int locColumn, int locRow, @NotNull MapTile parent) {
         ItemTemplate template = ItemFactory.getInstance().getTemplate(itemID.getValue());
         Item item = new Item(template, parent);
         // Set variant and scaling, this functions check on their own if this is allowed
@@ -166,8 +166,8 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      * @param parent the tile this item is located on
      * @return the new item
      */
-    @Nonnull
-    public static Item create(@Nonnull ItemId itemID, @Nonnull ServerCoordinate loc, @Nonnull MapTile parent) {
+    @NotNull
+    public static Item create(@NotNull ItemId itemID, @NotNull ServerCoordinate loc, @NotNull MapTile parent) {
         return create(itemID, loc.getX(), loc.getY(), parent);
     }
 
@@ -185,7 +185,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
     }
 
     @Override
-    public void render(@Nonnull Graphics graphics) {
+    public void render(@NotNull Graphics graphics) {
         if (performRendering()) {
             super.render(graphics);
 
@@ -212,7 +212,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
-    public boolean isEventProcessed(BackendBinding binding, int delta, @Nonnull SceneEvent event) {
+    public boolean isEventProcessed(BackendBinding binding, int delta, @NotNull SceneEvent event) {
         if (getAlpha() == 0) {
             return false;
         }
@@ -279,7 +279,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
     }
 
     @Override
-    @Nonnull
+    @NotNull
     protected Color getParentLight() {
         Tile parentGraphicTile = parentTile.getTile();
         if (parentGraphicTile == null) {
@@ -331,12 +331,12 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      *
      * @return the ID of this item
      */
-    @Nonnull
+    @NotNull
     public ItemId getItemId() {
         return itemId;
     }
 
-    private boolean isEventProcessed(@Nonnull CurrentMouseLocationEvent event) {
+    private boolean isEventProcessed(@NotNull CurrentMouseLocationEvent event) {
         if (!isMouseInInteractionRect(event.getX(), event.getY())) {
             return false;
         }
@@ -356,7 +356,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         return false;
     }
 
-    private boolean isEventProcessed(@Nonnull PointOnMapEvent event) {
+    private boolean isEventProcessed(@NotNull PointOnMapEvent event) {
         if (!isMouseInInteractionRect(event.getX(), event.getY())) {
             return false;
         }
@@ -375,7 +375,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
      * @param event the event to be processed
      * @return {@code true} if the event was processed
      */
-    boolean processMapClick(@Nonnull BackendBinding binding, @Nonnull ClickOnMapEvent event) {
+    boolean processMapClick(@NotNull BackendBinding binding, @NotNull ClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
@@ -421,7 +421,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         return true;
     }
 
-    private boolean isEventProcessed(@Nonnull BackendBinding binding, @Nonnull DoubleClickOnMapEvent event) {
+    private boolean isEventProcessed(@NotNull BackendBinding binding, @NotNull DoubleClickOnMapEvent event) {
         if (event.getKey() != Button.Left) {
             return false;
         }
@@ -455,7 +455,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
         return true;
     }
 
-    private boolean isEventProcessed(@Nonnull PrimaryKeyMapDrag event) {
+    private boolean isEventProcessed(@NotNull PrimaryKeyMapDrag event) {
         if (!isMouseInInteractionRect(event.getOldX(), event.getOldY()) || !parentTile.isAtPlayerLevel()) {
             return false;
         }
@@ -463,7 +463,7 @@ public final class Item extends AbstractEntity<ItemTemplate> implements Resource
 
     }
 
-    public void show(@Nonnull ItemStack stack) {
+    public void show(@NotNull ItemStack stack) {
         //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         parentStack = stack;
         if (animation != null) {

@@ -18,9 +18,9 @@ package illarion.mapedit.gui.util;
 import illarion.mapedit.events.ToolSelectedEvent;
 import illarion.mapedit.tools.AbstractTool;
 import org.bushe.swing.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 
-import javax.annotation.Nonnull;
 
 /**
  * @author Tim
@@ -31,7 +31,7 @@ public class ToolMenuButton extends JCommandToggleButton {
      *
      * @param tool Command menu button for tool.
      */
-    public ToolMenuButton(@Nonnull AbstractTool tool) {
+    public ToolMenuButton(@NotNull AbstractTool tool) {
         super(tool.getLocalizedName(), tool.getToolIcon());
 
         addActionListener(e -> EventBus.publish(new ToolSelectedEvent(tool)));

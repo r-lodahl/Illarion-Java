@@ -21,8 +21,8 @@ import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
 import illarion.easynpc.writer.LuaWriter.WritingStage;
 import illarion.easynpc.writer.SQLBuilder;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -64,7 +64,7 @@ public final class ParsedEquipment implements ParsedData {
      * The equipment data does not effect the query.
      */
     @Override
-    public void buildSQL(@Nonnull SQLBuilder builder) {
+    public void buildSQL(@NotNull SQLBuilder builder) {
         // nothing to add to the query
     }
 
@@ -73,7 +73,7 @@ public final class ParsedEquipment implements ParsedData {
      * construct.
      */
     @Override
-    public boolean effectsLuaWritingStage(@Nonnull WritingStage stage) {
+    public boolean effectsLuaWritingStage(@NotNull WritingStage stage) {
         return stage == WritingStage.Clothes;
     }
 
@@ -81,7 +81,7 @@ public final class ParsedEquipment implements ParsedData {
      * The equipment of the character is a part of the base NPC. There are no
      * additional modules needed.
      */
-    @Nonnull
+    @NotNull
     @Override
     public Collection<String> getRequiredModules() {
         return Collections.emptyList();
@@ -92,12 +92,12 @@ public final class ParsedEquipment implements ParsedData {
      */
     @Override
     public void writeLua(
-            @Nonnull Writer target, @Nonnull LuaRequireTable requires, @Nonnull WritingStage stage) throws IOException {
+            @NotNull Writer target, @NotNull LuaRequireTable requires, @NotNull WritingStage stage) throws IOException {
         if (!effectsLuaWritingStage(stage)) {
             return;
         }
 
-        target.write(String.format(LUA_FORMAT, Integer.toString(slot.getLuaId()), Integer.toString(item.getItemId())));
+        target.write(String.format(LUA_FORMAT, slot.getLuaId(), item.getItemId()));
         target.write(LuaWriter.NL);
     }
 }

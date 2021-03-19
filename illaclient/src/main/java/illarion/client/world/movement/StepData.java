@@ -18,9 +18,9 @@ package illarion.client.world.movement;
 import illarion.client.world.CharMovementMode;
 import illarion.common.types.Direction;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This interface is used to exchange information regarding a single step between the different handlers of the
@@ -34,7 +34,7 @@ interface StepData {
      *
      * @return the movement method
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     CharMovementMode getMovementMode();
 

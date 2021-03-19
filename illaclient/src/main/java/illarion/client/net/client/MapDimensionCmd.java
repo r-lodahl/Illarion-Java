@@ -17,9 +17,7 @@ package illarion.client.net.client;
 
 import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Request the size of the transferred map.
@@ -27,7 +25,6 @@ import javax.annotation.concurrent.Immutable;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  * @see CommandList#CMD_MAPDIMENSION
  */
-@Immutable
 public final class MapDimensionCmd extends AbstractCommand {
     /**
      * The map height that is requested from the server.
@@ -52,12 +49,12 @@ public final class MapDimensionCmd extends AbstractCommand {
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         writer.writeUByte(mapWidth);
         writer.writeUByte(mapHeight);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Width: " + mapWidth + " Height: " + mapHeight);

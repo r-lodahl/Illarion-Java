@@ -17,9 +17,8 @@ package illarion.client.world.items;
 
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
 
 /**
@@ -27,7 +26,6 @@ import java.util.Arrays;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public class CraftingItem {
     /**
      * The index of this item in the list.
@@ -42,13 +40,13 @@ public class CraftingItem {
     /**
      * The ID of the item that is to be crafted.
      */
-    @Nonnull
+    @NotNull
     private final ItemId itemId;
 
     /**
      * The name of the item.
      */
-    @Nonnull
+    @NotNull
     private final String name;
 
     /**
@@ -59,13 +57,13 @@ public class CraftingItem {
     /**
      * The amount of items created in one crafting step.
      */
-    @Nonnull
+    @NotNull
     private final ItemCount buildStackSize;
 
     /**
      * The ingredients required for this item.
      */
-    @Nonnull
+    @NotNull
     private final CraftingIngredientItem[] ingredients;
 
     /**
@@ -73,7 +71,7 @@ public class CraftingItem {
      *
      * @param org the crafting item to copy
      */
-    public CraftingItem(@Nonnull CraftingItem org) {
+    public CraftingItem(@NotNull CraftingItem org) {
         itemIndex = org.itemIndex;
         group = org.group;
         itemId = org.itemId;
@@ -97,11 +95,11 @@ public class CraftingItem {
     public CraftingItem(
             int itemIndex,
             int group,
-            @Nonnull ItemId itemId,
-            @Nonnull String name,
+            @NotNull ItemId itemId,
+            @NotNull String name,
             int buildTime,
-            @Nonnull ItemCount buildStackSize,
-            @Nonnull CraftingIngredientItem... ingredients) {
+            @NotNull ItemCount buildStackSize,
+            @NotNull CraftingIngredientItem... ingredients) {
         this.itemIndex = itemIndex;
         this.group = group;
         this.itemId = itemId;
@@ -121,7 +119,7 @@ public class CraftingItem {
      *
      * @return the size of the stack that is build
      */
-    @Nonnull
+    @NotNull
     public ItemCount getBuildStackSize() {
         return buildStackSize;
     }
@@ -134,7 +132,7 @@ public class CraftingItem {
      * @throws IndexOutOfBoundsException in case {@code index} is less then 0 or larger or equal to {@link
      * #getIngredientCount()}
      */
-    @Nonnull
+    @NotNull
     public CraftingIngredientItem getIngredient(int index) {
         return ingredients[index];
     }
@@ -144,7 +142,7 @@ public class CraftingItem {
      *
      * @return the ID of the item
      */
-    @Nonnull
+    @NotNull
     public ItemId getItemId() {
         return itemId;
     }
@@ -154,7 +152,7 @@ public class CraftingItem {
      *
      * @return the crafted item
      */
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }

@@ -25,10 +25,8 @@ import org.illarion.engine.graphic.MapColor;
 import org.illarion.engine.graphic.WorldMap;
 import org.illarion.engine.graphic.WorldMapDataProvider;
 import org.illarion.engine.graphic.WorldMapDataProviderCallback;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.GuardedBy;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
@@ -49,26 +47,25 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
     /**
      * The texture that shows the world map.
      */
-    @Nonnull
+    @NotNull
     private final GdxTexture worldMapTexture;
 
     /**
      * The pixel data of the world map.
      */
-    @Nonnull
-    @GuardedBy("worldMapPixels")
+    @NotNull
     private final Pixmap worldMapPixels;
 
     /**
      * The data provider that supplies the data of the world map.
      */
-    @Nonnull
+    @NotNull
     private final WorldMapDataProvider provider;
 
     /**
      * The color instance that is used temporary to calculate color values.
      */
-    @Nonnull
+    @NotNull
     private final Color tempDrawingColor;
 
     /**
@@ -76,7 +73,7 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
      */
     private boolean mapDirty;
 
-    GdxWorldMap(@Nonnull WorldMapDataProvider provider) {
+    GdxWorldMap(@NotNull WorldMapDataProvider provider) {
         this.provider = provider;
 
         worldMapPixels = new Pixmap(WORLD_MAP_WIDTH, WORLD_MAP_HEIGHT, Format.RGB888);
@@ -96,14 +93,14 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
         return playerLocation;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public org.illarion.engine.graphic.Texture getWorldMap() {
         return worldMapTexture;
     }
 
     @Override
-    public void setTile(@Nonnull ServerCoordinate loc, int tileId, int overlayId, boolean blocked) {
+    public void setTile(@NotNull ServerCoordinate loc, int tileId, int overlayId, boolean blocked) {
         if (mapOrigin == null) {
             throw new IllegalStateException("World map is not ready yet. The origin is not set.");
         }
@@ -145,7 +142,7 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
     private boolean cancelFetchingTiles;
 
     @Override
-    public void setTileChanged(@Nonnull ServerCoordinate location) {
+    public void setTileChanged(@NotNull ServerCoordinate location) {
         if (mapOrigin == null) {
             throw new IllegalStateException("World map is not ready yet. The origin is not set.");
         }
@@ -184,12 +181,12 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
     }
 
     @Override
-    public void setPlayerLocation(@SuppressWarnings("NullableProblems") @Nonnull ServerCoordinate location) {
+    public void setPlayerLocation(@SuppressWarnings("NullableProblems") @NotNull ServerCoordinate location) {
         playerLocation = location;
     }
 
     @Override
-    public void setMapOrigin(@Nonnull ServerCoordinate location) {
+    public void setMapOrigin(@NotNull ServerCoordinate location) {
         mapOrigin = location;
         clear();
     }
@@ -202,7 +199,7 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
                 while (currentlyFetchingTiles) {
                     try {
                         wait();
-                    } catch (@Nonnull InterruptedException ignored) {
+                    } catch (@NotNull InterruptedException ignored) {
                     }
                 }
             }

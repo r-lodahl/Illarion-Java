@@ -18,9 +18,9 @@ package illarion.easynpc.parsed.talk.conditions;
 import illarion.easynpc.parsed.talk.TalkCondition;
 import illarion.easynpc.writer.LuaRequireTable;
 import illarion.easynpc.writer.LuaWriter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -62,7 +62,7 @@ public final class ConditionTrigger implements TalkCondition {
      * Write the LUA code needed for this trigger.
      */
     @Override
-    public void writeLua(@Nonnull Writer target, @Nonnull LuaRequireTable requires) throws IOException {
+    public void writeLua(@NotNull Writer target, @NotNull LuaRequireTable requires) throws IOException {
         target.write(String.format(LUA_CODE, triggerString.replace("%NUMBER", "(%d+)")));
     }
 }

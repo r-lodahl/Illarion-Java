@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.data;
 
-import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a single warp point, with a start point, as map coordinate and a target point as world coordinate.
@@ -55,7 +56,7 @@ public class MapWarpPoint {
      *
      * @param old
      */
-    public MapWarpPoint(@Nonnull MapWarpPoint old) {
+    public MapWarpPoint(@NotNull MapWarpPoint old) {
         xTarget = old.xTarget;
         yTarget = old.yTarget;
         zTarget = old.zTarget;
@@ -94,7 +95,7 @@ public class MapWarpPoint {
      *
      * @return
      */
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

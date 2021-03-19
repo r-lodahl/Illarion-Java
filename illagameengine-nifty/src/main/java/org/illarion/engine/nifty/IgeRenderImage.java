@@ -18,8 +18,8 @@ package org.illarion.engine.nifty;
 import de.lessvoid.nifty.spi.render.RenderImage;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the general interface for a render image for the Nifty-GUI implementation on this engine.
@@ -28,10 +28,10 @@ import javax.annotation.Nonnull;
  */
 public interface IgeRenderImage extends RenderImage {
 
-    void renderImage(@Nonnull Graphics g, int x, int y, int width, int height, @Nonnull Color color, float imageScale);
+    void renderImage(@NotNull Graphics g, int x, int y, int width, int height, @NotNull Color color, float imageScale);
 
     void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int w,
@@ -40,7 +40,7 @@ public interface IgeRenderImage extends RenderImage {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY);

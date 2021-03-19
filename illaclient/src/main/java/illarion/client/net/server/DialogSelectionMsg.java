@@ -22,9 +22,9 @@ import illarion.client.world.items.SelectionItem;
 import illarion.common.net.NetCommReader;
 import illarion.common.types.ItemId;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +60,7 @@ public final class DialogSelectionMsg implements ServerReply {
     private Collection<SelectionItem> items;
 
     @Override
-    public void decode(@Nonnull NetCommReader reader) throws IOException {
+    public void decode(@NotNull NetCommReader reader) throws IOException {
         title = reader.readString();
         message = reader.readString();
         int itemCount = reader.readByte();
@@ -73,7 +73,7 @@ public final class DialogSelectionMsg implements ServerReply {
         dialogId = reader.readInt();
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ServerReplyResult execute() {
         if ((title == null) || (message == null) || (items == null)) {
@@ -88,7 +88,7 @@ public final class DialogSelectionMsg implements ServerReply {
         return ServerReplyResult.Success;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     @Contract(pure = true)
     public String toString() {

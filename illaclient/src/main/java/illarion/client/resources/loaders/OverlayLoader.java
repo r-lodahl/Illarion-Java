@@ -19,13 +19,13 @@ import illarion.client.resources.ResourceFactory;
 import illarion.client.resources.data.OverlayTemplate;
 import illarion.common.util.TableLoaderOverlay;
 import illarion.common.util.TableLoaderSink;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.assets.SpriteFactory;
 import org.illarion.engine.graphic.Sprite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class is used to load the overlay definitions from the resource table that was created using the
@@ -39,8 +39,8 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
     /**
      * The logger that is used to report error messages.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(OverlayLoader.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     public static final String OVERLAY_PATH = "tiles/";
 
@@ -49,7 +49,7 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
     /**
      * The assets of the game engine that are required to load the data needed for the overlays.
      */
-    @Nonnull
+    @NotNull
     private final Assets assets;
 
     /**
@@ -57,14 +57,14 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
      *
      * @param assets the assets instance of the game engine that is used to load the data
      */
-    public OverlayLoader(@Nonnull Assets assets) {
+    public OverlayLoader(@NotNull Assets assets) {
         this.assets = assets;
     }
 
     /**
      * Trigger the loading sequence for this loader.
      */
-    @Nonnull
+    @NotNull
     @Override
     public ResourceFactory<OverlayTemplate> call() {
         if (!hasTargetFactory()) {
@@ -86,7 +86,7 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
      * Handle a single line of the resource table.
      */
     @Override
-    public boolean processRecord(int line, @Nonnull TableLoaderOverlay loader) {
+    public boolean processRecord(int line, @NotNull TableLoaderOverlay loader) {
         int id = loader.getTileId();
         String name = loader.getOverlayFile();
 
@@ -98,7 +98,7 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@Nonnull IllegalStateException ex) {
+        } catch (@NotNull IllegalStateException ex) {
             log.error("Failed adding overlay to internal factory. ID: {} - Filename: {}", id, name);
         }
 

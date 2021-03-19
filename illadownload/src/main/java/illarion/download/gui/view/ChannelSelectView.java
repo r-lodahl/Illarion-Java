@@ -17,15 +17,15 @@ package illarion.download.gui.view;
 
 import illarion.download.gui.model.GuiModel;
 import javafx.scene.Node;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 
 /**
  * @author Andreas Grob &lt;vilarion@illarion.org&gt;
  */
 public class ChannelSelectView extends ApplicationView {
-    public ChannelSelectView(@Nonnull GuiModel model) throws IOException {
+    public ChannelSelectView(@NotNull GuiModel model) throws IOException {
         super(model);
 
         Node viewContents = Util

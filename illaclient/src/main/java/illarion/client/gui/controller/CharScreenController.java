@@ -25,16 +25,15 @@ import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.SizeValue;
-import illarion.client.state.StateManager;
 import illarion.client.Login;
+import illarion.client.state.StateManager;
 import illarion.client.util.Lang;
 import illarion.common.config.ConfigChangedEvent;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.illarion.engine.State;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Locale;
 
 /**
@@ -64,7 +63,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
     /**
      * The game instance that is used.
      */
-    @Nonnull
+    @NotNull
     private final StateManager stateManager;
 
     /**
@@ -90,14 +89,14 @@ public final class CharScreenController implements ScreenController, KeyInputHan
      *
      * @param stateManager the reference to the game that is required by the controller
      */
-    public CharScreenController(@Nonnull StateManager stateManager) {
+    public CharScreenController(@NotNull StateManager stateManager) {
         this.stateManager = stateManager;
         AnnotationProcessor.process(this);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -178,7 +177,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
     }
 
     @Override
-    public boolean keyEvent(@Nonnull NiftyInputEvent inputEvent) {
+    public boolean keyEvent(@NotNull NiftyInputEvent inputEvent) {
         if (inputEvent == NiftyStandardInputEvent.Activate) {
             play();
             return true;

@@ -15,7 +15,8 @@
  */
 package illarion.download.maven;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
@@ -23,11 +24,11 @@ import java.util.regex.Pattern;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class MavenVersionComparator implements Comparator<String> {
-    @Nonnull
+    @NotNull
     private static final Pattern VERSION_SEP_PATTER = Pattern.compile("[.-]");
 
     @Override
-    public int compare(@Nonnull String o1, @Nonnull String o2) {
+    public int compare(@NotNull String o1, @NotNull String o2) {
         String[] versionParts1 = VERSION_SEP_PATTER.split(o1);
         String[] versionParts2 = VERSION_SEP_PATTER.split(o2);
 
@@ -42,7 +43,7 @@ class MavenVersionComparator implements Comparator<String> {
         return Integer.compare(versionParts1.length, versionParts2.length);
     }
 
-    private int compareEntry(@Nonnull String e1, @Nonnull String e2) {
+    private int compareEntry(@NotNull String e1, @NotNull String e2) {
         if ("SNAPSHOT".equals(e1)) {
             if ("SNAPSHOT".equals(e2)) {
                 return 0;

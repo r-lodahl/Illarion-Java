@@ -18,13 +18,13 @@ package illarion.easyquest.gui;
 import illarion.common.util.CopyrightHeader;
 import illarion.easyquest.Lang;
 import illarion.easyquest.QuestIO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -38,7 +38,7 @@ public final class Utils {
     @Nullable
     private static final CopyrightHeader COPYRIGHT_HEADER = new CopyrightHeader(80, "<!--", "-->", null, null);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Utils() {
     }
@@ -49,7 +49,7 @@ public final class Utils {
         Image image;
         try {
             image = ImageIO.read(Utils.class.getClassLoader().getResource(resource));
-        } catch (@Nonnull IOException e) {
+        } catch (@NotNull IOException e) {
             LOGGER.error("Failed to read image: \"{}" + '"', resource);
             return null;
         }
@@ -58,7 +58,7 @@ public final class Utils {
         return ImageWrapperResizableIcon.getIcon(image, new Dimension(width, height));
     }
 
-    public static void saveEasyQuest(@Nonnull Editor editor) {
+    public static void saveEasyQuest(@NotNull Editor editor) {
         Path file = editor.getQuestFile();
         if (file == null) {
             selectAndSaveEasyQuest(editor);
@@ -73,7 +73,7 @@ public final class Utils {
         }
     }
 
-    static void exportEasyQuest(@Nonnull Editor editor) {
+    static void exportEasyQuest(@NotNull Editor editor) {
         if (editor.validQuest()) {
             JFileChooser dirDiag = new JFileChooser();
             dirDiag.setDialogTitle("Exportieren");
@@ -96,7 +96,7 @@ public final class Utils {
         JFileChooser fileDiag = new JFileChooser();
         fileDiag.setFileFilter(new FileFilter() {
             @Override
-            public boolean accept(@Nonnull File f) {
+            public boolean accept(@NotNull File f) {
                 return !f.isFile() || f.getName().endsWith(".quest"); //$NON-NLS-1$
             }
 
@@ -115,7 +115,7 @@ public final class Utils {
         }
     }
 
-    static void openQuest(@Nonnull Path file) {
+    static void openQuest(@NotNull Path file) {
         int editorIndex = MainFrame.getInstance().alreadyOpen(file);
         if (editorIndex > -1) {
             MainFrame.getInstance().setCurrentEditorTab(editorIndex);
@@ -129,11 +129,11 @@ public final class Utils {
         Config.getInstance().addLastOpenedFile(file);
     }
 
-    static void selectAndSaveEasyQuest(@Nonnull Editor editor) {
+    static void selectAndSaveEasyQuest(@NotNull Editor editor) {
         JFileChooser fileDiag = new JFileChooser();
         fileDiag.setFileFilter(new FileFilter() {
             @Override
-            public boolean accept(@Nonnull File f) {
+            public boolean accept(@NotNull File f) {
                 return !f.isFile() || f.getName().endsWith(".quest"); //$NON-NLS-1$
             }
 

@@ -43,6 +43,8 @@ import illarion.common.types.CharacterId;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ItemId;
 import illarion.common.types.Rectangle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.illarion.engine.graphic.Font;
@@ -56,11 +58,9 @@ import org.illarion.nifty.controls.dialog.input.builder.DialogCharacterBuilder;
 import org.illarion.nifty.controls.dialog.input.builder.DialogInputBuilder;
 import org.illarion.nifty.controls.dialog.message.builder.DialogMessageBuilder;
 import org.illarion.nifty.controls.dialog.select.builder.DialogSelectBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
@@ -77,55 +77,55 @@ public final class DialogHandler
         DialogSelectionGui, ScreenController, UpdatableHandler {
 
     private static class BuildWrapper {
-        @Nonnull
+        @NotNull
         private final ControlBuilder builder;
-        @Nonnull
+        @NotNull
         private final Element parent;
         @Nullable
         private final PostBuildTask task;
 
-        BuildWrapper(@Nonnull ControlBuilder builder, @Nonnull Element parent, @Nullable PostBuildTask task) {
+        BuildWrapper(@NotNull ControlBuilder builder, @NotNull Element parent, @Nullable PostBuildTask task) {
             this.builder = builder;
             this.parent = parent;
             this.task = task;
         }
 
-        public void executeTask(@Nonnull Element createdElement) {
+        public void executeTask(@NotNull Element createdElement) {
             if (task != null) {
                 task.run(createdElement);
             }
         }
 
-        @Nonnull
+        @NotNull
         public ControlBuilder getBuilder() {
             return builder;
         }
 
-        @Nonnull
+        @NotNull
         public Element getParent() {
             return parent;
         }
     }
 
     private static class DialogCloseData {
-        @Nonnull
+        @NotNull
         public final Set<DialogType> types;
         public final int dialogId;
 
-        public DialogCloseData(int id, @Nonnull Collection<DialogType> types) {
+        public DialogCloseData(int id, @NotNull Collection<DialogType> types) {
             this.types = EnumSet.copyOf(types);
             dialogId = id;
         }
     }
 
     private interface PostBuildTask {
-        void run(@Nonnull Element createdElement);
+        void run(@NotNull Element createdElement);
     }
 
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(DialogHandler.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
-    @Nonnull
+    @NotNull
     private static final Pattern dialogNamePattern = Pattern.compile("([a-z]+)Dialog([0-9]+)");
     /**
      * The input control that is used in this dialog handler.
@@ -139,9 +139,9 @@ public final class DialogHandler
     private boolean openCraftDialog;
     private boolean craftingInProgress;
 
-    @Nonnull
+    @NotNull
     private final Queue<BuildWrapper> builders;
-    @Nonnull
+    @NotNull
     private final Queue<DialogCloseData> closers;
     private Nifty nifty;
     private Screen screen;
@@ -161,14 +161,14 @@ public final class DialogHandler
         numberSelect = numberSelectPopupHandler;
     }
 
-    private void addCraftingItemsToDialog(@Nonnull Iterable<String> groups, @Nonnull Iterable<CraftingItem> items,
-                                          @Nonnull DialogCrafting dialog) {
+    private void addCraftingItemsToDialog(@NotNull Iterable<String> groups, @NotNull Iterable<CraftingItem> items,
+                                          @NotNull DialogCrafting dialog) {
         if (nifty == null) {
             throw new IllegalStateException("Dialog handler is not bound yet.");
         }
 
         List<NiftyCraftingCategory> categories = new ArrayList<>();
-        for (@Nonnull String group : groups) {
+        for (@NotNull String group : groups) {
             categories.add(new NiftyCraftingCategory(group));
         }
 
@@ -196,14 +196,14 @@ public final class DialogHandler
     }
 
     @Override
-    public void showSelectionDialog(int dialogId, @Nonnull String title, @Nonnull String content,
-                                    @Nonnull Collection<SelectionItem> items) {
+    public void showSelectionDialog(int dialogId, @NotNull String title, @NotNull String content,
+                                    @NotNull Collection<SelectionItem> items) {
         World.getUpdateTaskManager().addTask((delta) ->
                 showSelectionDialogImpl(dialogId, title, content, items));
     }
 
-    private void showSelectionDialogImpl(int dialogId, @Nonnull String title, @Nonnull String content,
-                                         @Nonnull Collection<SelectionItem> items) {
+    private void showSelectionDialogImpl(int dialogId, @NotNull String title, @NotNull String content,
+                                         @NotNull Collection<SelectionItem> items) {
         if (screen == null) {
             throw new IllegalStateException("UI is not ready yet.");
         }
@@ -218,7 +218,7 @@ public final class DialogHandler
         int selectedWidth = 0;
         boolean useImages = false;
         Font textFont = FontLoader.getInstance().getFont(FontLoader.TEXT_FONT);
-        for (@Nonnull SelectionItem item : items) {
+        for (@NotNull SelectionItem item : items) {
             useImages = useImages || ItemId.isValidItem(item.getId());
             selectedWidth = Math.max(selectedWidth, textFont.getWidth(item.getName()));
         }
@@ -245,7 +245,7 @@ public final class DialogHandler
                 if (nifty == null) {
                     throw new IllegalStateException("UI is not ready yet.");
                 }
-                for (@Nonnull SelectionItem item : items) {
+                for (@NotNull SelectionItem item : items) {
                     dialog.addItem(new NiftySelectItem(nifty, item));
                 }
             }
@@ -263,7 +263,7 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(id = "craftingDialog")
-    public void handleCraftingCloseDialogEvent(String topic, @Nonnull DialogCraftingCloseEvent event) {
+    public void handleCraftingCloseDialogEvent(String topic, @NotNull DialogCraftingCloseEvent event) {
         closeCraftingDialog(event.getDialogId());
     }
 
@@ -277,14 +277,14 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(id = "craftingDialog")
-    public void handleCraftingCraftItemEvent(String topic, @Nonnull DialogCraftingCraftEvent event) {
+    public void handleCraftingCraftItemEvent(String topic, @NotNull DialogCraftingCraftEvent event) {
         World.getNet()
                 .sendCommand(new CraftItemCmd(event.getDialogId(), event.getItem().getItemIndex(), event.getCount()));
     }
 
     @NiftyEventSubscriber(id = "craftingDialog")
     public void handleCraftingIngredientLookAtEvent(
-            String topic, @Nonnull DialogCraftingLookAtIngredientItemEvent event) {
+            String topic, @NotNull DialogCraftingLookAtIngredientItemEvent event) {
         if (lastCraftingTooltip == event.getIngredientIndex()) {
             return;
         }
@@ -299,7 +299,7 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(id = "craftingDialog")
-    public void handleCraftingItemLookAtEvent(String topic, @Nonnull DialogCraftingLookAtItemEvent event) {
+    public void handleCraftingItemLookAtEvent(String topic, @NotNull DialogCraftingLookAtItemEvent event) {
         if (lastCraftingTooltip == -1) {
             return;
         }
@@ -313,7 +313,7 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(id = "merchantDialog")
-    public void handleMerchantLookAtEvent(String topic, @Nonnull DialogMerchantLookAtEvent event) {
+    public void handleMerchantLookAtEvent(String topic, @NotNull DialogMerchantLookAtEvent event) {
         if (input.isAnyButtonDown(Button.Left, Button.Right)) {
             return;
         }
@@ -346,7 +346,7 @@ public final class DialogHandler
     }
 
     @Override
-    public void bind(@Nonnull Nifty nifty, @Nonnull Screen screen) {
+    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
 
@@ -369,7 +369,7 @@ public final class DialogHandler
     }
 
     @Override
-    public void showMerchantListTooltip(int dialogId, int list, int itemIndex, @Nonnull Tooltip tooltip) {
+    public void showMerchantListTooltip(int dialogId, int list, int itemIndex, @NotNull Tooltip tooltip) {
         if ((merchantDialog == null) || (merchantDialog.getDialogId() != dialogId)) {
             return;
         }
@@ -408,12 +408,12 @@ public final class DialogHandler
     }
 
     @Override
-    public void showMerchantDialog(int dialogId, @Nonnull String title,
-                                   @Nonnull Collection<MerchantItem> items) {
+    public void showMerchantDialog(int dialogId, @NotNull String title,
+                                   @NotNull Collection<MerchantItem> items) {
         World.getUpdateTaskManager().addTask((delta) -> showMerchantDialogImpl(dialogId, title, items));
     }
 
-    private void showMerchantDialogImpl(int dialogId, @Nonnull String title, @Nonnull Iterable<MerchantItem> items) {
+    private void showMerchantDialogImpl(int dialogId, @NotNull String title, @NotNull Iterable<MerchantItem> items) {
         if ((merchantDialog == null) || (nifty == null)) {
             log.error("Can't show the merchant dialog. Binding is now done.");
             return;
@@ -452,7 +452,7 @@ public final class DialogHandler
 
     @Override
     public void showCraftIngredientTooltip(
-            int dialogId, int index, int ingredientIndex, @Nonnull Tooltip tooltip) {
+            int dialogId, int index, int ingredientIndex, @NotNull Tooltip tooltip) {
         if ((craftingDialog == null) || (craftingDialog.getDialogId() != dialogId)) {
             return;
         }
@@ -468,7 +468,7 @@ public final class DialogHandler
     }
 
     @Override
-    public void showCraftItemTooltip(int dialogId, int index, @Nonnull Tooltip tooltip) {
+    public void showCraftItemTooltip(int dialogId, int index, @NotNull Tooltip tooltip) {
         if ((craftingDialog == null) || (craftingDialog.getDialogId() != dialogId)) {
             return;
         }
@@ -483,9 +483,9 @@ public final class DialogHandler
         }
     }
 
-    private void showCraftingDialogImpl(int dialogId, @Nonnull String title,
-                                        @Nonnull Iterable<String> groups,
-                                        @Nonnull Iterable<CraftingItem> items) {
+    private void showCraftingDialogImpl(int dialogId, @NotNull String title,
+                                        @NotNull Iterable<String> groups,
+                                        @NotNull Iterable<CraftingItem> items) {
         if (craftingDialog == null) {
             throw new IllegalStateException("Instance of crafting dialog not found. Binding not done?");
         }
@@ -523,8 +523,8 @@ public final class DialogHandler
     }
 
     @Override
-    public void showCraftingDialog(int dialogId, @Nonnull String title, @Nonnull Collection<String> groups,
-                                   @Nonnull Collection<CraftingItem> items) {
+    public void showCraftingDialog(int dialogId, @NotNull String title, @NotNull Collection<String> groups,
+                                   @NotNull Collection<CraftingItem> items) {
         World.getUpdateTaskManager().addTask((delta) -> showCraftingDialogImpl(dialogId, title, groups, items));
     }
 
@@ -568,9 +568,9 @@ public final class DialogHandler
 
     @Override
     public void showInputDialog(
-            int dialogId, @Nonnull String title, @Nonnull String message, int maxLength, boolean multiLine) {
+            int dialogId, @NotNull String title, @NotNull String message, int maxLength, boolean multiLine) {
         Element parentArea = screen.findElementById("windows");
-        DialogInputBuilder builder = new DialogInputBuilder("inputDialog" + Integer.toString(dialogId), title);
+        DialogInputBuilder builder = new DialogInputBuilder("inputDialog" + dialogId, title);
         builder.description(message);
         builder.buttonLeft("OK");
         builder.buttonRight("Cancel");
@@ -590,7 +590,7 @@ public final class DialogHandler
     }
 
     @Override
-    public void showCharacterDialog(@Nonnull CharacterId charId, String lookAt) {
+    public void showCharacterDialog(@NotNull CharacterId charId, String lookAt) {
         Element parentArea = screen.findElementById("windows");
         Char chara = World.getPeople().getCharacter(charId);
 
@@ -599,7 +599,7 @@ public final class DialogHandler
             return;
         }
         String currentCustomName = chara.getCustomName();
-        String dialogName = "characterDialog" + Long.toString(charId.getValue());
+        String dialogName = "characterDialog" + charId.getValue();
         if (parentArea.findElementById(dialogName) != null) {
             return;
         }
@@ -613,7 +613,7 @@ public final class DialogHandler
         builder.initalText((currentCustomName == null) ? "" : currentCustomName);
 
         builder.style("illarion-dialog-character");
-        log.debug("Built Character dialog: " + builder.toString());
+        log.debug("Built Character dialog: " + builder);
         builders.add(new BuildWrapper(builder, parentArea, createdElement -> {
             DialogCharacterControl control = createdElement.getNiftyControl(DialogCharacterControl.class);
             if (control != null) {
@@ -623,9 +623,9 @@ public final class DialogHandler
     }
 
     @Override
-    public void showMessageDialog(int dialogId, @Nonnull String title, @Nonnull String message) {
+    public void showMessageDialog(int dialogId, @NotNull String title, @NotNull String message) {
         Element parentArea = screen.findElementById("windows");
-        DialogMessageBuilder builder = new DialogMessageBuilder("msgDialog" + Integer.toString(dialogId), title);
+        DialogMessageBuilder builder = new DialogMessageBuilder("msgDialog" + dialogId, title);
         builder.text(message);
         builder.button("OK");
         builder.dialogId(dialogId);
@@ -667,17 +667,17 @@ public final class DialogHandler
 
     @Nullable
     @Override
-    public DialogType getDialogType(int dialogId, @Nonnull DialogType firstType, @Nonnull DialogType... moreTypes) {
+    public DialogType getDialogType(int dialogId, @NotNull DialogType firstType, @NotNull DialogType... moreTypes) {
         return getDialogType(dialogId, EnumSet.of(firstType, moreTypes));
     }
 
     @Override
-    public void closeDialog(int dialogId, @Nonnull Collection<DialogType> dialogTypes) {
+    public void closeDialog(int dialogId, @NotNull Collection<DialogType> dialogTypes) {
         closers.add(new DialogCloseData(dialogId, dialogTypes));
     }
 
     @Nullable
-    public DialogType getDialogType(int dialogId, @Nonnull Collection<DialogType> types) {
+    public DialogType getDialogType(int dialogId, @NotNull Collection<DialogType> types) {
         if (types.contains(DialogType.Merchant)) {
             if (merchantDialog != null) {
                 if (dialogId == merchantDialog.getDialogId()) {
@@ -725,14 +725,14 @@ public final class DialogHandler
                         return DialogType.Selection;
                     }
                 }
-            } catch (@Nonnull NumberFormatException ignored) {
+            } catch (@NotNull NumberFormatException ignored) {
                 // nothing
             }
         }
         return null;
     }
 
-    private void closeDialogImpl(int dialogId, @Nonnull Collection<DialogType> dialogTypes) {
+    private void closeDialogImpl(int dialogId, @NotNull Collection<DialogType> dialogTypes) {
         if (screen == null) {
             return;
         }
@@ -782,14 +782,14 @@ public final class DialogHandler
                         child.hide(child::markForRemoval);
                     }
                 }
-            } catch (@Nonnull NumberFormatException ignored) {
+            } catch (@NotNull NumberFormatException ignored) {
                 // nothing
             }
         }
     }
 
     @NiftyEventSubscriber(id = "merchantDialog")
-    public void handleMerchantBuyEvent(String topic, @Nonnull DialogMerchantBuyEvent event) {
+    public void handleMerchantBuyEvent(String topic, @NotNull DialogMerchantBuyEvent event) {
         MerchantList list = World.getPlayer().getMerchantList();
 
         if (list == null) {
@@ -833,7 +833,7 @@ public final class DialogHandler
 
 
     @NiftyEventSubscriber(pattern = "inputDialog[0-9]+")
-    public void handleInputConfirmedEvent(String topic, @Nonnull DialogInputConfirmedEvent event) {
+    public void handleInputConfirmedEvent(String topic, @NotNull DialogInputConfirmedEvent event) {
         if (event.getPressedButton() == DialogButton.LeftButton) {
             World.getNet().sendCommand(new CloseDialogInputCmd(event.getDialogId(), event.getText(), true));
         } else {
@@ -842,7 +842,7 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(pattern = "characterDialog[-0-9]+")
-    public void handleNamingConfirmedEvent(String topic, @Nonnull DialogInputConfirmedEvent event) {
+    public void handleNamingConfirmedEvent(String topic, @NotNull DialogInputConfirmedEvent event) {
         if (event.getPressedButton() == DialogButton.LeftButton) {
             CharacterId id = new CharacterId(event.getDialogId());
             String newName = event.getText();
@@ -855,18 +855,18 @@ public final class DialogHandler
     }
 
     @NiftyEventSubscriber(pattern = "msgDialog[0-9]+")
-    public void handleMessageConfirmedEvent(String topic, @Nonnull DialogMessageConfirmedEvent event) {
+    public void handleMessageConfirmedEvent(String topic, @NotNull DialogMessageConfirmedEvent event) {
         World.getNet().sendCommand(new CloseDialogMessageCmd(event.getDialogId()));
     }
 
     @NiftyEventSubscriber(pattern = "selectDialog[0-9]+")
-    public void handleSelectionCancelEvent(String topic, @Nonnull DialogSelectCancelEvent event) {
+    public void handleSelectionCancelEvent(String topic, @NotNull DialogSelectCancelEvent event) {
         World.getNet().sendCommand(new CloseDialogSelectionCmd(event.getDialogId(), 0, false));
         World.getGameGui().getDialogGui().closeDialog(event.getDialogId(), EnumSet.of(DialogType.Selection));
     }
 
     @NiftyEventSubscriber(pattern = "selectDialog[0-9]+")
-    public void handleSelectionSelectEvent(String topic, @Nonnull DialogSelectSelectEvent event) {
+    public void handleSelectionSelectEvent(String topic, @NotNull DialogSelectSelectEvent event) {
         World.getNet().sendCommand(new CloseDialogSelectionCmd(event.getDialogId(), event.getItemIndex(), true));
         World.getGameGui().getDialogGui().closeDialog(event.getDialogId(), EnumSet.of(DialogType.Selection));
     }

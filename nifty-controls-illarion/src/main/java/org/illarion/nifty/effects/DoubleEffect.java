@@ -22,11 +22,11 @@ import de.lessvoid.nifty.effects.EffectProperties;
 import de.lessvoid.nifty.effects.Falloff;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.render.NiftyRenderEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -40,7 +40,7 @@ public final class DoubleEffect implements EffectImpl {
     /**
      * The logger for this class that keeps track on the problems occurring in this effect.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DoubleEffect.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The target class that contains the method that will be called. This class is requested as Nifty-Control from
@@ -65,18 +65,18 @@ public final class DoubleEffect implements EffectImpl {
     @Override
     @SuppressWarnings("unchecked")
     public void activate(
-            @Nonnull Nifty nifty, @Nonnull Element element, @Nonnull EffectProperties parameter) {
+            @NotNull Nifty nifty, @NotNull Element element, @NotNull EffectProperties parameter) {
         try {
             targetControlClass = (Class<? extends NiftyControl>) Class
                     .forName(String.valueOf(parameter.get("targetClass")));
-        } catch (@Nonnull ClassNotFoundException e) {
+        } catch (@NotNull ClassNotFoundException e) {
             LOGGER.error("Illegal target class for double effect.");
             return;
         }
 
         try {
             targetMethod = targetControlClass.getMethod(String.valueOf(parameter.get("targetMethod")), double.class);
-        } catch (@Nonnull NoSuchMethodException e) {
+        } catch (@NotNull NoSuchMethodException e) {
             LOGGER.error("Illegal target method for double effect.", e);
         }
     }
@@ -91,10 +91,10 @@ public final class DoubleEffect implements EffectImpl {
      */
     @Override
     public void execute(
-            @Nonnull Element element,
+            @NotNull Element element,
             float effectTime,
             Falloff falloff,
-            @Nonnull NiftyRenderEngine r) {
+            @NotNull NiftyRenderEngine r) {
         if ((targetControlClass == null) || (targetMethod == null)) {
             // something is badly wrong. Don't do anything in this effect.
             return;

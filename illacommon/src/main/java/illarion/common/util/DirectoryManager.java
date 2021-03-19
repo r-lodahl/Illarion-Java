@@ -15,11 +15,12 @@
  */
 package illarion.common.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,8 +35,8 @@ import java.nio.file.Paths;
 public final class DirectoryManager {
     @SuppressWarnings("LoggerInitializedWithForeignClass")
     private static final class LazyHolder {
-        @Nonnull
-        static final Logger log = LoggerFactory.getLogger(DirectoryManager.class);
+        @NotNull
+        static final Logger log = LogManager.getLogger();
     }
 
     /**
@@ -46,7 +47,7 @@ public final class DirectoryManager {
      *
      * @return the logging instance
      */
-    @Nonnull
+    @NotNull
     private static Logger getLog() {
         return LazyHolder.log;
     }
@@ -69,13 +70,13 @@ public final class DirectoryManager {
     /**
      * The singleton instance of this class.
      */
-    @Nonnull
+    @NotNull
     private static final DirectoryManager INSTANCE = new DirectoryManager();
 
     /**
      * The detected working directory.
      */
-    @Nonnull
+    @NotNull
     private final Path workingDirectory;
 
     /**
@@ -114,7 +115,7 @@ public final class DirectoryManager {
      *
      * @return the singleton instance
      */
-    @Nonnull
+    @NotNull
     public static DirectoryManager getInstance() {
         return INSTANCE;
     }
@@ -125,8 +126,8 @@ public final class DirectoryManager {
      * @param dir the directory
      * @return the location of the directory in the local file system or {@code null} in case the directory is not set
      */
-    @Nonnull
-    public Path getDirectory(@Nonnull Directory dir) {
+    @NotNull
+    public Path getDirectory(@NotNull Directory dir) {
         switch (dir) {
             case User:
                 if (System.getProperty("os.name").contains("Mac OS X")) {
@@ -139,7 +140,7 @@ public final class DirectoryManager {
         throw new IllegalArgumentException("Parameter 'dir' was set to an illegal value: " + dir);
     }
 
-    @Nonnull
+    @NotNull
     private Path getBinaryDirectory() {
         if (binaryDirectory == null) {
             Path firstChoice = workingDirectory.resolve("bin");
@@ -181,8 +182,8 @@ public final class DirectoryManager {
         return binaryDirectory;
     }
 
-    @Nonnull
-    public Path resolveFile(@Nonnull Directory dir, @Nonnull String... segments) {
+    @NotNull
+    public Path resolveFile(@NotNull Directory dir, @NotNull String... segments) {
         Path result = getDirectory(dir);
         for (String segment : segments) {
             result = result.resolve(segment);
@@ -196,7 +197,7 @@ public final class DirectoryManager {
      *
      * @return the working directory or {@code null} in case none is supported
      */
-    @Nonnull
+    @NotNull
     public Path getWorkingDirectory() {
         return workingDirectory;
     }

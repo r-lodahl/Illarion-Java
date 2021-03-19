@@ -16,10 +16,9 @@
 package org.illarion.engine.graphic;
 
 import org.illarion.engine.BackendBinding;
-import org.illarion.engine.Window;
 import org.illarion.engine.graphic.effects.SceneEffect;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This class represents a 2D scene that is rendered to the screen. This should be used to render the games graphics.
@@ -32,7 +31,7 @@ public interface Scene {
      *
      * @param element the element to add
      */
-    void addElement(@Nonnull SceneElement element);
+    void addElement(@NotNull SceneElement element);
 
     /**
      * This needs to be called for a existing element of the scene. This function has to ensure that the render order
@@ -41,21 +40,21 @@ public interface Scene {
      *
      * @param element the element to check
      */
-    void updateElementLocation(@Nonnull SceneElement element);
+    void updateElementLocation(@NotNull SceneElement element);
 
     /**
      * Remove a element from the scene.
      *
      * @param element the element to remove
      */
-    void removeElement(@Nonnull SceneElement element);
+    void removeElement(@NotNull SceneElement element);
 
     /**
      * Update the scene.
      *
      * @param delta the time since the last update
      */
-    void update(@Nonnull BackendBinding binding, int delta);
+    void update(@NotNull BackendBinding binding, int delta);
 
     /**
      * This function is called to render the scene. It does so by calling the {@link SceneElement#render(Graphics)}
@@ -65,7 +64,7 @@ public interface Scene {
      * @param offsetX the x coordinate of the offset that is applied to all rendered elements
      * @param offsetY the y coordinate of the offset that is applied to all rendered elements
      */
-    void render(@Nonnull Graphics graphics, int offsetX, int offsetY);
+    void render(@NotNull Graphics graphics, int offsetX, int offsetY);
 
     /**
      * This function publishes events to the scene. The actual publishing is done during the call of the
@@ -73,21 +72,21 @@ public interface Scene {
      *
      * @param event the event to publish
      */
-    void publishEvent(@Nonnull SceneEvent event);
+    void publishEvent(@NotNull SceneEvent event);
 
     /**
      * Add a effect to the scene.
      *
      * @param effect the effect applied to the scene
      */
-    void addEffect(@Nonnull SceneEffect effect);
+    void addEffect(@NotNull SceneEffect effect);
 
     /**
      * Remove a effect from the scene.
      *
      * @param effect the effect to remove
      */
-    void removeEffect(@Nonnull SceneEffect effect);
+    void removeEffect(@NotNull SceneEffect effect);
 
     /**
      * Remove all effects from the scene.

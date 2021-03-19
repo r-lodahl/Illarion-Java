@@ -22,9 +22,9 @@ import illarion.client.world.World;
 import illarion.common.graphics.Layer;
 import illarion.common.types.ServerCoordinate;
 import org.illarion.engine.graphic.LightSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * A effect is a frame based animation that shows at one tile on the game map.
@@ -50,7 +50,7 @@ public final class Effect extends AbstractEntity<EffectTemplate> implements Reso
      *
      * @param template the template used to create a new item
      */
-    public Effect(@Nonnull EffectTemplate template) {
+    public Effect(@NotNull EffectTemplate template) {
         super(template);
 
         if (template.getFrames() > 0) {
@@ -68,7 +68,7 @@ public final class Effect extends AbstractEntity<EffectTemplate> implements Reso
      * @param effectID the id of the effect that is needed
      * @return the instance of Effect that shall be used
      */
-    @Nonnull
+    @NotNull
     public static Effect create(int effectID) {
         return new Effect(EffectFactory.getInstance().getTemplate(effectID));
     }
@@ -105,7 +105,7 @@ public final class Effect extends AbstractEntity<EffectTemplate> implements Reso
      *
      * @param loc the location on the game map the effect shall be shown on
      */
-    public void show(@Nonnull ServerCoordinate loc) {
+    public void show(@NotNull ServerCoordinate loc) {
         setScreenPos(loc.toDisplayCoordinate(Layer.Effects));
         if (animation != null) {
             animation.restart();

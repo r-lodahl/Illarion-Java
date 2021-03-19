@@ -24,10 +24,10 @@ import illarion.mapedit.resource.loaders.ImageLoader;
 import illarion.mapedit.resource.loaders.OverlayLoader;
 import illarion.mapedit.resource.loaders.TileLoader;
 import illarion.mapedit.util.SwingLocation;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -57,16 +57,16 @@ public class TileRenderer extends AbstractMapRenderer {
     /**
      * Creates a new map renderer
      */
-    public TileRenderer(@Nonnull RendererManager manager) {
+    public TileRenderer(@NotNull RendererManager manager) {
         super(manager);
     }
 
     @Override
     public void renderMap(
-            @Nonnull Map map,
-            @Nonnull Rectangle viewport,
+            @NotNull Map map,
+            @NotNull Rectangle viewport,
             int level,
-            @Nonnull Graphics2D g) {
+            @NotNull Graphics2D g) {
         int z = map.getZ() - level;
         AffineTransform transform = g.getTransform();
 
@@ -104,13 +104,13 @@ public class TileRenderer extends AbstractMapRenderer {
     private void renderTile(
             int xDisp,
             int yDisp,
-            @Nonnull Graphics2D graphics,
-            @Nonnull Image image) {
+            @NotNull Graphics2D graphics,
+            @NotNull Image image) {
         graphics.translate(xDisp, yDisp);
         graphics.drawImage(image, 0, 0, null);
     }
 
-    private void renderOverlay(@Nonnull Graphics2D graphics, @Nonnull MapTile mapTile) {
+    private void renderOverlay(@NotNull Graphics2D graphics, @NotNull MapTile mapTile) {
         Overlay o = OverlayLoader.getInstance().getOverlayFromId(mapTile.getOverlayID());
         if (o != null) {
             Image imageOverlay = o.getImgs()[mapTile.getShapeID() - 1];
@@ -140,7 +140,7 @@ public class TileRenderer extends AbstractMapRenderer {
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public RibbonElementPriority getPriority() {
         return RibbonElementPriority.TOP;
@@ -162,7 +162,7 @@ public class TileRenderer extends AbstractMapRenderer {
         renderEmpty = renderEmptyTiles;
     }
 
-    @Nonnull
+    @NotNull
     public RibbonElementPriority getEmptyTilePriority() {
         return RibbonElementPriority.TOP;
     }

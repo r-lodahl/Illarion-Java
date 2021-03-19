@@ -16,8 +16,8 @@
 package illarion.client.input;
 
 import org.illarion.engine.input.Button;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This event is published when a double click operation on the map was noted.
@@ -32,7 +32,7 @@ public final class DoubleClickOnMapEvent extends AbstractMouseOnMapEvent {
      * @param x the x coordinate of the click
      * @param y the y coordinate of the click
      */
-    public DoubleClickOnMapEvent(@Nonnull Button key, int x, int y) {
+    public DoubleClickOnMapEvent(@NotNull Button key, int x, int y) {
         super(key, x, y);
     }
 }

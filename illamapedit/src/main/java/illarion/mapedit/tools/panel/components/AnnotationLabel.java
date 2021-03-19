@@ -15,7 +15,8 @@
  */
 package illarion.mapedit.tools.panel.components;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;

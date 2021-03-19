@@ -17,9 +17,9 @@ package illarion.easyquest.gui;
 
 import illarion.easyquest.quest.IntegerRelation;
 import illarion.easyquest.quest.Relation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -81,7 +81,7 @@ public class IntegerRelationParameter extends JPanel implements Parameter {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public Object getParameter() {
         return new IntegerRelation((Relation) relation.getSelectedItem(), (Long) integer.getValue());
     }

@@ -23,10 +23,10 @@ import illarion.mapedit.history.GroupAction;
 import illarion.mapedit.history.ItemPlacedAction;
 import illarion.mapedit.resource.ItemImg;
 import illarion.mapedit.tools.panel.ItemBrushPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
@@ -34,7 +34,7 @@ import javax.swing.*;
  * @author Fredrik K
  */
 public class ItemBrushTool extends AbstractTool {
-    @Nonnull
+    @NotNull
     private final ItemBrushPanel panel;
 
     public ItemBrushTool() {
@@ -42,7 +42,7 @@ public class ItemBrushTool extends AbstractTool {
     }
 
     @Override
-    public void clickedAt(int x, int y, @Nonnull Map map) {
+    public void clickedAt(int x, int y, @NotNull Map map) {
         ItemPlacedAction newAction = addItem(x, y, map);
         if (newAction != null) {
             getHistory().addEntry(newAction);
@@ -50,7 +50,7 @@ public class ItemBrushTool extends AbstractTool {
     }
 
     @Override
-    public void paintSelected(int x, int y, @Nonnull Map map, @Nonnull GroupAction action) {
+    public void paintSelected(int x, int y, @NotNull Map map, @NotNull GroupAction action) {
         ItemPlacedAction newAction = addItem(x, y, map);
         if (newAction != null) {
             action.addAction(newAction);
@@ -58,7 +58,7 @@ public class ItemBrushTool extends AbstractTool {
     }
 
     @Nullable
-    private ItemPlacedAction addItem(int x, int y, @Nonnull Map map) {
+    private ItemPlacedAction addItem(int x, int y, @NotNull Map map) {
         ItemImg item = getManager().getSelectedItem();
         if (item == null) {
             return null;
@@ -83,7 +83,7 @@ public class ItemBrushTool extends AbstractTool {
         return null;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public JPanel getSettingsPanel() {
         return panel;

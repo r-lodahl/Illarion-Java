@@ -17,9 +17,9 @@ package org.illarion.engine.assets;
 
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * This manager loads and maintains references to the sound and music objects that were load.
@@ -34,7 +34,7 @@ public interface SoundsManager {
      * @return the sound effect or {@code null} if this sound is unknown
      */
     @Nullable
-    Sound getSound(@Nonnull String ref);
+    Sound getSound(@NotNull String ref);
 
     /**
      * Get a background music track.
@@ -43,5 +43,5 @@ public interface SoundsManager {
      * @return the track or {@code null} in case the track is unknown
      */
     @Nullable
-    Music getMusic(@Nonnull String ref);
+    Music getMusic(@NotNull String ref);
 }

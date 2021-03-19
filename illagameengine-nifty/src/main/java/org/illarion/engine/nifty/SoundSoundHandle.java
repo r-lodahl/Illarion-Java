@@ -18,8 +18,8 @@ package org.illarion.engine.nifty;
 import de.lessvoid.nifty.spi.sound.SoundHandle;
 import org.illarion.engine.sound.Sound;
 import org.illarion.engine.sound.Sounds;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is the sound handle used to reference to the sound effect.
@@ -30,13 +30,13 @@ class SoundSoundHandle implements SoundHandle {
     /**
      * The sound effect that is wrapped by this sound handle.
      */
-    @Nonnull
+    @NotNull
     private final Sound sound;
 
     /**
      * The sound engine used to play the music.
      */
-    @Nonnull
+    @NotNull
     private final Sounds soundsEngine;
 
     /**
@@ -55,7 +55,7 @@ class SoundSoundHandle implements SoundHandle {
      * @param soundsEngine the sound engine used to play the music
      * @param sound the sound effect that is played
      */
-    SoundSoundHandle(@Nonnull Sounds soundsEngine, @Nonnull Sound sound) {
+    SoundSoundHandle(@NotNull Sounds soundsEngine, @NotNull Sound sound) {
         this.sound = sound;
         this.soundsEngine = soundsEngine;
     }

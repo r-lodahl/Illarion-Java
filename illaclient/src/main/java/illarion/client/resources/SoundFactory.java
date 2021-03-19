@@ -15,20 +15,16 @@
  */
 package illarion.client.resources;
 
-import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import illarion.client.util.IdWrapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.SoundsManager;
 import org.illarion.engine.sound.Sound;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This factory provides access to all known sound files.
@@ -44,19 +40,19 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
     /**
      * The singleton instance of the sound factory.
      */
-    @Nonnull
+    @NotNull
     private static final SoundFactory INSTANCE = new SoundFactory();
 
     /**
      * The instance of the logger that is used to write out the data.
      */
-    @Nonnull
-    private static final Logger log = LoggerFactory.getLogger(SoundFactory.class);
+    @NotNull
+    private static final Logger log = LogManager.getLogger();
 
     /**
      * The path where the sounds are located.
      */
-    @Nonnull
+    @NotNull
     private static final String SOUND_PATH = "sounds/";
 
     /**
@@ -77,7 +73,7 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
      *
      * @return the singleton instance of the sound factory
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static SoundFactory getInstance() {
         return INSTANCE;
@@ -98,7 +94,7 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
      */
     @Nullable
     @Contract(pure = true)
-    public Sound getSound(int id, @Nonnull SoundsManager manager) {
+    public Sound getSound(int id, @NotNull SoundsManager manager) {
         if (sounds == null) {
             throw new IllegalStateException("Factory was not initialized yet.");
         }
@@ -142,7 +138,7 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
      * factory.
      */
     @Override
-    public void storeResource(@Nonnull IdWrapper<String> resource) {
+    public void storeResource(@NotNull IdWrapper<String> resource) {
         if (soundsBuilder == null) {
             throw new IllegalStateException("Factory was not initialized yet.");
         }
@@ -156,7 +152,7 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
      *
      * @return a newly created list that contains the list
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public ImmutableCollection<String> getSoundNames() {
         if (sounds == null) {
@@ -172,7 +168,7 @@ public final class SoundFactory implements ResourceFactory<IdWrapper<String>> {
      * @param manager the manager used to load the sound
      * @param sound the name of the sound to load
      */
-    public void loadSound(@Nonnull SoundsManager manager, @Nonnull String sound) {
+    public void loadSound(@NotNull SoundsManager manager, @NotNull String sound) {
         manager.getSound(sound);
     }
 }

@@ -18,9 +18,9 @@ package illarion.mapedit.resource.loaders;
 import illarion.mapedit.resource.Resource;
 import org.illarion.engine.backend.shared.AbstractTextureManager;
 import org.illarion.engine.graphic.Texture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,14 +34,14 @@ import java.io.InputStream;
  */
 public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage> implements Resource {
     public static final class AwtTexture implements Texture {
-        @Nonnull
+        @NotNull
         private final BufferedImage image;
 
-        AwtTexture(@Nonnull BufferedImage image) {
+        AwtTexture(@NotNull BufferedImage image) {
             this.image = image;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public Texture getSubTexture(int x, int y, int width, int height) {
             return new AwtTexture(image.getSubimage(x, y, width, height));
@@ -76,7 +76,7 @@ public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage
      *
      * @return the singleton instance of this class
      */
-    @Nonnull
+    @NotNull
     public static TextureLoaderAwt getInstance() {
         return INSTANCE;
     }
@@ -91,7 +91,7 @@ public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage
 
     @Nullable
     @Override
-    protected BufferedImage loadTextureData(@Nonnull String textureName) {
+    protected BufferedImage loadTextureData(@NotNull String textureName) {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         try (InputStream in = cl.getResourceAsStream(textureName)) {
             if (in == null) {
@@ -122,7 +122,7 @@ public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage
 
     @Nullable
     @Override
-    protected Texture loadTexture(@Nonnull String resource, @Nonnull BufferedImage preLoadData) {
+    protected Texture loadTexture(@NotNull String resource, @NotNull BufferedImage preLoadData) {
         return new AwtTexture(preLoadData);
     }
 
@@ -134,7 +134,7 @@ public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String getDescription() {
         return "Textures";

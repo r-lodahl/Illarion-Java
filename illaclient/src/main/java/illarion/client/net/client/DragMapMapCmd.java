@@ -19,9 +19,7 @@ import illarion.client.net.CommandList;
 import illarion.common.net.NetCommWriter;
 import illarion.common.types.ItemCount;
 import illarion.common.types.ServerCoordinate;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Client Command: Dragging a item from the game map to the game map ({@link CommandList#CMD_DRAG_MAP_MAP}.
@@ -29,18 +27,17 @@ import javax.annotation.concurrent.Immutable;
  * @author Nop
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class DragMapMapCmd extends AbstractDragCommand {
     /**
      * The source location of the move operation.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate srcLoc;
 
     /**
      * The location on the map that is the target of the move operation.
      */
-    @Nonnull
+    @NotNull
     private final ServerCoordinate dstLoc;
 
     /**
@@ -51,20 +48,20 @@ public final class DragMapMapCmd extends AbstractDragCommand {
      * @param count the amount of items to move
      */
     public DragMapMapCmd(
-            @Nonnull ServerCoordinate source, @Nonnull ServerCoordinate destination, @Nonnull ItemCount count) {
+            @NotNull ServerCoordinate source, @NotNull ServerCoordinate destination, @NotNull ItemCount count) {
         super(CommandList.CMD_DRAG_MAP_MAP, count);
         srcLoc = source;
         dstLoc = destination;
     }
 
     @Override
-    public void encode(@Nonnull NetCommWriter writer) {
+    public void encode(@NotNull NetCommWriter writer) {
         srcLoc.encode(writer);
         dstLoc.encode(writer);
         getCount().encode(writer);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String toString() {
         return toString("Source: " + srcLoc + " Destination: " + dstLoc + ' ' + getCount());

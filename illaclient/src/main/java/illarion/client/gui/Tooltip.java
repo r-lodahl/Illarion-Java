@@ -17,9 +17,8 @@ package illarion.client.gui;
 
 import illarion.common.net.NetCommReader;
 import illarion.common.types.Money;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 
 /**
@@ -27,30 +26,29 @@ import java.io.IOException;
  *
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-@Immutable
 public final class Tooltip {
     public static final int RARENESS_COMMON = 1;
     public static final int RARENESS_UNCOMMON = 2;
     public static final int RARENESS_RARE = 3;
     public static final int RARENESS_EPIC = 4;
 
-    @Nonnull
+    @NotNull
     private final String name;
     private final int rareness;
-    @Nonnull
+    @NotNull
     private final String description;
-    @Nonnull
+    @NotNull
     private final String craftedBy;
-    @Nonnull
+    @NotNull
     private final String type;
     private final int level;
     private final boolean usable;
     private final int weight;
-    @Nonnull
+    @NotNull
     private final Money worth;
-    @Nonnull
+    @NotNull
     private final String qualityText;
-    @Nonnull
+    @NotNull
     private final String durabilityText;
     private final int durabilityValue;
     private final int diamondLevel;
@@ -68,7 +66,7 @@ public final class Tooltip {
      * @param reader the receiver that stores the data that shall be decoded in this function
      * @throws IOException In case the function reads over the buffer of the receiver this exception is thrown
      */
-    public Tooltip(@Nonnull NetCommReader reader) throws IOException {
+    public Tooltip(@NotNull NetCommReader reader) throws IOException {
         name = reader.readString();
         rareness = reader.readUByte();
         description = reader.readString();
@@ -91,7 +89,7 @@ public final class Tooltip {
         bonus = reader.readUByte();
     }
 
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
@@ -100,17 +98,17 @@ public final class Tooltip {
         return rareness;
     }
 
-    @Nonnull
+    @NotNull
     public String getDescription() {
         return description;
     }
 
-    @Nonnull
+    @NotNull
     public String getCraftedBy() {
         return craftedBy;
     }
 
-    @Nonnull
+    @NotNull
     public String getType() {
         return type;
     }
@@ -127,17 +125,17 @@ public final class Tooltip {
         return weight;
     }
 
-    @Nonnull
+    @NotNull
     public Money getWorth() {
         return worth;
     }
 
-    @Nonnull
+    @NotNull
     public String getQualityText() {
         return qualityText;
     }
 
-    @Nonnull
+    @NotNull
     public String getDurabilityText() {
         return durabilityText;
     }
@@ -179,7 +177,7 @@ public final class Tooltip {
     }
 
     @Override
-    @Nonnull
+    @NotNull
     public String toString() {
         return "Item Tooltip: " + (isValid() ? name : "(invalid)");
     }

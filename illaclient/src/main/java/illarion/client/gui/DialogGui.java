@@ -15,8 +15,9 @@
  */
 package illarion.client.gui;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 
 /**
@@ -29,7 +30,7 @@ public interface DialogGui {
     DialogType getDialogType(int dialogId);
 
     @Nullable
-    DialogType getDialogType(int dialogId, @Nonnull DialogType firstType, @Nonnull DialogType... moreTypes);
+    DialogType getDialogType(int dialogId, @NotNull DialogType firstType, @NotNull DialogType... moreTypes);
 
-    void closeDialog(int dialogId, @Nonnull Collection<DialogType> dialogTypes);
+    void closeDialog(int dialogId, @NotNull Collection<DialogType> dialogTypes);
 }

@@ -26,8 +26,8 @@ import org.eclipse.aether.util.version.GenericVersionScheme;
 import org.eclipse.aether.version.InvalidVersionSpecificationException;
 import org.eclipse.aether.version.Version;
 import org.eclipse.aether.version.VersionScheme;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,22 +36,22 @@ import java.util.List;
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 final class ArtifactRequestBuilder implements DependencyVisitor {
-    @Nonnull
+    @NotNull
     private final VersionScheme versionScheme;
 
-    @Nonnull
+    @NotNull
     private final List<FutureArtifactRequest> requests;
-    @Nonnull
+    @NotNull
     private final RepositorySystem system;
-    @Nonnull
+    @NotNull
     private final RepositorySystemSession session;
-    @Nonnull
+    @NotNull
     private final ArtifactRequestTracer requestTracer;
 
     public ArtifactRequestBuilder(
-            @Nonnull RepositorySystem system,
-            @Nonnull RepositorySystemSession session,
-            @Nonnull ArtifactRequestTracer requestTracer) {
+            @NotNull RepositorySystem system,
+            @NotNull RepositorySystemSession session,
+            @NotNull ArtifactRequestTracer requestTracer) {
         requests = new ArrayList<>();
         versionScheme = new GenericVersionScheme();
         this.session = session;
@@ -59,13 +59,13 @@ final class ArtifactRequestBuilder implements DependencyVisitor {
         this.requestTracer = requestTracer;
     }
 
-    @Nonnull
+    @NotNull
     public List<FutureArtifactRequest> getRequests() {
         return Collections.unmodifiableList(requests);
     }
 
     @Override
-    public boolean visitEnter(@Nonnull DependencyNode node) {
+    public boolean visitEnter(@NotNull DependencyNode node) {
         if (node.getDependency() != null) {
             Artifact nodeArtifact = node.getDependency().getArtifact();
             if (nodeArtifact == null) {

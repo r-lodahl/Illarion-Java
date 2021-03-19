@@ -17,12 +17,13 @@ package illarion.easynpc;
 
 import illarion.common.util.CopyrightHeader;
 import illarion.easynpc.gui.Editor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -39,13 +40,13 @@ public final class EasyNpcScript {
     /**
      * The default charset that is used to read and write the easyNPC script files.
      */
-    @Nonnull
-    public static final Charset DEFAULT_CHARSET = Charset.forName("ISO-8859-1");
+    @NotNull
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.ISO_8859_1;
 
     /**
      * The copyright header of the easyNPC writer.
      */
-    @Nonnull
+    @NotNull
     public static final CopyrightHeader COPYRIGHT_HEADER = new CopyrightHeader(80, null, null, "-- ", null);
 
     /**
@@ -107,7 +108,7 @@ public final class EasyNpcScript {
      * This list contains all entries in this script written in the order as
      * they are written in the script.
      */
-    @Nonnull
+    @NotNull
     private final List<Line> entries;
 
     /**
@@ -135,7 +136,7 @@ public final class EasyNpcScript {
      * @param sourceFile the file that is read to get the easyNPC data
      * @throws IOException thrown in case anything goes wrong while reading this file.
      */
-    public EasyNpcScript(@Nonnull Path sourceFile) throws IOException {
+    public EasyNpcScript(@NotNull Path sourceFile) throws IOException {
         this();
 
         readFromInputStream(sourceFile);
@@ -193,7 +194,7 @@ public final class EasyNpcScript {
      * @param sourceFile the file that is read
      * @throws IOException error thrown in case reading failed
      */
-    void readFromInputStream(@Nonnull Path sourceFile) throws IOException {
+    void readFromInputStream(@NotNull Path sourceFile) throws IOException {
         if (Files.isDirectory(sourceFile) || !Files.isReadable(sourceFile)) {
             throw new FileNotFoundException(sourceFile.toString());
         }
@@ -211,7 +212,7 @@ public final class EasyNpcScript {
      *
      * @param source The entire script to read
      */
-    void readNPCScript(@Nonnull String source) {
+    void readNPCScript(@NotNull String source) {
         String[] lines = source.split("\n");
 
         readNPCScript(Arrays.asList(lines));
@@ -222,7 +223,7 @@ public final class EasyNpcScript {
      *
      * @param editor the editor that supplies the script data
      */
-    public void readFromEditor(@Nonnull Editor editor) {
+    public void readFromEditor(@NotNull Editor editor) {
         sourceEditor = editor;
 
         readNPCScript(editor.getScriptText());
@@ -235,7 +236,7 @@ public final class EasyNpcScript {
      * script
      * @throws IOException thrown in case there is a problem while writing
      */
-    public void writeNPCScript(@Nonnull Path targetFile) throws IOException {
+    public void writeNPCScript(@NotNull Path targetFile) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(targetFile, DEFAULT_CHARSET)) {
             for (Line line : entries) {
                 writer.write(line.getLine());
@@ -252,7 +253,7 @@ public final class EasyNpcScript {
      * @return {@code true} in case everything worked
      * @throws IOException thrown in case the reading operation failed
      */
-    private boolean readNPCScript(@Nonnull Path sourceFile) {
+    private boolean readNPCScript(@NotNull Path sourceFile) {
         try {
             List<String> lineList = Files.readAllLines(sourceFile, DEFAULT_CHARSET);
             encoding = DEFAULT_CHARSET;
@@ -280,7 +281,7 @@ public final class EasyNpcScript {
      *
      * @param lines The array of lines
      */
-    private void readNPCScript(@Nonnull Iterable<String> lines) {
+    private void readNPCScript(@NotNull Iterable<String> lines) {
         boolean currentlyCommentBlock = false;
         boolean currentlyEmptyBlock = false;
         int lineNumber = 0;

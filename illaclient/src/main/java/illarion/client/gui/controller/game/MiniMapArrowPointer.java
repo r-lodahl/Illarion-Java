@@ -26,9 +26,9 @@ import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Graphics;
 import org.illarion.engine.graphic.Sprite;
 import org.illarion.engine.nifty.IgeRenderImage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.math.RoundingMode;
 
 /**
@@ -39,14 +39,14 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
     /**
      * The sprite that contains the arrow. This is displayed in case the point is outside the area of the mini map.
      */
-    @Nonnull
+    @NotNull
     private final Sprite arrowSprite;
 
     /**
      * The sprite that contains the point. This is displayed in case the target location is on the area of the
      * mini map.
      */
-    @Nonnull
+    @NotNull
     private final Sprite pointSprite;
 
     /**
@@ -58,7 +58,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
     /**
      * The Nifty-GUI element this pointer is assigned to.
      */
-    @Nonnull
+    @NotNull
     private final Element parentElement;
 
     /**
@@ -89,7 +89,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
     /**
      * Create a new arrow pointer.
      */
-    MiniMapArrowPointer(@Nonnull Element parentElement) {
+    MiniMapArrowPointer(@NotNull Element parentElement) {
         arrowSprite = MiscImageFactory.getInstance().getTemplate(MiscImageFactory.MINI_MAP_ARROW).getSprite();
         pointSprite = MiscImageFactory.getInstance().getTemplate(MiscImageFactory.MINI_MAP_POINT).getSprite();
         this.parentElement = parentElement;
@@ -123,12 +123,12 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int width,
             int height,
-            @Nonnull Color color,
+            @NotNull Color color,
             float imageScale) {
         renderImage(g, x, y, width, height, 0, 0, arrowSprite.getWidth(), arrowSprite.getHeight(), color, imageScale,
                     arrowSprite.getWidth() / 2, arrowSprite.getHeight() / 2);
@@ -136,7 +136,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
 
     @Override
     public void renderImage(
-            @Nonnull Graphics g,
+            @NotNull Graphics g,
             int x,
             int y,
             int w,
@@ -145,7 +145,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
             int srcY,
             int srcW,
             int srcH,
-            @Nonnull Color color,
+            @NotNull Color color,
             float scale,
             int centerX,
             int centerY) {
@@ -203,7 +203,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
      * @param delta the time since the last update
      * @param playerLocation the current location of the player
      */
-    void update(int delta, @Nonnull ServerCoordinate playerLocation) {
+    void update(int delta, @NotNull ServerCoordinate playerLocation) {
         if (targetLocation == null) {
             throw new IllegalStateException("This pointer has no set target and is not valid to be updated.");
         }
@@ -242,7 +242,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
     }
 
     @Override
-    public void setTarget(@Nonnull ServerCoordinate coordinate) {
+    public void setTarget(@NotNull ServerCoordinate coordinate) {
         targetLocation = coordinate;
     }
 
@@ -251,7 +251,7 @@ final class MiniMapArrowPointer implements IgeRenderImage, Pointer {
      *
      * @return the parent element
      */
-    @Nonnull
+    @NotNull
     public Element getParentElement() {
         return parentElement;
     }

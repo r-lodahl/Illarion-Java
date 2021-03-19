@@ -17,8 +17,8 @@ package illarion.client.input;
 
 import illarion.client.world.World;
 import org.illarion.engine.input.Button;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This event is published when a click operation on the map was noted.
@@ -33,7 +33,7 @@ public final class ClickOnMapEvent extends AbstractMouseOnMapEvent {
      * @param x the x coordinate of the click
      * @param y the y coordinate of the click
      */
-    ClickOnMapEvent(@Nonnull Button key, int x, int y) {
+    ClickOnMapEvent(@NotNull Button key, int x, int y) {
         super(key, x, y);
     }
 
@@ -51,7 +51,7 @@ public final class ClickOnMapEvent extends AbstractMouseOnMapEvent {
      * @param x the x coordinate of the click
      * @param y the y coordinate of the click
      */
-    public void set (@Nonnull Button key, int x, int y) {
+    public void set (@NotNull Button key, int x, int y) {
         super.set(key, x, y);
     }
 

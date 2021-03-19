@@ -25,9 +25,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -41,7 +41,7 @@ public class GuiApplication extends Application implements Storyboard {
     private Stage stage;
 
     @Override
-    public void start(@Nonnull Stage primaryStage) throws Exception {
+    public void start(@NotNull Stage primaryStage) throws Exception {
         model = new GuiModel(primaryStage, getHostServices(), this);
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -55,7 +55,7 @@ public class GuiApplication extends Application implements Storyboard {
         primaryStage.show();
     }
 
-    private void setScene(@Nonnull Parent sceneContent) {
+    private void setScene(@NotNull Parent sceneContent) {
         if (stage == null) {
             return;
         }

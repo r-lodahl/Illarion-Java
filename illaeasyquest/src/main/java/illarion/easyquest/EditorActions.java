@@ -18,9 +18,9 @@ package illarion.easyquest;
 import illarion.easyquest.gui.Editor;
 import illarion.easyquest.gui.MainFrame;
 import illarion.easyquest.gui.Utils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public final class EditorActions {
     }
 
     @Nullable
-    public static Editor getEditor(@Nonnull ActionEvent e) {
+    public static Editor getEditor(@NotNull ActionEvent e) {
         if (e.getSource() instanceof Component) {
             Component component = (Component) e.getSource();
 
@@ -72,7 +72,7 @@ public final class EditorActions {
     @SuppressWarnings("serial")
     public static class UndoAction extends AbstractAction {
         @Override
-        public void actionPerformed(@Nonnull ActionEvent e) {
+        public void actionPerformed(@NotNull ActionEvent e) {
             Editor editor = getEditor(e);
 
             if (editor != null) {
@@ -84,7 +84,7 @@ public final class EditorActions {
     @SuppressWarnings("serial")
     public static class RedoAction extends AbstractAction {
         @Override
-        public void actionPerformed(@Nonnull ActionEvent e) {
+        public void actionPerformed(@NotNull ActionEvent e) {
             Editor editor = getEditor(e);
 
             if (editor != null) {

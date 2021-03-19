@@ -15,11 +15,11 @@
  */
 package org.illarion.engine.graphic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.nio.ByteBuffer;
 
 /**
@@ -57,7 +57,7 @@ public final class MapColor {
     /**
      * The error and debug logger of the client.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapColor.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Private constructor so nothing can create a instance of this utility
@@ -73,7 +73,7 @@ public final class MapColor {
      * @param color the index of the color value
      * @return a array with the red, green and blue color value
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public static Color getColor(int color) {
         return COLORS[color];
@@ -88,7 +88,7 @@ public final class MapColor {
      * @param pos the position in the byte buffer the color shall be located at
      */
     public static void writeColor(
-            int color, int alpha, @Nonnull ByteBuffer map, int pos) {
+            int color, int alpha, @NotNull ByteBuffer map, int pos) {
         // check color
         if (color > COLORS.length) {
             LOGGER.error("minimap color out of range - ignoring");

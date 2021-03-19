@@ -19,10 +19,10 @@ import illarion.client.IllaClient;
 import illarion.client.util.Lang;
 import illarion.common.bug.CrashData;
 import illarion.common.bug.CrashReporter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
@@ -35,8 +35,8 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrashHandler.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The time since the last crash in milliseconds that need to have passed to
@@ -65,7 +65,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      * @param e the error message it crashed with
      */
     @Override
-    public final void uncaughtException(@Nonnull Thread t, @Nonnull Throwable e) {
+    public final void uncaughtException(@NotNull Thread t, @NotNull Throwable e) {
         LOGGER.error("Fetched uncaught exception: {}", getCrashMessage(t, e), e);
         if (currentlyCrashing) {
             return;
@@ -88,7 +88,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
         currentlyCrashing = false;
     }
 
-    protected boolean isUnsolvableError(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected boolean isUnsolvableError(@NotNull Thread t, @NotNull Throwable e) {
         return false;
     }
 
@@ -96,11 +96,11 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      * Calling this function results in crashing the entire client. Call it only
      * in case there is no chance in keeping the client running.
      */
-    protected final void crashClient(@Nonnull Thread t, @Nonnull Throwable e) {
+    protected final void crashClient(@NotNull Thread t, @NotNull Throwable e) {
         crashClient(t, e, true);
     }
 
-    protected final void crashClient(@Nonnull Thread t, @Nonnull Throwable e, boolean showFixFailed) {
+    protected final void crashClient(@NotNull Thread t, @NotNull Throwable e, boolean showFixFailed) {
         String message = getCrashMessage(t, e);
         if (showFixFailed) {
             message += '\n' + Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("crash.fixfailed");
@@ -116,14 +116,14 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      *
      * @return the error message for this problem
      */
-    @Nonnull
-    protected abstract String getCrashMessage(@Nonnull Thread t, @Nonnull Throwable e);
+    @NotNull
+    protected abstract String getCrashMessage(@NotNull Thread t, @NotNull Throwable e);
 
     /**
      * Restart the crashed thread and try to keep the client alive this way.
      * After this function is called the CrashHandler requests a reconnect.
      */
-    protected abstract void restart(@Nonnull Thread t, @Nonnull Throwable e);
+    protected abstract void restart(@NotNull Thread t, @NotNull Throwable e);
 
     /**
      * Send the data about a crash to the Illarion server so some developer is
@@ -132,7 +132,7 @@ abstract class AbstractCrashHandler implements UncaughtExceptionHandler {
      * @param t the thread that crashed
      * @param e the reason of the crash
      */
-    private void reportError(@Nonnull Thread t, @Nonnull Throwable e) {
+    private void reportError(@NotNull Thread t, @NotNull Throwable e) {
         CrashReporter.getInstance()
                 .reportCrash(new CrashData(IllaClient.APPLICATION, "Client", getCrashMessage(t, e), t, e));
     }

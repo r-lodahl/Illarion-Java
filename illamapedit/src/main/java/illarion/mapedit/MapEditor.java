@@ -15,16 +15,10 @@
  */
 package illarion.mapedit;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 import illarion.common.bug.CrashReporter;
 import illarion.common.bug.ReportDialogFactorySwing;
 import illarion.common.util.AppIdent;
 import illarion.common.util.Crypto;
-import illarion.common.util.DirectoryManager;
-import illarion.common.util.DirectoryManager.Directory;
 import illarion.common.util.TableLoader;
 import illarion.mapedit.crash.DefaultCrashHandler;
 import illarion.mapedit.crash.exceptions.UnhandlableException;
@@ -34,17 +28,13 @@ import illarion.mapedit.gui.MapEditorConfig;
 import illarion.mapedit.gui.SplashScreen;
 import illarion.mapedit.resource.ResourceManager;
 import illarion.mapedit.resource.loaders.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Main MapEditor class. This class starts the map editor and handles all
@@ -57,14 +47,14 @@ public final class MapEditor {
     /**
      * The identifier of the application.
      */
-    @Nonnull
+    @NotNull
     public static final AppIdent APPLICATION = new AppIdent("Illarion Mapeditor");
 
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @Nonnull
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapEditor.class);
+    @NotNull
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private MapEditor() {
     }
@@ -152,40 +142,11 @@ public final class MapEditor {
     /**
      * Prepare the proper output of the log files.
      */
-    @SuppressWarnings("Duplicates")
     private static void initLogging() throws IOException {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
-
-        Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
-        if (!Files.isDirectory(userDir)) {
-            if (Files.exists(userDir)) {
-                Files.delete(userDir);
-            }
-            Files.createDirectories(userDir);
-        }
-        System.setProperty("log_dir", userDir.toAbsolutePath().toString());
-
-        //Reload:
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ContextInitializer ci = new ContextInitializer(lc);
-        try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL resource = cl.getResource("logback-to-file.xml");
-            if (resource != null) {
-                ci.configureByResource(resource);
-            }
-        } catch (JoranException ignored) {
-        }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
-
         Thread.setDefaultUncaughtExceptionHandler(DefaultCrashHandler.getInstance());
 
-        //noinspection UseOfSystemOutOrSystemErr
-        System.out.println("Startup done.");
         LOGGER.info("{} started.", APPLICATION.getApplicationIdentifier());
         LOGGER.info("VM: {}", System.getProperty("java.version"));
-        LOGGER.info("OS: {} {} {}", System.getProperty("os.name"), System.getProperty("os.version"),
-                System.getProperty("os.arch"));
+        LOGGER.info("OS: {} {} {}", System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch"));
     }
 }

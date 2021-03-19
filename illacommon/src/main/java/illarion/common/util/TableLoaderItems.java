@@ -17,8 +17,8 @@ package illarion.common.util;
 
 import illarion.common.graphics.ItemInfo;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 
 /**
  * This is a special implementation of the table loader that targets the item table file.
@@ -160,7 +160,7 @@ public final class TableLoaderItems extends TableLoader {
      */
     private static final int TB_VARIANCE = 13;
 
-    public TableLoaderItems(@Nonnull TableLoaderSink<TableLoaderItems> callback) {
+    public TableLoaderItems(@NotNull TableLoaderSink<TableLoaderItems> callback) {
         super("Items", callback);
     }
 
@@ -330,7 +330,7 @@ public final class TableLoaderItems extends TableLoader {
      *
      * @return the name of the resources assigned to this item
      */
-    @Nonnull
+    @NotNull
     @Contract(pure = true)
     public String getResourceName() {
         return getString(TB_NAME);

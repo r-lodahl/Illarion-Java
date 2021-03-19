@@ -1,6 +1,7 @@
 package illarion.common.config;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
 
 public interface ConfigWriter {
@@ -16,7 +17,7 @@ public interface ConfigWriter {
      *
      * @param key the key of the entry that is supposed to be removed
      */
-    void remove(@Nonnull String key);
+    void remove(@NotNull String key);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a boolean value.
@@ -24,7 +25,7 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, boolean value);
+    void set(@NotNull String key, boolean value);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a double value.
@@ -32,7 +33,7 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, double value);
+    void set(@NotNull String key, double value);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a path.
@@ -40,7 +41,7 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, @Nonnull Path value);
+    void set(@NotNull String key, @NotNull Path value);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a float value.
@@ -48,7 +49,7 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, float value);
+    void set(@NotNull String key, float value);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a integer value.
@@ -56,7 +57,7 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, int value);
+    void set(@NotNull String key, int value);
 
     /**
      * Set one entry of the configuration file to a new value. In this case the value is a String value.
@@ -64,5 +65,5 @@ public interface ConfigWriter {
      * @param key the key the value is stored with
      * @param value the value that is stored along with the key
      */
-    void set(@Nonnull String key, @Nonnull String value);
+    void set(@NotNull String key, @NotNull String value);
 }
