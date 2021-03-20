@@ -18,10 +18,8 @@ package illarion.client.util.translation;
 import illarion.client.IllaClient;
 import illarion.client.util.Lang;
 import illarion.client.util.translation.mymemory.MyMemoryProvider;
-import illarion.common.config.Config;
 import illarion.common.config.ConfigChangedEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import illarion.common.config.ConfigReader;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicSubscriber;
 import org.jetbrains.annotations.Contract;
@@ -32,23 +30,15 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * This class handles the translations that are queried from a server.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public class Translator {
     @NotNull
-    public static final String CFG_KEY_PROVIDER = "translator_provider";
-    public static final int CFG_VALUE_PROVIDER_NONE = 0;
-    public static final int CFG_VALUE_PROVIDER_MY_MEMORY = 1;
-    public static final int CFG_VALUE_PROVIDER_YANDEX = 2;
-    public static final String CFG_KEY_DIRECTION = "translator_direction";
-    public static final int CFG_VALUE_DIRECTION_DEFAULT = 0;
-    public static final int CFG_VALUE_DIRECTION_EN_DE = 1;
-    public static final int CFG_VALUE_DIRECTION_DE_EN = 2;
-    @NotNull
-    private static final Logger log = LogManager.getLogger();
+    public static final String CONFIG_KEY_PROVIDER = "translator_provider";
+    public static final String CONFIG_KEY_DIRECTION = "translator_direction";
+
+    private static final int CONFIG_VALUE_PROVIDER_MY_MEMORY = 1;
+    private static final int CONFIG_VALUE_DIRECTION_EN_DE = 1;
+    private static final int CONFIG_VALUE_DIRECTION_DE_EN = 2;
+
     @NotNull
     private final ExecutorService executorService;
     @Nullable
@@ -57,57 +47,44 @@ public class Translator {
     private TranslationDirection direction;
 
     public Translator() {
-        provider = getCfgProvider(IllaClient.getConfig());
-        direction = getCfgDirection(IllaClient.getConfig());
+        provider = getConfigProvider(IllaClient.getConfig());
+        direction = getConfigDirection(IllaClient.getConfig());
         executorService = Executors.newCachedThreadPool();
         AnnotationProcessor.process(this);
     }
 
     @Nullable
-    private static TranslationProvider getCfgProvider(@NotNull Config cfg) {
-        int value = cfg.getInteger(CFG_KEY_PROVIDER);
-        switch (value) {
-            case CFG_VALUE_PROVIDER_MY_MEMORY:
-                return new MyMemoryProvider();
-            case CFG_VALUE_PROVIDER_YANDEX:
-                // return new YandexProvider(); Currently disabled because the service does not work this way anymore
-                cfg.set(CFG_KEY_PROVIDER, CFG_VALUE_PROVIDER_NONE);
-                return null;
-            case CFG_VALUE_PROVIDER_NONE:
-            default:
-                return null;
-        }
+    private static TranslationProvider getConfigProvider(@NotNull ConfigReader config) {
+        return config.getInteger(CONFIG_KEY_PROVIDER) == CONFIG_VALUE_PROVIDER_MY_MEMORY
+                ? new MyMemoryProvider()
+                : null;
     }
 
     @NotNull
     @Contract(pure = true)
-    private static TranslationDirection getCfgDirection(@NotNull Config cfg) {
-        int value = cfg.getInteger(CFG_KEY_DIRECTION);
-        switch (value) {
-            case CFG_VALUE_DIRECTION_EN_DE:
-                return TranslationDirection.EnglishToGerman;
-            case CFG_VALUE_DIRECTION_DE_EN:
-                return TranslationDirection.GermanToEnglish;
-            case CFG_VALUE_DIRECTION_DEFAULT:
-            default:
-                return Lang.INSTANCE.getLocale().equals(Locale.ENGLISH) ? TranslationDirection.GermanToEnglish :
-                        TranslationDirection.EnglishToGerman;
-        }
+    private static TranslationDirection getConfigDirection(@NotNull ConfigReader cfg) {
+        int value = cfg.getInteger(CONFIG_KEY_DIRECTION);
+        return switch (value) {
+            case CONFIG_VALUE_DIRECTION_EN_DE -> TranslationDirection.EnglishToGerman;
+            case CONFIG_VALUE_DIRECTION_DE_EN -> TranslationDirection.GermanToEnglish;
+            default -> Lang.INSTANCE.getLocale().equals(Locale.ENGLISH) ? TranslationDirection.GermanToEnglish :
+                    TranslationDirection.EnglishToGerman;
+        };
     }
 
-    @EventTopicSubscriber(topic = CFG_KEY_PROVIDER)
+    @EventTopicSubscriber(topic = CONFIG_KEY_PROVIDER)
     private void onConfigProviderChanged(@NotNull String key, @NotNull ConfigChangedEvent event) {
-        provider = getCfgProvider(event.getConfig());
+        provider = getConfigProvider(event.getConfig());
     }
 
-    @EventTopicSubscriber(topic = CFG_KEY_DIRECTION)
+    @EventTopicSubscriber(topic = CONFIG_KEY_DIRECTION)
     private void onConfigDirectionChanged(@NotNull String key, @NotNull ConfigChangedEvent event) {
-        direction = getCfgDirection(event.getConfig());
+        direction = getConfigDirection(event.getConfig());
     }
 
     public void translate(@NotNull String original, @NotNull TranslatorCallback callback) {
         if (isServiceEnabled()) {
-            assert provider != null; // ensured by: isServiceEnabled()
+            assert provider != null;
             executorService.submit(new TranslateTask(executorService, provider, direction, original, callback));
         } else {
             callback.sendTranslation(null);

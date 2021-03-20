@@ -29,7 +29,7 @@ public final class ConfigChangedEvent {
      * The configuration that is used.
      */
     @NotNull
-    private final Config config;
+    private final ConfigReader config;
 
     /**
      * The key inside the configuration that was altered.
@@ -40,12 +40,12 @@ public final class ConfigChangedEvent {
     /**
      * Constructor that allows to set the config that triggered this event as well as the key that was changed.
      *
-     * @param parentConfig the config that triggered this event
-     * @param configKey the key that was changed
+     * @param config the config that triggered this event
+     * @param key the key that was changed
      */
-    public ConfigChangedEvent(@NotNull Config parentConfig, @NotNull String configKey) {
-        config = parentConfig;
-        key = configKey;
+    public ConfigChangedEvent(@NotNull ConfigReader config, @NotNull String key) {
+        this.config = config;
+        this.key = key;
     }
 
     /**
@@ -54,7 +54,7 @@ public final class ConfigChangedEvent {
      * @return the configuration that triggered this event
      */
     @NotNull
-    public Config getConfig() {
+    public ConfigReader getConfig() {
         return config;
     }
 

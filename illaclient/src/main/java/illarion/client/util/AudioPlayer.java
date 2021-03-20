@@ -17,8 +17,8 @@ package illarion.client.util;
 
 import illarion.client.IllaClient;
 import illarion.client.world.Player;
-import illarion.common.config.Config;
 import illarion.common.config.ConfigChangedEvent;
+import illarion.common.config.ConfigReader;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.EventTopicSubscriber;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
@@ -193,7 +193,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
         updateSettings(topic, data.getConfig());
     }
 
-    private void updateSettings(@Nullable String setting, @NotNull Config cfg) {
+    private void updateSettings(@Nullable String setting, @NotNull ConfigReader config) {
         if ((setting == null) || "musicOn".equals(setting)) {
             boolean musicEnabled = cfg.getBoolean("musicOn");
             if (musicEnabled) {
