@@ -15,6 +15,7 @@
  */
 package illarion.client.util;
 
+import java.util.Optional;
 import illarion.client.IllaClient;
 import illarion.client.world.Player;
 import illarion.common.config.ConfigChangedEvent;
@@ -41,31 +42,18 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Mike Kay
  */
-public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
+public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
 
-    /**
-     * The singleton instance of this class.
-     */
-    @NotNull
-    private static final AudioPlayer INSTANCE = new AudioPlayer();
-
+    INSTANCE;
 
     @NotNull
     private Sounds sounds;
 
-
-    private Music lastMusic;
+    private Optional<Music> lastMusic = Optional.empty();
     /**
      * This variable is set {@code true} once the music player is initialized.
      */
     private boolean init;
-
-    /**
-     * Private constructor to ensure the sole instance is the singleton
-     * instance.
-     */
-    private AudioPlayer(){
-    }
 
     /**
      * Initiates the AudioPlayer and subscribes to the proper config changes
@@ -109,7 +97,7 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
      * @param music the track to be played
      */
     public void playMusic(Music music){
-        lastMusic = music;
+        lastMusic = Optional.ofNullable(music);
         sounds.playMusic(music, 0, 0);
     }
 
@@ -159,8 +147,8 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
      * Does not resume from last point
      * lastMusic is set through playMusic or setLastMusic
      */
-    public void playLastMusic(){
-        sounds.playMusic(lastMusic, 0, 0);
+    public void playLastMusic() {
+        lastMusic.ifPresent(music -> sounds.playMusic(music, 0, 0));
     }
 
     /**
@@ -169,10 +157,10 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
      * @param music the Music value to be played
      */
     public void setLastMusic(Music music){
-        lastMusic = music;
+        lastMusic = Optional.ofNullable(music);
     }
 
-    public Music getLastMusic(){
+    public Optional<Music> getLastMusic(){
         return lastMusic;
     }
     public void stopMusic(){
@@ -195,32 +183,40 @@ public final class AudioPlayer implements EventTopicSubscriber<ConfigChangedEven
 
     private void updateSettings(@Nullable String setting, @NotNull ConfigReader config) {
         if ((setting == null) || "musicOn".equals(setting)) {
-            boolean musicEnabled = cfg.getBoolean("musicOn");
+            boolean musicEnabled = config.getBoolean("musicOn");
             if (musicEnabled) {
-                float musicVolume = cfg.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
+                float musicVolume = config.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
                 sounds.setMusicVolume(musicVolume);
+                playLastMusic();
             } else {
-                sounds.setMusicVolume(0.f);
+                sounds.setMusicVolume(0.0f);
             }
         }
         if ((setting == null) || "musicVolume".equals(setting)) {
-            float musicVolume = cfg.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
-            if (IllaClient.getConfig().getBoolean("musicOn")) {
+            float musicVolume = config.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
+            if (config.getBoolean("musicOn")) {
+                float oldMusicVolume = sounds.getMusicVolume();
+
                 sounds.setMusicVolume(musicVolume);
+
+                // Sounds stops playing if the current music if volume drops to 0
+                if (oldMusicVolume == 0.0f) {
+                    playLastMusic();
+                }
             }
         }
         if ((setting == null) || "soundOn".equals(setting)) {
-            boolean soundEnabled = cfg.getBoolean("soundOn");
+            boolean soundEnabled = config.getBoolean("soundOn");
             if (soundEnabled) {
-                float soundVolume = cfg.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
+                float soundVolume = config.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
                 sounds.setSoundVolume(soundVolume);
             } else {
-                sounds.setSoundVolume(0.f);
+                sounds.setSoundVolume(0.0f);
             }
         }
         if ((setting == null) || "soundVolume".equals(setting)) {
-            float soundVolume = cfg.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
-            if (IllaClient.getConfig().getBoolean("soundOn")) {
+            float soundVolume = config.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
+            if (config.getBoolean("soundOn")) {
                 sounds.setSoundVolume(soundVolume);
             }
         }

@@ -144,6 +144,7 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
                 event.accept(options.getCurrentSettings());
+                activateTable(login);
             }
         });
     }

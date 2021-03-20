@@ -282,8 +282,8 @@ public class OptionsView extends Table {
         sbBitDepth = new SelectBox<>(skin);
         sbDevice = new SelectBox<>(skin);
 
-        slSoundEffectsVolume = new Slider(0f, 100f, 1f, false, skin);
-        slMusicVolume = new Slider(0f, 100f, 1f, false, skin);
+        slSoundEffectsVolume = new Slider(0.0f, 100.0f, 1.0f, false, skin);
+        slMusicVolume = new Slider(0.0f, 100.0f, 1.0f, false, skin);
 
         tbUserDefinedServerAddress = new TextField("", skin);
         tbUserDefinedServerPort = new TextField("", skin);
@@ -300,14 +300,14 @@ public class OptionsView extends Table {
         VerticalGroup tabButtonRow = new VerticalGroup();
         tabButtonRow.left().top().fill();
         btGraphicsTab.padLeft(5.0f);
-        btGraphicsTab.padRight(5f);
+        btGraphicsTab.padRight(5.0f);
         tabButtonRow.addActor(btGeneralTab);
         tabButtonRow.addActor(btGraphicsTab);
         tabButtonRow.addActor(btSoundTab);
         tabButtonRow.addActor(btServerTab);
 
         generalTab = new Table();
-        generalTab.columnDefaults(0).align(Align.left).width(200f);
+        generalTab.columnDefaults(0).align(Align.left).width(200.0f);
         generalTab.columnDefaults(1).align(Align.right);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("wasdWalk"), skin));
@@ -323,54 +323,54 @@ public class OptionsView extends Table {
         generalTab.add(cbShowQuestsOnMiniMap);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("report"), skin));
-        generalTab.add(cbSendErrorReports).width(200f);
+        generalTab.add(cbSendErrorReports).width(200.0f);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("translation.provider"), skin));
-        generalTab.add(sbTranslationProvider).width(200f);
+        generalTab.add(sbTranslationProvider).width(200.0f);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("translation.direction"), skin));
-        generalTab.add(sbTranslationDirection).width(200f);
+        generalTab.add(sbTranslationDirection).width(200.0f);
 
         graphicsTab = new Table();
-        graphicsTab.columnDefaults(0).align(Align.left).width(200f);
+        graphicsTab.columnDefaults(0).align(Align.left).width(200.0f);
         graphicsTab.columnDefaults(1).align(Align.right);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("fullscreen"), skin));
         graphicsTab.add(cbUseFullscreen);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("device"), skin));
-        graphicsTab.add(sbDevice).width(200f);
+        graphicsTab.add(sbDevice).width(200.0f);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("resolution"), skin));
-        graphicsTab.add(sbResolution).width(200f);
+        graphicsTab.add(sbResolution).width(200.0f);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("refreshRate"), skin));
-        graphicsTab.add(sbRefreshRate).width(200f);
+        graphicsTab.add(sbRefreshRate).width(200.0f);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("bitsPerPoint"), skin));
-        graphicsTab.add(sbBitDepth).width(200f);
+        graphicsTab.add(sbBitDepth).width(200.0f);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("showFps"), skin));
         graphicsTab.add(cbShowFps);
 
         soundTab = new Table();
-        soundTab.columnDefaults(0).align(Align.left).width(200f);
+        soundTab.columnDefaults(0).align(Align.left).width(200.0f);
         soundTab.columnDefaults(1).align(Align.right);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("soundOn"), skin));
         soundTab.add(cbSoundEffectsActive);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("soundVolume"), skin));
-        soundTab.add(slSoundEffectsVolume).width(200f);
+        soundTab.add(slSoundEffectsVolume).width(200.0f);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("musicOn"), skin));
         soundTab.add(cbMusicActive);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("musicVolume"), skin));
-        soundTab.add(slMusicVolume).width(200f);
+        soundTab.add(slMusicVolume).width(200.0f);
 
         serverTab = new Table();
-        serverTab.columnDefaults(0).align(Align.left).width(200f);
+        serverTab.columnDefaults(0).align(Align.left).width(200.0f);
         serverTab.columnDefaults(1).align(Align.right);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("showPing"), skin));
@@ -378,21 +378,21 @@ public class OptionsView extends Table {
         serverTab.row();
         Label serverWarnText = new Label(resourceBundle.getLocalizedString("serverWarning"), skin);
         serverWarnText.setWrap(true);
-        serverTab.add(serverWarnText).colspan(2).width(400f);
+        serverTab.add(serverWarnText).colspan(2).width(400.0f);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverAddress"), skin));
-        serverTab.add(tbUserDefinedServerAddress).width(200f);
+        serverTab.add(tbUserDefinedServerAddress).width(200.0f);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverPort"), skin));
-        serverTab.add(tbUserDefinedServerPort).width(200f);
+        serverTab.add(tbUserDefinedServerPort).width(200.0f);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("clientVersion"), skin));
-        serverTab.add(tbUserDefinedServerVersion).width(200f);
+        serverTab.add(tbUserDefinedServerVersion).width(200.0f);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverAccountLogin"), skin));
         serverTab.add(cbAccountLogin);
         serverTab.row();
-        serverTab.add(resetServerSettingsButton).colspan(2).align(Align.right).width(200f);
+        serverTab.add(resetServerSettingsButton).colspan(2).align(Align.right).width(200.0f);
 
         contentRoot = new Container<>();
         contentRoot.top().left();
@@ -401,10 +401,10 @@ public class OptionsView extends Table {
         settingsButtonRow.addActor(btSaveSettings);
         settingsButtonRow.addActor(btCancelSettings);
 
-        add(tabButtonRow).width(150f).height(180f);
-        add(contentRoot).width(400f).height(180f);
+        add(tabButtonRow).width(150.0f).height(180.0f);
+        add(contentRoot).width(400.0f).height(180.0f);
         row();
-        add(settingsButtonRow).colspan(2).align(Align.right).padTop(20f);
+        add(settingsButtonRow).colspan(2).align(Align.right).padTop(20.0f);
 
         setFillParent(true);
         contentRoot.setActor(generalTab);
@@ -427,7 +427,7 @@ public class OptionsView extends Table {
         sbTranslationDirection.setSelectedIndex(config.getInteger(Option.translatorDirection));
 
         slSoundEffectsVolume.setValue(config.getFloat(Option.soundVolume));
-        slSoundEffectsVolume.setValue(config.getFloat(Option.musicVolume));
+        slMusicVolume.setValue(config.getFloat(Option.musicVolume));
 
         tbUserDefinedServerAddress.setText(config.getString(Option.customServerDomain));
         tbUserDefinedServerPort.setText(config.getString(Option.customServerClientVersion));

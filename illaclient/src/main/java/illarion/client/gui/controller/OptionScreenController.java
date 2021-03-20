@@ -147,8 +147,8 @@ public final class OptionScreenController implements ScreenController {
         showFps.setChecked(IllaClient.getConfig().getBoolean("showFps"));
         showPing.setChecked(IllaClient.getConfig().getBoolean("showPing"));
 
-        translationProviders.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CFG_KEY_PROVIDER));
-        translationDirections.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CFG_KEY_DIRECTION));
+        translationProviders.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CONFIG_KEY_PROVIDER));
+        translationDirections.selectItemByIndex(IllaClient.getConfig().getInteger(Translator.CONFIG_KEY_DIRECTION));
 
         soundOn.setChecked(IllaClient.getConfig().getBoolean("soundOn"));
         soundVolume.setValue(IllaClient.getConfig().getFloat("soundVolume"));
@@ -235,8 +235,8 @@ public final class OptionScreenController implements ScreenController {
         configSystem.set("showFps", showFps.isChecked());
         configSystem.set("showPing", showPing.isChecked());
 
-        configSystem.set(Translator.CFG_KEY_PROVIDER, translationProviders.getSelectedIndex());
-        configSystem.set(Translator.CFG_KEY_DIRECTION, translationDirections.getSelectedIndex());
+        configSystem.set(Translator.CONFIG_KEY_PROVIDER, translationProviders.getSelectedIndex());
+        configSystem.set(Translator.CONFIG_KEY_DIRECTION, translationDirections.getSelectedIndex());
 
         configSystem.set("soundOn", soundOn.isChecked());
         configSystem.set("soundVolume", soundVolume.getValue());
@@ -267,32 +267,6 @@ public final class OptionScreenController implements ScreenController {
         }
 
         configSystem.save();
-    }
-
-    @NiftyEventSubscriber (id = "musicVolume")
-    public void onMusicVolumeSliderChangedEvent(String topic, SliderChangedEvent event) {
-        AudioPlayer audioPlayer = AudioPlayer.getInstance();
-        if (audioPlayer.getMusicVolume() == 0) {
-            if (musicOn.isChecked() && !audioPlayer.isCurrentMusic(audioPlayer.getLastMusic())) {
-                audioPlayer.setMusicVolume(musicVolume.getValue());
-                audioPlayer.playLastMusic();
-            }
-        } else {
-            audioPlayer.setMusicVolume(musicVolume.getValue());
-        }
-    }
-
-    @NiftyEventSubscriber (id = "musicOn")
-    public void onMusicOnChangedEvent(String topic, CheckBoxStateChangedEvent event){
-        AudioPlayer audioPlayer = AudioPlayer.getInstance();
-        if(musicOn.isChecked()) {
-            audioPlayer.setMusicVolume(musicVolume.getValue());
-            if (!audioPlayer.isCurrentMusic(audioPlayer.getLastMusic())) {
-                audioPlayer.playLastMusic();
-            }
-        } else{
-            audioPlayer.setMusicVolume(0.f);
-        }
     }
 
     @NiftyEventSubscriber(id = "cancelButton")
