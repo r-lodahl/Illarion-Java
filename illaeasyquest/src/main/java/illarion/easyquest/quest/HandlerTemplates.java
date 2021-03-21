@@ -128,7 +128,7 @@ public class HandlerTemplates {
                     } else {
                         System.out.println("Syntax error in template " + fileName);
                     }
-                } catch (@NotNull IOException e1) {
+                } catch (IOException e1) {
                     System.out.println("Error loading template " + fileName);
                 }
             }

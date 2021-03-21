@@ -247,7 +247,7 @@ public final class IllaClient {
             //MacOSx notice: in case AWT cannot be completely removed from the game (error messages etc)
             //it is needed to initialize AWT once (by calling getDefaultToolkit) before initGLFW
             gameContainer.startGame(new StateManager(), new Diagnostics(true));
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Exception while launching game.", e);
             exit();
         }
@@ -306,7 +306,7 @@ public final class IllaClient {
     public void quitGame() {
         try {
             World.getNet().sendCommand(new LogoutCmd());
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             // the NET was not launched up yet. This does not really matter.
         }
     }
@@ -418,7 +418,7 @@ public final class IllaClient {
                     cfg.set("windowHeight", res.getHeight());
                     cfg.set("windowWidth", res.getWidth());
                 }
-            } catch (@NotNull EngineException | IllegalArgumentException e) {
+            } catch (EngineException | IllegalArgumentException e) {
                 LOGGER.error("Failed to apply graphic mode: {}", resolutionString);
             }
         }*/

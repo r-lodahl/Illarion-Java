@@ -72,12 +72,12 @@ class ArtifactDirectoryVisitor implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFileFailed(@NotNull Path file, @NotNull IOException exc) throws IOException {
+    public FileVisitResult visitFileFailed(Path file, @NotNull IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(@NotNull Path dir, @Nullable IOException exc) throws IOException {
+    public FileVisitResult postVisitDirectory(Path dir, @Nullable IOException exc) throws IOException {
         if (dropOutCounter > 1) {
             dropOutCounter -= 1;
             return FileVisitResult.SKIP_SIBLINGS;

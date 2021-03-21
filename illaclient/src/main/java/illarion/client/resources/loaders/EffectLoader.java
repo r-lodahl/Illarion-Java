@@ -105,7 +105,7 @@ public final class EffectLoader extends AbstractResourceLoader<EffectTemplate>
         EffectTemplate template = new EffectTemplate(effectID, effectSprite, frames, speed, light);
         try {
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             log.error("Failed adding effect to internal factory. ID: {} - Filename: {}", effectID, name);
         }
 

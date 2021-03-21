@@ -83,7 +83,7 @@ public class IllarionSSLSocketFactory {
             ClassLoader cls = Thread.currentThread().getContextClassLoader();
             try (InputStream keyStoreInput = cls.getResourceAsStream("keystore.jks")) {
                 keyStore.load(keyStoreInput, "jcFv8XQxRN".toCharArray());
-            } catch (@NotNull CertificateException | IOException | NoSuchAlgorithmException e) {
+            } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
                 log.error("Failed to load keystore.", e);
             }
 
@@ -95,11 +95,11 @@ public class IllarionSSLSocketFactory {
             SSLContext ctx = SSLContext.getInstance("TLS");
             ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
             sslFactory = ctx.getSocketFactory();
-        } catch (@NotNull KeyStoreException e) {
+        } catch (KeyStoreException e) {
             log.error("Failed to read keystore.", e);
-        } catch (@NotNull KeyManagementException e) {
+        } catch (KeyManagementException e) {
             log.error("Failed to use keystore.", e);
-        } catch (@NotNull NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             log.error("Failed to decode keystore.", e);
         } catch (UnrecoverableKeyException e) {
             log.error("Failed to open keystore.", e);

@@ -167,11 +167,11 @@ public final class BookFactory implements ResourceFactory<IdWrapper<String>> {
                 Document document = docBuilderFactory.newDocumentBuilder().parse(bookUrl.openStream());
                 requestedBook = new Book(document);
                 bookMap.put(id, new SoftReference<>(requestedBook));
-            } catch (@NotNull ParserConfigurationException e) {
+            } catch (ParserConfigurationException e) {
                 log.error("Setting up XML parser failed!", e);
-            } catch (@NotNull SAXException e) {
+            } catch (SAXException e) {
                 log.error("Parsing Book XML file failed!", e);
-            } catch (@NotNull IOException e) {
+            } catch (IOException e) {
                 log.error("Reading Book XML file failed!", e);
             }
         }

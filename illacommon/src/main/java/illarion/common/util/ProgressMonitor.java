@@ -160,7 +160,7 @@ public final class ProgressMonitor implements ProgressMonitorCallback {
                 activeCallback = true;
                 try {
                     targetCallback.updatedProgress(this);
-                } catch (@NotNull Exception e) {
+                } catch (Exception e) {
                     // nothing
                 } finally {
                     activeCallback = false;

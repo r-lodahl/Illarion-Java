@@ -124,7 +124,7 @@ public final class CharacterLoader extends AbstractResourceLoader<AvatarTemplate
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             log.error("Failed adding avatar to internal factory. ID: {} - Filename: {}", avatarId, name);
         }
 

@@ -165,7 +165,7 @@ public class MacOsXJavaExecutableIterable extends AbstractJavaExecutableIterable
                 javaHomeDirectory = extendHomeToExecutable(resultPath);
                 return resultPath;
             }
-        } catch (@NotNull InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException e) {
             LOGGER.error("Error fetching java home directory.", e);
         }
         return null;

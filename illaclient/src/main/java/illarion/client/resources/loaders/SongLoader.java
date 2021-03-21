@@ -70,7 +70,7 @@ public final class SongLoader extends AbstractResourceLoader<IdWrapper<String>>
 
         try {
             getTargetFactory().storeResource(new IdWrapper<>(clipID, filename));
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             log.error("Failed adding song to internal factory. ID: {} - Filename: {}", clipID, filename);
         }
 

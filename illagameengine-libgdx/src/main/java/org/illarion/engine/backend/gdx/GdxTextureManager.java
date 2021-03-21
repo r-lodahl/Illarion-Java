@@ -42,7 +42,7 @@ class GdxTextureManager extends AbstractTextureManager<Pixmap> {
                 return null;
             }
             return new Pixmap(fileH);
-        } catch (@NotNull Exception ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -56,7 +56,7 @@ class GdxTextureManager extends AbstractTextureManager<Pixmap> {
             TextureRegion region = new TextureRegion(tex);
             region.flip(false, false);
             return new GdxTexture(region);
-        } catch (@NotNull GdxRuntimeException e) {
+        } catch (GdxRuntimeException e) {
             return null;
         }
     }

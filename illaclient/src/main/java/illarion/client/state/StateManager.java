@@ -85,7 +85,7 @@ public final class StateManager implements GameStateManager {
 
         try {
             FontLoader.getInstance().prepareAllFonts(binding.getAssets());
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             log.error("Error while loading fonts!", e);
         }
 

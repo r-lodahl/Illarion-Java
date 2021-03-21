@@ -122,7 +122,7 @@ public class OggPlayer extends Thread implements Stoppable {
                 }
                 stopPlaying();
             }
-        } catch (@NotNull LineUnavailableException | IOException e) {
+        } catch (LineUnavailableException | IOException e) {
             LOGGER.error("Failed to read Ogg file.", e);
         }
     }

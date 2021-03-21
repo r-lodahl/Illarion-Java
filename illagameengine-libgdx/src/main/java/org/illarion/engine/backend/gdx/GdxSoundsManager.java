@@ -62,7 +62,7 @@ class GdxSoundsManager extends AbstractSoundsManager {
         }
         try {
             return new GdxSound(ref, audio.newSound(files.internal(ref)));
-        } catch (@NotNull GdxRuntimeException e) {
+        } catch (GdxRuntimeException e) {
             return null;
         }
     }
@@ -75,7 +75,7 @@ class GdxSoundsManager extends AbstractSoundsManager {
         }
         try {
             return new GdxMusic(ref, new SaveGdxOpenALMusic(audio, files.internal(ref)));
-        } catch (@NotNull GdxRuntimeException e) {
+        } catch (GdxRuntimeException e) {
             return null;
         }
     }

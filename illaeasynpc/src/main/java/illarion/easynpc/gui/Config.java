@@ -454,7 +454,7 @@ public final class Config {
                 comp.setExtendedState(cfg.getInteger(LAST_WINDOW_STATE));
                 return;
             }
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             // nothing to do
         }
 

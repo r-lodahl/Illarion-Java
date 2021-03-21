@@ -108,15 +108,9 @@ allprojects {
             url 'https://dl.bintray.com/flowtick/jgraphx'
         }
     }
-
-    dependencies {
-        implementation 'org.jetbrains:annotations:13.0'
-    }
 }
 
 configure(subprojects) {
-    apply plugin: 'java-library'
-
     compileJava {
         options.incremental = true
         options.encoding = 'UTF-8'
@@ -137,6 +131,7 @@ subprojects {
         dependencies {
             implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
             implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+            implementation 'org.jetbrains:annotations:20.1.0'
         }
     }
 

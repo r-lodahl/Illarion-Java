@@ -42,7 +42,7 @@ public class Md5Crypto {
     public Md5Crypto() {
         try {
             md5Digest = MessageDigest.getInstance("MD5");
-        } catch (@NotNull NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
     }

@@ -199,7 +199,7 @@ class GdxWorldMap implements WorldMap, WorldMapDataProviderCallback {
                 while (currentlyFetchingTiles) {
                     try {
                         wait();
-                    } catch (@NotNull InterruptedException ignored) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }

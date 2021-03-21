@@ -353,7 +353,7 @@ public final class GameMiniMap implements WorldMapDataProvider, Stoppable {
             executionInProgress = false;
             try {
                 GlobalExecutorService.getService().invokeAll(updateList);
-            } catch (@NotNull InterruptedException ignored) {
+            } catch (InterruptedException ignored) {
                 executionInProgress = true;
             }
         }
@@ -486,9 +486,9 @@ public final class GameMiniMap implements WorldMapDataProvider, Stoppable {
                     toWrite -= outChannel.write(mapData);
                 }
             }
-        } catch (@NotNull FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             LOGGER.error("Target file not found", e);
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Error while writing minimap file", e);
         }
     }
@@ -549,7 +549,7 @@ public final class GameMiniMap implements WorldMapDataProvider, Stoppable {
             }
 
             performFullUpdate();
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Failed loading the map data from its file.", e);
             //noinspection SynchronizationOnLocalVariableOrMethodParameter
             synchronized (mapData) {

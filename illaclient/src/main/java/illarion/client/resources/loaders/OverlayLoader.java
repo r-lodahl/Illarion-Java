@@ -98,7 +98,7 @@ public final class OverlayLoader extends AbstractResourceLoader<OverlayTemplate>
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             log.error("Failed adding overlay to internal factory. ID: {} - Filename: {}", id, name);
         }
 

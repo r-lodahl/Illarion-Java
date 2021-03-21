@@ -725,7 +725,7 @@ public final class DialogHandler
                         return DialogType.Selection;
                     }
                 }
-            } catch (@NotNull NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 // nothing
             }
         }
@@ -782,7 +782,7 @@ public final class DialogHandler
                         child.hide(child::markForRemoval);
                     }
                 }
-            } catch (@NotNull NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 // nothing
             }
         }

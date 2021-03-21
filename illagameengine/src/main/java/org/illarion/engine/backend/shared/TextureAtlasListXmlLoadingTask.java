@@ -168,16 +168,16 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
                 }
                 currentEvent = parser.nextTag();
             }
-        } catch (@NotNull XmlPullParserException e) {
+        } catch (XmlPullParserException e) {
             log.error("Failed to load requested texture atlas: {}", atlasName, e);
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             log.error("Reading error while loading texture atlas: {}", atlasName, e);
         } finally {
             done = true;
             if (xmlStream != null) {
                 try {
                     xmlStream.close();
-                } catch (@NotNull IOException ignored) {
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -191,7 +191,7 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
             if ("atlasCount".equals(parser.getAttributeName(i))) {
                 try {
                     return Integer.parseInt(parser.getAttributeValue(i));
-                } catch (@NotNull NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     log.warn("Found atlas count entry but failed to parse it.");
                 }
                 break;
@@ -244,7 +244,7 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
                         name = attributeValue;
                         break;
                 }
-            } catch (@NotNull NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 log.error("Error while parsing texture atlas sprite: {}=\"{}" + '"', attributeName, attributeValue);
             }
         }

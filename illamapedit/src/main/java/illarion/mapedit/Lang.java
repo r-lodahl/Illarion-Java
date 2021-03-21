@@ -143,7 +143,7 @@ public final class Lang implements MessageSource {
     public String getMessage(@NotNull String key) {
         try {
             return messages.getString(key);
-        } catch (@NotNull MissingResourceException e) {
+        } catch (MissingResourceException e) {
             LOGGER.warn("Failed searching translated version of: {}", key);
             return '<' + key + '>';
         }
@@ -158,7 +158,7 @@ public final class Lang implements MessageSource {
     public boolean hasMsg(String key) {
         try {
             messages.getString(key);
-        } catch (@NotNull MissingResourceException e) {
+        } catch (MissingResourceException e) {
             return false;
         }
         return true;

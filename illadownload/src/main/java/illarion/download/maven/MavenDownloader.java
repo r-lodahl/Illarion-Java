@@ -265,7 +265,7 @@ public class MavenDownloader {
             }
             callback.resolvingDone(result);
             return result;
-        } catch (@NotNull DependencyCollectionException | InterruptedException | ExecutionException e) {
+        } catch (DependencyCollectionException | InterruptedException | ExecutionException e) {
             callback.resolvingFailed(e);
             throw e;
         }

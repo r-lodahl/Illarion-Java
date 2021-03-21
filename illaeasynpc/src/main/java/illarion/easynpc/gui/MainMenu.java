@@ -171,7 +171,7 @@ final class MainMenu extends RibbonApplicationMenu {
                 }
             }
             return sb.toString();
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }

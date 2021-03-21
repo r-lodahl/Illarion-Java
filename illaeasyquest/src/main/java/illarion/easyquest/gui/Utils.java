@@ -49,7 +49,7 @@ public final class Utils {
         Image image;
         try {
             image = ImageIO.read(Utils.class.getClassLoader().getResource(resource));
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Failed to read image: \"{}" + '"', resource);
             return null;
         }

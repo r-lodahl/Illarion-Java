@@ -192,7 +192,7 @@ public final class DocuBrowser extends JDialog {
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             setIconImage(ImageIO.read(cl.getResourceAsStream("easynpc16.png")));
-        } catch (@NotNull IOException ignored) {
+        } catch (IOException ignored) {
         }
 
         JTree contentTree = new JTree(new DocuTreeNode(DocuRoot.getInstance()));

@@ -99,16 +99,16 @@ public class TableLoader {
         try {
             is = new FileInputStream(table);
             loadTable(is, false, callback);
-        } catch (@NotNull FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             // it's ok, just ignore it
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Unable to read data file {}", table.getPath(), e);
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
-            } catch (@NotNull IOException e) {
+            } catch (IOException e) {
                 LOGGER.error("Unable to close data file {}", table.getPath(), e);
             }
         }
@@ -134,7 +134,7 @@ public class TableLoader {
         this(tableDelimiter);
         try {
             loadTable(resource, ndsc, callback);
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Error reading the resource stream.", e);
             throw new NoResourceException("Error reading resource stream.");
         }
@@ -172,16 +172,16 @@ public class TableLoader {
             // load data
             InputStream decryptedStream = crypto.getDecryptedStream(rsc);
             loadTable(decryptedStream, ndsc, callback);
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Error reading table {}", table, e);
             throw new NoResourceException("Error reading table " + table, e);
-        } catch (@NotNull CryptoException e) {
+        } catch (CryptoException e) {
             LOGGER.error("Error decrypting table {}", table, e);
             throw new NoResourceException("Error reading table " + table, e);
         } finally {
             try {
                 rsc.close();
-            } catch (@NotNull IOException ignored) {
+            } catch (IOException ignored) {
             }
         }
     }

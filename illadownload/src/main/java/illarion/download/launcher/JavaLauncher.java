@@ -234,7 +234,7 @@ public final class JavaLauncher {
                     outputBuffer.append('\n');
                 }
             }
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             StringWriter sWriter = new StringWriter();
             PrintWriter writer = new PrintWriter(sWriter);
             e.printStackTrace(writer);

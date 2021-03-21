@@ -69,14 +69,14 @@ public final class DoubleEffect implements EffectImpl {
         try {
             targetControlClass = (Class<? extends NiftyControl>) Class
                     .forName(String.valueOf(parameter.get("targetClass")));
-        } catch (@NotNull ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             LOGGER.error("Illegal target class for double effect.");
             return;
         }
 
         try {
             targetMethod = targetControlClass.getMethod(String.valueOf(parameter.get("targetMethod")), double.class);
-        } catch (@NotNull NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             LOGGER.error("Illegal target method for double effect.", e);
         }
     }

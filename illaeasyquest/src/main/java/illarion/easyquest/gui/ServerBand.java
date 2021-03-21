@@ -120,11 +120,11 @@ final class ServerBand extends JRibbonBand {
                             break;
                     }
                 }
-            } catch (@NotNull UnknownHostException exception) {
+            } catch (UnknownHostException exception) {
                 msgType = JOptionPane.ERROR_MESSAGE;
                 msgCaption = Lang.getMsg(ServerBand.class, "noHostCaption");
                 msgText = Lang.getMsg(ServerBand.class, "noHostText");
-            } catch (@NotNull Exception exception) {
+            } catch (Exception exception) {
                 msgType = JOptionPane.ERROR_MESSAGE;
                 msgCaption = Lang.getMsg(ServerBand.class, "failureCaption");
                 msgText = Lang.getMsg(ServerBand.class, "failureText");

@@ -15,10 +15,6 @@
  */
 package illarion.easyquest.gui;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
 import illarion.common.util.AppIdent;
 import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
@@ -34,7 +30,6 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.OfficeSilver2007Skin;
 import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -224,9 +219,6 @@ public class MainFrame extends JRibbonFrame {
      */
     @SuppressWarnings("Duplicates")
     private static void initLogging() throws IOException {
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
-
         Path userDir = DirectoryManager.getInstance().getDirectory(Directory.User);
         if (!Files.isDirectory(userDir)) {
             if (Files.exists(userDir)) {
@@ -235,19 +227,6 @@ public class MainFrame extends JRibbonFrame {
             Files.createDirectories(userDir);
         }
         System.setProperty("log_dir", userDir.toAbsolutePath().toString());
-
-        //Reload:
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ContextInitializer ci = new ContextInitializer(lc);
-        try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL resource = cl.getResource("logback-to-file.xml");
-            if (resource != null) {
-                ci.configureByResource(resource);
-            }
-        } catch (JoranException ignored) {
-        }
-        StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
 
         //noinspection UseOfSystemOutOrSystemErr
         System.out.println("Startup done.");

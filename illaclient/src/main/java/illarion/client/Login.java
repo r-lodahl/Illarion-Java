@@ -400,10 +400,10 @@ public enum Login {
             Document doc = db.parse(conn.getInputStream());
             // Interprets the server's XML
             readXML(doc, resultCallback);
-        } catch (@NotNull UnknownHostException e) {
+        } catch (UnknownHostException e) {
             resultCallback.finishedRequest(2);
             LOGGER.error("Failed to resolve hostname, for fetching the charlist");
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             resultCallback.finishedRequest(2);
             LOGGER.error("Loading the charlist from the server failed");
         }
@@ -438,7 +438,7 @@ public enum Login {
             byte[] cleartext = pw.getBytes(usedCharset);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return new String(Base64.getEncoder().encode(cipher.doFinal(cleartext)), usedCharset);
-        } catch (@NotNull GeneralSecurityException | IllegalArgumentException e) {
+        } catch (GeneralSecurityException | IllegalArgumentException e) {
             if (decode) {
                 LOGGER.warn("Decoding the password failed");
             } else {

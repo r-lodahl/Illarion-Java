@@ -149,7 +149,7 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
             itemSprite = assets.getSpriteFactory()
                     .createSprite(getTextures(assets.getTextureManager(), ITEM_PATH, name, frames), offsetX, offsetY,
                                   SpriteFactory.CENTER, SpriteFactory.BOTTOM, false);
-        } catch (@NotNull IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             log.error("Failed to fetch graphics for item {} (ID: {}) because: {}", name, itemID, e.getMessage());
             return true;
         }
@@ -164,7 +164,7 @@ public final class ItemLoader extends AbstractResourceLoader<ItemTemplate>
         // register item with factory
         try {
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException e) {
+        } catch (IllegalStateException e) {
             log.error("Failed to register item {} in factory due a duplicated ID: {}", name, itemID);
         }
 

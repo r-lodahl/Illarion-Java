@@ -91,7 +91,7 @@ public class MainViewController extends AbstractController implements MavenDownl
         new Thread(() -> {
             try {
                 readNewsAndQuests();
-            } catch (@NotNull XmlPullParserException | IOException | ParseException e) {
+            } catch (XmlPullParserException | IOException | ParseException e) {
                 log.error("Failed reading news and quests.", e);
             }
         }).start();
@@ -389,7 +389,7 @@ public class MainViewController extends AbstractController implements MavenDownl
                 try {
                     MavenDownloader downloader = new MavenDownloader(useSnapshots, attempt, cfg);
                     downloader.downloadArtifact(groupId, artifactId, this);
-                } catch (@NotNull Exception e) {
+                } catch (Exception e) {
                     //noinspection ThrowableResultOfMethodCallIgnored
                     if (getInnerExceptionOfType(SocketTimeoutException.class, e) != null) {
                         log.warn("Timeout detected. Restarting download with longer timeout.");
@@ -492,7 +492,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     }
 
     @Override
-    public void resolvingFailed(@NotNull Exception ex) {
+    public void resolvingFailed(Exception ex) {
         //noinspection ThrowableResultOfMethodCallIgnored
         if (getInnerExceptionOfType(SocketTimeoutException.class, ex) != null) {
             return;
@@ -517,7 +517,7 @@ public class MainViewController extends AbstractController implements MavenDownl
     public void showOptions(@NotNull ActionEvent actionEvent) {
         try {
             getModel().getStoryboard().showOptions();
-        } catch (@NotNull IOException ignored) {
+        } catch (IOException ignored) {
         }
     }
 }

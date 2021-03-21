@@ -128,7 +128,7 @@ public final class AvatarClothManager {
         AvatarClothTemplate template;
         try {
             template = factory.getTemplate(refID);
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             return null;
         }
         if (template.getId() == 0) {

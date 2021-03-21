@@ -207,7 +207,7 @@ public final class MapIO {
             LOGGER.debug("W={}; H={}; X={}; Y={}; L={};", m.getWidth(), m.getHeight(), m.getX(), m.getY(), m.getZ());
 
             return m;
-        } catch (@NotNull InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             throw new IOException("Error while loading map.", e);
         }
     }

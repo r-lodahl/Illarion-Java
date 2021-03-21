@@ -217,7 +217,7 @@ public class ConfigSystem implements Config {
         try (OutputStream stream = Files.newOutputStream(configFile)){
             userProperties.store(stream, "Writing user properties file.");
             changed = false;
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Configuration not saved: error accessing config file.");
         } finally {
             lock.writeLock().unlock();

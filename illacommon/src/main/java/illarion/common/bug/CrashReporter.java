@@ -80,20 +80,18 @@ public final class CrashReporter {
     /**
      * The singleton instance of this class.
      */
-    @NotNull
     private static final CrashReporter INSTANCE = new CrashReporter();
 
     /**
      * The logger instance that takes care for the logging output of this class.
      */
-    @NotNull
     private static final Logger LOGGER = LogManager.getLogger();
 
     static {
         URL result = null;
         try {
             result = new URL("https://illarion.org/mantis/api/soap/mantisconnect.php"); //$NON-NLS-1$
-        } catch (@NotNull MalformedURLException e) {
+        } catch (MalformedURLException e) {
             LOGGER.warn("Preparing the crash report target URL failed. Crash reporter not functional."); //$NON-NLS-1$
         }
         CRASH_SERVER = result;
@@ -178,7 +176,7 @@ public final class CrashReporter {
      * @param ownThread {@code true} in case the crash report is supposed
      * to be started in a additional thread
      */
-    public void reportCrash(@NotNull CrashData crash, boolean ownThread) {
+    public void reportCrash(CrashData crash, boolean ownThread) {
         if (ownThread) {
             new Thread(() -> reportCrash(crash, false)).start();
         }
@@ -187,7 +185,7 @@ public final class CrashReporter {
             try {
                 Files.createFile(
                         DirectoryManager.getInstance().resolveFile(Directory.Data, "corrupted"));
-            } catch (@NotNull IOException e) {
+            } catch (IOException e) {
                 LOGGER.error("Failed to mark data as corrupted.");
             }
         }
@@ -289,7 +287,7 @@ public final class CrashReporter {
      *
      * @param data the data that was collected about the crash
      */
-    private static void sendCrashData(@NotNull CrashData data) {
+    private static void sendCrashData(CrashData data) {
         if (CRASH_SERVER == null) {
             return;
         }
@@ -323,7 +321,7 @@ public final class CrashReporter {
             FilterData filter = connector.getFilter(selectedProject);
             Collection<IssueHeaderData> headers = connector.getIssueHeaders(selectedProject, filter);
 
-            for (@NotNull IssueHeaderData header : headers) {
+            for (IssueHeaderData header : headers) {
                 if (!CATEGORY.equals(header.getCategory())) {
                     continue;
                 }

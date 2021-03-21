@@ -61,7 +61,7 @@ final class Utils {
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             image = ImageIO.read(cl.getResource(resource));
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Failed to read image: \"{}\"", resource);
             return null;
         }
@@ -96,7 +96,7 @@ final class Utils {
             frame.addNewScript().loadScript(easyScript);
             frame.setCurrentTabTitle(file.getFileName().toString());
             Config.getInstance().addLastOpenedFile(file);
-        } catch (@NotNull IOException e1) {
+        } catch (IOException e1) {
             LOGGER.error("Reading the script failed.", e1); //$NON-NLS-1$
         }
     }
@@ -168,7 +168,7 @@ final class Utils {
                 if (backupFile.exists()) {
                     backupFile.delete();
                 }
-            } catch (@NotNull IOException ex) {
+            } catch (IOException ex) {
                 if (backupFile.exists()) {
                     if (targetFile.exists()) {
                         targetFile.delete();
@@ -281,7 +281,7 @@ final class Utils {
             JOptionPane.showMessageDialog(frame, Lang.getMsg(Utils.class, "luaUploadInfos"),
                                           Lang.getMsg(Utils.class, "luaUploadInfosTitle"),
                                           JOptionPane.INFORMATION_MESSAGE);
-        } catch (@NotNull IOException ex) {
+        } catch (IOException ex) {
             LOGGER.error("Connection to host failed", ex);
         }
     }
@@ -308,7 +308,7 @@ final class Utils {
                 EasyNpcScript.COPYRIGHT_HEADER.writeTo(bufferedWriter);
                 bufferedWriter.write(scriptText);
                 bufferedWriter.flush();
-            } catch (@NotNull Exception e) {
+            } catch (Exception e) {
                 if (backupFile != null) {
                     Files.copy(backupFile, targetFile, StandardCopyOption.REPLACE_EXISTING);
                 }
@@ -316,7 +316,7 @@ final class Utils {
             if (backupFile != null) {
                 Files.deleteIfExists(backupFile);
             }
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Writing the easyNPC Script failed.", e); //$NON-NLS-1$
         }
     }

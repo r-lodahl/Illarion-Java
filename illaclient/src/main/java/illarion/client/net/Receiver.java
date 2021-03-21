@@ -335,7 +335,7 @@ final class Receiver extends Thread implements NetCommReader {
                                 // throw away the command that was incorrectly decoded
                                 buffer.position(len + CommandList.HEADER_SIZE);
                             }
-                        } catch (@NotNull IllegalArgumentException ex) {
+                        } catch (IllegalArgumentException ex) {
                             log.error("Invalid command id received {}", Integer.toHexString(id));
                         }
 
@@ -343,14 +343,14 @@ final class Receiver extends Thread implements NetCommReader {
                         buffer.flip();
                     }
                 }
-            } catch (@NotNull IOException e) {
+            } catch (IOException e) {
                 if (running) {
                     log.error("The connection to the server is not working anymore.", e);
                     IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);
                     running = false;
                     return;
                 }
-            } catch (@NotNull Exception e) {
+            } catch (Exception e) {
                 if (running) {
                     log.error("General error in the receiver", e);
                     IllaClient.sendDisconnectEvent(Lang.INSTANCE.getMessagesResourceBundle().getLocalizedString("error.receiver"), true);

@@ -196,7 +196,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
             if (!sceneEffects.contains(sceneEffect)) {
                 sceneEffects.add(sceneEffect);
             }
-        } catch (@NotNull ClassCastException e) {
+        } catch (ClassCastException e) {
             // illegal type
         }
     }
@@ -206,7 +206,7 @@ public abstract class AbstractScene<T extends SceneEffect> implements Scene, Com
         try {
             @SuppressWarnings("unchecked") T sceneEffect = (T) effect;
             sceneEffects.remove(sceneEffect);
-        } catch (@NotNull ClassCastException e) {
+        } catch (ClassCastException e) {
             // illegal type
         }
     }

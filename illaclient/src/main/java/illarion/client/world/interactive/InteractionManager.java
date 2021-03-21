@@ -95,7 +95,7 @@ public final class InteractionManager {
                 try {
                     InteractiveContainerSlot targetSlot = itemContainer.getSlot(slot).getInteractive();
                     draggedObject.dragTo(targetSlot, count); // Enter the contents into the slot
-                } catch (@NotNull IndexOutOfBoundsException ex) {
+                } catch (IndexOutOfBoundsException ex) {
                     LOGGER.error("Tried to drop an item at a container slot that does not exist.", ex);
                 } finally {
                     cancelDragging(); // Always clean up the action
@@ -119,7 +119,7 @@ public final class InteractionManager {
         try {
             InteractiveInventorySlot targetSlot = World.getPlayer().getInventory().getItem(slot).getInteractive();
             draggedObject.dragTo(targetSlot, count);
-        } catch (@NotNull IndexOutOfBoundsException ex) {
+        } catch (IndexOutOfBoundsException ex) {
             LOGGER.error("Tried to drop an item at an inventory slot that does not exist.", ex);
         } finally {
             cancelDragging();
@@ -208,7 +208,7 @@ public final class InteractionManager {
                 endOfDragAction = endOfDragOp;
                 amount = conSlot.getCount();
                 return;
-            } catch (@NotNull IndexOutOfBoundsException ex) {
+            } catch (IndexOutOfBoundsException ex) {
                 LOGGER.error("Tried to start dragging from a container slot that does not exist?!", ex);
             }
         }
@@ -245,7 +245,7 @@ public final class InteractionManager {
                     amount = invSlot.getCount();
                     return;
                 }
-            } catch (@NotNull IndexOutOfBoundsException ex) {
+            } catch (IndexOutOfBoundsException ex) {
                 LOGGER.error("Tried to start dragging from an inventory slot that does not exist?!", ex);
             }
         }

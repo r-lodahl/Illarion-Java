@@ -180,7 +180,7 @@ public final class Avatar extends AbstractEntity<AvatarTemplate> implements Reso
         try {
             AvatarTemplate template = CharacterFactory.getInstance().getTemplate(avatarID);
             return new Avatar(template, parent);
-        } catch (@NotNull Exception ex) {
+        } catch (Exception ex) {
             log.error("Requesting new Avatar with ID {} for {} failed.", avatarID, parent);
         }
         return null;

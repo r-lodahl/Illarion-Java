@@ -77,7 +77,7 @@ public class ChannelSelectionController extends AbstractController {
 
         try {
             getModel().getStoryboard().showNormal();
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             // nothing
         }
     }

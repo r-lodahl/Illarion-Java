@@ -22,7 +22,7 @@ public class SecureResourceBundle implements NullSecureResourceBundle {
     public String getLocalizedString(@NotNull String key) {
         try {
             return resourceBundle.getString(key);
-        } catch (@NotNull MissingResourceException | NullPointerException e) {
+        } catch (MissingResourceException | NullPointerException e) {
             log.warn("Failed getting localized version of: {}. Reason: {}", key, e.getMessage());
             return '<' + key + '>';
         }

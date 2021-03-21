@@ -91,19 +91,19 @@ public class AppIdent implements Externalizable {
                         foundVersion = mainAttribs.getValue("Implementation-Version");
                         break;
                     }
-                } catch (@NotNull IOException ex) {
+                } catch (IOException ex) {
                     // nothing
                 } finally {
                     if (stream != null) {
                         try {
                             stream.close();
-                        } catch (@NotNull IOException ex) {
+                        } catch (IOException ex) {
                             // nothing
                         }
                     }
                 }
             }
-        } catch (@NotNull IOException ex) {
+        } catch (IOException ex) {
             // nothing
         }
 
@@ -168,7 +168,7 @@ public class AppIdent implements Externalizable {
         }
         try {
             return Integer.parseInt(appVersion.substring(indexOfSeparator + 1, indexSecondSeparator));
-        } catch (@NotNull NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return 0;
         }
     }

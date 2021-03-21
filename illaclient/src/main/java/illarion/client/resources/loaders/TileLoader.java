@@ -120,7 +120,7 @@ public final class TileLoader extends AbstractResourceLoader<TileTemplate>
         try {
             TileTemplate template = new TileTemplate(id, tileSprite, frames, speed, info);
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             log.error("Failed adding tile to internal factory. ID: {} - Filename: {}", id, name);
         }
 

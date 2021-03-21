@@ -87,9 +87,9 @@ public final class SkillLoader {
                     currentTag = parser.nextTag();
                 }
                 parser.require(XmlPullParser.END_TAG, null, "skills");
-            } catch (@NotNull XmlPullParserException e) {
+            } catch (XmlPullParserException e) {
                 log.error("Parsing the XML file failed.", e);
-            } catch (@NotNull IOException e) {
+            } catch (IOException e) {
                 log.error("Reading the XML file failed.", e);
             }
             loadingFinished = true;

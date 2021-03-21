@@ -71,7 +71,7 @@ public class HelpDialog extends JDialog implements HyperlinkListener {
             if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.getDesktop().browse(e.getURL().toURI());
-                } catch (@NotNull IOException | URISyntaxException e1) {
+                } catch (IOException | URISyntaxException e1) {
                     LOGGER.warn("Can't launch browser: ", e1);
                 }
             }

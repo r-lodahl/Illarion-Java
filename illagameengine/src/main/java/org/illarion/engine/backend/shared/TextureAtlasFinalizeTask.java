@@ -106,9 +106,9 @@ public class TextureAtlasFinalizeTask<T> implements Runnable, TextureAtlasTask {
                 }
             }
             monitor.setProgress(monitor.getProgress() + progressToAdd);
-        } catch (@NotNull InterruptedException e) {
+        } catch (InterruptedException e) {
             LOGGER.error("Loading thread got interrupted.", e);
-        } catch (@NotNull ExecutionException e) {
+        } catch (ExecutionException e) {
             LOGGER.error("Failure while loading texture data.", e);
         } finally {
             done = true;

@@ -383,7 +383,7 @@ public final class Editor extends RTextScrollPane {
         String data;
         try {
             data = (String) transfer.getTransferData(DataFlavor.stringFlavor);
-        } catch (@NotNull Exception e1) {
+        } catch (Exception e1) {
             return;
         }
         StringBuilder buffer = new StringBuilder(editor.getText());
@@ -476,7 +476,7 @@ public final class Editor extends RTextScrollPane {
                             errorNpc = null;
                             frame.getErrorArea().removeErrorEditor(Editor.this);
                         }
-                    } catch (@NotNull InterruptedException | ExecutionException ignored) {
+                    } catch (InterruptedException | ExecutionException ignored) {
                     }
                 }
             };

@@ -113,7 +113,7 @@ public final class ClothLoader extends AbstractResourceLoader<AvatarClothTemplat
 
         try {
             getTargetFactory().storeResource(template);
-        } catch (@NotNull IllegalStateException e) {
+        } catch (IllegalStateException e) {
             log.error("Error adding paperdolling item to avatar: {} in group: {} to item: {}", avatarID, location,
                     itemID);
         }

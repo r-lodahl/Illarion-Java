@@ -267,7 +267,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
                     EasyNpcScript easyScript = new EasyNpcScript(Paths.get(file));
                     addNewScript().loadScript(easyScript);
                     setCurrentTabTitle(easyScript.getSourceScriptFile().getFileName().toString());
-                } catch (@NotNull IOException e1) {
+                } catch (IOException e1) {
                     LOGGER.warn("Originally opened file: {} could not be opened.", file);
                 }
             }
@@ -320,7 +320,7 @@ public final class MainFrame extends JRibbonFrame { // NO_UCD
         SwingUtilities.invokeLater(() -> {
             try {
                 SubstanceLookAndFeel.setSkin(Config.getInstance().getLookAndFeel());
-            } catch (@NotNull Exception e) {
+            } catch (Exception e) {
                 SubstanceLookAndFeel.setSkin(Config.DEFAULT_LOOK_AND_FEEL);
             }
 

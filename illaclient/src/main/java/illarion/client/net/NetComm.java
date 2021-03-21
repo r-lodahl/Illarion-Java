@@ -231,7 +231,7 @@ public final class NetComm {
                     sendCommand(new KeepAliveCmd());
                 }
             }, 500, 500, TimeUnit.MILLISECONDS);
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             log.error("Connection error");
             return false;
         }
@@ -283,7 +283,7 @@ public final class NetComm {
             // wait for threads to react
             try {
                 Thread.sleep(THREAD_WAIT_TIME);
-            } catch (@NotNull InterruptedException e) {
+            } catch (InterruptedException e) {
                 log.warn("Disconnecting wait got interrupted.");
             }
 
@@ -292,7 +292,7 @@ public final class NetComm {
                 socket.close();
                 socket = null;
             }
-        } catch (@NotNull IOException e) {
+        } catch (IOException e) {
             log.warn("Disconnecting failed.", e);
         }
     }

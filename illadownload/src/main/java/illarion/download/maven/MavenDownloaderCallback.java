@@ -73,5 +73,5 @@ public interface MavenDownloaderCallback {
      *
      * @param ex the resolving exception
      */
-    void resolvingFailed(@NotNull Exception ex);
+    void resolvingFailed(Exception ex);
 }

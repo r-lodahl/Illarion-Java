@@ -85,7 +85,7 @@ class GdxCursorManager extends AbstractCursorManager {
                 return new GdxCursor(cursor);
             }
             return null;
-        } catch (@NotNull GdxRuntimeException e) {
+        } catch (GdxRuntimeException e) {
             return null;
         }
     }

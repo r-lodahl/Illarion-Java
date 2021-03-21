@@ -110,7 +110,7 @@ public final class Crypto {
             cipher.init(Cipher.DECRYPT_MODE, encryptionKey);
 
             return new CipherInputStream(src, cipher);
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -147,7 +147,7 @@ public final class Crypto {
 
         try (OutputStream cOutStream = getEncryptedStream(new NonClosingOutputStream(dst))) {
             transferBytes(src, cOutStream);
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -187,7 +187,7 @@ public final class Crypto {
 
                 return new CipherOutputStream(out, cipher);
             }
-        } catch (@NotNull Exception e) {
+        } catch (Exception e) {
             throw new CryptoException(e);
         }
     }
@@ -286,13 +286,13 @@ public final class Crypto {
                 if (fileKey != null) {
                     return fileKey;
                 }
-            } catch (@NotNull Exception ignored) {
+            } catch (Exception ignored) {
                 // loading the key failed
             } finally {
                 if (keyIn != null) {
                     try {
                         keyIn.close();
-                    } catch (@NotNull IOException ignored) {
+                    } catch (IOException ignored) {
                     }
                 }
             }
@@ -314,7 +314,7 @@ public final class Crypto {
                 Object keyObject = keyIn.readObject();
                 //noinspection unchecked
                 return (T) keyObject;
-            } catch (@NotNull Exception ignored) {
+            } catch (Exception ignored) {
                 // loading the key failed
             }
         }
