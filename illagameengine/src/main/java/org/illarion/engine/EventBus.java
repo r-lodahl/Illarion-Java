@@ -1,6 +1,5 @@
 package org.illarion.engine;
 
-@SuppressWarnings("UnstableApiUsage")
 public enum EventBus {
     INSTANCE;
 

@@ -26,7 +26,6 @@ import org.illarion.engine.*;
 import org.illarion.engine.backend.gdx.ui.GdxUserInterface;
 import org.illarion.engine.event.GameExitEnforcedEvent;
 import org.illarion.engine.event.GameExitRequestedEvent;
-import org.illarion.engine.event.WindowResizedEvent;
 import org.illarion.engine.graphic.Color;
 import org.illarion.engine.graphic.Font;
 import org.jetbrains.annotations.NotNull;
@@ -83,7 +82,7 @@ class ListenerApplication extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        EventBus.INSTANCE.post(new WindowResizedEvent(width, height));
+        gui.resize(width, height);
     }
 
     @Override

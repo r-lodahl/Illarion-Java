@@ -67,7 +67,7 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
                 activateTable(characterSelection);
             }
         });
-        options.setOnCancelCallback(new ClickListener() {
+        options.setOnBackCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(login);
@@ -85,6 +85,12 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         if (activeTable == credits && credits.cycleCredits()) {
             activateTable(login);
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+        root.setSize(width, height);
     }
 
     public void dispose() {
@@ -144,7 +150,6 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
                 event.accept(options.getCurrentSettings());
-                activateTable(login);
             }
         });
     }

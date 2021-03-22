@@ -1,6 +1,7 @@
 package org.illarion.engine.backend.gdx.ui.login;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -16,14 +17,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OptionsView extends Table {
+final class OptionsView extends Table {
+    private static final float ELEMENT_WIDTH = 200.0f;
+    private static final float ELEMENT_PADDING = 5.0f;
+    private static final float CONTAINER_HEIGHT = 180.0f;
+    private static final float BUTTON_ROW_PADDING = 20.0f;
+    private static final float BUTTON_ROW_WIDTH = 150.0f;
+
+    private static final Integer[] EMPTY_VALUE = new Integer[0];
+
     private ResolutionManager resolutionManager;
     private ConfigReader config;
 
     //region + UI Definition +
     private final Table generalTab, graphicsTab, soundTab, serverTab;
 
-    private final TextButton btSaveSettings, btCancelSettings, btGraphicsTab, btGeneralTab, btSoundTab, btServerTab;
+    private final TextButton btSaveSettings, btBackSettings, btGraphicsTab, btGeneralTab, btSoundTab, btServerTab;
 
     private final CheckBox cbWasdWalking, cbDisableChatAfterSending, cbShowQuestsOnMap, cbShowQuestsOnMiniMap,
             cbShowPing, cbUseFullscreen, cbShowFps, cbSoundEffectsActive, cbMusicActive, cbAccountLogin,
@@ -44,8 +53,8 @@ public class OptionsView extends Table {
     private final Container<Table> contentRoot;
     //endregion
 
-    public Map<String, String> getCurrentSettings() {
-        var settings = new HashMap<String, String>();
+    Map<String, String> getCurrentSettings() {
+        Map<String, String> settings = new HashMap<>(24);
 
         var device = sbDevice.getSelected();
         var isFullscreen = cbUseFullscreen.isChecked();
@@ -56,8 +65,6 @@ public class OptionsView extends Table {
         settings.put(Option.showQuestsOnMiniMap, Boolean.toString(cbShowQuestsOnMiniMap.isChecked()));
         settings.put(Option.showPing, Boolean.toString(cbShowPing.isChecked()));
         settings.put(Option.fullscreen, Boolean.toString(isFullscreen));
-        settings.put(Option.deviceVirtualX, Integer.toString(device.virtualX));
-        settings.put(Option.deviceVirtualY, Integer.toString(device.virtualY));
         settings.put(Option.deviceName, device.name);
         settings.put(Option.showFps, Boolean.toString(cbShowFps.isChecked()));
         settings.put(Option.customServerAccountSystem, Boolean.toString(cbAccountLogin.isChecked()));
@@ -93,15 +100,15 @@ public class OptionsView extends Table {
         return settings;
     }
 
-    public void setOnSaveCallback(ClickListener listener) {
+    void setOnSaveCallback(EventListener listener) {
         btSaveSettings.addListener(listener);
     }
 
-    public void setOnCancelCallback(ClickListener listener) {
-        btCancelSettings.addListener(listener);
+    void setOnBackCallback(EventListener listener) {
+        btBackSettings.addListener(listener);
     }
 
-    public void setOptions(ConfigReader config, ResolutionManager resolutionManager) {
+    void setOptions(ConfigReader config, ResolutionManager resolutionManager) {
         this.resolutionManager = resolutionManager;
         this.config = config;
 
@@ -130,7 +137,7 @@ public class OptionsView extends Table {
         });
     }
 
-    private void switchTab(Table[] tabs, Table newTab, Container<Table> container) {
+    private static void switchTab(Table[] tabs, Table newTab, Container<Table> container) {
         for (var tab : tabs) {
             if (tab != newTab) {
                 container.removeActor(tab, true);
@@ -140,16 +147,13 @@ public class OptionsView extends Table {
     }
 
     private void setupResolutionSelection(ConfigReader config, ResolutionManager resolutionManager) {
-        int deviceVirtualX = config.getInteger(Option.deviceVirtualX);
-        int deviceVirtualY = config.getInteger(Option.deviceVirtualY);
         String deviceName = config.getString(Option.deviceName);
 
         var devices = resolutionManager.getDevices();
-        var currentDevice = Arrays.stream(devices)
-                .filter(x -> x.virtualY == deviceVirtualY && x.virtualX == deviceVirtualX && x.name.equals(deviceName))
-                .findFirst();
-
-        var usedDevice = currentDevice.orElse(devices[0]);
+        var usedDevice = Arrays.stream(devices)
+                .filter(device -> device.name.equals(deviceName))
+                .findFirst()
+                .orElse(devices[0]);
 
         sbDevice.setItems(devices);
         sbDevice.setSelectedIndex(ArrayUtils.indexOf(devices, usedDevice));
@@ -157,6 +161,7 @@ public class OptionsView extends Table {
         updateResolutions(usedDevice);
         updateCurrentlySelectedResolution();
         updateFullscreenOptions(sbDevice.getSelected(), sbResolution.getSelected());
+        setFullscreenOptionsActive(cbUseFullscreen.isChecked());
 
         sbDevice.addListener(new ChangeListener() {
             @Override
@@ -226,10 +231,10 @@ public class OptionsView extends Table {
 
         var bitsPerPoints = fullscreenResolutionOptions
                 .map(x -> x.bitsPerPoints.toArray(Integer[]::new))
-                .orElse(new Integer[0]);
+                .orElse(EMPTY_VALUE);
         var refreshRates = fullscreenResolutionOptions
                 .map(x -> x.refreshRates.toArray(Integer[]::new))
-                .orElse(new Integer[0]);
+                .orElse(EMPTY_VALUE);
 
         sbRefreshRate.setItems(refreshRates);
         sbRefreshRate.setSelectedIndex(
@@ -254,7 +259,7 @@ public class OptionsView extends Table {
     }
 
     //region + Only UI Definition below +
-    public OptionsView(Skin skin, NullSecureResourceBundle resourceBundle) {
+    OptionsView(Skin skin, NullSecureResourceBundle resourceBundle) {
         cbWasdWalking = new CheckBox("", skin);
         cbDisableChatAfterSending = new CheckBox("", skin);
         cbShowQuestsOnMap = new CheckBox("", skin);
@@ -291,7 +296,7 @@ public class OptionsView extends Table {
 
         TextButton resetServerSettingsButton = new TextButton(resourceBundle.getLocalizedString("serverReset"), skin);
         btSaveSettings = new TextButton(resourceBundle.getLocalizedString("save"), skin);
-        btCancelSettings = new TextButton(resourceBundle.getLocalizedString("cancel"), skin);
+        btBackSettings = new TextButton(resourceBundle.getLocalizedString("back"), skin);
         btGeneralTab = new TextButton(resourceBundle.getLocalizedString("category.general"), skin);
         btGraphicsTab = new TextButton(resourceBundle.getLocalizedString("category.graphics"), skin);
         btSoundTab = new TextButton(resourceBundle.getLocalizedString("category.sound"), skin);
@@ -299,15 +304,15 @@ public class OptionsView extends Table {
 
         VerticalGroup tabButtonRow = new VerticalGroup();
         tabButtonRow.left().top().fill();
-        btGraphicsTab.padLeft(5.0f);
-        btGraphicsTab.padRight(5.0f);
+        btGraphicsTab.padLeft(ELEMENT_PADDING);
+        btGraphicsTab.padRight(ELEMENT_PADDING);
         tabButtonRow.addActor(btGeneralTab);
         tabButtonRow.addActor(btGraphicsTab);
         tabButtonRow.addActor(btSoundTab);
         tabButtonRow.addActor(btServerTab);
 
         generalTab = new Table();
-        generalTab.columnDefaults(0).align(Align.left).width(200.0f);
+        generalTab.columnDefaults(0).align(Align.left).width(ELEMENT_WIDTH);
         generalTab.columnDefaults(1).align(Align.right);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("wasdWalk"), skin));
@@ -323,54 +328,54 @@ public class OptionsView extends Table {
         generalTab.add(cbShowQuestsOnMiniMap);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("report"), skin));
-        generalTab.add(cbSendErrorReports).width(200.0f);
+        generalTab.add(cbSendErrorReports).width(ELEMENT_WIDTH);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("translation.provider"), skin));
-        generalTab.add(sbTranslationProvider).width(200.0f);
+        generalTab.add(sbTranslationProvider).width(ELEMENT_WIDTH);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("translation.direction"), skin));
-        generalTab.add(sbTranslationDirection).width(200.0f);
+        generalTab.add(sbTranslationDirection).width(ELEMENT_WIDTH);
 
         graphicsTab = new Table();
-        graphicsTab.columnDefaults(0).align(Align.left).width(200.0f);
+        graphicsTab.columnDefaults(0).align(Align.left).width(ELEMENT_WIDTH);
         graphicsTab.columnDefaults(1).align(Align.right);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("fullscreen"), skin));
         graphicsTab.add(cbUseFullscreen);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("device"), skin));
-        graphicsTab.add(sbDevice).width(200.0f);
+        graphicsTab.add(sbDevice).width(ELEMENT_WIDTH);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("resolution"), skin));
-        graphicsTab.add(sbResolution).width(200.0f);
+        graphicsTab.add(sbResolution).width(ELEMENT_WIDTH);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("refreshRate"), skin));
-        graphicsTab.add(sbRefreshRate).width(200.0f);
+        graphicsTab.add(sbRefreshRate).width(ELEMENT_WIDTH);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("bitsPerPoint"), skin));
-        graphicsTab.add(sbBitDepth).width(200.0f);
+        graphicsTab.add(sbBitDepth).width(ELEMENT_WIDTH);
         graphicsTab.row();
         graphicsTab.add(new Label(resourceBundle.getLocalizedString("showFps"), skin));
         graphicsTab.add(cbShowFps);
 
         soundTab = new Table();
-        soundTab.columnDefaults(0).align(Align.left).width(200.0f);
+        soundTab.columnDefaults(0).align(Align.left).width(ELEMENT_WIDTH);
         soundTab.columnDefaults(1).align(Align.right);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("soundOn"), skin));
         soundTab.add(cbSoundEffectsActive);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("soundVolume"), skin));
-        soundTab.add(slSoundEffectsVolume).width(200.0f);
+        soundTab.add(slSoundEffectsVolume).width(ELEMENT_WIDTH);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("musicOn"), skin));
         soundTab.add(cbMusicActive);
         soundTab.row();
         soundTab.add(new Label(resourceBundle.getLocalizedString("musicVolume"), skin));
-        soundTab.add(slMusicVolume).width(200.0f);
+        soundTab.add(slMusicVolume).width(ELEMENT_WIDTH);
 
         serverTab = new Table();
-        serverTab.columnDefaults(0).align(Align.left).width(200.0f);
+        serverTab.columnDefaults(0).align(Align.left).width(ELEMENT_WIDTH);
         serverTab.columnDefaults(1).align(Align.right);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("showPing"), skin));
@@ -378,33 +383,33 @@ public class OptionsView extends Table {
         serverTab.row();
         Label serverWarnText = new Label(resourceBundle.getLocalizedString("serverWarning"), skin);
         serverWarnText.setWrap(true);
-        serverTab.add(serverWarnText).colspan(2).width(400.0f);
+        serverTab.add(serverWarnText).colspan(2).width(2 * ELEMENT_WIDTH);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverAddress"), skin));
-        serverTab.add(tbUserDefinedServerAddress).width(200.0f);
+        serverTab.add(tbUserDefinedServerAddress).width(ELEMENT_WIDTH);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverPort"), skin));
-        serverTab.add(tbUserDefinedServerPort).width(200.0f);
+        serverTab.add(tbUserDefinedServerPort).width(ELEMENT_WIDTH);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("clientVersion"), skin));
-        serverTab.add(tbUserDefinedServerVersion).width(200.0f);
+        serverTab.add(tbUserDefinedServerVersion).width(ELEMENT_WIDTH);
         serverTab.row();
         serverTab.add(new Label(resourceBundle.getLocalizedString("serverAccountLogin"), skin));
         serverTab.add(cbAccountLogin);
         serverTab.row();
-        serverTab.add(resetServerSettingsButton).colspan(2).align(Align.right).width(200.0f);
+        serverTab.add(resetServerSettingsButton).colspan(2).align(Align.right).width(ELEMENT_WIDTH);
 
         contentRoot = new Container<>();
         contentRoot.top().left();
 
         HorizontalGroup settingsButtonRow = new HorizontalGroup();
         settingsButtonRow.addActor(btSaveSettings);
-        settingsButtonRow.addActor(btCancelSettings);
+        settingsButtonRow.addActor(btBackSettings);
 
-        add(tabButtonRow).width(150.0f).height(180.0f);
-        add(contentRoot).width(400.0f).height(180.0f);
+        add(tabButtonRow).width(BUTTON_ROW_WIDTH).height(CONTAINER_HEIGHT);
+        add(contentRoot).width(2 * ELEMENT_WIDTH).height(CONTAINER_HEIGHT);
         row();
-        add(settingsButtonRow).colspan(2).align(Align.right).padTop(20.0f);
+        add(settingsButtonRow).colspan(2).align(Align.right).padTop(BUTTON_ROW_PADDING);
 
         setFillParent(true);
         contentRoot.setActor(generalTab);

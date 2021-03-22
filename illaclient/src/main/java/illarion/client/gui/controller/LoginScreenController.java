@@ -20,27 +20,31 @@ import illarion.client.Login;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import illarion.common.config.ConfigReader;
 import org.illarion.engine.BackendBinding;
+import org.illarion.engine.EventBus;
+import org.illarion.engine.Option;
 import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
+import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.UserInterface;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This is the screen controller that takes care of displaying the login screen.
  */
 public final class LoginScreenController {
-    /**
-     * This is the logging instance for this class.
-     */
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final List<String> RESOLUTION_OPTIONS = Arrays.asList(Option.fullscreen, Option.fullscreenHeight,
+            Option.fullscreenWidth, Option.fullscreenWidth, Option.fullscreenBitsPerPoint, Option.fullscreenRefreshRate,
+            Option.deviceName, Option.windowHeight, Option.windowWidth);
 
     private final UserInterface gui;
     private final Sounds sounds;
@@ -57,17 +61,14 @@ public final class LoginScreenController {
     }
 
     public void onStartStage() {
-        AudioPlayer audioPlayer = AudioPlayer.getInstance();
+        AudioPlayer audioPlayer = AudioPlayer.INSTANCE;
         audioPlayer.initAudioPlayer(sounds);
         Music illarionTheme = SongFactory.getInstance().getSong(2, assets.getSoundsManager());
         audioPlayer.setLastMusic(illarionTheme);
-        if (IllaClient.getConfig().getBoolean("musicOn")) {
-            if (illarionTheme != null) {
-                if (!audioPlayer.isCurrentMusic(illarionTheme)) {
-                    // may be null in case OpenAL is not working
-                    audioPlayer.playMusic(illarionTheme);
-                }
-            }
+        if (IllaClient.getConfig().getBoolean(Option.musicOn)
+                && illarionTheme != null
+                && !audioPlayer.isCurrentMusic(illarionTheme)) { // may be null in case OpenAL is not working
+            audioPlayer.playMusic(illarionTheme);
         }
 
         int serverKey = IllaClient.DEFAULT_SERVER.getServerKey();
@@ -85,10 +86,25 @@ public final class LoginScreenController {
         stage.setOptionsSaveListener(this::saveOptions);
     }
 
-    public void saveOptions(Map<String, String> options) {
+    private void saveOptions(Map<String, String> options) {
         var config = IllaClient.getConfig();
-        options.forEach(config::set);
+
+        var changedOptions = options.entrySet().stream()
+                .filter(option -> isOptionChanged(option.getKey(), option.getValue(), config))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        changedOptions.forEach(config::set);
         config.save();
+
+        // Special handling for options (applied as one event not as several)
+        if (changedOptions.keySet().stream().anyMatch(RESOLUTION_OPTIONS::contains)) {
+            EventBus.INSTANCE.post(new ResolutionChangedEvent(config));
+        }
+    }
+
+    private boolean isOptionChanged(String option, String optionValue, ConfigReader config) {
+        var configOptionValue = config.getString(option);
+        return !optionValue.equals(configOptionValue);
     }
 
 

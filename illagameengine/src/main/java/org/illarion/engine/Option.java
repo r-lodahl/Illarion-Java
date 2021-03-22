@@ -7,8 +7,6 @@ public class Option {
     public static final String showQuestsOnMiniMap = "showQuestsOnMiniMap";
     public static final String showPing = "showPing";
     public static final String fullscreen = "fullscreen";
-    public static final String deviceVirtualX = "deviceVirtualX";
-    public static final String deviceVirtualY = "deviceVirtualY";
     public static final String deviceName = "deviceName";
     public static final String fullscreenWidth = "fullscreenWidth";
     public static final String fullscreenHeight = "fullscreenHeight";

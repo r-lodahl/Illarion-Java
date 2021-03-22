@@ -16,82 +16,111 @@
 package org.illarion.engine.backend.gdx;
 
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import org.illarion.engine.Diagnostics;
-import org.illarion.engine.GameContainer;
-import org.illarion.engine.GameStateManager;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.google.common.eventbus.Subscribe;
+import illarion.common.config.ConfigReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.illarion.engine.*;
+import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * The game container that is using the libGDX backend to handle the game.
  */
 public class ApplicationGameContainer implements GameContainer {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     /**
      * The configuration used to create the application.
      */
     @NotNull
-    private final Lwjgl3ApplicationConfiguration config;
+    private final Lwjgl3ApplicationConfiguration applicationConfiguration;
 
     /**
      * Create a new desktop game that is drawn using libGDX.
      *
-     * @param width the width of the game container
-     * @param height the height of the game container
-     * @param fullScreen the full screen flag of the container
+     * @param config a ConfigReader containing display values
      */
-    public ApplicationGameContainer(int width, int height, boolean fullScreen) {
-        config = new Lwjgl3ApplicationConfiguration();
+    public ApplicationGameContainer(ConfigReader config) {
+        var isFullscreen = config.getBoolean(Option.fullscreen);
 
-        config.setWindowListener(new WindowListener());
+        applicationConfiguration = new Lwjgl3ApplicationConfiguration();
 
-        config.useVsync(true);
-        config.setIdleFPS(10);
+        applicationConfiguration.setWindowListener(new WindowListener());
 
-        config.setResizable(!fullScreen);
+        applicationConfiguration.useVsync(true);
+        applicationConfiguration.setIdleFPS(10);
 
-        Graphics.Monitor monitor = Lwjgl3ApplicationConfiguration.getPrimaryMonitor();
-        DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes(monitor);
+        applicationConfiguration.setResizable(!isFullscreen);
 
-        DisplayMode mode = Arrays.stream(displayModes)
-                .filter(x -> x.width == width && x.height == height)
-                .max(Comparator.comparingInt(x -> x.bitsPerPixel))
-                .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode(monitor));
-
-        int windowHeight, windowWidth;
-        if (height == 0 && width == 0) {
-            windowHeight = mode.height;
-            windowWidth = mode.width;
+        if (isFullscreen) {
+            applicationConfiguration.setFullscreenMode(loadFullscreenResolution(config));
         } else {
-            windowHeight = height;
-            windowWidth = width;
-        }
-
-        if (fullScreen) {
-            config.setFullscreenMode(mode);
-        } else {
-            config.setWindowedMode(windowWidth, windowHeight);
+            applicationConfiguration.setWindowedMode(
+                    config.getInteger(Option.windowWidth),
+                    config.getInteger(Option.windowHeight));
         }
     }
 
     @Override
     public void startGame(GameStateManager stateManager, Diagnostics diagnostics) {
+        EventBus.INSTANCE.register(this);
         // This will not return until the main game loops stops
-        new Lwjgl3Application(new ListenerApplication(stateManager, diagnostics), config);
+        new Lwjgl3Application(new ListenerApplication(stateManager, diagnostics), applicationConfiguration);
     }
 
     @Override
     public void setTitle(@NotNull String title) {
-        config.setTitle(title);
+        applicationConfiguration.setTitle(title);
     }
 
     @Override
     public void setIcons(@NotNull String... icons) {
-        config.setWindowIcon(FileType.Internal, icons);
+        applicationConfiguration.setWindowIcon(FileType.Internal, icons);
+    }
+
+    @Subscribe
+    public void OnResolutionChanged(ResolutionChangedEvent event) {
+        var config = event.config;
+
+        if (config.getBoolean(Option.fullscreen)) {
+            Gdx.graphics.setResizable(false);
+            Gdx.graphics.setFullscreenMode(loadFullscreenResolution(config));
+        } else {
+            Gdx.graphics.setWindowedMode(config.getInteger(Option.windowWidth), config.getInteger(Option.windowHeight));
+
+            var window = ((Lwjgl3Graphics) Gdx.graphics).getWindow();
+            window.setPosition(window.getPositionX(), window.getPositionY() + 64);
+
+            Gdx.graphics.setResizable(true);
+        }
+    }
+
+    private static Graphics.DisplayMode loadFullscreenResolution(ConfigReader config) {
+        var display = config.getString(Option.deviceName);
+        var monitor = Arrays.stream(Lwjgl3ApplicationConfiguration.getMonitors())
+                .filter(monitorCandidate -> monitorCandidate.name.equals(display))
+                .findFirst()
+                .orElse(Lwjgl3ApplicationConfiguration.getPrimaryMonitor());
+
+        var width = config.getInteger(Option.fullscreenWidth);
+        var height = config.getInteger(Option.fullscreenHeight);
+        var bitsPerPoint = config.getInteger(Option.fullscreenBitsPerPoint);
+        var refreshRate = config.getInteger(Option.fullscreenRefreshRate);
+
+        return Arrays.stream(Lwjgl3ApplicationConfiguration.getDisplayModes(monitor))
+                .filter(mode -> mode.width == width
+                        && mode.height == height
+                        && mode.refreshRate == refreshRate
+                        && mode.bitsPerPixel == bitsPerPoint)
+                .findFirst()
+                .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode(monitor));
     }
 }

@@ -15,20 +15,20 @@
  */
 package illarion.client.util;
 
-import java.util.Optional;
 import illarion.client.IllaClient;
 import illarion.client.world.Player;
 import illarion.common.config.ConfigChangedEvent;
 import illarion.common.config.ConfigReader;
-import org.bushe.swing.event.EventBus;
-import org.bushe.swing.event.EventTopicSubscriber;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventTopicPatternSubscriber;
+import org.illarion.engine.Option;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sound;
 import org.illarion.engine.sound.Sounds;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 
 /**
@@ -42,14 +42,16 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Mike Kay
  */
-public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
+public enum AudioPlayer {
 
     INSTANCE;
 
     @NotNull
     private Sounds sounds;
 
-    private Optional<Music> lastMusic = Optional.empty();
+    @Nullable
+    private Music lastMusic;
+
     /**
      * This variable is set {@code true} once the music player is initialized.
      */
@@ -65,14 +67,10 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
         if (init){
             return;
         }
+
         INSTANCE.sounds = sounds;
         AnnotationProcessor.process(this);
         updateSettings(null, IllaClient.getConfig());
-
-        EventBus.subscribe("soundOn", this);
-        EventBus.subscribe("soundVolume", this);
-        EventBus.subscribe("musicOn", this);
-        EventBus.subscribe("musicVolume", this);
 
         init = true;
     }
@@ -97,7 +95,7 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
      * @param music the track to be played
      */
     public void playMusic(Music music){
-        lastMusic = Optional.ofNullable(music);
+        lastMusic = music;
         sounds.playMusic(music, 0, 0);
     }
 
@@ -148,7 +146,8 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
      * lastMusic is set through playMusic or setLastMusic
      */
     public void playLastMusic() {
-        lastMusic.ifPresent(music -> sounds.playMusic(music, 0, 0));
+        Optional.ofNullable(lastMusic)
+                .ifPresent(music -> sounds.playMusic(music, 0, 0));
     }
 
     /**
@@ -157,11 +156,11 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
      * @param music the Music value to be played
      */
     public void setLastMusic(Music music){
-        lastMusic = Optional.ofNullable(music);
+        lastMusic = music;
     }
 
     public Optional<Music> getLastMusic(){
-        return lastMusic;
+        return Optional.ofNullable(lastMusic);
     }
     public void stopMusic(){
         sounds.stopMusic(0);
@@ -175,26 +174,24 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
         return INSTANCE;
     }
 
-    @Override
     @EventTopicPatternSubscriber(topicPattern = "((music)|(sound))((On)|(Volume))")
     public void onEvent(@NotNull String topic, @NotNull ConfigChangedEvent data) {
         updateSettings(topic, data.getConfig());
     }
 
     private void updateSettings(@Nullable String setting, @NotNull ConfigReader config) {
-        if ((setting == null) || "musicOn".equals(setting)) {
-            boolean musicEnabled = config.getBoolean("musicOn");
+        if ((setting == null) || Option.musicOn.equals(setting)) {
+            boolean musicEnabled = config.getBoolean(Option.musicOn);
             if (musicEnabled) {
-                float musicVolume = config.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
+                float musicVolume = config.getFloat(Option.musicVolume) / Player.MAX_CLIENT_VOL;
                 sounds.setMusicVolume(musicVolume);
                 playLastMusic();
             } else {
                 sounds.setMusicVolume(0.0f);
             }
-        }
-        if ((setting == null) || "musicVolume".equals(setting)) {
-            float musicVolume = config.getFloat("musicVolume") / Player.MAX_CLIENT_VOL;
-            if (config.getBoolean("musicOn")) {
+        } else if (Option.musicVolume.equals(setting)) {
+            float musicVolume = config.getFloat(Option.musicVolume) / Player.MAX_CLIENT_VOL;
+            if (config.getBoolean(Option.musicOn)) {
                 float oldMusicVolume = sounds.getMusicVolume();
 
                 sounds.setMusicVolume(musicVolume);
@@ -205,18 +202,18 @@ public enum AudioPlayer implements EventTopicSubscriber<ConfigChangedEvent> {
                 }
             }
         }
-        if ((setting == null) || "soundOn".equals(setting)) {
-            boolean soundEnabled = config.getBoolean("soundOn");
+
+        if ((setting == null) || Option.soundOn.equals(setting)) {
+            boolean soundEnabled = config.getBoolean(Option.soundOn);
             if (soundEnabled) {
-                float soundVolume = config.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
+                float soundVolume = config.getFloat(Option.soundVolume) / Player.MAX_CLIENT_VOL;
                 sounds.setSoundVolume(soundVolume);
             } else {
                 sounds.setSoundVolume(0.0f);
             }
-        }
-        if ((setting == null) || "soundVolume".equals(setting)) {
-            float soundVolume = config.getFloat("soundVolume") / Player.MAX_CLIENT_VOL;
-            if (config.getBoolean("soundOn")) {
+        } else if (Option.soundVolume.equals(setting)) {
+            float soundVolume = config.getFloat(Option.soundVolume) / Player.MAX_CLIENT_VOL;
+            if (config.getBoolean(Option.soundOn)) {
                 sounds.setSoundVolume(soundVolume);
             }
         }

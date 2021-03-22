@@ -229,11 +229,8 @@ public final class IllaClient {
             LOGGER.error("Failed to load sounds and music!");
         }
 
-        boolean isFullscreen = config.getBoolean(CFG_FULLSCREEN);
-        int width = config.getInteger(CFG_WIDTH);
-        int height = config.getInteger(CFG_HEIGHT);
+        gameContainer = new ApplicationGameContainer(config);
 
-        gameContainer = new ApplicationGameContainer(width, height, isFullscreen);
         gameContainer.setTitle(APPLICATION.getApplicationIdentifier());
         gameContainer.setIcons("illarion_client16.png",
                 "illarion_client32.png",
