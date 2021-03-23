@@ -1,16 +1,16 @@
 package org.illarion.engine.backend.gdx.ui.login;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.Arrays;
 
-public final class LoginView extends Table {
+final class LoginView extends Table {
     private final TextButton optionsButton, creditsButton, exitButton, loginButton;
     private final SelectBox<String> serverSelection;
     private final TextField accountNameField, passwordField;
@@ -19,9 +19,9 @@ public final class LoginView extends Table {
     private LoginData[] loginData;
     private int currentServerIndex;
 
-    NullSecureResourceBundle resourceBundle;
+    private final NullSecureResourceBundle resourceBundle;
 
-    public LoginView(Skin skin, NullSecureResourceBundle resourceBundle) {
+    LoginView(Skin skin, NullSecureResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
         setFillParent(true);
@@ -51,8 +51,6 @@ public final class LoginView extends Table {
                 changeCurrentServer(serverSelection.getSelectedIndex());
             }
         });
-
-
 
         /* Layout Setup */
         //row();
@@ -96,11 +94,41 @@ public final class LoginView extends Table {
         pack();
     }
 
-    public void setLoginData(LoginData[] data, int initialServer) {
+    LoginData getSelectedLoginData() {
+        var selectedLoginData = loginData[serverSelection.getSelectedIndex()];
+
+        return new LoginData(
+                selectedLoginData.serverId,
+                selectedLoginData.server,
+                accountNameField.getText(),
+                passwordField.getText(),
+                savePasswordCheckbox.isChecked()
+        );
+    }
+
+    void setLoginData(LoginData[] data, int initialServer) {
         loginData = data;
-        serverSelection.setItems(Arrays.stream(data).map(x -> resourceBundle.getLocalizedString(x.server)).toArray(String[]::new));
+        serverSelection.setItems(Arrays.stream(data)
+                .map(x -> resourceBundle.getLocalizedString(x.server))
+                .toArray(String[]::new));
 
         changeCurrentServer(initialServer);
+    }
+
+    void setOnOptionsCallback(EventListener onClick) {
+        optionsButton.addListener(onClick);
+    }
+
+    void setOnExitCallback(EventListener onClick) {
+        exitButton.addListener(onClick);
+    }
+
+    void setOnCreditsCallback(EventListener onClick) {
+        creditsButton.addListener(onClick);
+    }
+
+    void setOnLoginCallback(EventListener onClick) {
+        loginButton.addListener(onClick);
     }
 
     private void changeCurrentServer(int index) {
@@ -108,21 +136,5 @@ public final class LoginView extends Table {
         accountNameField.setText(data.username);
         passwordField.setText(data.password);
         savePasswordCheckbox.setChecked(data.savePassword);
-    }
-
-    public void setOnOptionsCallback(ClickListener onClick) {
-        optionsButton.addListener(onClick);
-    }
-
-    public void setOnExitCallback(ClickListener onClick) {
-        exitButton.addListener(onClick);
-    }
-
-    public void setOnCreditsCallback(ClickListener onClick) {
-        creditsButton.addListener(onClick);
-    }
-
-    public void setOnLoginCallback(ClickListener onClick) {
-        loginButton.addListener(onClick);
     }
 }

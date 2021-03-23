@@ -15,12 +15,22 @@
  */
 package illarion.client.gui.controller;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import illarion.client.IllaClient;
-import illarion.client.Login;
+import illarion.client.LoginService;
+import illarion.client.Servers;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
+import illarion.client.util.account.AccountSystem;
+import illarion.client.util.account.AccountSystemEndpoint;
+import illarion.client.util.account.Credentials;
+import illarion.client.util.account.response.AccountGetResponse;
 import illarion.common.config.ConfigReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EventBus;
 import org.illarion.engine.Option;
@@ -36,12 +46,15 @@ import org.illarion.engine.ui.UserInterface;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
  * This is the screen controller that takes care of displaying the login screen.
  */
 public final class LoginScreenController {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private static final List<String> RESOLUTION_OPTIONS = Arrays.asList(Option.fullscreen, Option.fullscreenHeight,
             Option.fullscreenWidth, Option.fullscreenWidth, Option.fullscreenBitsPerPoint, Option.fullscreenRefreshRate,
             Option.deviceName, Option.windowHeight, Option.windowWidth);
@@ -50,14 +63,16 @@ public final class LoginScreenController {
     private final Sounds sounds;
     private final Assets assets;
     private final Window window;
+    private final AccountSystem accountSystem;
 
     private LoginStage stage;
 
-    public LoginScreenController(BackendBinding binding) {
+    public LoginScreenController(BackendBinding binding, AccountSystem accountSystem) {
         this.gui = binding.getGui();
         this.sounds = binding.getSounds();
         this.assets = binding.getAssets();
         this.window = binding.getWindow();
+        this.accountSystem = accountSystem;
     }
 
     public void onStartStage() {
@@ -73,17 +88,58 @@ public final class LoginScreenController {
 
         int serverKey = IllaClient.DEFAULT_SERVER.getServerKey();
 
-        Login login = Login.INSTANCE;
-        login.setCurrentServerByKey(serverKey);
-        LoginData[] loginData = login.restoreLoginData();
+        LoginService loginService = LoginService.INSTANCE;
+        loginService.setCurrentServerByKey(serverKey);
+        LoginData[] loginData = loginService.restoreLoginData();
 
         stage = gui.activateLoginStage(Lang.INSTANCE.getLoginResourceBundle());
 
         stage.setLoginData(loginData, serverKey);
         stage.setExitListener(IllaClient::exit);
-        stage.setLoginListener(login::login);
+        stage.setLoginListener(this::OnLoginIssued);
         stage.setOptionsData(IllaClient.getConfig(), window.getResolutionManager());
         stage.setOptionsSaveListener(this::saveOptions);
+    }
+
+    private void OnLoginIssued(LoginData loginData) {
+        var usedServer = Arrays.stream(Servers.values())
+                .filter(server -> server.getServerName().equals(loginData.server))
+                .findFirst()
+                .orElse(Servers.Illarionserver);
+
+        var endpoint = usedServer == Servers.Illarionserver
+                ? AccountSystem.OFFICIAL_ENDPOINT
+                : new AccountSystemEndpoint(
+                        "https://" + usedServer.getServerHost() + "/app.php",
+                        usedServer.getServerName(),
+                        Option.lastUsedCustomServerUsername,
+                        Option.saveLastUsedCustomServerPassword,
+                        Option.saveLastUsedCustomServerPassword);
+
+        var credentials = new Credentials(loginData.username, loginData.password);
+        accountSystem.setAuthentication(credentials);
+        accountSystem.setEndpoint(endpoint);
+
+        var accountInformation = accountSystem.getAccountInformation();
+        Futures.addCallback(accountInformation, new FutureCallback<>() {
+            @Override
+            public void onSuccess(@Nullable AccountGetResponse result) {
+                LOGGER.warn(result);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                LOGGER.warn(t.getMessage());
+            }
+        }, Executors.newSingleThreadExecutor());
+
+
+                // TODO: Add to ACS
+        /*if (LoginService.isCharacterListRequired(usedServer)) {
+            loginService.requestCharacterList();
+        } else {
+
+                   }*/
     }
 
     private void saveOptions(Map<String, String> options) {

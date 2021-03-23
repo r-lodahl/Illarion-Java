@@ -23,6 +23,7 @@ import illarion.common.util.DirectoryManager;
 import illarion.common.util.DirectoryManager.Directory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.illarion.engine.Option;
 import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -38,10 +40,10 @@ import javax.crypto.spec.DESKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -49,13 +51,92 @@ import java.security.GeneralSecurityException;
 import java.security.spec.KeySpec;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is used to store the login parameters and handle the requests that
  * need to be send to the server in order to perform the login properly.
  */
-public enum Login {
+public enum LoginService {
     INSTANCE;
+
+    private ExecutorService threadWorker;
+
+    @Contract(pure = true)
+    public static boolean isCharacterListRequired(Servers server) {
+        return (server != Servers.Customserver) || IllaClient.getConfig().getBoolean(Option.customServerAccountSystem);
+    }
+
+    public void requestCharacterList(LoginData loginData, @NotNull RequestCharListCallback resultCallback) {
+        var threadWorker = getThreadWorker();
+
+        threadWorker.submit(() -> {
+            requestCharacterListFromServer(loginData);
+        });
+
+        GlobalExecutorService.getService().submit(new RequestCharacterListTask(resultCallback));
+    }
+
+    private void requestCharacterListFromServer(LoginData loginData) {
+        try {
+            URL requestURL = new URL("https://"
+                    + IllaClient.DEFAULT_SERVER.getServerHost()
+                    + "/account/xml_charlist.php");
+
+            String query = "name=" +
+                    URLEncoder.encode(loginData.username, StandardCharsets.UTF_8) +
+                    "&passwd=" +
+                    URLEncoder.encode(loginData.password, StandardCharsets.UTF_8);
+
+            HttpsURLConnection connection = (HttpsURLConnection) requestURL.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("charset", "utf-8");
+            connection.setRequestProperty("Content-Length",
+                    Integer.toString(query.getBytes(StandardCharsets.UTF_8).length));
+            connection.setUseCaches(false);
+            connection.connect();
+
+            try (OutputStreamWriter output = new OutputStreamWriter(
+                    connection.getOutputStream(), StandardCharsets.UTF_8)) {
+                output.write(query);
+                output.flush();
+            }
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(connection.getInputStream());
+
+            //readXML(doc);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            LOGGER.error("Failed to resolve hostname, for fetching the charlist");
+        }
+    }
+
+    private ExecutorService getThreadWorker() {
+        if (threadWorker == null) {
+            threadWorker = Executors.newSingleThreadExecutor();
+        }
+
+        return threadWorker;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * The instance of the logger that is used write the log output of this class.
@@ -72,9 +153,6 @@ public enum Login {
 
     @Nullable
     private String loginCharacter;
-
-
-
 
     @NotNull
     private Servers currentServer = Servers.Illarionserver;
@@ -204,18 +282,19 @@ public enum Login {
      * Saves the login data of the current server into the config
      */
     public void storeData() {
-        int serverKey = currentServer.getServerKey();
-        LoginData serverLoginData = loginData[serverKey];
+        var config = IllaClient.getConfig();
+        var serverKey = currentServer.getServerKey();
+        var serverLoginData = loginData[serverKey];
 
-        IllaClient.getConfig().set("server", serverKey);
+        config.set(Option.lastUsedServer, serverKey);
         IllaClient.getInstance().setUsedServer(currentServer);
 
         if (currentServer == Servers.Customserver) {
-            IllaClient.getConfig().set("customLastLogin", serverLoginData.username);
-            IllaClient.getConfig().set("customSavePassword", serverLoginData.savePassword);
+            config.set(Option.lastUsedCustomServerUsername, serverLoginData.username);
+            config.set(Option.saveLastUsedCustomServerPassword, serverLoginData.savePassword);
         } else {
-            IllaClient.getConfig().set("lastLogin", serverLoginData.username);
-            IllaClient.getConfig().set("savePassword", serverLoginData.savePassword);
+            config.set(Option.lastUsedUsername, serverLoginData.username);
+            config.set(Option.saveLastUsedPassword, serverLoginData.savePassword);
         }
 
         if (serverLoginData.savePassword) {
@@ -224,7 +303,7 @@ public enum Login {
             deleteStoredPassword();
         }
 
-        IllaClient.getConfig().save();
+        config.save();
     }
 
     /**
@@ -300,9 +379,9 @@ public enum Login {
 
     @Nullable
     private String getLoginCharacter() {
-        if (!isCharacterListRequired()) {
+        /*if (!isCharacterListRequired()) {
             return loginData[currentServer.getServerKey()].username;
-        }
+        }*/
         return loginCharacter;
     }
 
@@ -312,10 +391,7 @@ public enum Login {
         return loginData[currentServer.getServerKey()].password;
     }
 
-    @Contract(pure = true)
-    public boolean isCharacterListRequired() {
-        return (currentServer != Servers.Customserver) || IllaClient.getConfig().getBoolean("serverAccountLogin");
-    }
+
 
     /**
      * Parses the given XML document and
@@ -360,54 +436,9 @@ public enum Login {
         resultCallback.finishedRequest(0);
     }
 
-    public void requestCharacterList(@NotNull RequestCharListCallback resultCallback) {
-        GlobalExecutorService.getService().submit(new RequestCharacterListTask(resultCallback));
-    }
 
-    private void requestCharacterListInternal(@NotNull RequestCharListCallback resultCallback) {
-        String serverURI = IllaClient.DEFAULT_SERVER.getServerHost();
-        try {
-            URL requestURL = new URL("https://" + serverURI + "/account/xml_charlist.php");
 
-            String query = "name=" +
-                    URLEncoder.encode(loginData[currentServer.getServerKey()].username, StandardCharsets.UTF_8) +
-                    "&passwd=" +
-                    URLEncoder.encode(getPassword(), StandardCharsets.UTF_8);
 
-            HttpsURLConnection conn = (HttpsURLConnection) requestURL.openConnection();
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("charset", "utf-8");
-            conn.setRequestProperty("Content-Length", Integer.toString(query.getBytes(StandardCharsets.UTF_8).length));
-            conn.setUseCaches(false);
-
-            //SSLSocketFactory sslSocketFactory = IllarionSSLSocketFactory.getFactory();
-            //if (sslSocketFactory != null) {
-            //    conn.setSSLSocketFactory(sslSocketFactory);
-            //}
-
-            conn.connect();
-            // Send the query to the server
-            try (OutputStreamWriter output = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8)) {
-                output.write(query);
-                output.flush();
-            }
-            // Grabs the XML returned by the server
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(conn.getInputStream());
-            // Interprets the server's XML
-            readXML(doc, resultCallback);
-        } catch (UnknownHostException e) {
-            resultCallback.finishedRequest(2);
-            LOGGER.error("Failed to resolve hostname, for fetching the charlist");
-        } catch (Exception e) {
-            resultCallback.finishedRequest(2);
-            LOGGER.error("Loading the charlist from the server failed");
-        }
-    }
 
     /**
      * Shuffle the letters of the password around a bit.
@@ -493,7 +524,7 @@ public enum Login {
         @Nullable
         @Override
         public Void call() throws Exception {
-            requestCharacterListInternal(callback);
+            //requestCharacterListFromServer(callback);
             return null;
         }
     }

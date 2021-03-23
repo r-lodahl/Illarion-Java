@@ -26,4 +26,12 @@ public class Option {
     public static final String musicVolume = "musicVolume";
     public static final String soundOn = "soundOn";
     public static final String musicOn = "musicOn";
+
+    public static final String lastUsedServer = "server";
+    public static final String lastUsedUsername = "lastLogin";
+    public static final String saveLastUsedPassword = "savePassword";
+    public static final String lastUsedCustomServerUsername = "customLastLogin";
+    public static final String saveLastUsedCustomServerPassword = "customSavePassword";
+
+
 }

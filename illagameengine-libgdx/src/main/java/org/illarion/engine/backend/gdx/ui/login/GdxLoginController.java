@@ -129,7 +129,7 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         login.setOnLoginCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                //event.accept(login.getSelectedLogin());
+                event.accept(login.getSelectedLoginData());
             }
         });
     }

@@ -25,7 +25,7 @@ import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.SizeValue;
-import illarion.client.Login;
+import illarion.client.LoginService;
 import illarion.client.state.StateManager;
 import illarion.client.util.Lang;
 import illarion.common.config.ConfigChangedEvent;
@@ -150,7 +150,7 @@ public final class CharScreenController implements ScreenController, KeyInputHan
     public void fillMyListBox() {
         if (listBox != null) {
             listBox.clear();
-            Login.INSTANCE.getCharacterList().stream().filter(entry -> entry.getStatus() == 0).forEach(entry -> listBox.addItem(entry.getName()));
+            LoginService.INSTANCE.getCharacterList().stream().filter(entry -> entry.getStatus() == 0).forEach(entry -> listBox.addItem(entry.getName()));
         }
     }
 
