@@ -24,10 +24,10 @@ import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
 import illarion.client.util.account.AccountSystem;
-import illarion.client.util.account.AccountSystemEndpoint;
-import illarion.client.util.account.Credentials;
 import illarion.client.util.account.response.AccountGetResponse;
+import illarion.client.util.account.response.CharacterGetResponse;
 import illarion.common.config.ConfigReader;
+import illarion.common.types.CharacterId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -39,13 +39,12 @@ import org.illarion.engine.assets.Assets;
 import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
+import org.illarion.engine.ui.CharacterSelectionData;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.UserInterface;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -107,39 +106,85 @@ public final class LoginScreenController {
                 .findFirst()
                 .orElse(Servers.Illarionserver);
 
-        var endpoint = usedServer == Servers.Illarionserver
-                ? AccountSystem.OFFICIAL_ENDPOINT
-                : new AccountSystemEndpoint(
-                        "https://" + usedServer.getServerHost() + "/app.php",
-                        usedServer.getServerName(),
-                        Option.lastUsedCustomServerUsername,
-                        Option.saveLastUsedCustomServerPassword,
-                        Option.saveLastUsedCustomServerPassword);
+        // TODO: Testserver is used as a placeholder for LocalServer until merged
+        if (usedServer == Servers.Testserver ||
+                (usedServer == Servers.Customserver
+                && !IllaClient.getConfig().getBoolean(Option.customServerAccountSystem))) {
+            LOGGER.debug("AccountSystem not active, executing a direct login");
+            return;
+        }
 
-        var credentials = new Credentials(loginData.username, loginData.password);
-        accountSystem.setAuthentication(credentials);
+        var endpoint = usedServer != Servers.Customserver
+                ? AccountSystem.OFFICIAL_ENDPOINT
+                : "https://" + usedServer.getServerHost() + "/app.php";
+
+        accountSystem.setAuthentication(loginData);
         accountSystem.setEndpoint(endpoint);
 
         var accountInformation = accountSystem.getAccountInformation();
         Futures.addCallback(accountInformation, new FutureCallback<>() {
             @Override
             public void onSuccess(@Nullable AccountGetResponse result) {
-                LOGGER.warn(result);
+                if (result == null) {
+                    fail();
+                    return;
+                }
+
+                var serverCharacterList = result.getChars();
+
+                var charInformationRequests = serverCharacterList
+                        .stream()
+                        .filter(server -> server.getName().equals(usedServer.getServerName()))
+                        .findFirst()
+                        .map(server -> server.getList()
+                                .stream()
+                                .map(character ->
+                                        accountSystem.getCharacterInformation(server.getId(), character.getCharId()))
+                                .collect(Collectors.toList()));
+
+                var charInformationCallback = new FutureCallback<List<CharacterGetResponse>>() {
+                    @Override
+                    public void onSuccess(@Nullable List<CharacterGetResponse> result) {
+                        if (result == null) {
+                            fail();
+                            return;
+                        }
+
+                        var characters = result.stream()
+                                .filter(Objects::nonNull)
+                                .map(character -> new CharacterSelectionData(
+                                        character.getId(),
+                                        character.getName()))
+                                .toArray(CharacterSelectionData[]::new);
+
+                        stage.loginSuccessful(characters);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        LOGGER.warn(t.getMessage());
+                    }
+                };
+
+                charInformationRequests.ifPresentOrElse(
+                        characterList -> {
+                            var charInformationFuture = Futures.allAsList(characterList);
+                            Futures.addCallback(charInformationFuture,
+                                    charInformationCallback,
+                                    Executors.newCachedThreadPool());},
+                        this::fail);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 LOGGER.warn(t.getMessage());
+                fail();
+            }
+
+            private void fail() {
+                stage.loginFailed();
             }
         }, Executors.newSingleThreadExecutor());
-
-
-                // TODO: Add to ACS
-        /*if (LoginService.isCharacterListRequired(usedServer)) {
-            loginService.requestCharacterList();
-        } else {
-
-                   }*/
     }
 
     private void saveOptions(Map<String, String> options) {

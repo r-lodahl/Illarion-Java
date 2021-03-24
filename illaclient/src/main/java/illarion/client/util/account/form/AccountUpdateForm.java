@@ -9,19 +9,19 @@ import org.jetbrains.annotations.Nullable;
 public class AccountUpdateForm {
     @SerializedName("email")
     @Nullable
-    private String eMail;
+    private String email;
 
     @SerializedName("password")
     @Nullable
     private String password;
 
     @Nullable
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(@Nullable String eMail) {
-        this.eMail = eMail;
+    public void setEmail(@Nullable String email) {
+        this.email = email;
     }
 
     @Nullable

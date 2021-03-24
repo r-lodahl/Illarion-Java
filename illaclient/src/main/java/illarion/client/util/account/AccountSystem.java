@@ -23,6 +23,7 @@ import illarion.client.util.account.response.*;
 import illarion.common.types.CharacterId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,17 +32,12 @@ import java.util.Objects;
 public class AccountSystem implements AutoCloseable {
     private final static Logger LOGGER = LogManager.getLogger();
 
-    public final static AccountSystemEndpoint OFFICIAL_ENDPOINT = new AccountSystemEndpoint(
-            "https://illarion.org/app.php",
-            "server.official",
-            "lastUsedUsername",
-            "lastUsedPassword",
-            "lastUsedStorePassword");
+    public final static String OFFICIAL_ENDPOINT = "https://illarion.org/app.php";
 
     private final Object requestHandlerLock = new Object();
 
     @Nullable
-    private AccountSystemEndpoint endpoint;
+    private String endpoint;
 
     @Nullable
     private IllarionAuthenticator authenticator;
@@ -53,15 +49,15 @@ public class AccountSystem implements AutoCloseable {
     /**
      * Set the authentication that is used for the interaction with the account system.
      *
-     * @param credentials the authentication credentials
+     * @param loginData the authentication credentials
      * @throws IllegalStateException in case the authentication is already set
      */
-    public void setAuthentication(@NotNull Credentials credentials) {
-        authenticator = new IllarionAuthenticator(credentials.getUserName(), credentials.getPassword());
+    public void setAuthentication(@NotNull LoginData loginData) {
+        authenticator = new IllarionAuthenticator(loginData.username, loginData.password);
     }
 
-    public void setEndpoint(AccountSystemEndpoint customEndpoint) {
-        if (Objects.equals(endpoint, customEndpoint)) {
+    public void setEndpoint(String customEndpoint) {
+        if (customEndpoint.equals(endpoint)) {
             return;
         }
 
@@ -76,7 +72,7 @@ public class AccountSystem implements AutoCloseable {
 
     @NotNull
     private RequestHandler getRequestHandler() {
-        if (endpoint == null) {
+        if (endpoint == null || endpoint.isEmpty()) {
             throw new IllegalStateException("Communicating with the account system is not possible until the endpoint is set.");
         }
 
@@ -84,11 +80,9 @@ public class AccountSystem implements AutoCloseable {
             return requestHandler;
         }
 
-        var endpointUrl = endpoint.url;
-
         synchronized (requestHandlerLock) {
             if (requestHandler == null) {
-                requestHandler = new RequestHandler(endpointUrl);
+                requestHandler = new RequestHandler(endpoint);
             }
         }
 
@@ -126,23 +120,23 @@ public class AccountSystem implements AutoCloseable {
     }
 
     @NotNull
-    public ListenableFuture<AccountCheckResponse> performAccountCredentialsCheck(@Nullable String userName,
-                                                                                 @Nullable String eMail) {
+    public ListenableFuture<AccountCheckResponse> performAccountCredentialsCheck(@Nullable String username,
+                                                                                 @Nullable String email) {
         RequestHandler handler = getRequestHandler();
 
-        AccountCheckForm payload = new AccountCheckForm(userName, eMail);
+        AccountCheckForm payload = new AccountCheckForm(username, email);
         Request<AccountCheckResponse> request = new AccountCheckRequest(payload);
 
         return handler.sendRequestAsync(request);
     }
 
     @NotNull
-    public ListenableFuture<AccountCreateResponse> createAccount(@NotNull String userName,
-                                                                 @Nullable String eMail,
+    public ListenableFuture<AccountCreateResponse> createAccount(@NotNull String username,
+                                                                 @Nullable String email,
                                                                  @NotNull String password) {
         RequestHandler handler = getRequestHandler();
 
-        AccountCreateForm payload = new AccountCreateForm(userName, password, eMail);
+        AccountCreateForm payload = new AccountCreateForm(username, password, email);
         Request<AccountCreateResponse> request = new AccountCreateRequest(payload);
 
         return handler.sendRequestAsync(request);

@@ -29,7 +29,7 @@ public class IllarionAuthenticator extends Authenticator {
      * The user name that is used to authenticate with the account system.
      */
     @NotNull
-    private final String userName;
+    private final String username;
 
     /**
      * The password that is used to authenticate.
@@ -41,17 +41,17 @@ public class IllarionAuthenticator extends Authenticator {
      * Create a new instance of the authenticator that provides a password authentication based based on the provided
      * username and password.
      *
-     * @param userName the user name
+     * @param username the user name
      * @param password the password
      */
-    IllarionAuthenticator(@NotNull String userName, @NotNull String password) {
-        this.userName = userName;
+    IllarionAuthenticator(@NotNull String username, @NotNull String password) {
+        this.username = username;
         this.password = password;
     }
 
     @NotNull
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(userName, password.toCharArray());
+        return new PasswordAuthentication(username, password.toCharArray());
     }
 }

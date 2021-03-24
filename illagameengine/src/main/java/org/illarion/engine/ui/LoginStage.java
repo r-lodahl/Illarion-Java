@@ -8,7 +8,8 @@ import java.util.function.Consumer;
 
 public interface LoginStage {
     void setLoginData(LoginData[] data, int initialServer);
-    void setCharacterData(CharacterSelectionData[] data);
+    void loginSuccessful(CharacterSelectionData[] data);
+    void loginFailed();
     void setOptionsData(ConfigReader configReader, ResolutionManager resolutionManager);
 
     void setExitListener(Action event);

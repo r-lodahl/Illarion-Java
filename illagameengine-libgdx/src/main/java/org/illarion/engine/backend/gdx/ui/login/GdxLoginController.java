@@ -103,10 +103,18 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setCharacterData(CharacterSelectionData[] data) {
+    public void loginSuccessful(CharacterSelectionData[] data) {
         for (CharacterSelectionData characterData : data) {
             //characterSelection.addCharacter(characterData);
         }
+        login.hideWaitDialog();
+        // goto: charselectionscreen
+    }
+
+    @Override
+    public void loginFailed() {
+        login.hideWaitDialog();
+        //login.showErrorDialog();
     }
 
     @Override
@@ -129,6 +137,7 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         login.setOnLoginCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
+                login.showWaitDialog("login", stage);
                 event.accept(login.getSelectedLoginData());
             }
         });

@@ -29,15 +29,15 @@ public class AccountCreateForm {
 
     @SerializedName("email")
     @Nullable
-    private String eMail;
+    private String email;
 
     @SerializedName("password")
     @NotNull
     private String password;
 
-    public AccountCreateForm(@NotNull String name, @NotNull String password, @Nullable String eMail) {
+    public AccountCreateForm(@NotNull String name, @NotNull String password, @Nullable String email) {
         this.name = name;
-        this.eMail = ((eMail == null) || eMail.isEmpty()) ? null : eMail;
+        this.email = email == null || email.isEmpty() ? null : email;
         this.password = password;
     }
 
@@ -51,12 +51,12 @@ public class AccountCreateForm {
     }
 
     @Nullable
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(@Nullable String eMail) {
-        this.eMail = eMail;
+    public void setEmail(@Nullable String email) {
+        this.email = email;
     }
 
     @NotNull
