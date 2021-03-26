@@ -17,6 +17,7 @@ package illarion.client.gui.controller;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import illarion.client.IllaClient;
 import illarion.client.LoginService;
 import illarion.client.Servers;
@@ -43,8 +44,10 @@ import org.illarion.engine.ui.CharacterSelectionData;
 import org.illarion.engine.ui.LoginData;
 import org.illarion.engine.ui.LoginStage;
 import org.illarion.engine.ui.UserInterface;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -65,6 +68,8 @@ public final class LoginScreenController {
     private final AccountSystem accountSystem;
 
     private LoginStage stage;
+
+    private final ExecutorService requestThreadPool = Executors.newCachedThreadPool();
 
     public LoginScreenController(BackendBinding binding, AccountSystem accountSystem) {
         this.gui = binding.getGui();
@@ -122,69 +127,53 @@ public final class LoginScreenController {
         accountSystem.setEndpoint(endpoint);
 
         var accountInformation = accountSystem.getAccountInformation();
-        Futures.addCallback(accountInformation, new FutureCallback<>() {
+
+        var characterInformation = Futures.transformAsync(accountInformation, (result) -> {
+            if (result == null) {
+                throw new RuntimeException("Request returned <null> value");
+            }
+
+            var serverCharacterList = result.getChars();
+
+            var charInformationRequests = serverCharacterList
+                    .stream()
+                    .filter(server -> server.getName().equals(usedServer.getServerName()))
+                    .findFirst()
+                    .map(server -> server.getList()
+                            .stream()
+                            .map(character ->
+                                    accountSystem.getCharacterInformation(server.getId(), character.getCharId()))
+                            .collect(Collectors.toList()))
+                    .orElse(List.of(Futures.immediateFailedFuture(new RuntimeException("No chars found"))));
+
+            return Futures.successfulAsList(charInformationRequests);
+        }, requestThreadPool);
+
+        var charactersLoaded = Futures.transformAsync(characterInformation, (result) -> {
+            if (result == null) {
+                throw new RuntimeException("Request returned <null> value for character information");
+            }
+
+            return Futures.immediateFuture(result.stream()
+                    .filter(Objects::nonNull)
+                    .map(character -> new CharacterSelectionData(
+                            character.getId(),
+                            character.getName()))
+                    .toArray(CharacterSelectionData[]::new));
+        }, requestThreadPool);
+
+        Futures.addCallback(charactersLoaded, new FutureCallback<>() {
             @Override
-            public void onSuccess(@Nullable AccountGetResponse result) {
-                if (result == null) {
-                    fail();
-                    return;
-                }
-
-                var serverCharacterList = result.getChars();
-
-                var charInformationRequests = serverCharacterList
-                        .stream()
-                        .filter(server -> server.getName().equals(usedServer.getServerName()))
-                        .findFirst()
-                        .map(server -> server.getList()
-                                .stream()
-                                .map(character ->
-                                        accountSystem.getCharacterInformation(server.getId(), character.getCharId()))
-                                .collect(Collectors.toList()));
-
-                var charInformationCallback = new FutureCallback<List<CharacterGetResponse>>() {
-                    @Override
-                    public void onSuccess(@Nullable List<CharacterGetResponse> result) {
-                        if (result == null) {
-                            fail();
-                            return;
-                        }
-
-                        var characters = result.stream()
-                                .filter(Objects::nonNull)
-                                .map(character -> new CharacterSelectionData(
-                                        character.getId(),
-                                        character.getName()))
-                                .toArray(CharacterSelectionData[]::new);
-
-                        stage.loginSuccessful(characters);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        LOGGER.warn(t.getMessage());
-                    }
-                };
-
-                charInformationRequests.ifPresentOrElse(
-                        characterList -> {
-                            var charInformationFuture = Futures.allAsList(characterList);
-                            Futures.addCallback(charInformationFuture,
-                                    charInformationCallback,
-                                    Executors.newCachedThreadPool());},
-                        this::fail);
+            public void onSuccess(@NotNull CharacterSelectionData[] result) {
+                stage.loginSuccessful(result);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(@NotNull Throwable t) {
                 LOGGER.warn(t.getMessage());
-                fail();
-            }
-
-            private void fail() {
                 stage.loginFailed();
             }
-        }, Executors.newSingleThreadExecutor());
+        }, requestThreadPool);
     }
 
     private void saveOptions(Map<String, String> options) {
