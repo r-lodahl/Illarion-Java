@@ -21,14 +21,23 @@ import com.google.common.util.concurrent.ListenableFuture;
 import illarion.client.IllaClient;
 import illarion.client.LoginService;
 import illarion.client.Servers;
+import illarion.client.graphics.AvatarClothManager;
+import illarion.client.graphics.AvatarEntity;
+import illarion.client.gui.EntityRenderImage;
+import illarion.client.resources.CharacterFactory;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
 import illarion.client.util.account.AccountSystem;
 import illarion.client.util.account.response.AccountGetResponse;
 import illarion.client.util.account.response.CharacterGetResponse;
+import illarion.client.util.account.response.CharacterItemResponse;
 import illarion.common.config.ConfigReader;
+import illarion.common.graphics.CharAnimations;
+import illarion.common.types.AvatarId;
 import illarion.common.types.CharacterId;
+import illarion.common.types.Direction;
+import illarion.common.types.DisplayCoordinate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -37,13 +46,11 @@ import org.illarion.engine.EventBus;
 import org.illarion.engine.Option;
 import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
+import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
-import org.illarion.engine.ui.CharacterSelectionData;
-import org.illarion.engine.ui.LoginData;
-import org.illarion.engine.ui.LoginStage;
-import org.illarion.engine.ui.UserInterface;
+import org.illarion.engine.ui.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -158,7 +165,8 @@ public final class LoginScreenController {
                     .filter(Objects::nonNull)
                     .map(character -> new CharacterSelectionData(
                             character.getId(),
-                            character.getName()))
+                            character.getName(),
+                            buildCharacterRenderable(character)))
                     .toArray(CharacterSelectionData[]::new));
         }, requestThreadPool);
 
@@ -197,6 +205,36 @@ public final class LoginScreenController {
         return !optionValue.equals(configOptionValue);
     }
 
+
+    public DynamicUiContent buildCharacterRenderable(CharacterGetResponse character) {
+        var id = new AvatarId(character.getRace(), character.getRaceType(), Direction.West, CharAnimations.STAND);
+        var template = CharacterFactory.getInstance().getTemplate(id.getAvatarId());
+        var avatarEntity = new AvatarEntity(template, true);
+
+        var paperDoll = character.getPaperDoll();
+        avatarEntity.setClothItem(AvatarClothManager.AvatarClothGroup.Hair, paperDoll.getHairId());
+        avatarEntity.setClothItem(AvatarClothManager.AvatarClothGroup.Beard, paperDoll.getBeardId());
+        avatarEntity.changeClothColor(AvatarClothManager.AvatarClothGroup.Hair, paperDoll.getHairColour().getColour());
+        avatarEntity.changeClothColor(AvatarClothManager.AvatarClothGroup.Beard, paperDoll.getHairColour().getColour());
+        avatarEntity.changeBaseColor(paperDoll.getSkinColour().getColour());
+
+        for (var item : character.getItems()) {
+            var group = AvatarClothManager.AvatarClothGroup.getFromPositionNumber(item.getPosition());
+
+            if (group == null) {
+                continue;
+            }
+
+            if (item.getId() == 0) {
+                avatarEntity.removeClothItem(group);
+                continue;
+            }
+
+            avatarEntity.setClothItem(group, item.getId());
+        }
+
+        return new EntityRenderImage(avatarEntity);
+    }
 
 
 

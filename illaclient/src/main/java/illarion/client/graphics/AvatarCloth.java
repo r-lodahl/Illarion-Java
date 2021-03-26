@@ -30,7 +30,7 @@ public final class AvatarCloth extends AbstractEntity<AvatarClothTemplate> imple
      * The avatar that is the parent to this cloth instance.
      */
     @NotNull
-    private final Avatar parent;
+    private final AbstractEntity<?> parent;
 
     /**
      * Standard constructor.
@@ -38,7 +38,7 @@ public final class AvatarCloth extends AbstractEntity<AvatarClothTemplate> imple
      * @param template the template this new cloth instance is build from
      * @param parentAvatar the parent avatar this cloth belong to
      */
-    public AvatarCloth(@NotNull AvatarClothTemplate template, @NotNull Avatar parentAvatar) {
+    public AvatarCloth(@NotNull AvatarClothTemplate template, @NotNull AbstractEntity<?> parentAvatar) {
         super(template);
         parent = parentAvatar;
     }

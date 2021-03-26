@@ -21,24 +21,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-
-/**
- * This class is used to store the markers that are displayed below a avatar.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public class AvatarMarker extends AbstractEntity<MiscImageTemplate> {
     /**
      * The logging instance of this class.
      */
     @NotNull
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The avatar that is the parent of this class.
      */
     @NotNull
-    private final Avatar parent;
+    private final AbstractEntity<?> parent;
 
     /**
      * The default constructor of this avatar marker.
@@ -46,7 +40,7 @@ public class AvatarMarker extends AbstractEntity<MiscImageTemplate> {
      * @param markerId the image ID of this marker
      * @param parentAvatar the parent avatar
      */
-    public AvatarMarker(int markerId, @NotNull Avatar parentAvatar) {
+    public AvatarMarker(int markerId, @NotNull AbstractEntity<?> parentAvatar) {
         super(MiscImageFactory.getInstance().getTemplate(markerId));
         parent = parentAvatar;
     }
@@ -64,7 +58,7 @@ public class AvatarMarker extends AbstractEntity<MiscImageTemplate> {
 
     @Override
     public void show() {
-        log.warn("Show was called for a avatar marker. This shouldn't happen.");
+        LOGGER.warn("Show was called for a avatar marker. This shouldn't happen.");
     }
 
     @Override

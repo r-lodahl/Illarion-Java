@@ -23,19 +23,18 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-/**
- * The purpose of this class is to store and retrieve the templates that were load from the resources. Those
- * templates are later on used to create the actual objects.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implements ResourceFactory<T> {
     @NotNull
-    private static final Logger log = LogManager.getLogger();
-
+    private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * The ID used in case the requested object does not exist.
+     */
+    private final int defaultId;
     /**
      * This is the builder that is used to create the resource storage. This variable is only used during the
      * initialization phase of this factory. Once loading is done it is not required anymore.
@@ -52,13 +51,8 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
     /**
      * The map that is used to store the resources.
      */
-    @Nullable
-    private ImmutableMap<Integer, T> storage;
-
-    /**
-     * The ID used in case the requested object does not exist.
-     */
-    private final int defaultId;
+    @NotNull
+    private final Map<Integer, T> storage = new HashMap<>();
 
     /**
      * The default constructor.
@@ -81,22 +75,14 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
         }
 
         if (!storageBuilderKeys.add(resource.getTemplateId())) {
-            log.warn("Located duplicated resource template: {}", resource);
+            LOGGER.warn("Located duplicated resource template: {}", resource);
         }
 
         storageBuilder.put(resource.getTemplateId(), resource);
     }
 
     @Override
-    public void loadingFinished() {
-        if (storageBuilder == null) {
-            throw new IllegalStateException("Factory was not initialized yet.");
-        }
-
-        storage = storageBuilder.build();
-        storageBuilder = null;
-        storageBuilderKeys = null;
-    }
+    public void loadingFinished() {}
 
     @Override
     public void init() {
@@ -106,32 +92,24 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
 
     @Contract(pure = true)
     public boolean hasTemplate(int templateId) {
-        if (storage == null) {
-            throw new IllegalStateException("Factory was not initialized yet.");
-        }
-
         return storage.containsKey(templateId);
     }
 
     @NotNull
     @Contract(pure = true)
     public T getTemplate(int templateId) {
-        if (storage == null) {
-            throw new IllegalStateException("Factory was not initialized yet.");
-        }
-
         T object = storage.get(templateId);
         if ((object == null) && (defaultId > -1)) {
             T defaultObject = storage.get(defaultId);
             if (defaultObject == null) {
                 throw new IllegalStateException("Requested template " + templateId + " and the default template " +
-                                                        defaultId + " were not found.");
+                        defaultId + " were not found.");
             }
             return defaultObject;
         }
         if (object == null) {
             throw new IllegalStateException("Requested template " + templateId +
-                                                    " was not found and not default template was declared.");
+                    " was not found and not default template was declared.");
         }
         return object;
     }

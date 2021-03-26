@@ -109,7 +109,7 @@ public final class AvatarClothManager {
      * defined in this storage
      */
     @Nullable
-    public AvatarCloth getCloth(@NotNull AvatarClothGroup group, int itemID, @NotNull Avatar parentAvatar) {
+    public AvatarCloth getCloth(@NotNull AvatarClothGroup group, int itemID, @NotNull AbstractEntity<?> parentAvatar) {
         ClothFactory factory = existingClothes.get(group);
         if (factory == null) {
             return null;
