@@ -15,15 +15,10 @@
  */
 package illarion.client.gui;
 
+import illarion.client.world.Char;
 import illarion.common.types.CharacterId;
 import org.jetbrains.annotations.NotNull;
 
-
-/**
- * This interface defines the access to the GUI used to display input dialogs.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public interface DialogInputGui {
     /**
      * Show a input dialog on the GUI.
@@ -37,4 +32,6 @@ public interface DialogInputGui {
     void showInputDialog(int dialogId, String title, @NotNull String message, int maxLength, boolean multiLine);
 
     void showCharacterDialog(@NotNull CharacterId charId, @NotNull String lookAt);
+
+    void showNamingDialog(@NotNull Char character);
 }

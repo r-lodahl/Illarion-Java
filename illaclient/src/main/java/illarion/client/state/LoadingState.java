@@ -15,7 +15,7 @@
  */
 package illarion.client.state;
 
-import illarion.client.gui.controller.LoadScreenController;
+import illarion.client.gui.controller.LoadingScreenController;
 import illarion.client.loading.Loading;
 import org.illarion.engine.BackendBinding;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ public final class LoadingState implements GameState {
     /**
      * The screen controller that handles the display of the loading progress.
      */
-    private LoadScreenController controller;
+    private LoadingScreenController controller;
 
     /**
      * The manager of the loading tasks.
@@ -42,7 +42,7 @@ public final class LoadingState implements GameState {
     @Override
     public void create(BackendBinding binding) {
         this.binding = binding;
-        controller = new LoadScreenController();
+        controller = new LoadingScreenController();
         //nifty.registerScreenController(controller);
         //Util.loadXML(nifty, "illarion/client/gui/xml/loading.xml");
     }

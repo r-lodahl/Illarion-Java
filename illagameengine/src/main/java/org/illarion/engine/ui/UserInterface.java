@@ -1,6 +1,8 @@
 package org.illarion.engine.ui;
 
+import org.illarion.engine.ui.stage.Stage;
+
 public interface UserInterface {
-    LoginStage activateLoginStage(NullSecureResourceBundle loginResources);
-    void removeLoginStage();
+    <T extends Stage> T activateStage(NullSecureResourceBundle loginResources);
+    void removeActiveStage();
 }

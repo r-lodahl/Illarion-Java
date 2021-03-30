@@ -16,7 +16,6 @@ final class LoginView extends Table {
     private final SelectBox<String> serverSelection;
     private final TextField accountNameField, passwordField;
     private final CheckBox savePasswordCheckbox;
-    private final Dialog waitDialog;
 
     private LoginData[] loginData;
     private int currentServerIndex;
@@ -45,8 +44,6 @@ final class LoginView extends Table {
         optionsButton = new TextButton(resourceBundle.getLocalizedString("options"), skin);
         creditsButton = new TextButton(resourceBundle.getLocalizedString("credits"), skin);
         exitButton = new TextButton(resourceBundle.getLocalizedString("exit"), skin);
-
-        waitDialog = new Dialog("Please Wait!", skin, "dialog");
 
         /* Internal Listener Setup */
         serverSelection.addListener(new ChangeListener() {
@@ -118,16 +115,6 @@ final class LoginView extends Table {
 
         changeCurrentServer(initialServer);
     }
-
-    void showWaitDialog(String dialogTextLocalizationKey, Stage stage) {
-        waitDialog.text(resourceBundle.getLocalizedString(dialogTextLocalizationKey));
-        waitDialog.pack();
-        waitDialog.show(stage);
-    }
-
-    void hideWaitDialog() {
-        waitDialog.hide();
-    };
 
     void setOnOptionsCallback(EventListener onClick) {
         optionsButton.addListener(onClick);

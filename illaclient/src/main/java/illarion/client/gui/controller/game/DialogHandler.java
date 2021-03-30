@@ -61,6 +61,7 @@ import org.illarion.nifty.controls.dialog.select.builder.DialogSelectBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
@@ -581,6 +582,37 @@ public final class DialogHandler
         } else {
             builder.style("illarion-dialog-input-single");
         }
+        builders.add(new BuildWrapper(builder, parentArea, createdElement -> {
+            DialogInput control = createdElement.getNiftyControl(DialogInput.class);
+            if (control != null) {
+                control.setFocus();
+            }
+        }));
+    }
+
+    @Override
+    public void showNamingDialog(@Nonnull Char character) {
+        Element parentArea = screen.findElementById("windows");
+        CharacterId charId = character.getCharId();
+        if (parentArea == null || charId == null || !charId.isHuman() || World.getPlayer().isPlayer(charId)) {
+            return;
+        }
+
+        String currentCustomName = character.getCustomName();
+        String dialogName = "namingDialog" + charId.getValue();
+        if (parentArea.findElementById(dialogName) != null) {
+            return;
+        }
+
+        var messages = Lang.INSTANCE.getMessagesResourceBundle();
+        DialogInputBuilder builder = new DialogInputBuilder(dialogName, messages.getLocalizedString("gui.dialog.naming.title"));
+        builder.description(String.format(messages.getLocalizedString("gui.dialog.naming.description"), character.getName()));
+        builder.buttonLeft(messages.getLocalizedString("gui.dialog.naming.ok"));
+        builder.buttonRight(messages.getLocalizedString("gui.dialog.naming.cancel"));
+        builder.dialogId(charId.getAsInteger());
+        builder.maxLength(255);
+        builder.initalText((currentCustomName == null) ? "" : currentCustomName);
+        builder.style("illarion-dialog-input-single");
         builders.add(new BuildWrapper(builder, parentArea, createdElement -> {
             DialogInput control = createdElement.getNiftyControl(DialogInput.class);
             if (control != null) {

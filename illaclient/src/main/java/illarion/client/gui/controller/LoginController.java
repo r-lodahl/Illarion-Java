@@ -17,10 +17,8 @@ package illarion.client.gui.controller;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import illarion.client.IllaClient;
 import illarion.client.LoginService;
-import illarion.client.Servers;
 import illarion.client.graphics.AvatarClothManager;
 import illarion.client.graphics.AvatarEntity;
 import illarion.client.gui.EntityRenderImage;
@@ -29,33 +27,31 @@ import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
 import illarion.client.util.account.AccountSystem;
-import illarion.client.util.account.response.AccountGetResponse;
 import illarion.client.util.account.response.CharacterGetResponse;
-import illarion.client.util.account.response.CharacterItemResponse;
 import illarion.common.config.ConfigReader;
 import illarion.common.graphics.CharAnimations;
 import illarion.common.types.AvatarId;
-import illarion.common.types.CharacterId;
 import illarion.common.types.Direction;
-import illarion.common.types.DisplayCoordinate;
+import illarion.common.config.ConfigReader;
+import illarion.common.graphics.CharAnimations;
+import illarion.common.types.AvatarId;
+import illarion.common.types.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.EventBus;
 import org.illarion.engine.Option;
 import org.illarion.engine.Window;
 import org.illarion.engine.assets.Assets;
-import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
 import org.illarion.engine.ui.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -75,8 +71,6 @@ public final class LoginScreenController {
     private final AccountSystem accountSystem;
 
     private LoginStage stage;
-
-    private final ExecutorService requestThreadPool = Executors.newCachedThreadPool();
 
     public LoginScreenController(BackendBinding binding, AccountSystem accountSystem) {
         this.gui = binding.getGui();
@@ -107,70 +101,16 @@ public final class LoginScreenController {
 
         stage.setLoginData(loginData, serverKey);
         stage.setExitListener(IllaClient::exit);
-        stage.setLoginListener(this::OnLoginIssued);
+        stage.setLoginListener(this::onLoginIssued);
         stage.setOptionsData(IllaClient.getConfig(), window.getResolutionManager());
         stage.setOptionsSaveListener(this::saveOptions);
+        stage.setCharacterSelectionListener(this::onCharacterSelection);
+        stage.setCharacterCreationListener(this::onCharacterCreationIssued);
     }
 
-    private void OnLoginIssued(LoginData loginData) {
-        var usedServer = Arrays.stream(Servers.values())
-                .filter(server -> server.getServerName().equals(loginData.server))
-                .findFirst()
-                .orElse(Servers.Illarionserver);
-
-        // TODO: Testserver is used as a placeholder for LocalServer until merged
-        if (usedServer == Servers.Testserver ||
-                (usedServer == Servers.Customserver
-                && !IllaClient.getConfig().getBoolean(Option.customServerAccountSystem))) {
-            LOGGER.debug("AccountSystem not active, executing a direct login");
-            return;
-        }
-
-        var endpoint = usedServer != Servers.Customserver
-                ? AccountSystem.OFFICIAL_ENDPOINT
-                : "https://" + usedServer.getServerHost() + "/app.php";
-
-        accountSystem.setAuthentication(loginData);
-        accountSystem.setEndpoint(endpoint);
-
-        var accountInformation = accountSystem.getAccountInformation();
-
-        var characterInformation = Futures.transformAsync(accountInformation, (result) -> {
-            if (result == null) {
-                throw new RuntimeException("Request returned <null> value");
-            }
-
-            var serverCharacterList = result.getChars();
-
-            var charInformationRequests = serverCharacterList
-                    .stream()
-                    .filter(server -> server.getName().equals(usedServer.getServerName()))
-                    .findFirst()
-                    .map(server -> server.getList()
-                            .stream()
-                            .map(character ->
-                                    accountSystem.getCharacterInformation(server.getId(), character.getCharId()))
-                            .collect(Collectors.toList()))
-                    .orElse(List.of(Futures.immediateFailedFuture(new RuntimeException("No chars found"))));
-
-            return Futures.successfulAsList(charInformationRequests);
-        }, requestThreadPool);
-
-        var charactersLoaded = Futures.transformAsync(characterInformation, (result) -> {
-            if (result == null) {
-                throw new RuntimeException("Request returned <null> value for character information");
-            }
-
-            return Futures.immediateFuture(result.stream()
-                    .filter(Objects::nonNull)
-                    .map(character -> new CharacterSelectionData(
-                            character.getId(),
-                            character.getName(),
-                            buildCharacterRenderable(character)))
-                    .toArray(CharacterSelectionData[]::new));
-        }, requestThreadPool);
-
-        Futures.addCallback(charactersLoaded, new FutureCallback<>() {
+    private void onLoginIssued(LoginData loginData) {
+        var loginService = new illarion.client.util.account.services.LoginService(accountSystem);
+        loginService.issueLogin(loginData, new FutureCallback<>() {
             @Override
             public void onSuccess(@NotNull CharacterSelectionData[] result) {
                 stage.loginSuccessful(result);
@@ -181,7 +121,22 @@ public final class LoginScreenController {
                 LOGGER.warn(t.getMessage());
                 stage.loginFailed();
             }
-        }, requestThreadPool);
+        });
+    }
+
+    private void onCharacterSelection(CharacterSelectionData character) {
+        // call injected LeaveState
+    }
+
+    private void onCharacterCreationIssued(CharacterCreationData characterData) {
+        if (!accountSystem.isConnectionDataSet()) {
+            throw new RuntimeException("Premature Call to Character Creation: Login first");
+        }
+
+        accountSystem.getCharacterCreateInformation();
+
+
+
     }
 
     private void saveOptions(Map<String, String> options) {
@@ -235,89 +190,4 @@ public final class LoginScreenController {
 
         return new EntityRenderImage(avatarEntity);
     }
-
-
-
-
-    public void onEndStage() {
-        gui.removeLoginStage();
-    }
-
-    /*private void gotoLoginScreen() {
-        Login login = Login.getInstance();
-        login.restoreServer();
-        restoreLoginData();
-
-        if (IllaClient.DEFAULT_SERVER == Servers.Illarionserver) {
-            // Do not show server selection
-        } else {
-            // Do add to server selection:
-            //"${login-bundle.server.develop}"
-            //"${login-bundle.server.test}"
-            //"${login-bundle.server.game}"
-            //"${login-bundle.server.custom}"
-        }
-    }
-
-    private void gotoCreditScreen() {
-
-    }
-
-    private void gotoOptionsScreen() {
-
-    }
-
-    private void gotoCharacterSelectionScreen() {
-
-    }
-
-    private void gotoCharacterCreationScreen() {
-
-    }
-
-
-
-    public void onExitButtonClicked(String topic, ButtonClickedEvent event) {
-        //IllaClient.ensureExit();
-    }
-
-    public void onLoginButtonClicked(String topic, ButtonClickedEvent event) {
-        login();
-    }
-
-    private void login() {
-        // Show "receiving characters popup"
-        Login login = Login.getInstance();
-        login.setLoginData(nameTxt.getRealText(), passwordTxt.getRealText());
-
-        if (server != null) {
-            login.applyServerByKey(server.getSelectedIndex());
-        } else {
-            login.setServer(Servers.Illarionserver);
-        }
-
-        login.storeData(savePassword.isChecked());
-
-        if (login.isCharacterListRequired()) {
-            login.requestCharacterList(errorCode -> {
-                lastErrorCode = errorCode;
-                receivedLoginResponse = true;
-
-                nifty.closePopup(popupReceiveChars.getId());
-            });
-        } else {
-            engine.getSounds().stopMusic(15);
-            stateManager.enterState(StateManager.State.PLAYING);
-        }
-    }
-
-    @NiftyEventSubscriber(id = "server")
-    public void onServerChanged(@NotNull String topic, @NotNull DropDownSelectionChangedEvent<String> data) {
-        Login.getInstance().applyServerByKey(server.getSelectedIndex());
-        restoreLoginData();
-    }
-
-    public static String getErrorText(int error) {
-        return Lang.getMsg("login.error." + Integer.toString(error));
-    }*/
 }

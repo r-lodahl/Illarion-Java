@@ -2,28 +2,50 @@ package org.illarion.engine.backend.gdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.illarion.engine.backend.gdx.GdxRenderable;
-import org.illarion.engine.backend.gdx.ui.login.GdxLoginController;
-import org.illarion.engine.ui.LoginStage;
+import org.illarion.engine.backend.gdx.ui.loading.GdxLoadingStage;
+import org.illarion.engine.backend.gdx.ui.login.GdxLoginStage;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 import org.illarion.engine.ui.UserInterface;
+import org.illarion.engine.ui.stage.LoadingStage;
+import org.illarion.engine.ui.stage.LoginStage;
+import org.illarion.engine.ui.stage.Stage;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class GdxUserInterface implements UserInterface {
     private final Skin skin;
 
-    private @Nullable GdxLoginController loginStage;
+    private final Map<Class, Class> stageTypeMap;
+
+
     private @Nullable GdxRenderable currentStage;
 
     public GdxUserInterface(Skin skin) {
         this.skin = skin;
+
+        stageTypeMap = new HashMap<>(2);
+        stageTypeMap.put(LoginStage.class, GdxLoginStage.class);
+        stageTypeMap.put(LoadingStage.class, GdxLoadingStage.class);
     }
 
     @Override
-    public LoginStage activateLoginStage(NullSecureResourceBundle resourceBundle) {
+    public <T extends Stage> T activateStage(Class<T> stageType, NullSecureResourceBundle resourceBundle) {
+        if (!stageTypeMap.containsKey(stageType)) {
+            throw new RuntimeException("NYI");
+        }
+
+        var implClass = stageTypeMap.get(stageType);
+
+        implClass.getClassLoader().new
+
+                // Fuck this, just add explicit "activateLogin/Loading/Game/...Stage methods!
+
+
         if (loginStage == null) {
-            loginStage = new GdxLoginController(skin, resourceBundle);
+            loginStage = new GdxLoginStage(skin, resourceBundle);
         }
 
         currentStage = loginStage;
@@ -32,10 +54,10 @@ public class GdxUserInterface implements UserInterface {
     }
 
     @Override
-    public void removeLoginStage() {
+    public void removeActiveStage() {
         currentStage = null;
         Optional.ofNullable(loginStage)
-                .ifPresent(GdxLoginController::dispose);
+                .ifPresent(GdxLoginStage::dispose);
         loginStage = null;
     }
 

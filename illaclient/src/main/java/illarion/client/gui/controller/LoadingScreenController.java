@@ -15,35 +15,35 @@
  */
 package illarion.client.gui.controller;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
-import org.illarion.nifty.controls.Progress;
-import org.jetbrains.annotations.NotNull;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import illarion.client.util.Lang;
+import org.illarion.engine.ui.UserInterface;
+import org.illarion.engine.ui.stage.LoadingStage;
 import org.jetbrains.annotations.Nullable;
 
-
-public final class LoadScreenController implements ScreenController {
+public final class LoadingScreenController implements ScreenController {
+    private final UserInterface userInterface;
 
     @Nullable
-    private Progress progress;
+    private LoadingStage loadingStage;
 
-    //@NotNull
-    //private final StateManager stateManager;
-
-    public LoadScreenController() {
-        //this.stateManager = stateManager;
-    }
-
-    @Override
-    public void bind(@NotNull Nifty nifty, @NotNull Screen screen) {
-        progress = screen.findNiftyControl("loading", Progress.class);
+    public LoadingScreenController(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 
     @Override
     public void onStartScreen() {
-        loadingDoneCalled = false;
+        loadingStage = userInterface.activateStage(Lang.INSTANCE.getLoadingResourceBundle());
     }
+
+    @Override
+    public void onEndScreen() { }
+
+    public void applyLoadingProgess(float loadProgress, String elementToBeLoaded) {
+
+    }
+
+
 
     private boolean loadingDoneCalled;
 
@@ -62,8 +62,5 @@ public final class LoadScreenController implements ScreenController {
         }
     }
 
-    @Override
-    public void onEndScreen() {
-        // nothing to do
-    }
+
 }

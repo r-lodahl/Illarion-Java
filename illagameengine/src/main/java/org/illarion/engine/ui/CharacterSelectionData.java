@@ -12,4 +12,9 @@ public class CharacterSelectionData {
         this.name = name;
         this.preview = preview;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -3,20 +3,21 @@ package org.illarion.engine.backend.gdx.ui.login;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import illarion.common.config.ConfigReader;
+import org.checkerframework.checker.units.qual.C;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GdxLoginController implements LoginStage, GdxRenderable {
+public class GdxLoginStage implements LoginStage, GdxRenderable {
     private final Stage stage;
     private final Container<Table> root;
     private final CreditView credits;
@@ -25,9 +26,15 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
     private final CharacterSelectView characterSelection;
     private final CharacterCreationView characterCreation;
 
+    private final Dialog dialog;
+    private final TextButton btDialog;
+    private final NullSecureResourceBundle resourceBundle;
+
+    private Action dialogConfirmationCallback;
+
     private Table activeTable;
 
-    public GdxLoginController(Skin skin, NullSecureResourceBundle resourceBundle) {
+    public GdxLoginStage(Skin skin, NullSecureResourceBundle resourceBundle) {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -38,11 +45,25 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         root.fill();
         stage.addActor(root);
 
+        this.resourceBundle = resourceBundle;
+        btDialog = new TextButton("OK", skin);
+        btDialog.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent inputEvent, float x, float y) {
+                if (dialogConfirmationCallback != null) {
+                    dialogConfirmationCallback.invoke();
+                }
+            }
+        });
+        dialog = new Dialog("Attention", skin, "dialog");
+        dialog.button(btDialog);
+
         login = new LoginView(skin, resourceBundle);
         credits = new CreditView(skin, resourceBundle);
         options = new OptionsView(skin, resourceBundle);
         characterSelection = new CharacterSelectView(skin, resourceBundle);
         characterCreation = new CharacterCreationView(skin, resourceBundle);
+
         login.setOnOptionsCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,18 +76,27 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
                 activateTable(credits);
             }
         });
+
+        characterSelection.setOnLogoutCallback(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                activateTable(login);
+            }
+        });
         characterSelection.setOnCreateCharacterCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(characterCreation);
             }
         });
+
         characterCreation.setOnCancelCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(characterSelection);
             }
         });
+
         options.setOnBackCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -103,18 +133,22 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
     }
 
     @Override
+    // Will run in main thread
     public void loginSuccessful(CharacterSelectionData[] data) {
-        for (CharacterSelectionData characterData : data) {
-            //characterSelection.addCharacter(characterData);
-        }
-        login.hideWaitDialog();
-        // goto: charselectionscreen
+        Gdx.app.postRunnable(() -> {
+            characterSelection.setCharacters(data);
+            hideDialog();
+            activateTable(characterSelection);
+        });
     }
 
     @Override
+    // Will run in main thread
     public void loginFailed() {
-        login.hideWaitDialog();
-        //login.showErrorDialog();
+        Gdx.app.postRunnable(() -> {
+            hideDialog();
+            showDialog("error", null);
+        });
     }
 
     @Override
@@ -137,18 +171,8 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         login.setOnLoginCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                login.showWaitDialog("login", stage);
+                showDialog("login");
                 event.accept(login.getSelectedLoginData());
-            }
-        });
-    }
-
-    @Override
-    public void setLogoutListener(Action event) {
-        characterSelection.setOnLogoutCallback(new ClickListener() {
-            @Override
-            public void clicked(InputEvent inputEvent, float x, float y) {
-                event.invoke();
             }
         });
     }
@@ -168,7 +192,7 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         characterSelection.setOnPlayCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                //event.accept(characterSelection.getSelectedCharacter());
+                characterSelection.getSelectedCharacter().ifPresent(event);
             }
         });
     }
@@ -213,6 +237,24 @@ public class GdxLoginController implements LoginStage, GdxRenderable {
         activeTable = table;
         root.setActor(activeTable);
     }
+
+    private void showDialog(@NotNull String dialogTextLocalizationKey) {
+        dialog.text(resourceBundle.getLocalizedString(dialogTextLocalizationKey));
+        dialog.pack();
+        dialog.show(stage);
+    }
+
+    private void showDialog(@NotNull String dialogTextLocalizationKey, @Nullable Action confirmationCallback) {
+        dialogConfirmationCallback = confirmationCallback;
+        dialog.button(btDialog);
+        showDialog(dialogTextLocalizationKey);
+    }
+
+    private void hideDialog() {
+        dialog.hide();
+        dialog.getButtonTable().clearChildren();
+        dialogConfirmationCallback = null;
+    };
 
     /*private Drawable getBackgroundDrawable() {
         Texture t = new Texture("skin/window_background.png");

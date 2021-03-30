@@ -57,10 +57,12 @@ public enum Lang {
     @NotNull private final SecureResourceBundle messagesResourceBundle;
     @NotNull private final SecureResourceBundle loginResourceBundle;
     @NotNull private final SecureResourceBundle ingameResourceBundle;
+    @NotNull private final SecureResourceBundle loadingResourceBundle;
 
     Lang() {
         messagesResourceBundle = new SecureResourceBundle();
         loginResourceBundle = new SecureResourceBundle();
+        loadingResourceBundle = new SecureResourceBundle();
         ingameResourceBundle = new SecureResourceBundle();
         EventBus.INSTANCE.register(this);
     }
@@ -72,6 +74,8 @@ public enum Lang {
     public @NotNull SecureResourceBundle getLoginResourceBundle() {
         return loginResourceBundle;
     }
+
+    public @NotNull SecureResourceBundle getLoadingResourceBundle() { return loadingResourceBundle; }
 
     public @NotNull SecureResourceBundle getIngameResourceBundle() {
         return ingameResourceBundle;
@@ -92,6 +96,7 @@ public enum Lang {
         messagesResourceBundle.setResourceBundle(ResourceBundle.getBundle("messages", currentLocale, Lang.class.getClassLoader()));
         loginResourceBundle.setResourceBundle(ResourceBundle.getBundle("login", currentLocale, Lang.class.getClassLoader()));
         ingameResourceBundle.setResourceBundle(ResourceBundle.getBundle("ingame", currentLocale, Lang.class.getClassLoader()));
+        loadingResourceBundle.setResourceBundle(ResourceBundle.getBundle("loading", currentLocale, Lang.class.getClassLoader()));
     }
 
     @NotNull

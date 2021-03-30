@@ -38,7 +38,6 @@ import org.jetbrains.annotations.Nullable;
  * This is the graphics engine implementation that uses libGDX.
  */
 class GdxGraphics implements Graphics {
-    @NotNull
     private static final float[] FLOAT_BUFFER = new float[20];
     /**
      * The libGDX graphics instance that is used to display the graphics.
@@ -492,12 +491,8 @@ class GdxGraphics implements Graphics {
         gl20.glEnable(GL20.GL_BLEND);
         assert lastBlendingMode != null;
         switch (lastBlendingMode) {
-            case AlphaBlend:
-                gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                break;
-            case Multiply:
-                gl20.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_ZERO);
-                break;
+            case AlphaBlend -> gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            case Multiply -> gl20.glBlendFunc(GL20.GL_DST_COLOR, GL20.GL_ZERO);
         }
         shapeRenderer.begin(ShapeType.Filled);
     }

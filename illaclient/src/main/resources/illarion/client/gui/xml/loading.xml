@@ -18,7 +18,7 @@
     <useControls filename="illarion-progress.xml"/>
 
     <!-- loading screen -->
-    <screen id="loading" controller="illarion.client.gui.controller.LoadScreenController">
+    <screen id="loading" controller="illarion.client.gui.controller.LoadingScreenController">
         <layer childLayout="vertical">
             <panel height="422px" width="*" backgroundImage="gui/window_background.png"
                    imageMode="repeat:0,0,1024,422"/>

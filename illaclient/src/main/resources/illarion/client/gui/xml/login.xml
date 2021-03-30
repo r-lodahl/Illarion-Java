@@ -17,7 +17,7 @@
 <nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui">
     <resourceBundle id="login-bundle" filename="login"/>
 
-    <screen id="login" controller="illarion.client.gui.controller.LoginScreenController">
+    <screen id="login" controller="illarion.client.gui.controller.LoginController">
         <layer childLayout="vertical" visibleToMouse="false">
             <effect>
                 <onStartScreen name="fade" start="#00" end="#ff" length="500" inherit="true"/>
