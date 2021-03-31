@@ -7,7 +7,7 @@ import org.illarion.engine.ui.*;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public interface LoginStage extends Stage {
+public interface LoginStage {
     void setLoginData(LoginData[] data, int initialServer);
     void loginSuccessful(CharacterSelectionData[] data);
     void loginFailed();

@@ -18,6 +18,7 @@ package illarion.client.util.account;
 import com.google.common.util.concurrent.ListenableFuture;
 import illarion.client.util.account.form.AccountCheckForm;
 import illarion.client.util.account.form.AccountCreateForm;
+import illarion.client.util.account.form.CharacterCreateForm;
 import illarion.client.util.account.request.*;
 import illarion.client.util.account.response.*;
 import illarion.common.types.CharacterId;
@@ -26,8 +27,6 @@ import org.apache.logging.log4j.Logger;
 import org.illarion.engine.ui.LoginData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public class AccountSystem implements AutoCloseable {
     private final static Logger LOGGER = LogManager.getLogger();
@@ -143,13 +142,24 @@ public class AccountSystem implements AutoCloseable {
     }
 
     @NotNull
-    public ListenableFuture<CharacterCreateGetResponse> getCharacterCreateInformation(@NotNull String serverId) {
+    public ListenableFuture<CharacterCreateGetResponse> getPossibleCharacterCreationSpecifications(@NotNull String serverId) {
         RequestHandler handler = getRequestHandler();
         IllarionAuthenticator authenticator = getAuthenticator();
 
         Request<CharacterCreateGetResponse> request = new CharacterCreateGetRequest(authenticator, serverId);
 
         return handler.sendRequestAsync(request);
+    }
+
+    @NotNull
+    public ListenableFuture<CharacterCreateResponse> createCharacter(@NotNull String serverId,
+                                                                     @NotNull CharacterCreateForm characterCreateForm) {
+        var requestHandler = getRequestHandler();
+        var authenticator = getAuthenticator();
+
+        var request = new CharacterCreateRequest(authenticator, serverId, characterCreateForm);
+
+        return requestHandler.sendRequestAsync(request);
     }
 
     private void closeRequestHandler() throws Exception {

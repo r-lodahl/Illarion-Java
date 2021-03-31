@@ -21,9 +21,9 @@ public final class CharacterSelectView extends Table {
         //Texture characterImageTexture = new Texture("skin/placeholder.png");
         //Image characterImage = new Image(characterImageTexture);
 
-        btPlay = new TextButton("Play", skin);
-        btLogout = new TextButton("Logout", skin);
-        btCreate = new TextButton("Create Character", skin);
+        btPlay = new TextButton(resourceBundle.getLocalizedString("play"), skin);
+        btLogout = new TextButton(resourceBundle.getLocalizedString("logout"), skin);
+        btCreate = new TextButton(resourceBundle.getLocalizedString("create"), skin);
 
         /* Layout */
         //row();
@@ -45,6 +45,10 @@ public final class CharacterSelectView extends Table {
 
     public Optional<CharacterSelectionData> getSelectedCharacter() {
         return Optional.ofNullable(lvCharacters.getSelected());
+    }
+
+    public void setCharacters(CharacterSelectionData[] characters) {
+        lvCharacters.setItems(characters);
     }
 
     public void setOnPlayCallback(ClickListener onClick) {

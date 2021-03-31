@@ -31,18 +31,13 @@ import java.util.Set;
 public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implements ResourceFactory<T> {
     @NotNull
     private static final Logger LOGGER = LogManager.getLogger();
+
     /**
      * The ID used in case the requested object does not exist.
      */
     private final int defaultId;
-    /**
-     * This is the builder that is used to create the resource storage. This variable is only used during the
-     * initialization phase of this factory. Once loading is done it is not required anymore.
-     */
-    @Nullable
-    private ImmutableMap.Builder<Integer, T> storageBuilder;
 
-    /**
+    /*
      * This variable is used during populating the resources to ensure that all keys are unique.
      */
     @Nullable
@@ -70,7 +65,7 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
 
     @Override
     public void storeResource(@NotNull T resource) {
-        if (storageBuilder == null || storageBuilderKeys == null) {
+        if (storageBuilderKeys == null) {
             throw new IllegalStateException("Factory was not initialized yet.");
         }
 
@@ -78,15 +73,16 @@ public abstract class AbstractTemplateFactory<T extends ResourceTemplate> implem
             LOGGER.warn("Located duplicated resource template: {}", resource);
         }
 
-        storageBuilder.put(resource.getTemplateId(), resource);
+        storage.put(resource.getTemplateId(), resource);
     }
 
     @Override
-    public void loadingFinished() {}
+    public void loadingFinished() {
+        storageBuilderKeys = null;
+    }
 
     @Override
     public void init() {
-        storageBuilder = new ImmutableMap.Builder<>();
         storageBuilderKeys = new HashSet<>();
     }
 

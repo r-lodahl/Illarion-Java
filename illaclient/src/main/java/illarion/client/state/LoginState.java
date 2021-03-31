@@ -15,7 +15,8 @@
  */
 package illarion.client.state;
 
-import illarion.client.gui.controller.LoginController;
+import illarion.client.gui.controller.LoginScreenController;
+import illarion.client.gui.controller.ScreenController;
 import illarion.client.util.account.AccountSystem;
 import org.illarion.engine.BackendBinding;
 
@@ -27,11 +28,11 @@ public class LoginState implements GameState {
     /**
      * The screen controller that takes care for the login screen.
      */
-    private LoginController loginController;
+    private ScreenController loginController;
 
     @Override
     public void create(BackendBinding binding) {
-        loginController = new LoginController(binding, new AccountSystem());
+        loginController = new LoginScreenController(binding, new AccountSystem());
     }
 
     @Override
@@ -53,7 +54,7 @@ public class LoginState implements GameState {
 
     @Override
     public void enterState() {
-        loginController.onStartStage();
+        loginController.onStartScreen();
     }
 
     @Override

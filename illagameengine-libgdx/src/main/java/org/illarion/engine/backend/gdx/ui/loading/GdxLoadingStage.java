@@ -1,8 +1,12 @@
 package org.illarion.engine.backend.gdx.ui.loading;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.ui.*;
@@ -12,8 +16,25 @@ public class GdxLoadingStage implements LoadingStage, GdxRenderable {
     private final Stage stage;
     private final LoadingView loadingView;
 
+    private final Dialog dialog;
+    private final TextButton btDialog;
+
+    private Action dialogConfirmationCallback;
+
     public GdxLoadingStage(Skin skin, NullSecureResourceBundle resourceBundle) {
         loadingView = new LoadingView(skin, resourceBundle);
+
+        btDialog = new TextButton("OK", skin);
+        btDialog.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent inputEvent, float x, float y) {
+                if (dialogConfirmationCallback != null) {
+                    dialogConfirmationCallback.invoke();
+                }
+            }
+        });
+        dialog = new Dialog("Attention", skin, "dialog");
+        dialog.button(btDialog);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -36,13 +57,22 @@ public class GdxLoadingStage implements LoadingStage, GdxRenderable {
     }
 
     @Override
-    public void setText(String localizationKey) {
-        loadingView.setText(localizationKey);
+    public void setLoadedElement(String localizationKey) {
+        Gdx.app.postRunnable(() -> loadingView.setText(localizationKey));
     }
 
     @Override
     public void setProgess(float progess) {
-        loadingView.setProgess(progess);
+        Gdx.app.postRunnable(() -> loadingView.setProgess(progess));
+    }
+
+    @Override
+    public void setFailure(String localizationKey, Action failureCallback) {
+        Gdx.app.postRunnable(() -> {
+            dialogConfirmationCallback = failureCallback;
+            dialog.button(btDialog);
+            dialog.show(stage);
+        });
     }
 
     public void dispose() {

@@ -1,8 +1,11 @@
 package org.illarion.engine.ui;
 
-import org.illarion.engine.ui.stage.Stage;
+import org.illarion.engine.ui.stage.GameStage;
+import org.illarion.engine.ui.stage.LoadingStage;
+import org.illarion.engine.ui.stage.LoginStage;
 
 public interface UserInterface {
-    <T extends Stage> T activateStage(NullSecureResourceBundle loginResources);
-    void removeActiveStage();
+    LoginStage activateLoginStage(NullSecureResourceBundle loginResourceBundle);
+    LoadingStage activateLoadingStage(NullSecureResourceBundle loadingResourceBundle);
+    GameStage activateGameStage(NullSecureResourceBundle gameResourceBundle);
 }

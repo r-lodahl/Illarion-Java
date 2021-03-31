@@ -11,6 +11,7 @@ import org.checkerframework.checker.units.qual.C;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
+import org.illarion.engine.ui.stage.LoginStage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

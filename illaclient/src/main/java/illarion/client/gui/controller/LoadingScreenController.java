@@ -15,8 +15,8 @@
  */
 package illarion.client.gui.controller;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import illarion.client.util.Lang;
+import org.illarion.engine.ui.Action;
 import org.illarion.engine.ui.UserInterface;
 import org.illarion.engine.ui.stage.LoadingStage;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 public final class LoadingScreenController implements ScreenController {
     private final UserInterface userInterface;
 
-    @Nullable
     private LoadingStage loadingStage;
 
     public LoadingScreenController(UserInterface userInterface) {
@@ -33,34 +32,26 @@ public final class LoadingScreenController implements ScreenController {
 
     @Override
     public void onStartScreen() {
-        loadingStage = userInterface.activateStage(Lang.INSTANCE.getLoadingResourceBundle());
+        loadingStage = userInterface.activateLoadingStage(Lang.INSTANCE.getLoadingResourceBundle());
     }
 
     @Override
     public void onEndScreen() { }
 
-    public void applyLoadingProgess(float loadProgress, String elementToBeLoaded) {
-
-    }
-
-
-
-    private boolean loadingDoneCalled;
-
-    public void loadingDone() {
-        if (loadingDoneCalled) {
-            return;
+    public void setLoadingProgess(float loadProgress, String elementToBeLoaded) {
+        if (loadingStage == null) {
+            throw new IllegalStateException("Screen was not yet started!");
         }
-        loadingDoneCalled = true;
 
-        //stateManager.enterState(StateManager.State.LOGIN);
+        loadingStage.setProgess(loadProgress);
+        loadingStage.setLoadedElement(elementToBeLoaded);
     }
 
-    public void setProgress(float progressValue) {
-        if (progress != null) {
-            progress.setProgress(progressValue);
+    public void setFailure(String localizationKey, Action callback) {
+        if (loadingStage == null) {
+            throw new IllegalStateException("Screen was not yet started!");
         }
+
+        loadingStage.setFailure(localizationKey, callback);
     }
-
-
 }

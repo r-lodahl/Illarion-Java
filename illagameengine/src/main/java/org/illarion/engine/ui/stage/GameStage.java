@@ -1,4 +1,4 @@
 package org.illarion.engine.ui.stage;
 
-public interface Stage {
+public interface GameStage {
 }

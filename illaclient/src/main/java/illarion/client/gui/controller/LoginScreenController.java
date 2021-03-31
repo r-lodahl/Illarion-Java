@@ -16,26 +16,13 @@
 package illarion.client.gui.controller;
 
 import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import illarion.client.IllaClient;
 import illarion.client.LoginService;
-import illarion.client.graphics.AvatarClothManager;
-import illarion.client.graphics.AvatarEntity;
-import illarion.client.gui.EntityRenderImage;
-import illarion.client.resources.CharacterFactory;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
 import illarion.client.util.account.AccountSystem;
-import illarion.client.util.account.response.CharacterGetResponse;
 import illarion.common.config.ConfigReader;
-import illarion.common.graphics.CharAnimations;
-import illarion.common.types.AvatarId;
-import illarion.common.types.Direction;
-import illarion.common.config.ConfigReader;
-import illarion.common.graphics.CharAnimations;
-import illarion.common.types.AvatarId;
-import illarion.common.types.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.illarion.engine.BackendBinding;
@@ -47,6 +34,7 @@ import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
 import org.illarion.engine.ui.*;
+import org.illarion.engine.ui.stage.LoginStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -57,7 +45,7 @@ import java.util.stream.Collectors;
 /**
  * This is the screen controller that takes care of displaying the login screen.
  */
-public final class LoginScreenController {
+public final class LoginScreenController implements ScreenController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final List<String> RESOLUTION_OPTIONS = Arrays.asList(Option.fullscreen, Option.fullscreenHeight,
@@ -80,7 +68,8 @@ public final class LoginScreenController {
         this.accountSystem = accountSystem;
     }
 
-    public void onStartStage() {
+    @Override
+    public void onStartScreen() {
         AudioPlayer audioPlayer = AudioPlayer.INSTANCE;
         audioPlayer.initAudioPlayer(sounds);
         Music illarionTheme = SongFactory.getInstance().getSong(2, assets.getSoundsManager());
@@ -108,6 +97,9 @@ public final class LoginScreenController {
         stage.setCharacterCreationListener(this::onCharacterCreationIssued);
     }
 
+    @Override
+    public void onEndScreen() {}
+
     private void onLoginIssued(LoginData loginData) {
         var loginService = new illarion.client.util.account.services.LoginService(accountSystem);
         loginService.issueLogin(loginData, new FutureCallback<>() {
@@ -129,14 +121,11 @@ public final class LoginScreenController {
     }
 
     private void onCharacterCreationIssued(CharacterCreationData characterData) {
-        if (!accountSystem.isConnectionDataSet()) {
-            throw new RuntimeException("Premature Call to Character Creation: Login first");
-        }
+        //if (!accountSystem.isConnectionDataSet()) {
+        //    throw new RuntimeException("Premature Call to Character Creation: Login first");
+        //}
 
-        accountSystem.getCharacterCreateInformation();
-
-
-
+        //accountSystem.getPossibleCharacterCreationSpecifications();
     }
 
     private void saveOptions(Map<String, String> options) {
@@ -158,36 +147,5 @@ public final class LoginScreenController {
     private boolean isOptionChanged(String option, String optionValue, ConfigReader config) {
         var configOptionValue = config.getString(option);
         return !optionValue.equals(configOptionValue);
-    }
-
-
-    public DynamicUiContent buildCharacterRenderable(CharacterGetResponse character) {
-        var id = new AvatarId(character.getRace(), character.getRaceType(), Direction.West, CharAnimations.STAND);
-        var template = CharacterFactory.getInstance().getTemplate(id.getAvatarId());
-        var avatarEntity = new AvatarEntity(template, true);
-
-        var paperDoll = character.getPaperDoll();
-        avatarEntity.setClothItem(AvatarClothManager.AvatarClothGroup.Hair, paperDoll.getHairId());
-        avatarEntity.setClothItem(AvatarClothManager.AvatarClothGroup.Beard, paperDoll.getBeardId());
-        avatarEntity.changeClothColor(AvatarClothManager.AvatarClothGroup.Hair, paperDoll.getHairColour().getColour());
-        avatarEntity.changeClothColor(AvatarClothManager.AvatarClothGroup.Beard, paperDoll.getHairColour().getColour());
-        avatarEntity.changeBaseColor(paperDoll.getSkinColour().getColour());
-
-        for (var item : character.getItems()) {
-            var group = AvatarClothManager.AvatarClothGroup.getFromPositionNumber(item.getPosition());
-
-            if (group == null) {
-                continue;
-            }
-
-            if (item.getId() == 0) {
-                avatarEntity.removeClothItem(group);
-                continue;
-            }
-
-            avatarEntity.setClothItem(group, item.getId());
-        }
-
-        return new EntityRenderImage(avatarEntity);
     }
 }

@@ -77,7 +77,7 @@ class ListenerApplication extends ApplicationAdapter {
 
         EventBus.INSTANCE.register(this);
 
-        stateManager.enterState(State.LOGIN);
+        stateManager.enterState(State.LOADING);
     }
 
     @Override

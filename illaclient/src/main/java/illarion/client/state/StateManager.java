@@ -148,8 +148,6 @@ public final class StateManager implements GameStateManager {
         }
 
         this.networkEventConsumer = new NetworkEventConsumer(binding);
-
-        enterState(State.LOADING);
     }
 
     /**

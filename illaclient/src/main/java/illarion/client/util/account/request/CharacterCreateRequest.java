@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
-class CharacterCreateRequest implements AuthenticatedRequest<CharacterCreateResponse> {
+public class CharacterCreateRequest implements AuthenticatedRequest<CharacterCreateResponse> {
     @NotNull
     private final IllarionAuthenticator authenticator;
     @NotNull
@@ -32,7 +32,7 @@ class CharacterCreateRequest implements AuthenticatedRequest<CharacterCreateResp
     @NotNull
     private final CharacterCreateForm data;
 
-    CharacterCreateRequest(@NotNull IllarionAuthenticator authenticator,
+    public CharacterCreateRequest(@NotNull IllarionAuthenticator authenticator,
                            @NotNull String serverId,
                            @NotNull CharacterCreateForm data) {
         this.authenticator = authenticator;
