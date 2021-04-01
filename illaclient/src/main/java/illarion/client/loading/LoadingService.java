@@ -31,7 +31,7 @@ import java.util.function.BiConsumer;
  */
 public final class LoadingService {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int POLLING_RATE = 15;
+    private static final int POLLING_RATE = 200;
 
     private final Object pollingLock = new Object();
 

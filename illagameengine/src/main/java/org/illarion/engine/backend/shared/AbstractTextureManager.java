@@ -15,6 +15,8 @@
  */
 package org.illarion.engine.backend.shared;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import illarion.common.util.PoolThreadFactory;
 import illarion.common.util.ProgressMonitor;
 import org.apache.logging.log4j.LogManager;
@@ -27,16 +29,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
-/**
- * This is the shared code of the texture manager that is used by all backend implementations in a similar way.
- *
- * @author Martin Karing &gt;nitram@illarion.org&lt;
- */
 public abstract class AbstractTextureManager<T> implements TextureManager {
     private static final Logger log = LogManager.getLogger();
 
@@ -73,20 +67,14 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
     /**
      * This executor takes care for the tasks required to load the textures properly.
      */
-    @Nullable
-    private ExecutorService loadingExecutor;
+    @NotNull
+    private final ListeningExecutorService loadingExecutor;
 
     /**
      * This is a list of loading tasks. Once all entries in this list are cleared, the loading is considered done.
      */
-    @Nullable
-    private Deque<TextureAtlasTask> loadingTasks;
-
-    /**
-     * These are the tasks that are progressed in the graphics context.
-     */
-    @Nullable
-    private Queue<Runnable> updateTasks;
+    @NotNull
+    private final Deque<Runnable> loadingTasks;
 
     private boolean loadingStarted;
 
@@ -99,6 +87,8 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
         textures = new HashMap<>();
         progressMonitor = new ProgressMonitor();
         directoriesLoaded = new ArrayList<>();
+        loadingTasks = new ConcurrentLinkedDeque<>();
+        loadingExecutor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(2, new PoolThreadFactory("TextureLoading", false)));
     }
 
     @Override
@@ -106,14 +96,6 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
         if (isLoadingDone()) {
             return;
         }
-        if (loadingExecutor != null) {
-            log.warn("Trying to load texture files while loading already in progress.");
-            return;
-        }
-
-        loadingStarted = true;
-        loadingTasks = new ConcurrentLinkedDeque<>();
-        updateTasks = new ConcurrentLinkedQueue<>();
 
         // Prepare the parser factory for processing the XML files
         XmlPullParserFactory parserFactory;
@@ -125,8 +107,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
         parserFactory.setNamespaceAware(false);
         parserFactory.setValidating(false);
 
-        // Loading starts here. Firing up the executor.
-        loadingExecutor = Executors.newFixedThreadPool(2, new PoolThreadFactory("TextureLoading", false));
+        // Loading starts here.
         int directoryCount = rootDirectories.size();
         for (int i = 0; i < directoryCount; i++) {
             if (directoriesLoaded.get(i)) {
@@ -134,43 +115,35 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
             }
             String directoryName = rootDirectories.get(i);
             TextureAtlasListXmlLoadingTask<T> task =
-                    new TextureAtlasListXmlLoadingTask<>(parserFactory, directoryName, this,
-                            directoryMonitors.get(i), loadingExecutor);
-            loadingExecutor.execute(task);
-            loadingTasks.addFirst(task);
+                    new TextureAtlasListXmlLoadingTask<>(parserFactory, directoryName, this, directoryMonitors.get(i));
+            submitLoadingTask(task);
             directoriesLoaded.set(i, Boolean.TRUE);
         }
+
+        loadingStarted = true;
     }
 
     @Override
     public void update() {
-        if (isLoadingDone()) {
-            return;
-        }
-        if (updateTasks == null) {
-            return;
-        }
-
-        long startTime = System.currentTimeMillis();
-
-        do {
-            Runnable task = updateTasks.poll();
-            if (task == null) {
-                return;
-            }
-            task.run();
-        } while ((System.currentTimeMillis() - startTime) < 100);
+        // Do nothing, tasks will now all be executed once possible
+        // Retain update to keep compatibility with editor
     }
 
-    void addLoadingTask(@NotNull TextureAtlasTask task) {
-        if (loadingTasks != null) {
+    void submitQueuedTasks() {
+        while (!loadingTasks.isEmpty()) {
+            submitLoadingTask(loadingTasks.poll());
+        }
+    }
+
+    void submitLoadingTask(Runnable task) {
+        loadingExecutor.submit(task).addListener(this::submitQueuedTasks, loadingExecutor);
+    }
+
+    void addLoadingTask(Runnable task) {
+        if (loadingTasks.isEmpty()) {
+            submitLoadingTask(task);
+        } else {
             loadingTasks.add(task);
-        }
-    }
-
-    void addUpdateTask(@NotNull Runnable task) {
-        if (updateTasks != null) {
-            updateTasks.add(task);
         }
     }
 
@@ -292,44 +265,10 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
             }
         }
 
-        // We reached a point where everything just turns to be crappy. The file appears to be on a texture atlas that
-        // is not yet loaded.
+        // The file appears to be on a texture atlas that is not yet loaded.
+        // No longer try a reload during runtime, as this is would be a core bug, to be handled in the initial loading
         if (!directoriesLoaded.get(directoryIndex)) {
-            String directoryName = rootDirectories.get(directoryIndex);
-            log.trace("Start loading directory: {}", directoryName);
-            XmlPullParserFactory parserFactory;
-            try {
-                parserFactory = XmlPullParserFactory.newInstance();
-            } catch (XmlPullParserException e) {
-                log.error("Failed to create parser factory.", e);
-                return null;
-            }
-            parserFactory.setNamespaceAware(false);
-            parserFactory.setValidating(false);
-
-            TextureAtlasListXmlLoadingTask<T> task =
-                    new TextureAtlasListXmlLoadingTask<>(parserFactory, directoryName, this,
-                            directoryMonitors.get(directoryIndex), null);
-            if (loadingTasks == null) {
-                loadingTasks = new ConcurrentLinkedDeque<>();
-                updateTasks = new ConcurrentLinkedQueue<>();
-            }
-            loadingTasks.add(task);
-            task.run();
-            directoriesLoaded.set(directoryIndex, Boolean.TRUE);
-
-            loadingStarted = true;
-            while (!isLoadingDone()) {
-                update();
-            }
-            loadingStarted = false;
-
-            log.trace("Loading of directory {} is done.", directoryName);
-            Texture result = textures.get(cleanName);
-            if (result == null) {
-                log.error("Failed to load texture: {} from directory: {}", cleanName, directoryName);
-            }
-            return result;
+            log.error("Tried to load a file {} whose texture atlas (directory index: {}) have not been loaded.", name, directoryIndex);
         }
 
         return null;
@@ -343,33 +282,7 @@ public abstract class AbstractTextureManager<T> implements TextureManager {
 
     @Override
     public boolean isLoadingDone() {
-        if (!loadingStarted) {
-            return false;
-        }
-
-        if (loadingTasks == null) {
-            return true;
-        }
-
-        while (!loadingTasks.isEmpty()) {
-            TextureAtlasTask task = loadingTasks.peekFirst();
-            if (task.isDone()) {
-                loadingTasks.removeFirst();
-            } else {
-                return false;
-            }
-        }
-
-        for (@NotNull ProgressMonitor dirMonitor : directoryMonitors) {
-            dirMonitor.setProgress(1.f);
-        }
-
-        if (loadingExecutor != null) {
-            loadingExecutor.shutdown();
-        }
-        loadingExecutor = null;
-        loadingTasks = null;
-        return true;
+        return loadingStarted && loadingTasks.isEmpty();
     }
 
     /**

@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.illarion.engine.BackendBinding;
+import org.illarion.engine.ui.Action;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -37,13 +38,15 @@ public final class LoadingState implements GameState {
 
     private final ListeningExecutorService executorService;
     private final LoadingService loadingService;
+    private final Action enterNextState;
 
     private BackendBinding binding;
     private LoadingScreenController controller;
 
-    public LoadingState() {
-        executorService = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-        loadingService = new LoadingService();
+    public LoadingState(Action enterNextState) {
+        this.executorService = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+        this.loadingService = new LoadingService();
+        this.enterNextState = enterNextState;
     }
 
     @Override
@@ -74,10 +77,10 @@ public final class LoadingState implements GameState {
         controller.onStartScreen();
 
         var executor = Executors.newSingleThreadExecutor();
-        Futures.addCallback(loadingService.loadAll(binding.getAssets(), controller::setLoadingProgess), new FutureCallback<Void>() {
+        Futures.addCallback(loadingService.loadAll(binding.getAssets(), controller::setLoadingProgess), new FutureCallback<>() {
             @Override
             public void onSuccess(@Nullable Void result) {
-                // LEAVE STATE
+                enterNextState.invoke();
             }
 
             @Override

@@ -27,13 +27,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
-/**
- * The purpose of this task is to read the XML file of one set of texture atlas files.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlasTask {
     /**
      * The logger that provides the logging output of this class.
@@ -67,12 +63,6 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
     private final ProgressMonitor progressMonitor;
 
     /**
-     * The executor that takes care for the execution of the tasks.
-     */
-    @Nullable
-    private final Executor taskExecutor;
-
-    /**
      * Stores if the task is done.
      */
     private boolean done;
@@ -85,19 +75,16 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
      * @param atlasName the name of the atlas files
      * @param textureManager the parent texture manager
      * @param progressMonitor the monitor of the loading progress
-     * @param taskExecutor the executor that takes care for executing further tasks.
      */
     public TextureAtlasListXmlLoadingTask(
             @NotNull XmlPullParserFactory parserFactory,
             @NotNull String atlasName,
             @NotNull AbstractTextureManager<T> textureManager,
-            @NotNull ProgressMonitor progressMonitor,
-            @Nullable Executor taskExecutor) {
+            @NotNull ProgressMonitor progressMonitor) {
         this.parserFactory = parserFactory;
         this.atlasName = atlasName;
         this.textureManager = textureManager;
         this.progressMonitor = progressMonitor;
-        this.taskExecutor = taskExecutor;
         done = false;
         progressMonitor.setProgress(0.f);
     }
@@ -135,11 +122,7 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
                             if (currentAtlasName != null) {
                                 FutureTask<T> preLoadTask = new FutureTask<>(
                                         new TextureAtlasPreLoadTask<>(textureManager, currentAtlasName));
-                                if (taskExecutor == null) {
-                                    preLoadTask.run();
-                                } else {
-                                    taskExecutor.execute(preLoadTask);
-                                }
+                                textureManager.submitLoadingTask(preLoadTask);
 
                                 float progressToAdd = (expectedAtlasCount == 0) ? 0.f : (1.f /
                                         expectedAtlasCount);
@@ -158,7 +141,7 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
                     String tagName = parser.getName();
                     if ("atlas".equals(tagName)) {
                         if (currentTextureTask != null) {
-                            textureManager.addUpdateTask(currentTextureTask);
+
                             textureManager.addLoadingTask(currentTextureTask);
                             currentTextureTask = null;
                         }

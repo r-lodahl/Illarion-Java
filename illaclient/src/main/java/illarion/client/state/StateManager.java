@@ -119,7 +119,7 @@ public final class StateManager implements GameStateManager {
 
         gameStates.put(State.NONE, new NoneState());
         gameStates.put(State.LOGIN, new LoginState());
-        gameStates.put(State.LOADING, new LoadingState());
+        gameStates.put(State.LOADING, new LoadingState(() -> enterState(State.LOGIN)));
         gameStates.put(State.PLAYING, new PlayingState(inputReceiver));
         gameStates.put(State.ENDING, new EndState());
         gameStates.put(State.LOGOUT, new LogoutState());

@@ -90,7 +90,6 @@ class ListenerApplication extends ApplicationAdapter {
         int updateDelta = Math.round(Gdx.graphics.getDeltaTime() * 1000.f);
 
         stateManager.update(updateDelta);
-        assets.getTextureManager().update();
 
         graphics.beginFrame();
 

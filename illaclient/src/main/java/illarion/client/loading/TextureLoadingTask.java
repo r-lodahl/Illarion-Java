@@ -46,8 +46,8 @@ final class TextureLoadingTask implements LoadingTask {
     @Override
     public void load() {
         if (!loadingStarted) {
-            textureManager.startLoading();
             loadingStarted = true;
+            textureManager.startLoading();
         }
     }
 
