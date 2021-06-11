@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * This class is used to allow the loading sequence of the client to load the resource tables.
  */
-final class ResourceTableLoading implements LoadingTask {
+final class ResourceTableLoading implements Runnable {
     /**
      * The progress monitor that tracks the loading activity of this task.
      */
@@ -46,7 +46,7 @@ final class ResourceTableLoading implements LoadingTask {
      * @param assets the engine of the game
      */
     ResourceTableLoading(@NotNull Assets assets) {
-        taskList = new ArrayList<>();
+        taskList = new ArrayList<>(10);
         progressMonitor = new ProgressMonitor();
 
         addTask(new TileLoader(assets), TileFactory.getInstance());
@@ -73,32 +73,16 @@ final class ResourceTableLoading implements LoadingTask {
         taskList.add(loader);
     }
 
+
     @Override
-    public void load() {
-        if (!taskList.isEmpty()) {
+    public void run() {
+        while (!taskList.isEmpty()) {
             AbstractResourceLoader<? extends Resource> loader = taskList.remove(0);
             try {
                 loader.call();
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace(System.err);
             }
         }
-    }
-
-    @Override
-    public boolean isLoadingDone() {
-        for (AbstractResourceLoader<? extends Resource> loader : taskList) {
-            if (!loader.isLoadingDone()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @NotNull
-    @Override
-    public ProgressMonitor getProgressMonitor() {
-        return progressMonitor;
     }
 }

@@ -15,18 +15,15 @@
  */
 package illarion.client.state;
 
-import com.google.common.util.concurrent.*;
-import illarion.client.IllaClient;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import illarion.client.gui.controller.LoadingScreenController;
 import illarion.client.loading.LoadingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.illarion.engine.BackendBinding;
 import org.illarion.engine.ui.Action;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 /**
@@ -77,18 +74,10 @@ public final class LoadingState implements GameState {
         controller.onStartScreen();
 
         var executor = Executors.newSingleThreadExecutor();
-        Futures.addCallback(loadingService.loadAll(binding.getAssets(), controller::setLoadingProgess), new FutureCallback<>() {
-            @Override
-            public void onSuccess(@Nullable Void result) {
-                enterNextState.invoke();
-            }
 
-            @Override
-            public void onFailure(@NotNull Throwable t) {
-                LOGGER.warn("Resource Loading Failed: " + Arrays.toString(t.getStackTrace()));
-                controller.setFailure("loadingfailed", IllaClient::exit);
-            }
-        }, executor);
+        LoadingService
+                .loadAll(binding.getAssets())
+                .thenRunAsync(enterNextState::invoke);
 
         executor.shutdown();
     }

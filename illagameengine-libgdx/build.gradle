@@ -21,9 +21,9 @@ archivesBaseName = 'illarion_engine_libgdx'
 dependencies {
     api project(':engine')
     api project(':common')
-    api group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.9.14'
-    implementation group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl3', version: '1.9.14'
-    implementation group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: '1.9.14', classifier: 'natives-desktop'
+    api group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.10.0'
+    implementation group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl3', version: '1.10.0'
+    implementation group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: '1.10.0', classifier: 'natives-desktop'
     implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 }

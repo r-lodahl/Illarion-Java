@@ -15,10 +15,11 @@
  */
 package org.illarion.engine.assets;
 
-import illarion.common.util.ProgressMonitor;
 import org.illarion.engine.graphic.Texture;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.Executor;
 
 /**
  * This interface provides access to the textures loaded by the backend. The references to those textures are used to
@@ -59,22 +60,5 @@ public interface TextureManager {
      * <p/>
      * In case the loading is already finished, this function does nothing.
      */
-    void startLoading();
-
-    /**
-     * Get the progress monitor that reports the loading progress of the texture manager.
-     *
-     * @return the progress monitor
-     */
-    @NotNull
-    ProgressMonitor getProgress();
-
-    /**
-     * Check if the loading of the atlas textures is done now.
-     *
-     * @return {@code true} if the loading is done
-     */
-    boolean isLoadingDone();
-
-    void update();
+    void loadAll(Executor executor);
 }

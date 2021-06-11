@@ -15,59 +15,28 @@
  */
 package illarion.client.loading;
 
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.illarion.engine.assets.Assets;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
-import java.util.function.BiConsumer;
 
 /**
  * This class is used to enlist the required loading tasks and perform the loading operations itself.
  */
 public final class LoadingService {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static final int POLLING_RATE = 200;
+    public static CompletableFuture<Void> loadAll(@NotNull Assets assets) {
+        var executor = Executors.newFixedThreadPool(4);
 
-    private final Object pollingLock = new Object();
+        var soundLoadingTask = CompletableFuture.runAsync(new SoundLoadingTask(assets), executor);
 
-    public ListenableFuture<Void> loadAll(@NotNull Assets assets, BiConsumer<Float, String> loadingProgressChanged) {
-        var executor = Executors.newSingleThreadExecutor();
+        // Texture loading has to happen on the main thread (GL context needed)
+        assets.getTextureManager().loadAll(executor);
 
-        var loadingAssets = Futures.submit(() -> {
-            var loadTexturesTask = new TextureLoadingTask(assets.getTextureManager());
-            waitForLoading(loadTexturesTask);
-            loadingProgressChanged.accept(0.333f, "Textures");
-
-            var loadResourcesTask = new ResourceTableLoading(assets);
-            waitForLoading(loadResourcesTask);
-            loadingProgressChanged.accept(0.333f, "Resources");
-
-            var loadSoundsTask = new SoundLoadingTask(assets);
-            waitForLoading(loadSoundsTask);
-            loadingProgressChanged.accept(0.333f, "Sounds");
-        }, executor);
+        var resourceLoadingTask = CompletableFuture.runAsync(new ResourceTableLoading(assets), executor);
 
         executor.shutdown();
 
-        return loadingAssets;
-    }
-
-    private void waitForLoading(LoadingTask task) {
-        synchronized (pollingLock) {
-            while (!task.isLoadingDone()) {
-                try {
-                    task.load();
-                    pollingLock.wait(POLLING_RATE);
-                } catch (InterruptedException e) {
-                    LOGGER.error("Loading of resource failed: " + Arrays.toString(e.getStackTrace()));
-                    throw new RuntimeException("Loading of resource failed.");
-                }
-            }
-        }
+        return CompletableFuture.allOf(resourceLoadingTask, soundLoadingTask);
     }
 }

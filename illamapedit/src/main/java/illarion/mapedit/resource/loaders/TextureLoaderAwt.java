@@ -128,10 +128,10 @@ public final class TextureLoaderAwt extends AbstractTextureManager<BufferedImage
 
     @Override
     public void load() throws IOException {
-        startLoading();
+        /*loadAll();
         while (!isLoadingDone()) {
             update();
-        }
+        }*/
     }
 
     @NotNull

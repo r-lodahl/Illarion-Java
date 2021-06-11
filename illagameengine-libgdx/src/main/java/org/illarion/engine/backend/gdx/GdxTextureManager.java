@@ -29,8 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the texture manager that takes care of loading and storing textures that were created for libGDX.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 class GdxTextureManager extends AbstractTextureManager<Pixmap> {
     @Override
@@ -57,7 +55,7 @@ class GdxTextureManager extends AbstractTextureManager<Pixmap> {
             region.flip(false, false);
             return new GdxTexture(region);
         } catch (GdxRuntimeException e) {
-            return null;
+            throw new RuntimeException("test");
         }
     }
 }

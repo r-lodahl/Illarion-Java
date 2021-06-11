@@ -15,7 +15,6 @@
  */
 package org.illarion.engine.backend.shared;
 
-import illarion.common.util.ProgressMonitor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -26,15 +25,28 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.FutureTask;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Supplier;
 
-public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlasTask {
+public class TextureAtlasXmlParserTask<T> implements Supplier<List<TextureAtlasXmlParserTask<T>.AtlasData>> {
+    final class AtlasData {
+        final T textureData;
+        final List<SpriteData> spriteList;
+        final String atlasName;
+
+        private AtlasData(String atlasName, T textureData, List<SpriteData> spriteList) {
+            this.atlasName = atlasName;
+            this.textureData = textureData;
+            this.spriteList = spriteList;
+        }
+    }
+
     /**
      * The logger that provides the logging output of this class.
      */
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The factory required to create the XML parser. Setting up this parser should be done before its assigned to
@@ -57,46 +69,27 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
     private final AbstractTextureManager<T> textureManager;
 
     /**
-     * The progress monitor that is supposed to keep track of this loading task.
-     */
-    @NotNull
-    private final ProgressMonitor progressMonitor;
-
-    /**
-     * Stores if the task is done.
-     */
-    private boolean done;
-
-    /**
      * Create a new loading task. This task is meant to be executed concurrently. It will request the required
      * textures from the parent texture manager once the loading is progressed to this point.
      *
      * @param parserFactory the parser factory
      * @param atlasName the name of the atlas files
      * @param textureManager the parent texture manager
-     * @param progressMonitor the monitor of the loading progress
      */
-    public TextureAtlasListXmlLoadingTask(
+    TextureAtlasXmlParserTask(
             @NotNull XmlPullParserFactory parserFactory,
             @NotNull String atlasName,
-            @NotNull AbstractTextureManager<T> textureManager,
-            @NotNull ProgressMonitor progressMonitor) {
+            @NotNull AbstractTextureManager<T> textureManager) {
         this.parserFactory = parserFactory;
         this.atlasName = atlasName;
         this.textureManager = textureManager;
-        this.progressMonitor = progressMonitor;
-        done = false;
-        progressMonitor.setProgress(0.f);
     }
 
     @Override
-    public boolean isDone() {
-        return done;
-    }
-
-    @Override
-    public void run() {
+    public List<TextureAtlasXmlParserTask<T>.AtlasData> get() {
         InputStream xmlStream = null;
+        var atlasData = new ArrayList<AtlasData>();
+
         try {
             XmlPullParser parser = parserFactory.newPullParser();
 
@@ -105,45 +98,27 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
             parser.setInput(xmlStream, "UTF-8");
 
             int currentEvent = parser.nextTag();
-            int expectedAtlasCount = 0;
-            @Nullable TextureAtlasFinalizeTask<T> currentTextureTask = null;
+            var spriteList = new ArrayList<SpriteData>(300);
+            T textureData = null;
+
             while (currentEvent != XmlPullParser.END_DOCUMENT) {
                 if (currentEvent == XmlPullParser.START_TAG) {
                     String tagName = parser.getName();
                     switch (tagName) {
-                        case "atlasList":
-                            expectedAtlasCount = getExpectedAtlasCount(parser, expectedAtlasCount);
-                            if (expectedAtlasCount > 0) {
-                                progressMonitor.setWeight(expectedAtlasCount);
-                            }
-                            break;
-                        case "atlas":
+                        case "atlas" -> {
                             @Nullable String currentAtlasName = getAtlasTextureName(parser);
                             if (currentAtlasName != null) {
-                                FutureTask<T> preLoadTask = new FutureTask<>(
-                                        new TextureAtlasPreLoadTask<>(textureManager, currentAtlasName));
-                                textureManager.submitLoadingTask(preLoadTask);
-
-                                float progressToAdd = (expectedAtlasCount == 0) ? 0.f : (1.f /
-                                        expectedAtlasCount);
-                                currentTextureTask = new TextureAtlasFinalizeTask<>(preLoadTask, currentAtlasName,
-                                                                                    textureManager, progressMonitor,
-                                                                                    progressToAdd);
+                                spriteList.clear();
+                                textureData = textureManager.loadTextureData(currentAtlasName + ".png");
                             }
-                            break;
-                        case "sprite":
-                            if (currentTextureTask != null) {
-                                transferSpriteData(parser, currentTextureTask);
-                            }
-                            break;
+                        }
+                        case "sprite" -> transferSpriteData(parser, spriteList);
                     }
                 } else if (currentEvent == XmlPullParser.END_TAG) {
                     String tagName = parser.getName();
                     if ("atlas".equals(tagName)) {
-                        if (currentTextureTask != null) {
-
-                            textureManager.addLoadingTask(currentTextureTask);
-                            currentTextureTask = null;
+                        if (textureData != null) {
+                            atlasData.add(new AtlasData(atlasName, textureData, new ArrayList<>(spriteList)));
                         }
                     } else if ("atlasList".equals(tagName)) {
                         break;
@@ -152,35 +127,18 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
                 currentEvent = parser.nextTag();
             }
         } catch (XmlPullParserException e) {
-            log.error("Failed to load requested texture atlas: {}", atlasName, e);
+            LOGGER.error("Failed to load requested texture atlas: {}", atlasName, e);
         } catch (IOException e) {
-            log.error("Reading error while loading texture atlas: {}", atlasName, e);
+            LOGGER.error("Reading error while loading texture atlas: {}", atlasName, e);
         } finally {
-            done = true;
             if (xmlStream != null) {
                 try {
                     xmlStream.close();
-                } catch (IOException ignored) {
-                }
+                } catch (IOException ignored) { }
             }
         }
-    }
 
-    private static int getExpectedAtlasCount(@NotNull XmlPullParser parser, int oldCount) {
-        if (oldCount > 0) {
-            return oldCount;
-        }
-        for (int i = 0; i < parser.getAttributeCount(); i++) {
-            if ("atlasCount".equals(parser.getAttributeName(i))) {
-                try {
-                    return Integer.parseInt(parser.getAttributeValue(i));
-                } catch (NumberFormatException e) {
-                    log.warn("Found atlas count entry but failed to parse it.");
-                }
-                break;
-            }
-        }
-        return oldCount;
+        return atlasData;
     }
 
     @Nullable
@@ -197,8 +155,7 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
         return null;
     }
 
-    private void transferSpriteData(
-            @NotNull XmlPullParser parser, @NotNull TextureAtlasFinalizeTask<T> task) {
+    private static void transferSpriteData(@NotNull XmlPullParser parser, @NotNull Collection<SpriteData> spriteList) {
         @Nullable String name = null;
         int posX = -1;
         int posY = -1;
@@ -211,31 +168,22 @@ public class TextureAtlasListXmlLoadingTask<T> implements Runnable, TextureAtlas
             @NotNull String attributeValue = parser.getAttributeValue(i);
             try {
                 switch (attributeName) {
-                    case "x":
-                        posX = Integer.parseInt(attributeValue);
-                        break;
-                    case "y":
-                        posY = Integer.parseInt(attributeValue);
-                        break;
-                    case "height":
-                        height = Integer.parseInt(attributeValue);
-                        break;
-                    case "width":
-                        width = Integer.parseInt(attributeValue);
-                        break;
-                    case "name":
-                        name = attributeValue;
-                        break;
+                    case "x" -> posX = Integer.parseInt(attributeValue);
+                    case "y" -> posY = Integer.parseInt(attributeValue);
+                    case "height" -> height = Integer.parseInt(attributeValue);
+                    case "width" -> width = Integer.parseInt(attributeValue);
+                    case "name" -> name = attributeValue;
                 }
             } catch (NumberFormatException e) {
-                log.error("Error while parsing texture atlas sprite: {}=\"{}" + '"', attributeName, attributeValue);
+                LOGGER.error("Error while parsing texture atlas sprite: {}=\"{}" + '"', attributeName, attributeValue);
             }
         }
 
         if ((name != null) && (posX > -1) && (posY > -1) && (width > -1) && (height > -1)) {
-            task.addSprite(name, posX, posY, width, height);
+            SpriteData data = new SpriteData(name, posX, posY, width, height);
+            spriteList.add(data);
         } else {
-            log.error("Unable to receive all required values for sprite definition!");
+            LOGGER.error("Unable to receive all required values for sprite definition!");
         }
     }
 }
