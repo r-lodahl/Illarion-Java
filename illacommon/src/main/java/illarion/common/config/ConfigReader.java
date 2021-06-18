@@ -58,6 +58,6 @@ public interface ConfigReader {
      * @return the value that was read from the configuration file or {@code null} in case there is no value set
      * for this key
      */
-    @Nullable
+    @NotNull
     String getString(@NotNull String key);
 }

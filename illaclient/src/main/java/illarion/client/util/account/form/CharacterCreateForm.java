@@ -17,9 +17,6 @@ package illarion.client.util.account.form;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * @author Martin Karing &lt;nitram@illarion.org&gt;
- */
 public class CharacterCreateForm {
     @SerializedName("name")
     private String name;
@@ -86,4 +83,59 @@ public class CharacterCreateForm {
 
     @SerializedName("hairColorAlpha")
     private int hairColorAlpha;
+
+    @SerializedName("weight")
+    private float weight;
+
+    @SerializedName("bodyheight")
+    private float height;
+
+    @SerializedName("dateOfBirthMonth")
+    private int dateOfBirthMonth;
+
+    @SerializedName("dateOfBirthDay")
+    private int dateOfBirthDay;
+
+    @SerializedName("age")
+    private int age;
+
+    /**
+     * Default constructor for serialization.
+     */
+    public CharacterCreateForm() {}
+
+    public CharacterCreateForm(String name, int race, int sex, int agility, int constitution, int dexterity,
+                               int essence, int intelligence, int perception, int strength, int willpower,
+                               int startPack, int hairId, int beardId, int skinColorRed, int skinColorGreen,
+                               int skinColorBlue, int skinColorAlpha, int hairColorRed, int hairColorGreen,
+                               int hairColorBlue, int hairColorAlpha, float weight, float height, int dateOfBirthMonth,
+                               int dateOfBirthDay, int age) {
+        this.name = name;
+        this.race = race;
+        this.sex = sex;
+        this.agility = agility;
+        this.constitution = constitution;
+        this.dexterity = dexterity;
+        this.essence = essence;
+        this.intelligence = intelligence;
+        this.perception = perception;
+        this.strength = strength;
+        this.willpower = willpower;
+        this.startPack = startPack;
+        this.hairId = hairId;
+        this.beardId = beardId;
+        this.skinColorRed = skinColorRed;
+        this.skinColorGreen = skinColorGreen;
+        this.skinColorBlue = skinColorBlue;
+        this.skinColorAlpha = skinColorAlpha;
+        this.hairColorRed = hairColorRed;
+        this.hairColorGreen = hairColorGreen;
+        this.hairColorBlue = hairColorBlue;
+        this.hairColorAlpha = hairColorAlpha;
+        this.weight = weight;
+        this.height = height;
+        this.dateOfBirthMonth = dateOfBirthMonth;
+        this.dateOfBirthDay = dateOfBirthDay;
+        this.age = age;
+    }
 }

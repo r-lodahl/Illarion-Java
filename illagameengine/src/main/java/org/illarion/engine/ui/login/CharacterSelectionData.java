@@ -1,6 +1,7 @@
-package org.illarion.engine.ui;
+package org.illarion.engine.ui.login;
 
 import illarion.common.types.CharacterId;
+import org.illarion.engine.ui.DynamicUiContent;
 
 public class CharacterSelectionData {
     public final CharacterId id;

@@ -88,7 +88,7 @@ public final class IllaClient {
     static {
         String server = System.getProperty("illarion.server", "realserver");
         switch ((server == null) ? "" : server) {
-            case "testserver" -> DEFAULT_SERVER = Servers.Testserver;
+            case "localserver" -> DEFAULT_SERVER = Servers.Localserver;
             case "devserver" -> DEFAULT_SERVER = Servers.Devserver;
             default -> DEFAULT_SERVER = Servers.Illarionserver;
         }

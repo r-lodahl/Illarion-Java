@@ -16,6 +16,8 @@
 package illarion.client.util.account;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import illarion.client.IllaClient;
+import illarion.client.Servers;
 import illarion.client.util.account.form.AccountCheckForm;
 import illarion.client.util.account.form.AccountCreateForm;
 import illarion.client.util.account.form.CharacterCreateForm;
@@ -24,9 +26,12 @@ import illarion.client.util.account.response.*;
 import illarion.common.types.CharacterId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.illarion.engine.ui.LoginData;
+import org.illarion.engine.Option;
+import org.illarion.engine.ui.login.LoginData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 public class AccountSystem implements AutoCloseable {
     private final static Logger LOGGER = LogManager.getLogger();
@@ -45,6 +50,34 @@ public class AccountSystem implements AutoCloseable {
     @SuppressWarnings("FieldAccessedSynchronizedAndUnsynchronized")
     private RequestHandler requestHandler;
 
+    private Servers currentServer;
+
+    public void setupAuthentication(LoginData loginData) {
+        var usedServer = Arrays.stream(Servers.values())
+                .filter(server -> server.getServerName().equals(loginData.server()))
+                .findFirst()
+                .orElse(Servers.Illarionserver);
+
+        if (usedServer == Servers.Localserver ||
+                (usedServer == Servers.Customserver
+                        && !IllaClient.getConfig().getBoolean(Option.customServerAccountSystem))) {
+            LOGGER.debug("AccountSystem not active, executing a direct login");
+            return;
+        }
+
+        var serverEndpoint = usedServer == Servers.Customserver
+                ? "https://" + usedServer.getServerHost() + "/app.php"
+                : AccountSystem.OFFICIAL_ENDPOINT;
+
+        currentServer = usedServer;
+        authenticator = new IllarionAuthenticator(loginData.username(), loginData.password());
+        endpoint = serverEndpoint;
+    }
+
+    public Servers getCurrentServer() {
+        return currentServer;
+    }
+
     /**
      * Set the authentication that is used for the interaction with the account system.
      *
@@ -52,7 +85,7 @@ public class AccountSystem implements AutoCloseable {
      * @throws IllegalStateException in case the authentication is already set
      */
     public void setAuthentication(@NotNull LoginData loginData) {
-        authenticator = new IllarionAuthenticator(loginData.username, loginData.password);
+        authenticator = new IllarionAuthenticator(loginData.username(), loginData.password());
     }
 
     public void setEndpoint(String customEndpoint) {
@@ -142,22 +175,21 @@ public class AccountSystem implements AutoCloseable {
     }
 
     @NotNull
-    public ListenableFuture<CharacterCreateGetResponse> getPossibleCharacterCreationSpecifications(@NotNull String serverId) {
+    public ListenableFuture<CharacterCreateGetResponse> getPossibleCharacterCreationSpecifications() {
         RequestHandler handler = getRequestHandler();
         IllarionAuthenticator authenticator = getAuthenticator();
 
-        Request<CharacterCreateGetResponse> request = new CharacterCreateGetRequest(authenticator, serverId);
+        Request<CharacterCreateGetResponse> request = new CharacterCreateGetRequest(authenticator, currentServer.getServerName());
 
         return handler.sendRequestAsync(request);
     }
 
     @NotNull
-    public ListenableFuture<CharacterCreateResponse> createCharacter(@NotNull String serverId,
-                                                                     @NotNull CharacterCreateForm characterCreateForm) {
+    public ListenableFuture<CharacterCreateResponse> createCharacter(@NotNull CharacterCreateForm characterCreateForm) {
         var requestHandler = getRequestHandler();
         var authenticator = getAuthenticator();
 
-        var request = new CharacterCreateRequest(authenticator, serverId, characterCreateForm);
+        var request = new CharacterCreateRequest(authenticator, currentServer.getServerName(), characterCreateForm);
 
         return requestHandler.sendRequestAsync(request);
     }

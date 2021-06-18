@@ -2,17 +2,16 @@ package org.illarion.engine.backend.gdx.ui.login;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import org.illarion.engine.ui.LoginData;
+import org.illarion.engine.ui.login.LoginData;
 import org.illarion.engine.ui.NullSecureResourceBundle;
 
 import java.util.Arrays;
 
 final class LoginView extends Table {
-    private final TextButton optionsButton, creditsButton, exitButton, loginButton;
+    private final TextButton optionsButton, creditsButton, exitButton, loginButton, createAccountButton;
     private final SelectBox<String> serverSelection;
     private final TextField accountNameField, passwordField;
     private final CheckBox savePasswordCheckbox;
@@ -44,6 +43,7 @@ final class LoginView extends Table {
         optionsButton = new TextButton(resourceBundle.getLocalizedString("options"), skin);
         creditsButton = new TextButton(resourceBundle.getLocalizedString("credits"), skin);
         exitButton = new TextButton(resourceBundle.getLocalizedString("exit"), skin);
+        createAccountButton = new TextButton(resourceBundle.getLocalizedString("createAccount"), skin);
 
         /* Internal Listener Setup */
         serverSelection.addListener(new ChangeListener() {
@@ -87,7 +87,8 @@ final class LoginView extends Table {
         Table buttonRowTable = new Table();
         buttonRowTable.row().width(100.0f);
         buttonRowTable.add(optionsButton);
-        buttonRowTable.add(creditsButton).spaceLeft(2.0f).spaceRight(2.0f);
+        buttonRowTable.add(createAccountButton).spaceLeft(2.0f).spaceRight(2.0f);
+        buttonRowTable.add(creditsButton).spaceRight(2.0f);
         buttonRowTable.add(exitButton);
         add(buttonRowTable);
 
@@ -99,8 +100,8 @@ final class LoginView extends Table {
         var selectedLoginData = loginData[serverSelection.getSelectedIndex()];
 
         return new LoginData(
-                selectedLoginData.serverId,
-                selectedLoginData.server,
+                selectedLoginData.serverId(),
+                selectedLoginData.server(),
                 accountNameField.getText(),
                 passwordField.getText(),
                 savePasswordCheckbox.isChecked()
@@ -110,7 +111,7 @@ final class LoginView extends Table {
     void setLoginData(LoginData[] data, int initialServer) {
         loginData = data;
         serverSelection.setItems(Arrays.stream(data)
-                .map(x -> resourceBundle.getLocalizedString(x.server))
+                .map(x -> resourceBundle.getLocalizedString(x.server()))
                 .toArray(String[]::new));
 
         changeCurrentServer(initialServer);
@@ -132,10 +133,14 @@ final class LoginView extends Table {
         loginButton.addListener(onClick);
     }
 
+    void setOnCreateAccountCallback(EventListener onClick) {
+        createAccountButton.addListener(onClick);
+    }
+
     private void changeCurrentServer(int index) {
         LoginData data = loginData[index];
-        accountNameField.setText(data.username);
-        passwordField.setText(data.password);
-        savePasswordCheckbox.setChecked(data.savePassword);
+        accountNameField.setText(data.username());
+        passwordField.setText(data.password());
+        savePasswordCheckbox.setChecked(data.savePassword());
     }
 }

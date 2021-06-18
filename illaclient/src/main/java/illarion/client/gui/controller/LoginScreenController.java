@@ -16,31 +16,41 @@
 package illarion.client.gui.controller;
 
 import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import illarion.client.IllaClient;
-import illarion.client.LoginService;
+import illarion.client.Servers;
+import illarion.client.gui.login.CharacterCreationOptionsConverter;
 import illarion.client.resources.SongFactory;
 import illarion.client.util.AudioPlayer;
 import illarion.client.util.Lang;
 import illarion.client.util.account.AccountSystem;
+import illarion.client.util.account.response.AccountCreateResponse;
+import illarion.client.util.account.services.LoginService;
 import illarion.common.config.ConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.illarion.engine.BackendBinding;
-import org.illarion.engine.EventBus;
-import org.illarion.engine.Option;
-import org.illarion.engine.Window;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.illarion.engine.*;
 import org.illarion.engine.assets.Assets;
 import org.illarion.engine.backend.gdx.events.ResolutionChangedEvent;
 import org.illarion.engine.sound.Music;
 import org.illarion.engine.sound.Sounds;
-import org.illarion.engine.ui.*;
+import org.illarion.engine.ui.CharacterCreation;
+import org.illarion.engine.ui.UserInterface;
+import org.illarion.engine.ui.login.AccountCreationData;
+import org.illarion.engine.ui.login.CharacterCreationOptions;
+import org.illarion.engine.ui.login.CharacterSelectionData;
+import org.illarion.engine.ui.login.LoginData;
 import org.illarion.engine.ui.stage.LoginStage;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+
+import static illarion.client.gui.login.CharacterCreationOptionsConverter.convertToCharacterCreateForm;
 
 /**
  * This is the screen controller that takes care of displaying the login screen.
@@ -57,6 +67,8 @@ public final class LoginScreenController implements ScreenController {
     private final Assets assets;
     private final Window window;
     private final AccountSystem accountSystem;
+    private final ExecutorService executor;
+    private final LoginService loginService;
 
     private LoginStage stage;
 
@@ -66,6 +78,8 @@ public final class LoginScreenController implements ScreenController {
         this.assets = binding.getAssets();
         this.window = binding.getWindow();
         this.accountSystem = accountSystem;
+        this.executor = Executors.newCachedThreadPool();
+        this.loginService = new illarion.client.util.account.services.LoginService(accountSystem, executor);
     }
 
     @Override
@@ -82,53 +96,122 @@ public final class LoginScreenController implements ScreenController {
 
         int serverKey = IllaClient.DEFAULT_SERVER.getServerKey();
 
-        LoginService loginService = LoginService.INSTANCE;
-        loginService.setCurrentServerByKey(serverKey);
-        LoginData[] loginData = loginService.restoreLoginData();
+        var servers = Servers.values();
+        var loginData = new LoginData[servers.length];
+        for (var server : servers) {
+            var isCustomServer = server == Servers.Customserver;
+            loginData[server.getServerKey()] = new LoginData(
+                    server.getServerKey(),
+                    server.getServerName(),
+                    isCustomServer
+                            ? IllaClient.getConfig().getString("customLastLogin")
+                            : IllaClient.getConfig().getString("lastLogin"),
+                    isCustomServer
+                            ? IllaClient.getConfig().getString("customFingerprint")
+                            : IllaClient.getConfig().getString("fingerprint"),
+                    isCustomServer
+                            ? IllaClient.getConfig().getBoolean("customSavePassword")
+                            : IllaClient.getConfig().getBoolean("savePassword"));
+        }
 
         stage = gui.activateLoginStage(Lang.INSTANCE.getLoginResourceBundle());
-
         stage.setLoginData(loginData, serverKey);
         stage.setExitListener(IllaClient::exit);
         stage.setLoginListener(this::onLoginIssued);
         stage.setOptionsData(IllaClient.getConfig(), window.getResolutionManager());
-        stage.setOptionsSaveListener(this::saveOptions);
+        stage.setOptionsSaveListener(LoginScreenController::saveOptions);
         stage.setCharacterSelectionListener(this::onCharacterSelection);
         stage.setCharacterCreationListener(this::onCharacterCreationIssued);
+        stage.setAccountCreationListener(this::onAccountCreationIssued);
     }
 
     @Override
     public void onEndScreen() {}
 
-    private void onLoginIssued(LoginData loginData) {
-        var loginService = new illarion.client.util.account.services.LoginService(accountSystem);
-        loginService.issueLogin(loginData, new FutureCallback<>() {
-            @Override
-            public void onSuccess(@NotNull CharacterSelectionData[] result) {
-                stage.loginSuccessful(result);
-            }
+    private void onAccountCreationIssued(AccountCreationData accountCreationData) {
+        accountSystem.setEndpoint(AccountSystem.OFFICIAL_ENDPOINT);
 
-            @Override
-            public void onFailure(@NotNull Throwable t) {
-                LOGGER.warn(t.getMessage());
-                stage.loginFailed();
-            }
-        });
+        var accountCreationRequest = Futures.transformAsync(
+                accountSystem.performAccountCredentialsCheck(accountCreationData.name(), accountCreationData.email()),
+                (accountCheckResponse) -> {
+                    if (accountCheckResponse == null || accountCheckResponse.getError() != null) {
+                        stage.accountCreationFailed();
+                        throw new RuntimeException("Account creation failed");
+                    }
+
+                    for (var check : accountCheckResponse.getChecks()) {
+                        if (!check.isSuccess()) {
+                            throw new RuntimeException("Account creation failed");
+                        }
+                    }
+
+                    return accountSystem.createAccount(
+                            accountCreationData.name(),
+                            accountCreationData.email(),
+                            accountCreationData.password());
+                },
+                executor);
+
+        Futures.addCallback(
+                accountCreationRequest,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(@Nullable AccountCreateResponse result) {
+                        stage.accountCreationSuccessful();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        stage.accountCreationFailed();
+                    }
+                },
+                executor);
+    }
+
+    private void onLoginIssued(LoginData loginData) {
+        accountSystem.setupAuthentication(loginData);
+
+        var loginRequests = Futures.allAsList(
+                loginService.getAccountCharacterList(),
+                Futures.transform(
+                        accountSystem.getPossibleCharacterCreationSpecifications(),
+                        CharacterCreationOptionsConverter::convertToCharacterCreationOptions,
+                        executor));
+
+        Futures.addCallback(loginRequests, new LoginFinishedCallback(), executor);
     }
 
     private void onCharacterSelection(CharacterSelectionData character) {
         // call injected LeaveState
+
+        // stateManager.enterState(State.PLAYING);
+        // World.getNet().sendCommand(new LoginCmd(loginChar, getPassword(), clientVersion));
     }
 
-    private void onCharacterCreationIssued(CharacterCreationData characterData) {
-        //if (!accountSystem.isConnectionDataSet()) {
-        //    throw new RuntimeException("Premature Call to Character Creation: Login first");
-        //}
+    private void onCharacterCreationIssued(CharacterCreation characterData) {
+        var characterCreationRequest = accountSystem.createCharacter(convertToCharacterCreateForm(characterData));
+        var updateCharacterListRequest = Futures.transformAsync(
+                characterCreationRequest,
+                (ignore) -> loginService.getAccountCharacterList(),
+                executor);
 
-        //accountSystem.getPossibleCharacterCreationSpecifications();
+        Futures.addCallback(
+                updateCharacterListRequest,
+                new FutureCallback<>() {
+                    @Override
+                    public void onSuccess(@Nullable CharacterSelectionData[] result) {
+                        stage.loginSuccessful(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        stage.characterCreationFailed();
+                    }
+                },
+                executor);
     }
 
-    private void saveOptions(Map<String, String> options) {
+    private static void saveOptions(Map<String, String> options) {
         var config = IllaClient.getConfig();
 
         var changedOptions = options.entrySet().stream()
@@ -144,8 +227,36 @@ public final class LoginScreenController implements ScreenController {
         }
     }
 
-    private boolean isOptionChanged(String option, String optionValue, ConfigReader config) {
+    private static boolean isOptionChanged(String option, String optionValue, ConfigReader config) {
         var configOptionValue = config.getString(option);
         return !optionValue.equals(configOptionValue);
+    }
+
+    private class LoginFinishedCallback implements FutureCallback<List<Object>> {
+        @Override
+        public void onSuccess(@Nullable List<Object> result) {
+            if (result == null || result.size() != 2) {
+                throw new RuntimeException("Something went wrong.");
+            }
+
+            CharacterSelectionData[] characterList;
+            CharacterCreationOptions characterCreationOptions;
+
+            try {
+                characterList = (CharacterSelectionData[]) result.get(0);
+                characterCreationOptions = (CharacterCreationOptions) result.get(1);
+            } catch (ClassCastException e) {
+                throw new RuntimeException("Something went wrong.");
+            }
+
+            stage.setCharacterCreationOptions(characterCreationOptions);
+            stage.loginSuccessful(characterList);
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            LOGGER.warn(t.getMessage());
+            stage.loginFailed();
+        }
     }
 }

@@ -1,9 +1,7 @@
 package illarion.client.util.account.services;
 
-import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import illarion.client.IllaClient;
-import illarion.client.Servers;
+import com.google.common.util.concurrent.ListenableFuture;
 import illarion.client.graphics.AvatarClothManager;
 import illarion.client.graphics.AvatarEntity;
 import illarion.client.gui.EntityRenderImage;
@@ -13,52 +11,24 @@ import illarion.client.util.account.response.CharacterGetResponse;
 import illarion.common.graphics.CharAnimations;
 import illarion.common.types.AvatarId;
 import illarion.common.types.Direction;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.illarion.engine.Option;
-import org.illarion.engine.ui.CharacterSelectionData;
 import org.illarion.engine.ui.DynamicUiContent;
-import org.illarion.engine.ui.LoginData;
+import org.illarion.engine.ui.login.CharacterSelectionData;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class LoginService {
-    private static final Logger LOGGER = LogManager.getLogger();
     private final AccountSystem accountSystem;
+    private final ExecutorService executor;
 
-    private final ExecutorService requestThreadPool;
-
-    public LoginService(AccountSystem accountSystem) {
+    public LoginService(AccountSystem accountSystem, ExecutorService executor) {
         this.accountSystem = accountSystem;
-        requestThreadPool = Executors.newCachedThreadPool();
+        this.executor = executor;
     }
 
-    public void issueLogin(LoginData loginData, FutureCallback<CharacterSelectionData[]> loginCallback) {
-        var usedServer = Arrays.stream(Servers.values())
-                .filter(server -> server.getServerName().equals(loginData.server))
-                .findFirst()
-                .orElse(Servers.Illarionserver);
-
-        // TODO: Testserver is used as a placeholder for LocalServer until merged
-        if (usedServer == Servers.Testserver ||
-                (usedServer == Servers.Customserver
-                        && !IllaClient.getConfig().getBoolean(Option.customServerAccountSystem))) {
-            LOGGER.debug("AccountSystem not active, executing a direct login");
-            return;
-        }
-
-        var endpoint = usedServer == Servers.Customserver
-                ? "https://" + usedServer.getServerHost() + "/app.php"
-                : AccountSystem.OFFICIAL_ENDPOINT;
-
-        accountSystem.setAuthentication(loginData);
-        accountSystem.setEndpoint(endpoint);
-
+    public ListenableFuture<CharacterSelectionData[]> getAccountCharacterList() {
         var accountInformation = accountSystem.getAccountInformation();
 
         var characterInformation = Futures.transformAsync(accountInformation, (result) -> {
@@ -70,7 +40,7 @@ public class LoginService {
 
             var charInformationRequests = serverCharacterList
                     .stream()
-                    .filter(server -> server.getId().equals(usedServer.getServerName()))
+                    .filter(server -> server.getId().equals(accountSystem.getCurrentServer().getServerName()))
                     .findFirst()
                     .map(server -> server.getList()
                             .stream()
@@ -80,23 +50,21 @@ public class LoginService {
                     .orElse(List.of());
 
             return Futures.successfulAsList(charInformationRequests);
-        }, requestThreadPool);
+        }, executor);
 
-        var charactersLoaded = Futures.transformAsync(characterInformation, (result) -> {
+        return Futures.transform(characterInformation, (result) -> {
             if (result == null) {
                 throw new RuntimeException("Request returned <null> value for character information");
             }
 
-            return Futures.immediateFuture(result.stream()
+            return result.stream()
                     .filter(Objects::nonNull)
                     .map(character -> new CharacterSelectionData(
                             character.getId(),
                             character.getName(),
                             buildCharacterRenderable(character)))
-                    .toArray(CharacterSelectionData[]::new));
-        }, requestThreadPool);
-
-        Futures.addCallback(charactersLoaded, loginCallback, requestThreadPool);
+                    .toArray(CharacterSelectionData[]::new);
+        }, executor);
     }
 
     private static DynamicUiContent buildCharacterRenderable(CharacterGetResponse character) {

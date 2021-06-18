@@ -41,8 +41,6 @@ import java.util.Set;
 
 /**
  * This class is used to generate events based on keys that got pressed.
- *
- * @author Martin Karing &lt;nitram@illarion.org&gt;
  */
 public final class KeyMapper {
     @NotNull
@@ -50,7 +48,7 @@ public final class KeyMapper {
 
     @NotNull
     private final Set<Key> keyPressed;
-    private boolean useWasdWalking;
+    private boolean useWasdWalk;
 
     public KeyMapper(@NotNull Input input) {
         this.input = input;
@@ -107,7 +105,7 @@ public final class KeyMapper {
     }
 
     private void applyWasdWalkSettings() {
-        useWasdWalking = IllaClient.getConfig().getBoolean("wasdWalk");
+        useWasdWalk = IllaClient.getConfig().getBoolean("wasdWalk");
     }
 
     @EventTopicSubscriber(topic = "wasdWalk")
@@ -126,7 +124,7 @@ public final class KeyMapper {
                 handler.stopMovingTowards(Direction.NorthEast);
                 break;
             case W:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     handler.stopMovingTowards(Direction.NorthEast);
                 }
                 break;
@@ -136,7 +134,7 @@ public final class KeyMapper {
                 handler.stopMovingTowards(Direction.NorthWest);
                 break;
             case A:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     handler.stopMovingTowards(Direction.NorthWest);
                 }
                 break;
@@ -146,7 +144,7 @@ public final class KeyMapper {
                 handler.stopMovingTowards(Direction.SouthWest);
                 break;
             case S:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     handler.stopMovingTowards(Direction.SouthWest);
                 }
                 break;
@@ -156,7 +154,7 @@ public final class KeyMapper {
                 handler.stopMovingTowards(Direction.SouthEast);
                 break;
             case D:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     handler.stopMovingTowards(Direction.SouthEast);
                 }
                 break;
@@ -251,7 +249,7 @@ public final class KeyMapper {
                 startMovingTowards(Direction.NorthEast, firstPressed);
                 break;
             case W:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     startMovingTowards(Direction.NorthEast, firstPressed);
                 }
                 break;
@@ -261,7 +259,7 @@ public final class KeyMapper {
                 startMovingTowards(Direction.NorthWest, firstPressed);
                 break;
             case A:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     startMovingTowards(Direction.NorthWest, firstPressed);
                 }
                 break;
@@ -271,7 +269,7 @@ public final class KeyMapper {
                 startMovingTowards(Direction.SouthWest, firstPressed);
                 break;
             case S:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     startMovingTowards(Direction.SouthWest, firstPressed);
                 }
                 break;
@@ -281,7 +279,7 @@ public final class KeyMapper {
                 startMovingTowards(Direction.SouthEast, firstPressed);
                 break;
             case D:
-                if (useWasdWalking) {
+                if (useWasdWalk) {
                     startMovingTowards(Direction.SouthEast, firstPressed);
                 }
                 break;

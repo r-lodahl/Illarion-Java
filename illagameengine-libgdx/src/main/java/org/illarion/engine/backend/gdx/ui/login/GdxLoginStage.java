@@ -7,10 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import illarion.common.config.ConfigReader;
-import org.checkerframework.checker.units.qual.C;
 import org.illarion.engine.backend.gdx.GdxRenderable;
 import org.illarion.engine.graphic.ResolutionManager;
 import org.illarion.engine.ui.*;
+import org.illarion.engine.ui.login.AccountCreationData;
+import org.illarion.engine.ui.login.CharacterCreationOptions;
+import org.illarion.engine.ui.login.CharacterSelectionData;
+import org.illarion.engine.ui.login.LoginData;
 import org.illarion.engine.ui.stage.LoginStage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,11 +24,13 @@ import java.util.function.Consumer;
 public class GdxLoginStage implements LoginStage, GdxRenderable {
     private final Stage stage;
     private final Container<Table> root;
+
     private final CreditView credits;
     private final OptionsView options;
     private final LoginView login;
     private final CharacterSelectView characterSelection;
     private final CharacterCreationView characterCreation;
+    private final AccountCreationView accountCreation;
 
     private final Dialog dialog;
     private final TextButton btDialog;
@@ -57,13 +62,13 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
             }
         });
         dialog = new Dialog("Attention", skin, "dialog");
-        dialog.button(btDialog);
 
         login = new LoginView(skin, resourceBundle);
         credits = new CreditView(skin, resourceBundle);
         options = new OptionsView(skin, resourceBundle);
         characterSelection = new CharacterSelectView(skin, resourceBundle);
         characterCreation = new CharacterCreationView(skin, resourceBundle);
+        accountCreation = new AccountCreationView(skin, resourceBundle);
 
         login.setOnOptionsCallback(new ClickListener() {
             @Override
@@ -75,6 +80,12 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(credits);
+            }
+        });
+        login.setOnCreateAccountCallback(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                activateTable(accountCreation);
             }
         });
 
@@ -99,6 +110,13 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
         });
 
         options.setOnBackCallback(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                activateTable(login);
+            }
+        });
+
+        accountCreation.setOnBackCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 activateTable(login);
@@ -138,7 +156,7 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     public void loginSuccessful(CharacterSelectionData[] data) {
         Gdx.app.postRunnable(() -> {
             characterSelection.setCharacters(data);
-            hideDialog();
+            dialog.hide();
             activateTable(characterSelection);
         });
     }
@@ -147,7 +165,27 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     // Will run in main thread
     public void loginFailed() {
         Gdx.app.postRunnable(() -> {
-            hideDialog();
+            showDialog("error", null);
+        });
+    }
+
+    @Override
+    public void accountCreationFailed() {
+        Gdx.app.postRunnable(() -> {
+            showDialog("error", null);
+        });
+    }
+
+    @Override
+    public void accountCreationSuccessful() {
+        Gdx.app.postRunnable(() -> {
+            showDialog("success", null);
+        });
+    }
+
+    @Override
+    public void characterCreationFailed() {
+        Gdx.app.postRunnable(() -> {
             showDialog("error", null);
         });
     }
@@ -155,6 +193,11 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     @Override
     public void setOptionsData(ConfigReader configReader, ResolutionManager resolutionManager) {
         options.setOptions(configReader, resolutionManager);
+    }
+
+    @Override
+    public void setCharacterCreationOptions(CharacterCreationOptions characterCreationOptions) {
+        characterCreation.setOptions(characterCreationOptions);
     }
 
     @Override
@@ -199,35 +242,33 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     }
 
     @Override
-    public void setCharacterCreationListener(Consumer<CharacterCreationData> event) {
+    public void setCharacterCreationListener(Consumer<CharacterCreation> event) {
         characterCreation.setOnFinishCallback(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                //event.accept(characterCreation.getCharacter());
+                event.accept(characterCreation.getCharacter());
             }
         });
     }
 
     @Override
-    public void informLoginResult(RequestResult result) {
-        // Remove waiting popup
+    public void setAccountCreationListener(Consumer<AccountCreationData> event) {
+        accountCreation.setOnCreateAccountCallback(new ClickListener() {
+            @Override
+            public void clicked(InputEvent inputEvent, float x, float y) {
+                showDialog("creation");
 
-        if (result.isRequestSuccessful) {
-            // goto character selection screen
-        } else {
-            // Show Error Popup
-        }
-    }
+                if (!accountCreation.isPasswordMatching()) {
+                    showDialog("creationFailedPassword");
+                }
 
-    @Override
-    public void informCharacterCreationResult(RequestResult result) {
-        // Remove waiting popup
+                if (!accountCreation.isEmailMatching()) {
+                    showDialog("creationFailedEmail");
+                }
 
-        if (result.isRequestSuccessful) {
-            // goto character selection screen
-        } else {
-            // Show Error Popup
-        }
+                event.accept(accountCreation.getAccountCreationData());
+            }
+        });
     }
 
     private void activateTable(Table table) {
@@ -240,25 +281,24 @@ public class GdxLoginStage implements LoginStage, GdxRenderable {
     }
 
     private void showDialog(@NotNull String dialogTextLocalizationKey) {
+        dialog.getContentTable().clearChildren();
+        dialog.getButtonTable().clearChildren();
+
         dialog.text(resourceBundle.getLocalizedString(dialogTextLocalizationKey));
+
         dialog.pack();
         dialog.show(stage);
     }
 
     private void showDialog(@NotNull String dialogTextLocalizationKey, @Nullable Action confirmationCallback) {
+        dialog.getContentTable().clearChildren();
+
         dialogConfirmationCallback = confirmationCallback;
         dialog.button(btDialog);
-        showDialog(dialogTextLocalizationKey);
+
+        dialog.text(resourceBundle.getLocalizedString(dialogTextLocalizationKey));
+
+        dialog.pack();
+        dialog.show(stage);
     }
-
-    private void hideDialog() {
-        dialog.hide();
-        dialog.getButtonTable().clearChildren();
-        dialogConfirmationCallback = null;
-    };
-
-    /*private Drawable getBackgroundDrawable() {
-        Texture t = new Texture("skin/window_background.png");
-        return new TiledDrawable(new TextureRegion(t, 0, 0, t.getWidth(), Gdx.graphics.getHeight()));
-    }*/
 }

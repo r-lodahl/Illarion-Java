@@ -1,7 +1,7 @@
 package org.illarion.engine;
 
 public class Option {
-    public static final String wasdWalking = "wasdWalking";
+    public static final String wasdWalk = "wasdWalk";
     public static final String disableChatAfterSending = "disableChatAfterSending";
     public static final String showQuestsOnGameMap = "showQuestsOnGameMap";
     public static final String showQuestsOnMiniMap = "showQuestsOnMiniMap";

@@ -147,9 +147,12 @@ class RequestHandler implements AutoCloseable {
         }
 
         var responseCode = httpConnection.getResponseCode();
+        var responseCodeCategory = responseCode / 100;
 
-        if ((responseCode / 100) == 5) {
+        if (responseCodeCategory == 5) {
             throw new IllegalStateException("Server responded with a server error.");
+        } else if (responseCodeCategory == 4) {
+            throw new IllegalStateException("Access denied by the server.");
         }
 
         Class<T> responseClass = request.getResponseClass();

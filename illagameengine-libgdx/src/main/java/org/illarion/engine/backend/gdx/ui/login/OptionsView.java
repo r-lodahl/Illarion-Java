@@ -34,7 +34,7 @@ final class OptionsView extends Table {
 
     private final TextButton btSaveSettings, btBackSettings, btGraphicsTab, btGeneralTab, btSoundTab, btServerTab;
 
-    private final CheckBox cbWasdWalking, cbDisableChatAfterSending, cbShowQuestsOnMap, cbShowQuestsOnMiniMap,
+    private final CheckBox cbWasdWalk, cbDisableChatAfterSending, cbShowQuestsOnMap, cbShowQuestsOnMiniMap,
             cbShowPing, cbUseFullscreen, cbShowFps, cbSoundEffectsActive, cbMusicActive, cbAccountLogin,
             cbSendErrorReports;
 
@@ -59,7 +59,7 @@ final class OptionsView extends Table {
         var device = sbDevice.getSelected();
         var isFullscreen = cbUseFullscreen.isChecked();
 
-        settings.put(Option.wasdWalking, Boolean.toString(cbWasdWalking.isChecked()));
+        settings.put(Option.wasdWalk, Boolean.toString(cbWasdWalk.isChecked()));
         settings.put(Option.disableChatAfterSending, Boolean.toString(cbDisableChatAfterSending.isChecked()));
         settings.put(Option.showQuestsOnGameMap, Boolean.toString(cbShowQuestsOnMap.isChecked()));
         settings.put(Option.showQuestsOnMiniMap, Boolean.toString(cbShowQuestsOnMiniMap.isChecked()));
@@ -260,7 +260,7 @@ final class OptionsView extends Table {
 
     //region + Only UI Definition below +
     OptionsView(Skin skin, NullSecureResourceBundle resourceBundle) {
-        cbWasdWalking = new CheckBox("", skin);
+        cbWasdWalk = new CheckBox("", skin);
         cbDisableChatAfterSending = new CheckBox("", skin);
         cbShowQuestsOnMap = new CheckBox("", skin);
         cbShowQuestsOnMiniMap = new CheckBox("", skin);
@@ -316,7 +316,7 @@ final class OptionsView extends Table {
         generalTab.columnDefaults(1).align(Align.right);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("wasdWalk"), skin));
-        generalTab.add(cbWasdWalking);
+        generalTab.add(cbWasdWalk);
         generalTab.row();
         generalTab.add(new Label(resourceBundle.getLocalizedString("disableChatAfterSending"), skin));
         generalTab.add(cbDisableChatAfterSending);
@@ -416,7 +416,7 @@ final class OptionsView extends Table {
     }
 
     private void setupConfigDependentGui(ConfigReader config) {
-        cbWasdWalking.setChecked(config.getBoolean(Option.wasdWalking));
+        cbWasdWalk.setChecked(config.getBoolean(Option.wasdWalk));
         cbDisableChatAfterSending.setChecked(config.getBoolean(Option.disableChatAfterSending));
         cbShowQuestsOnMap.setChecked(config.getBoolean(Option.showQuestsOnGameMap));
         cbShowQuestsOnMiniMap.setChecked(config.getBoolean(Option.showQuestsOnMiniMap));

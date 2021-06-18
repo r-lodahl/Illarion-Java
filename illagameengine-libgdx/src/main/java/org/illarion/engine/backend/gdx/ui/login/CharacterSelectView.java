@@ -2,9 +2,8 @@ package org.illarion.engine.backend.gdx.ui.login;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.illarion.engine.ui.CharacterSelectionData;
+import org.illarion.engine.ui.login.CharacterSelectionData;
 import org.illarion.engine.ui.NullSecureResourceBundle;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
